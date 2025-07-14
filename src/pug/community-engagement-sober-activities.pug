@@ -1,0 +1,191 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title Community Engagement & Sober Activities | Sober Spokane
+    link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css', rel='stylesheet')
+    link(href='css/styles.css', rel='stylesheet')
+  body
+    // Navigation
+    nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3
+      .container.px-4.px-lg-5
+        a.navbar-brand.d-flex.align-items-center(href='index.html')
+          img.logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+          span.ms-2 Sober Spokane
+        button.navbar-toggler.navbar-toggler-right(type='button', data-bs-toggle='collapse', data-bs-target='#navbarResponsive', aria-controls='#navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarResponsive.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto.my-2.my-lg-0
+            li.nav-item
+              a.nav-link(href='index.html') Home
+            li.nav-item
+              a.nav-link(href='index.html#services') Services
+            li.nav-item
+              a.nav-link(href='index.html#resources') Resources
+            li.nav-item
+              a.nav-link(href='index.html#contact') Contact
+    // Hero Section
+    header.masthead
+      // Background Image
+      .background-image(style='background-image: url("assets/img/7.jpg");')
+      .container.px-4.px-lg-5.h-100
+        .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
+          .col-lg-10.align-self-end
+            h1.text-white.font-weight-bold.mb-3 Community Engagement & Sober Activities in Spokane
+            hr.divider.divider-light
+          .col-lg-8.align-self-baseline
+            p.text-white-75.mb-4
+              | Discover alcohol-free social events, active community groups, and sober-friendly activities in Spokane, WA. This guide connects you to events, sports, volunteering, and support for a vibrant sober lifestyle.
+    // Main Content
+    section.page-section
+      .container.px-4.px-lg-5
+        .row.justify-content-center
+          .col-lg-10
+            h2.text-primary.mt-0 Community Engagement & Sober Activities in Spokane
+            p Spokane offers a growing range of sober events, active community groups, and alcohol-free activities for individuals in recovery, those exploring sobriety, and anyone seeking healthy social opportunities.
+            h3.mt-5 Sober Social Events
+            p.text-muted
+              | Enjoy structured, alcohol-free gatherings designed for fun and connection in a safe, welcoming environment.
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead
+                  tr
+                    th Organization/Event
+                    th Details
+                    th Location
+                    th Contact/Website
+                tbody
+                  tr
+                    td Diversion Events
+                    td Mocktail parties, DJ music, dancing, food. Monthly events, no alcohol allowed.
+                    td 22 Rooms, 1011 W. First Ave, Spokane, WA 99201
+                    td: a(href='https://www.eventbrite.com/o/diversion-events-72839301103', target='_blank') Eventbrite
+                  tr
+                    td Reclaim Project Recovery Flannel Gala
+                    td Annual fundraiser and celebration for men in recovery, community engagement.
+                    td True Hope Church, Spokane, WA
+                    td: a(href='https://reclaimprojectnw.org', target='_blank') reclaimprojectnw.org
+            h3.mt-5 Active Sober Community Activities
+            p.text-muted
+              | Join group fitness, outdoor adventures, and skill-building activities in a supportive, substance-free environment.
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead
+                  tr
+                    th Organization
+                    th Activities
+                    th Location
+                    th Contact/Website
+                tbody
+                  tr
+                    td Reclaim Project Recovery
+                    td Strength training, yoga, running, hiking, biking, MMA, paddle boarding, recovery classes
+                    td 1804 W Broadway, Spokane, WA 99201
+                    td: a(href='https://reclaimprojectnw.org', target='_blank') reclaimprojectnw.org
+                  tr
+                    td Centennial Trail
+                    td 37-mile trail for walking, biking, running; scenic, alcohol-free
+                    td Multiple access points in Spokane
+                    td: a(href='https://visitspokane.com', target='_blank') visitspokane.com
+            h3.mt-5 Community Sports Leagues
+            p.text-muted
+              | Get active and meet new people in sober-friendly sports leagues and tournaments.
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead
+                  tr
+                    th Organization/Event
+                    th Details
+                    th Location
+                    th Contact/Website
+                tbody
+                  tr
+                    td City of Spokane Parks & Recreation
+                    td Adult softball, flag football, volleyball; 6-week seasons, 12-game guarantee
+                    td Dwight Merkel Sports Complex, Franklin Park Softball Complex
+                    td: a(href='https://my.spokanecity.org/recreation/sports/', target='_blank') my.spokanecity.org/recreation/sports/
+                  tr
+                    td Spokane Summer Classic
+                    td Annual 7v7 adult soccer tournament, July event
+                    td Plante’s Ferry Complex, Spokane Valley, WA
+                    td: a(href='https://spokanesummerclassic.com', target='_blank') spokanesummerclassic.com
+            h3.mt-5 Support Groups
+            p.text-muted
+              | Connect with peer-led groups for support, accountability, and community in recovery.
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead
+                  tr
+                    th Organization
+                    th Details
+                    th Location
+                    th Contact/Website
+                tbody
+                  tr
+                    td Alcoholics Anonymous (AA)
+                    td Open/closed/speaker meetings, peer support
+                    td Multiple locations
+                    td: a(href='https://sober.com/aa-meetings/washington/spokane/', target='_blank') sober.com/aa-meetings/washington/spokane/
+                  tr
+                    td Narcotics Anonymous (NA)
+                    td Peer support for drug recovery, meetings across Spokane
+                    td Multiple locations
+                    td: a(href='https://newana.org', target='_blank') newana.org
+                  tr
+                    td Al-Anon/Alateen
+                    td Support for families and teens affected by addiction
+                    td 1700 W. 7th Ave, Suite 100, Spokane, WA 99204
+                    td (509) 456-2125
+            h3.mt-5 General Community Engagements
+            p.text-muted
+              | Explore alcohol-free parks, cultural events, and volunteer opportunities for meaningful connection.
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead
+                  tr
+                    th Activity/Organization
+                    th Details
+                    th Location
+                    th Contact/Website
+                tbody
+                  tr
+                    td Riverfront Park
+                    td Urban waterfall, walking paths, playgrounds, seasonal events
+                    td Downtown Spokane
+                    td: a(href='https://visitspokane.com', target='_blank') visitspokane.com
+                  tr
+                    td Cultural Events
+                    td Museums, art galleries, concerts, sober-friendly entertainment
+                    td Various locations
+                    td: a(href='https://visitspokane.com', target='_blank') visitspokane.com
+                  tr
+                    td Volunteer Opportunities
+                    td Community service with Second Harvest, Catholic Charities, Spokane Resource Center
+                    td Various locations
+                    td: a(href='https://spokaneresourcecenter.org', target='_blank') spokaneresourcecenter.org
+            h3.mt-5 Access & Support
+            ul
+              li Call Washington 2-1-1 at (877) 211-9274 for referrals to community events, support groups, and sober activities.
+              li Explore the
+                a(href='https://thefigtree.org', target='_blank') Fig Tree Resource Guide
+                |  for a comprehensive directory of community resources.
+              li Use the
+                a(href='https://www.google.com/maps/d/u/0/viewer?mid=1QwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQw&ll=47.6588%2C-117.4260&z=12', target='_blank') Spokane Resource Google Map
+                |  to find event locations and sober activities.
+              li Visit
+                a(href='https://www.meetup.com', target='_blank') Meetup.com
+                |  for groups like Spokane Young and Active or Spokane Canoe and Kayak Club.
+    // Call to Action
+    section.page-section.bg-primary.text-white.text-center
+      .container.px-4.px-lg-5
+        h2.mb-4 Looking for Sober Social Opportunities?
+        p.mb-4 Call Washington 2-1-1 or explore local events and groups for alcohol-free fun and connection.
+        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us 
+    footer.bg-light.py-5
+      .container.px-4.px-lg-5
+        a(href='index.html')
+          img.footer-logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+        .small.text-center.text-muted
+          | Copyright © 2025 - Sober Spokane 

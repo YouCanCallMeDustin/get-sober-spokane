@@ -1,0 +1,219 @@
+doctype html
+html(lang='en')
+
+    head
+
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='Sober Spokane - Supporting recovery and sobriety in the Spokane community')
+        meta(name='author', content='Sober Spokane')
+
+        title Sober Spokane - Recovery Support Community
+
+        // Favicon
+        link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+
+        // Bootstrap Icons
+        link(href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css', rel='stylesheet')
+
+        // Google fonts
+        link(href='https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700', rel='stylesheet')
+        link(href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic', rel='stylesheet', type='text/css')
+
+        // SimpleLightbox plugin CSS
+        link(href='https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css', rel='stylesheet')
+
+        // Core theme CSS (includes Bootstrap)
+        link(href='css/styles.css', rel='stylesheet')
+
+    body#page-top
+
+        // Navigation
+        nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3
+            .container.px-4.px-lg-5
+                a.navbar-brand.d-flex.align-items-center(href='index.html')
+                    img.logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+                    span.ms-2 Sober Spokane
+                button.navbar-toggler.navbar-toggler-right(type='button', data-bs-toggle='collapse', data-bs-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarResponsive.collapse.navbar-collapse
+                    ul.navbar-nav.ms-auto.my-2.my-lg-0
+                        li.nav-item
+                            a.nav-link(href='#about') About
+                        li.nav-item
+                            a.nav-link(href='#services') Services
+                        li.nav-item
+                            a.nav-link(href='#resources') Resources
+                        li.nav-item
+                            a.nav-link(href='#contact') Contact
+
+        // Masthead
+        header.masthead
+            // Video Background
+            video#bgVideo.video-background(autoplay='', muted='', loop='', playsinline='')
+                source(src='assets/img/bg-masthead.mp4', type='video/mp4')
+                | Your browser does not support the video tag.
+            .container.px-4.px-lg-5.h-100
+                .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
+                    .col-lg-8.align-self-end
+                        h1.text-white.font-weight-bold Supporting Recovery in Spokane
+                        hr.divider
+                    .col-lg-8.align-self-baseline
+                        p.text-white-75.mb-5
+                            | A community dedicated to supporting individuals and families on their journey to sobriety and recovery. Find hope, connection, and resources in the Spokane area.
+                        a.btn.btn-primary.btn-xl(href='#about') Learn More
+
+        // About
+        section#about.page-section.bg-primary
+            .container.px-4.px-lg-5
+                .row.gx-4.gx-lg-5.justify-content-center
+                    .col-lg-8.text-center
+                        h2.text-white.mt-0 Supporting Your Recovery Journey
+                        hr.divider.divider-light
+                        p.text-white-75.mb-4
+                            | Sober Spokane is committed to providing a safe, supportive environment for individuals seeking recovery from addiction. We believe in the power of community, connection, and hope in the healing process.
+                        a.btn.btn-light.btn-xl(href='#services') Our Services
+
+        // Services
+        section#services.page-section
+            .container.px-4.px-lg-5
+                h2.text-center.mt-0 How We Support You
+                hr.divider
+                .row.gx-4.gx-lg-5
+                    .col-lg-4.col-md-6.text-center
+                        a(href='shelter-housing.html', style='text-decoration: none; color: inherit;')
+                            .mt-5
+                                .mb-2
+                                    i.bi-house-door.fs-1.text-primary
+                                h3.h4.mb-2 Shelter and Housing
+                                p.text-muted.mb-0 Find safe, supportive shelter and housing resources in the Spokane area.
+                    .col-lg-4.col-md-6.text-center
+                        a(href='food-basic-needs.html', style='text-decoration: none; color: inherit;')
+                            .mt-5
+                                .mb-2
+                                    i.bi-bag-heart.fs-1.text-primary
+                                h3.h4.mb-2 Food and Basic Needs
+                                p.text-muted.mb-0 Access food banks, clothing, hygiene supplies, and other essentials.
+                    .col-lg-4.col-md-6.text-center
+                        a(href='addiction-treatments-support.html', style='text-decoration: none; color: inherit;')
+                            .mt-5
+                                .mb-2
+                                    i.bi-capsule.fs-1.text-primary
+                                h3.h4.mb-2 Addiction Treatments and Support Groups
+                                p.text-muted.mb-0 Connect with treatment programs and peer-led support groups for recovery.
+                    .col-lg-4.col-md-6.text-center
+                        a(href='medical-mental-health.html', style='text-decoration: none; color: inherit;')
+                            .mt-5
+                                .mb-2
+                                    i.bi-heart-pulse.fs-1.text-primary
+                                h3.h4.mb-2 Mental and Medical Health Services
+                                p.text-muted.mb-0 Find mental health counseling, medical care, and wellness support.
+                    .col-lg-4.col-md-6.text-center
+                        a(href='employment-skills.html', style='text-decoration: none; color: inherit;')
+                            .mt-5
+                                .mb-2
+                                    i.bi-briefcase.fs-1.text-primary
+                                h3.h4.mb-2 Employment and Skills Management
+                                p.text-muted.mb-0 Explore job training, employment services, and skill-building opportunities.
+                    .col-lg-4.col-md-6.text-center
+                        a(href='community-engagement-sober-activities.html', style='text-decoration: none; color: inherit;')
+                            .mt-5
+                                .mb-2
+                                    i.bi-people-fill.fs-1.text-primary
+                                h3.h4.mb-2 Community Engagement and Sober Activities
+                                p.text-muted.mb-0 Join sober events, volunteer, and connect with a supportive community.
+
+        // Call to action
+        section.page-section.bg-dark.text-white
+            .container.px-4.px-lg-5.text-center
+                h2.mb-4 Ready to Start Your Recovery Journey?
+                a.btn.btn-light.btn-xl(href='#contact') Get Connected Today
+
+        // Contact
+        section#contact.page-section
+            .container.px-4.px-lg-5
+                .row.gx-4.gx-lg-5.justify-content-center
+                    .col-lg-8.col-xl-6.text-center
+                        h2.mt-0 Get In Touch
+                        hr.divider
+                        p.text-muted.mb-5
+                            | Ready to take the first step? Contact us to learn more about our services and how we can support your recovery journey.
+                .row.gx-4.gx-lg-5.justify-content-center
+                    .col-lg-4.text-center.mb-5.mb-lg-0
+                        i.bi-phone.fs-2.mb-3.text-muted
+                        div +1 (509) 218-3836
+                        br
+                        i.bi-envelope.fs-2.mb-3.text-muted
+                        div
+                            a(href='mailto:spokanesober@gmail.com') spokanesober@gmail.com
+                        // Add more spacing below the email before the form
+                        .mb-4
+                        .mb-4
+                        form#contactForm(action='https://formspree.io/f/xjkobeaz', method='POST')
+
+                            // Name input
+                            .form-floating.mb-3
+                                input#name.form-control(
+                                    type='text',
+                                    name='name',
+                                    placeholder='Enter your name...',
+                                    required
+                                )
+                                label(for='name') Full name
+
+                            // Email address input
+                            .form-floating.mb-3
+                                input#email.form-control(
+                                    type='email',
+                                    name='email',
+                                    placeholder='name@example.com',
+                                    required
+                                )
+                                label(for='email') Email address
+
+                            // Phone number input
+                            .form-floating.mb-3
+                                input#phone.form-control(
+                                    type='tel',
+                                    name='phone',
+                                    placeholder='(123) 456-7890',
+                                    required
+                                )
+                                label(for='phone') Phone number
+
+                            // Message input
+                            .form-floating.mb-3
+                                textarea#message.form-control(
+                                    name='message',
+                                    placeholder='Enter your message here...',
+                                    style='height: 10rem;',
+                                    required
+                                )
+                                label(for='message') Message
+
+                            // Submit Button
+                            .d-grid
+                                button#submitButton.btn.btn-primary.btn-xl(type='submit') Send Message
+
+        // Footer
+        footer.bg-light.py-5
+            .container.px-4.px-lg-5
+                a(href='index.html')
+                    img.footer-logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+                .small.text-center.text-muted
+                    | Copyright © 2025 - Sober Spokane
+                    br
+                    a(href='privacy-policy.html') Privacy Policy
+                    |  | 
+                    a(href='terms-of-service.html') Terms of Service
+
+        // Bootstrap core JS
+        script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js')
+
+        // SimpleLightbox plugin JS
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js')
+
+        // Core theme JS
+        script(src='js/scripts.js')
+
+

@@ -1,0 +1,237 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title Shelter & Housing | Sober Spokane
+    link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css', rel='stylesheet')
+    link(href='css/styles.css', rel='stylesheet')
+  body
+    // Navigation
+    nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3
+      .container.px-4.px-lg-5
+        a.navbar-brand.d-flex.align-items-center(href='index.html')
+          img.logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+          span.ms-2 Sober Spokane
+        button.navbar-toggler.navbar-toggler-right(type='button', data-bs-toggle='collapse', data-bs-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarResponsive.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto.my-2.my-lg-0
+            li.nav-item
+              a.nav-link(href='index.html') Home
+            li.nav-item
+              a.nav-link(href='index.html#services') Services
+            li.nav-item
+              a.nav-link(href='index.html#resources') Resources
+            li.nav-item
+              a.nav-link(href='index.html#contact') Contact
+    // Hero Section
+    header.masthead
+      // Background Image
+      .background-image(style='background-image: url("assets/img/12.jpg");')
+      .container.px-4.px-lg-5.h-100
+        .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
+          .col-lg-10.align-self-end
+            h1.text-white.font-weight-bold.mb-3 Shelter & Housing in Spokane
+            hr.divider.divider-light
+          .col-lg-8.align-self-baseline
+            p.text-white-75.mb-4
+              | Discover safe shelter options and long-term housing resources in Spokane, WA. Our guide connects you to emergency services, affordable housing, and supportive programs for individuals and families.
+    // Main Content
+    section.page-section
+      .container.px-4.px-lg-5
+        .row.justify-content-center
+          .col-lg-10
+            h2.text-primary.mt-0 Shelter & Housing in Spokane
+            p Spokane offers a robust network of shelters and housing programs for those facing homelessness or housing insecurity. Whether you need immediate shelter or are seeking a path to stable housing, local organizations and agencies are here to help.
+            h3.mt-5 Emergency Shelters
+            p.text-muted
+              | Emergency shelters provide overnight accommodations for adults, families, youth, and those with special needs. Availability can change daily—visit 
+              a(href='https://sheltermespokane.org', target='_blank') ShelterMeSpokane.org
+              |  for real-time updates.
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead
+                  tr
+                    th Shelter Name
+                    th Type
+                    th Address
+                    th Phone
+                    th Notes
+                tbody
+                  tr
+                    td Truth Ministries Shelter
+                    td Adult Men
+                    td N/A, Spokane, WA 99202
+                    td (509) 456-2576
+                    td --
+                  tr
+                    td Crosswalk Youth Shelter
+                    td Youth (13-17)
+                    td 525 W 2nd Ave, Spokane, WA 99201
+                    td (509) 688-1112
+                    td --
+                  tr
+                    td Young Adult Shelter
+                    td Adults 18-24
+                    td 3104 E. Augusta Ave, Spokane, WA 99207
+                    td (509) 309-3744
+                    td --
+                  tr
+                    td Family Promise Open Doors
+                    td Families w/ Children
+                    td 2002 E Mission Ave, Spokane, WA 99202
+                    td (509) 723-4663
+                    td --
+                  tr
+                    td Jewel’s Helping Hands Women’s Shelter
+                    td Adult Women
+                    td Undisclosed (call for info)
+                    td (509) 824-2312
+                    td Confidential for safety
+                  tr
+                    td House of Charity Shelter
+                    td Adult Men
+                    td 32 W Pacific, Spokane, WA 99201
+                    td (509) 624-7821
+                    td --
+                  tr
+                    td YWCA Domestic Violence Shelter
+                    td All (DV focus)
+                    td Confidential, Spokane, WA
+                    td (509) 326-2255
+                    td Confidential for safety
+                  tr
+                    td Jewels Helping Hands
+                    td Adults
+                    td Undisclosed (call for info)
+                    td (509) 723-6201
+                    td Confidential
+                  tr
+                    td Revive Hive Housing Navigation Center
+                    td Adults
+                    td 527 S Cannon St, Spokane, WA 99201
+                    td (509) 741-4255
+                    td --
+                  tr
+                    td Revive Inclement Weather Shelter
+                    td Adults
+                    td 123, Spokane, WA 99201
+                    td (509) 957-9041
+                    td --
+                  tr
+                    td Hope House Women's Shelter
+                    td Adult Women
+                    td 318 S Adams, Spokane, WA 99201
+                    td (509) 816-1669
+                    td --
+                  tr
+                    td Compassionate Addiction Treatment
+                    td Adults
+                    td 960 E. 3rd Ave, Spokane, WA 99202
+                    td (509) 919-3362 Option 2
+                    td --
+                  tr
+                    td The Way Out Shelter Warming Center
+                    td Adults
+                    td 55 W Mission Ave, Spokane, WA 99201
+                    td (509) 325-6810
+                    td --
+                  tr
+                    td UGM Crisis Shelter for Women and Children
+                    td Women & Children
+                    td 1515 E. Illinois Ave, Spokane, WA 99207
+                    td (509) 535-0486
+                    td --
+                  tr
+                    td UGM Men's Shelter
+                    td Adult Men
+                    td 1224 E. Trent Ave., Spokane, WA 99202
+                    td (509) 535-8510
+                    td --
+                  tr
+                    td St. Margaret's Shelter
+                    td Families
+                    td 101 E Hartson Ave, Spokane, WA 99202
+                    td (509) 325-5005 (HFCA)
+                    td Part of HFCA program
+            .alert.alert-info.mt-4
+              i.bi-info-circle-fill.me-2
+              | For family shelter intake, visit Catholic Charities HFCA at 19 W. Pacific, Mon-Thu 12:30–4:30 PM, or call (509) 325-5005. For singles, SNAP Coordinated Entry is at 124 E Pacific Ave, (509) 456-7627.
+            h3.mt-5 Housing Programs & Transitional Resources
+            p.text-muted
+              | Spokane’s housing programs help individuals and families move from crisis to stability. Services include rapid re-housing, affordable rentals, and supportive housing with case management.
+            .row.gx-4.gx-lg-5
+              .col-md-6.mb-4
+                .card.h-100.shadow-sm
+                  .card-body
+                    h5.card-title.text-primary.mb-2 Spokane Housing Authority
+                    p.card-text Offers affordable housing, public housing, and vouchers for eligible residents.
+                    ul.mb-2
+                      li Phone: (509) 328-2953
+                      li: a(href='https://www.spokanehousing.org', target='_blank') www.spokanehousing.org
+              .col-md-6.mb-4
+                .card.h-100.shadow-sm
+                  .card-body
+                    h5.card-title.text-primary.mb-2 Family Promise of Spokane
+                    p.card-text Emergency shelter and transitional housing for families with children.
+                    ul.mb-2
+                      li Phone: (509) 723-4663
+                      li: a(href='https://www.familypromiseofspokane.org', target='_blank') www.familypromiseofspokane.org
+              .col-md-6.mb-4
+                .card.h-100.shadow-sm
+                  .card-body
+                    h5.card-title.text-primary.mb-2 Volunteers of America (VOA)
+                    p.card-text Housing, case management, and veteran support services.
+                    ul.mb-2
+                      li Phone: (509) 624-2378
+                      li: a(href='https://www.voaspokane.org', target='_blank') voaspokane.org
+              .col-md-6.mb-4
+                .card.h-100.shadow-sm
+                  .card-body
+                    h5.card-title.text-primary.mb-2 Catholic Charities Spokane
+                    p.card-text Housing assistance, case management, and family shelter coordination (HFCA).
+                    ul.mb-2
+                      li Phone: (509) 358-4250
+                      li: a(href='https://www.cceasternwa.org', target='_blank') cceasternwa.org
+              .col-md-6.mb-4
+                .card.h-100.shadow-sm
+                  .card-body
+                    h5.card-title.text-primary.mb-2 Spokane County Homeless Services
+                    p.card-text Emergency shelter, rapid re-housing, and prevention programs.
+                    ul.mb-2
+                      li Phone: (509) 477-3700
+                      li: a(href='https://www.spokanecounty.gov', target='_blank') spokanecounty.gov
+              .col-md-6.mb-4
+                .card.h-100.shadow-sm
+                  .card-body
+                    h5.card-title.text-primary.mb-2 The Home Yard Cottages (Help4Women)
+                    p.card-text Permanent supportive housing in a cottage community with case management.
+                    ul.mb-2
+                      li Phone: (509) 795-8400
+                      li: a(href='https://www.spokanehousing.org', target='_blank') www.spokanehousing.org
+            h3.mt-5 Access & Support
+            ul
+              li Visit 
+                a(href='https://sheltermespokane.org', target='_blank') ShelterMeSpokane.org
+                |  for real-time shelter bed availability.
+              li Call Washington 2-1-1 at (877) 211-9274 for referrals to shelters, housing, and other services.
+              li Explore the 
+                a(href='https://thefigtree.org', target='_blank') Fig Tree Resource Guide
+                |  for a comprehensive directory of community resources.
+              li Use the 
+                a(href='https://www.google.com/maps/d/u/0/viewer?mid=1QwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQw&ll=47.6588%2C-117.4260&z=12', target='_blank') Spokane Resource Google Map
+                |  to locate food banks, shelters, and more.
+    // Call to Action
+    section.page-section.bg-primary.text-white.text-center
+      .container.px-4.px-lg-5
+        h2.mb-4 Need Immediate Help?
+        p.mb-4 Call Washington 2-1-1 or visit ShelterMeSpokane.org for real-time shelter availability and referrals.
+        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us 
+    footer.bg-light.py-5
+      .container.px-4.px-lg-5
+        a(href='index.html')
+          img.footer-logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+        .small.text-center.text-muted
+          | Copyright © 2025 - Sober Spokane 

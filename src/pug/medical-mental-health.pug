@@ -1,0 +1,241 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title Medical & Mental Health Services | Sober Spokane
+    link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css', rel='stylesheet')
+    link(href='css/styles.css', rel='stylesheet')
+  body
+    // Navigation
+    nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3
+      .container.px-4.px-lg-5
+        a.navbar-brand.d-flex.align-items-center(href='index.html')
+          img.logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+          span.ms-2 Sober Spokane
+        button.navbar-toggler.navbar-toggler-right(type='button', data-bs-toggle='collapse', data-bs-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarResponsive.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto.my-2.my-lg-0
+            li.nav-item
+              a.nav-link(href='index.html') Home
+            li.nav-item
+              a.nav-link(href='index.html#services') Services
+            li.nav-item
+              a.nav-link(href='index.html#resources') Resources
+            li.nav-item
+              a.nav-link(href='index.html#contact') Contact
+    // Hero Section
+    header.masthead
+      // Background Image
+      .background-image(style='background-image: url("assets/img/9.jpg");')
+      .container.px-4.px-lg-5.h-100
+        .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
+          .col-lg-10.align-self-end
+            h1.text-white.font-weight-bold.mb-3 Medical & Mental Health Services in Spokane
+            hr.divider.divider-light
+          .col-lg-8.align-self-baseline
+            p.text-white-75.mb-4
+              | Find hospitals, clinics, crisis lines, and mental health support in Spokane, WA. This guide connects you to emergency care, primary care, behavioral health, and community resources for all ages and needs.
+    // Main Content
+    section.page-section
+      .container.px-4.px-lg-5
+        .row.justify-content-center
+          .col-lg-10
+            h2.text-primary.mt-0 Medical & Mental Health Services in Spokane
+            p Spokane offers a comprehensive network of hospitals, clinics, and mental health providers for individuals and families. Services include emergency care, primary care, behavioral health, dental, and crisis support, with many options for low-income and uninsured residents.
+            h3.mt-5 Hospitals
+            p.text-muted
+              | Spokane’s hospitals provide emergency, specialty, and pediatric care, as well as support for veterans and those with complex needs.
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead
+                  tr
+                    th Hospital Name
+                    th Address
+                    th Services
+                    th Website
+                tbody
+                  tr
+                    td Providence Sacred Heart Medical Center and Children's Hospital
+                    td 101 W 8th Ave, Spokane, WA 99204
+                    td Cancer, transplant, trauma, NICU, specialty care, support groups
+                    td: a(href='https://providence.org', target='_blank') providence.org
+                  tr
+                    td MultiCare Deaconess Hospital
+                    td 800 W 5th Ave, Spokane, WA 99204
+                    td Inpatient, outpatient, emergency, trauma, stroke, maternal care
+                    td: a(href='https://multicare.org', target='_blank') multicare.org
+                  tr
+                    td Providence Holy Family Hospital
+                    td 5633 N Lidgerwood St, Spokane, WA 99208
+                    td Medical, surgical, outpatient, breast health
+                    td: a(href='https://providence.org', target='_blank') providence.org
+                  tr
+                    td MultiCare Valley Hospital
+                    td 12345 E Mission Ave, Spokane Valley, WA 99206
+                    td General hospital services
+                    td: a(href='https://multicare.org', target='_blank') multicare.org
+                  tr
+                    td Shriners Hospital for Children
+                    td 911 W Farwell Rd, Spokane, WA 99205
+                    td Pediatric orthopedic, burns, complex care
+                    td: a(href='https://shrinerschildrens.org', target='_blank') shrinerschildrens.org
+                  tr
+                    td Mann Grandstaff VA Medical Center
+                    td 4815 N Assembly St, Spokane, WA 99205
+                    td Veterans’ primary/secondary care, mobile clinic
+                    td: a(href='https://va.gov', target='_blank') va.gov
+                  tr
+                    td Eastern State Hospital
+                    td 4620 29th Ave, Medical Lake, WA 99022
+                    td Psychiatric evaluation, inpatient therapy
+                    td: a(href='https://dshs.wa.gov', target='_blank') dshs.wa.gov
+            h3.mt-5 Clinics & Health Centers
+            p.text-muted
+              | Clinics and health centers offer primary care, dental, behavioral health, and specialized services for all ages and backgrounds.
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead
+                  tr
+                    th Organization
+                    th Address
+                    th Services
+                    th Website
+                tbody
+                  tr
+                    td CHAS Health
+                    td Multiple locations (e.g., 14715 E 16th Ave, Spokane Valley)
+                    td Medical, dental, pharmacy, behavioral health
+                    td: a(href='https://chas.org', target='_blank') chas.org
+                  tr
+                    td Inland Northwest Behavioral Health
+                    td 1016 W 4th Ave, Spokane, WA 99204
+                    td Detox, behavioral health, outpatient, alternative therapies
+                    td: a(href='https://inlandnorthwestbh.com', target='_blank') inlandnorthwestbh.com
+                  tr
+                    td Frontier Behavioral Health
+                    td Multiple locations
+                    td Adult/child/family/elder services, crisis, inpatient, stabilization
+                    td: a(href='https://fbhwa.org', target='_blank') fbhwa.org
+                  tr
+                    td VA Spokane Health Care System
+                    td 4815 N Assembly St, Spokane, WA 99205
+                    td Behavioral health for veterans, outpatient, telehealth
+                    td: a(href='https://va.gov', target='_blank') va.gov
+                  tr
+                    td Spokane County Mental Health Services
+                    td Not specified (serves detention facilities)
+                    td Psychiatric assessments, crisis support for inmates
+                    td: a(href='https://spokanecounty.gov', target='_blank') spokanecounty.gov
+                  tr
+                    td CancerCare Northwest
+                    td Multiple locations
+                    td Cancer treatment, support staff
+                    td: a(href='https://cancercare-nw.com', target='_blank') cancercare-nw.com
+                  tr
+                    td MultiCare Rockwood Clinic - Primary Care
+                    td 1215 N McDonald Rd, Suite 101, Spokane Valley, WA 99216
+                    td Adult/child care, wellness, preventive, chronic disease
+                    td: a(href='https://multicare.org', target='_blank') multicare.org
+                  tr
+                    td Spokane Valley Clinic (CHAS Health)
+                    td 14715 E 16th Ave, Spokane Valley, WA 99216
+                    td Medical, pharmacy, telehealth
+                    td: a(href='https://chas.org', target='_blank') chas.org
+            h3.mt-5 Mental Health & Crisis Services
+            p.text-muted
+              | Spokane offers a range of mental health services, including crisis lines, peer support, and specialized care for children, adults, and families.
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead
+                  tr
+                    th Organization/Service
+                    th Contact
+                    th Services
+                    th Website
+                tbody
+                  tr
+                    td National Alliance on Mental Illness (NAMI) Spokane
+                    td Not specified
+                    td Education, support groups, advocacy
+                    td: a(href='https://namispokane.org', target='_blank') namispokane.org
+                  tr
+                    td Crisis Text Line
+                    td Text 741741
+                    td 24/7 crisis support
+                    td: a(href='https://crisistextline.org', target='_blank') crisistextline.org
+                  tr
+                    td Suicide & Crisis Lifeline
+                    td Call 988
+                    td 24/7 crisis support
+                    td: a(href='https://988lifeline.org', target='_blank') 988lifeline.org
+                  tr
+                    td 24/7 Crisis Line
+                    td 877-266-1818
+                    td Immediate crisis support
+                    td --
+                  tr
+                    td Spokane Regional Health District Mental Health Resources
+                    td Not specified
+                    td Support, mental health first aid, COVID-19 resources
+                    td: a(href='https://srhd.org', target='_blank') srhd.org
+            h3.mt-5 Other Health Services
+            ul
+              li
+                strong Dental Care:
+                |  CHAS Health and ABCD (for children under 6 with Medicaid) offer dental services. See
+                a(href='https://srhd.org', target='_blank') srhd.org
+                |  for more.
+              li
+                strong Vision Care:
+                |  Likely available at CHAS Health and other clinics.
+              li
+                strong Women’s Health:
+                |  Providence Holy Family Hospital and other facilities offer women’s health services.
+              li
+                strong Children’s Health:
+                |  Pediatric care at Providence Sacred Heart and Children’s Hospital.
+              li
+                strong Veterans’ Health:
+                |  VA Spokane Health Care System and Mann Grandstaff VA Medical Center.
+              li
+                strong Public Health:
+                |  Spokane Regional Health District offers naloxone training, Nurse-Family Partnership, and more.
+              li
+                strong In-Home Urgent Care:
+                |  DispatchHealth provides same-day medical care at home (
+                a(href='https://dispatchhealth.com', target='_blank') dispatchhealth.com
+                | ).
+              li
+                strong Help Applying for Services:
+                |  Washington Connection (
+                a(href='https://www.washingtonconnection.org', target='_blank') waconnection.org
+                | ) and Parent Help 123 (1-800-322-2588,
+                a(href='https://parenthelp123.org', target='_blank') parenthelp123.org
+                | ) assist with health insurance and more.
+            h3.mt-5 Access & Support
+            ul
+              li Call Washington 2-1-1 at (877) 211-9274 for referrals to medical, mental health, and community services.
+              li Explore the
+                a(href='https://thefigtree.org', target='_blank') Fig Tree Resource Guide
+                |  for a comprehensive directory of health and wellness resources.
+              li Use the
+                a(href='https://findtreatment.samhsa.gov', target='_blank') SAMHSA Treatment Locator
+                |  to find additional mental health and substance abuse treatment options.
+              li Use the
+                a(href='https://www.google.com/maps/d/u/0/viewer?mid=1QwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQw&ll=47.6588%2C-117.4260&z=12', target='_blank') Spokane Resource Google Map
+                |  to locate hospitals, clinics, and mental health services.
+    // Call to Action
+    section.page-section.bg-primary.text-white.text-center
+      .container.px-4.px-lg-5
+        h2.mb-4 Need Medical or Mental Health Support?
+        p.mb-4 Call Washington 2-1-1 or reach out to a local provider for immediate help.
+        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us 
+    footer.bg-light.py-5
+      .container.px-4.px-lg-5
+        a(href='index.html')
+          img.footer-logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+        .small.text-center.text-muted
+          | Copyright © 2025 - Sober Spokane 

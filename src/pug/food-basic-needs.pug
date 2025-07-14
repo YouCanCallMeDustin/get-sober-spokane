@@ -1,0 +1,157 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title Food & Basic Needs | Sober Spokane
+    link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+    link(href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css', rel='stylesheet')
+    link(href='css/styles.css', rel='stylesheet')
+  body
+    // Navigation
+    nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3
+      .container.px-4.px-lg-5
+        a.navbar-brand.d-flex.align-items-center(href='index.html')
+          img.logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+          span.ms-2 Sober Spokane
+        button.navbar-toggler.navbar-toggler-right(type='button', data-bs-toggle='collapse', data-bs-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarResponsive.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto.my-2.my-lg-0
+            li.nav-item
+              a.nav-link(href='index.html') Home
+            li.nav-item
+              a.nav-link(href='index.html#services') Services
+            li.nav-item
+              a.nav-link(href='index.html#resources') Resources
+            li.nav-item
+              a.nav-link(href='index.html#contact') Contact
+    // Hero Section
+    header.masthead
+      // Background Image
+      .background-image(style='background-image: url("assets/img/11.jpg");')
+      .container.px-4.px-lg-5.h-100
+        .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
+          .col-lg-10.align-self-end
+            h1.text-white.font-weight-bold.mb-3 Food & Basic Needs in Spokane
+            hr.divider.divider-light
+          .col-lg-8.align-self-baseline
+            p.text-white-75.mb-4
+              | Find free food, clothing, hygiene products, and other essentials in Spokane, WA. This guide connects you to food banks, pantries, and community resources for basic needs support.
+    // Main Content
+    section.page-section
+      .container.px-4.px-lg-5
+        .row.justify-content-center
+          .col-lg-10
+            h2.text-primary.mt-0 Food Banks and Pantries
+            p Spokane is home to a variety of food banks and pantries that provide free groceries and basic necessities to anyone in need. Many locations also offer clothing, hygiene products, and utility assistance.
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead
+                  tr
+                    th Organization
+                    th Address
+                    th Hours
+                    th Notes
+                    th Rating
+                tbody
+                  tr
+                    td Free Little Food Pantry
+                    td Spokane, WA 99205
+                    td Open 24/7
+                    td Community-based, always open
+                    td 4.7/5
+                  tr
+                    td Second Harvest Inland Northwest
+                    td 1234 E Front Ave, Spokane, WA 99202
+                    td Mon-Fri 8:00 AM - 4:30 PM (Fri until 12:00 PM)
+                    td Major food bank, no appointment needed
+                    td 4.7/5
+                  tr
+                    td Serve Spokane
+                    td 8303 B, N Division St, Spokane, WA 99208
+                    td Tue/Thu 12:30-2:30 PM, Sat 9:00-11:30 AM
+                    td May require proof of address
+                    td 4.6/5
+                  tr
+                    td Better Living Center
+                    td 25 E North Foothills Dr, Spokane, WA 99207
+                    td Tue 9:00-11:30 AM, 1:00-3:30 PM; Thu 9:00 AM-12:30 PM
+                    td Food & community services
+                    td 4.7/5
+                  tr
+                    td Salvation Army - Food Distribution Center
+                    td 204 E Indiana Ave, Spokane, WA 99207
+                    td Mon-Fri 9:00 AM-4:15 PM
+                    td Serves 1,500 families/month
+                    td 4.4/5
+                  tr
+                    td Feed Spokane
+                    td 1114 N Fancher Rd STE 109, Spokane Valley, WA 99212
+                    td Not listed
+                    td Food rescue & distribution
+                    td 4.9/5
+                  tr
+                    td Our Place Spokane
+                    td 1509 W College Ave, Spokane, WA 99201
+                    td Wed 3:30-6 PM, Thu 10 AM-12:30 PM, Last Sat 10 AM-12:30 PM
+                    td Food, clothing, hygiene, utilities, bus passes
+                    td --
+                  tr
+                    td Salvation Army - Our Food Bank (Temporary)
+                    td 203 E Nora Avenue, Spokane, WA 99027
+                    td Mon-Fri 10:00 AM-3:00 PM
+                    td Temporary location, large distribution
+                    td --
+            h3.mt-5 Additional Food Resources
+            p.text-muted
+              | In addition to food banks, Spokane offers mobile meal programs and government assistance for food insecurity:
+            ul
+              li
+                strong Second Harvest Mobile Market:
+                |  Free produce, meats, and groceries at rotating locations. No appointment needed. Check their website for the next event.
+              li
+                strong Grad & Go Meals:
+                |  Free grab-and-go meals for children and teens, provided by Spokane Public Schools. See SPS’s website for details.
+              li
+                strong Washington 211:
+                |  Call 2-1-1 or (866) 904-9060 for referrals to food, housing, and emergency services.
+              li
+                strong Basic Food (SNAP):
+                |  Apply for monthly food benefits at DSHS Basic Food. Eligibility based on income and household size.
+            h3.mt-5 Other Basic Needs
+            p.text-muted
+              | Many food banks and pantries also provide clothing, hygiene products, and utility assistance. For a full directory of resources, visit the
+              a(href='https://thefigtree.org', target='_blank') Fig Tree Resource Guide
+              | .
+            ul
+              li
+                strong Our Place Spokane:
+                |  Food, clothing, hygiene, utility help, and bus passes at 1509 W College Ave.
+              li
+                strong Salvation Army:
+                |  Emergency food, clothing, and community services at 204 E Indiana Ave.
+              li
+                strong Spokane Resource Center:
+                |  Childcare, energy assistance, and wellness programs. See spokaneresourcecenter.org for details.
+            h3.mt-5 Access & Support
+            ul
+              li Call Washington 211 at 2-1-1 or (866) 904-9060 for immediate referrals to food and basic needs services.
+              li Use the
+                a(href='https://www.google.com/maps/d/u/0/viewer?mid=1QwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQw&ll=47.6588%2C-117.4260&z=12', target='_blank') Spokane Resource Google Map
+                |  to find food banks, meal sites, and more.
+              li Visit
+                a(href='https://www.dshs.wa.gov', target='_blank') dshs.wa.gov
+                |  to apply for SNAP benefits.
+    // Call to Action
+    section.page-section.bg-primary.text-white.text-center
+      .container.px-4.px-lg-5
+        h2.mb-4 Need Food or Essentials Now?
+        p.mb-4 Call Washington 211 or visit a local food bank for immediate help.
+        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us 
+    footer.bg-light.py-5
+      .container.px-4.px-lg-5
+        a(href='index.html')
+          img.footer-logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+        .small.text-center.text-muted
+          | Copyright © 2025 - Sober Spokane 

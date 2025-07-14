@@ -1,0 +1,43 @@
+// 
+// Buttons
+// 
+
+//- Custom XL button styling
+
+.btn-xl {
+    padding: 1.25rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: none;
+    border: none;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.btn-primary {
+    background-color: $primary-blue;
+    border-color: $primary-blue;
+    
+    &:hover {
+        background-color: darken($primary-blue, 10%);
+        border-color: darken($primary-blue, 10%);
+    }
+}
+
+.btn-light {
+    background-color: $white;
+    border-color: $white;
+    color: $primary-blue;
+    
+    &:hover {
+        background-color: darken($white, 5%);
+        border-color: darken($white, 5%);
+        color: darken($primary-blue, 10%);
+    }
+}

@@ -1,0 +1,131 @@
+// 
+// Navbar
+// 
+
+#mainNav {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: $white;
+    transition: all 0.3s ease;
+    padding: 1rem 0;
+
+    .navbar-brand {
+        font-family: 'Merriweather', serif;
+        font-weight: 700;
+        color: $primary-blue;
+        font-size: 1.5rem;
+        letter-spacing: -0.5px;
+    }
+
+    .navbar-nav {
+        .nav-item {
+            .nav-link {
+                color: $dark-navy;
+                font-family: 'Merriweather Sans', sans-serif;
+                font-weight: 600;
+                font-size: 0.95rem;
+                padding: 0.75rem 1.25rem;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+
+                &:hover,
+                &:active {
+                    color: $primary-blue;
+                    background-color: fade-out($primary-blue, 0.95);
+                }
+
+                &.active {
+                    color: $primary-blue !important;
+                    background-color: fade-out($primary-blue, 0.9);
+                }
+            }
+        }
+    }
+
+    .logo {
+      height: 40px;
+      width: auto;
+      display: inline-block;
+    }
+
+    @include media-breakpoint-up(lg) {
+        // Base styling for the navbar - screen sizes greater than the large breakpoint
+        box-shadow: none;
+        background-color: transparent;
+        padding: 1.5rem 0;
+
+        .navbar-brand {
+            color: $white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+
+            &:hover {
+                color: $white;
+                transform: translateY(-1px);
+            }
+        }
+
+        .navbar-nav {
+            .nav-item {
+                .nav-link {
+                    color: fade-out($white, 0.15);
+                    padding: 0.75rem 1.25rem;
+                    margin: 0 0.25rem;
+                    border-radius: 6px;
+
+                    &:hover {
+                        color: $white;
+                        background-color: fade-out($white, 0.9);
+                        transform: translateY(-1px);
+                    }
+                }
+
+                &:last-child {
+                    .nav-link {
+                        padding-right: 1.25rem;
+                    }
+                }
+            }
+        }
+
+        // Navbar styling applied when the page is scrolled
+        &.navbar-shrink {
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background-color: $white;
+            padding: 0.75rem 0;
+
+            .navbar-brand {
+                color: $primary-blue;
+
+                &:hover {
+                    color: $primary-blue;
+                }
+            }
+
+            .navbar-nav {
+                .nav-item {
+                    .nav-link {
+                        color: $dark-navy;
+
+                        &:hover {
+                            color: $primary-blue;
+                            background-color: fade-out($primary-blue, 0.95);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.footer-logo {
+  height: 128px;
+  width: auto;
+  display: block;
+  margin: 0 auto 1rem auto;
+  transition: height 0.2s;
+}
+
+@media (max-width: 576px) {
+  .footer-logo {
+    height: 96px;
+  }
+}
