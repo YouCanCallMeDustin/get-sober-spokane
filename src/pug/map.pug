@@ -1,0 +1,137 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    title Spokane Recovery Resource Map
+    link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+    link(href='css/styles.css', rel='stylesheet')
+    style.
+      #map {
+        width: 100%;
+        height: 500px;
+        border-radius: 1rem;
+        box-shadow: 0 0.5rem 1rem rgba(44,90,160,0.08);
+        margin-bottom: 2rem;
+      }
+      .legend {
+        background: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.25rem 0.5rem rgba(44,90,160,0.08);
+        padding: 1rem 2rem;
+        display: inline-block;
+        margin-bottom: 2rem;
+      }
+      .legend span {
+        display: inline-block;
+        width: 1.2em;
+        height: 1.2em;
+        margin-right: 0.5em;
+        border-radius: 0.3em;
+        vertical-align: middle;
+      }
+      .legend .shelter { background: #2c5aa0; }
+      .legend .food { background: #28a745; }
+      .legend .treatment { background: #ffc107; }
+      .legend .support { background: #dc3545; }
+  body
+    nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3
+      .container.px-4.px-lg-5
+        a.navbar-brand.d-flex.align-items-center(href='index.html')
+          img.logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+          span.ms-2 Sober Spokane
+        button.navbar-toggler.navbar-toggler-right(type='button', data-bs-toggle='collapse', data-bs-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarResponsive.collapse.navbar-collapse
+          ul.navbar-nav.ms-auto.my-2.my-lg-0
+            li.nav-item
+              a.nav-link(href='#about') About
+            li.nav-item
+              a.nav-link(href='#services') Services
+            li.nav-item
+              a.nav-link(href='#resources') Resources
+            li.nav-item
+              a.nav-link(href='donations.html') Donations
+            li.nav-item
+              a.nav-link(href='map.html') Map
+            li.nav-item
+              a.nav-link(href='#contact') Contact
+    section.page-section
+      .container.px-4.px-lg-5.text-center
+        h2.mb-4.text-primary Spokane Recovery Resource Map
+        p.lead.mb-4.text-muted
+          | Explore shelters, food banks, treatment centers, and support groups in the Spokane area. Click on a marker for more info.
+        .legend.mb-4
+          span.shelter &nbsp;
+          | Shelter
+          span.food.ms-4 &nbsp;
+          | Food Bank
+          span.treatment.ms-4 &nbsp;
+          | Treatment Center
+          span.support.ms-4 &nbsp;
+          | Support Group
+        #map
+    footer.bg-light.py-5
+      .container.px-4.px-lg-5
+        a(href='index.html')
+          img.footer-logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
+        .small.text-center.text-muted
+          | Copyright © 2025 - Sober Spokane
+          br
+          a(href='privacy-policy.html') Privacy Policy
+          |  | 
+          a(href='terms-of-service.html') Terms of Service
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js')
+    script(src='js/scripts.js')
+    script.
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: { lat: 47.6588, lng: -117.4260 },
+          zoom: 12,
+          mapTypeControl: false,
+          streetViewControl: false
+        });
+        var locations = [
+          // Shelters
+          {type: 'shelter', name: 'Crosswalk Youth Shelter', address: '525 W 2nd Ave, Spokane, WA 99201', lat: 47.6561, lng: -117.4207},
+          {type: 'shelter', name: 'Young Adult Shelter', address: '3104 E. Augusta Ave, Spokane, WA 99207', lat: 47.6932, lng: -117.3562},
+          {type: 'shelter', name: 'Family Promise Open Doors', address: '2002 E Mission Ave, Spokane, WA 99202', lat: 47.6732, lng: -117.3767},
+          {type: 'shelter', name: 'House of Charity Shelter', address: '32 W Pacific, Spokane, WA 99201', lat: 47.6537, lng: -117.4112},
+          // Food Banks
+          {type: 'food', name: 'Second Harvest Inland Northwest', address: '1234 E Front Ave, Spokane, WA 99202', lat: 47.6607, lng: -117.3932},
+          {type: 'food', name: 'Serve Spokane', address: '8303 B, N Division St, Spokane, WA 99208', lat: 47.7292, lng: -117.4102},
+          {type: 'food', name: 'Better Living Center', address: '25 E North Foothills Dr, Spokane, WA 99207', lat: 47.6937, lng: -117.4117},
+          {type: 'food', name: 'Salvation Army Food Distribution', address: '204 E Indiana Ave, Spokane, WA 99207', lat: 47.6772, lng: -117.4111},
+          {type: 'food', name: 'Feed Spokane', address: '1114 N Fancher Rd STE 109, Spokane Valley, WA 99212', lat: 47.6702, lng: -117.2822},
+          // Treatment Centers
+          {type: 'treatment', name: 'Spokane Treatment & Recovery Services (STARS)', address: '628 S Cowley St, Spokane, WA 99202', lat: 47.6482, lng: -117.4047},
+          {type: 'treatment', name: 'CAT SPOKANE', address: '960 E 3rd Ave, Spokane, WA 99202', lat: 47.6531, lng: -117.3936},
+          {type: 'treatment', name: 'Royal Life Centers', address: '1234 W Boone Ave, Spokane, WA 99201', lat: 47.6672, lng: -117.4342},
+          {type: 'treatment', name: 'Inland Northwest Behavioral Health', address: '1016 W 4th Ave, Spokane, WA 99204', lat: 47.6536, lng: -117.4321},
+          {type: 'treatment', name: 'VA Spokane Health Care', address: '4815 N Assembly St, Spokane, WA 99205', lat: 47.7192, lng: -117.4702},
+          // Support Groups
+          {type: 'support', name: 'Al-Anon/Alateen', address: '1700 W. 7th Ave, Suite 100, Spokane, WA 99204', lat: 47.6462, lng: -117.4457}
+        ];
+        var icons = {
+          shelter: { color: '#2c5aa0' },
+          food: { color: '#28a745' },
+          treatment: { color: '#ffc107' },
+          support: { color: '#dc3545' }
+        };
+        locations.forEach(function(loc) {
+          new google.maps.Marker({
+            position: { lat: loc.lat, lng: loc.lng },
+            map: map,
+            title: loc.name + ' - ' + loc.address,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              fillColor: icons[loc.type].color,
+              fillOpacity: 1,
+              strokeWeight: 2,
+              strokeColor: '#fff'
+            }
+          });
+        });
+      }
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyCzUAHnRpOpfirXhcKmQ3wtVNqv8lzUQS4&callback=initMap', async='', defer='') 
