@@ -9,7 +9,7 @@ html(lang='en')
     link(href='css/styles.css', rel='stylesheet')
   body
     // Navigation
-    nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3
+    nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3.navbar-shrink
       .container.px-4.px-lg-5
         a.navbar-brand.d-flex.align-items-center(href='index.html')
           img.logo(src='assets/img/logo.png', alt='Sober Spokane Logo')
@@ -19,11 +19,13 @@ html(lang='en')
         #navbarResponsive.collapse.navbar-collapse
           ul.navbar-nav.ms-auto.my-2.my-lg-0
             li.nav-item
-              a.nav-link(href='index.html') Home
+              a.nav-link(href='index.html#about') About
             li.nav-item
               a.nav-link(href='index.html#services') Services
             li.nav-item
-              a.nav-link(href='index.html#resources') Resources
+              a.nav-link(href='donations.html') Donations
+            li.nav-item
+              a.nav-link(href='map.html') Map
             li.nav-item
               a.nav-link(href='index.html#contact') Contact
     // Hero Section
