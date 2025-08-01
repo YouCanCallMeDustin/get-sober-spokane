@@ -108,6 +108,8 @@
                 border: none;
                 box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
                 transition: all 0.3s ease;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
             }
             .emergency-card:hover {
                 transform: translateY(-5px);
@@ -121,6 +123,39 @@
             }
             .local-card {
                 border-left: 4px solid #198754;
+            }
+            .domestic-card {
+                border-left: 4px solid #ffc107;
+            }
+            .youth-card {
+                border-left: 4px solid #0dcaf0;
+            }
+            .emergency-card .card-body {
+                padding: 2rem 1.5rem;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+            .emergency-card .card-title {
+                color: #212529 !important;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+            .emergency-card .card-text {
+                color: #6c757d !important;
+                flex-grow: 1;
+                margin-bottom: 1.5rem;
+            }
+            .emergency-card .btn {
+                font-weight: 600;
+                padding: 0.75rem 1.5rem;
+                border-radius: 0.5rem;
+                transition: all 0.3s ease;
+                margin-top: auto;
+            }
+            .emergency-card .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
             }
         </style>
     </head>
@@ -175,7 +210,7 @@
                         </div>
                         <div class="filter-card">
                             <div class="row g-3">
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div class="input-group">
                                         <input class="form-control search-input" id="resourceSearch" type="text" placeholder="Search for shelters, treatment centers, food banks, support groups..." />
                                         <button class="btn btn-primary search-btn" type="button">
@@ -184,6 +219,8 @@
                                         </button>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row mt-3">
                                 <div class="col-md-4">
                                     <select class="form-select filter-select" id="categoryFilter">
                                         <option value="all">All Categories</option>
@@ -192,10 +229,11 @@
                                         <option value="treatment">Treatment Centers</option>
                                         <option value="support">Support Groups</option>
                                         <option value="medical">Medical & Mental Health</option>
+                                        <option value="employment">Employment & Training</option>
+                                        <option value="legal">Legal & Advocacy</option>
+                                        <option value="transportation">Transportation</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="row mt-3">
                                 <div class="col-md-4">
                                     <select class="form-select filter-select" id="availabilityFilter">
                                         <option value="all">All Availability</option>
@@ -231,52 +269,90 @@
                 <div class="row g-4" id="resourceResults"></div>
             </div>
         </section>
-        <!-- Stats Section-->
-        <section class="page-section bg-light">
-            <div class="container px-4 px-lg-5">
-                <div class="row g-4">
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <i class="bi bi-house-door fs-1 mb-2"></i>
-                            <h4 class="mb-0">15+</h4>
-                            <p class="mb-0">Shelters</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <i class="bi bi-capsule fs-1 mb-2"></i>
-                            <h4 class="mb-0">25+</h4>
-                            <p class="mb-0">Treatment Centers</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <i class="bi bi-people-fill fs-1 mb-2"></i>
-                            <h4 class="mb-0">40+</h4>
-                            <p class="mb-0">Support Groups</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stats-card">
-                            <i class="bi bi-heart-pulse fs-1 mb-2"></i>
-                            <h4 class="mb-0">30+</h4>
-                            <p class="mb-0">Medical Services</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
         <!-- Emergency Help Section-->
         <section class="page-section bg-danger text-white">
             <div class="container px-4 px-lg-5">
                 <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <h2 class="text-center mb-4">
-                            <i class="bi bi-exclamation-triangle me-2"></i>
-                            Emergency Help
-                        </h2>
-                        <p class="text-center mb-4">If you're in crisis or need immediate assistance, use these resources:</p>
-                        <div id="emergencyHelp"></div>
+                    <div class="col-lg-12">
+                        <div class="text-center mb-5">
+                            <h2 class="display-4 fw-bold">
+                                <i class="bi bi-exclamation-triangle me-3"></i>
+                                Emergency Help
+                            </h2>
+                            <p class="lead mb-0">If you're in crisis or need immediate assistance, use these resources:</p>
+                            <p class="small opacity-75">Available 24/7 • Confidential • Free</p>
+                        </div>
+                        <!-- Emergency Contact Cards-->
+                        <div class="row g-4 justify-content-center" id="emergencyHelp">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card emergency-card crisis-card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-telephone-fill fs-1 text-danger mb-3"></i>
+                                        <h5 class="card-title">Crisis Support</h5>
+                                        <p class="card-text">Immediate help for crisis situations and suicide prevention</p>
+                                        <button class="btn btn-danger btn-lg w-100" data-contact="crisis">
+                                            <i class="bi bi-telephone me-2"></i>
+                                            Call 988
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card emergency-card substance-card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-capsule fs-1 text-primary mb-3"></i>
+                                        <h5 class="card-title">Substance Use Help</h5>
+                                        <p class="card-text">Treatment referral and recovery support</p>
+                                        <button class="btn btn-primary btn-lg w-100" data-contact="substance">
+                                            <i class="bi bi-telephone me-2"></i>
+                                            Call SAMHSA
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card emergency-card local-card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-geo-alt-fill fs-1 text-success mb-3"></i>
+                                        <h5 class="card-title">Local Help</h5>
+                                        <p class="card-text">Spokane area crisis intervention services</p>
+                                        <button class="btn btn-success btn-lg w-100" data-contact="local">
+                                            <i class="bi bi-telephone me-2"></i>
+                                            Call Local
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Additional Emergency Resources-->
+                        <div class="row mt-5 g-4 justify-content-center">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card emergency-card domestic-card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-shield-fill fs-1 text-warning mb-3"></i>
+                                        <h5 class="card-title">Domestic Violence</h5>
+                                        <p class="card-text">Support for domestic violence situations</p>
+                                        <button class="btn btn-warning btn-lg w-100" data-contact="domestic">
+                                            <i class="bi bi-telephone me-2"></i>
+                                            Call Hotline
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card emergency-card youth-card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-chat-fill fs-1 text-info mb-3"></i>
+                                        <h5 class="card-title">Text Support</h5>
+                                        <p class="card-text">Crisis support via text message for immediate help</p>
+                                        <button class="btn btn-info btn-lg w-100" data-contact="youth">
+                                            <i class="bi bi-chat me-2"></i>
+                                            Text HOME to 741741
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -315,9 +391,52 @@
         <section class="page-section bg-light" id="quickHelp">
             <div class="container px-4 px-lg-5">
                 <div class="row justify-content-center">
-                    <div class="col-lg-10">
-                        <h2 class="text-center mb-4">Quick Help Tools</h2>
-                        <div id="quickHelp"></div>
+                    <div class="col-lg-12">
+                        <div class="text-center mb-5">
+                            <h2 class="display-5 fw-bold">Quick Help Tools</h2>
+                            <p class="lead text-muted">Additional resources and tools to support your recovery journey</p>
+                        </div>
+                        <div class="row g-4 justify-content-center" id="quickHelp">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-shield-check fs-1 text-success mb-3"></i>
+                                        <h5 class="card-title">Safe Exit</h5>
+                                        <p class="card-text">If you need to quickly leave this page for safety reasons, click the button below.</p>
+                                        <button class="btn btn-outline-success btn-lg w-100" onclick="window.open('https://www.google.com', '_blank')">
+                                            <i class="bi bi-box-arrow-up-right me-2"></i>
+                                            Safe Exit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-geo-alt fs-1 text-primary mb-3"></i>
+                                        <h5 class="card-title">Find Nearest Help</h5>
+                                        <p class="card-text">Get directions to the nearest emergency services or treatment centers.</p>
+                                        <button class="btn btn-outline-primary btn-lg w-100" onclick="findNearestHelp()">
+                                            <i class="bi bi-map me-2"></i>
+                                            Find Help
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-calendar-check fs-1 text-info mb-3"></i>
+                                        <h5 class="card-title">Recovery Resources</h5>
+                                        <p class="card-text">Access our comprehensive directory of recovery resources and support services.</p>
+                                        <a class="btn btn-outline-info btn-lg w-100" href="#resourceDirectory">
+                                            <i class="bi bi-list me-2"></i>
+                                            Browse Resources
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -43,55 +43,8 @@ class EmergencyHelp {
     }
 
     setupEmergencyButtons() {
-        // Add emergency buttons to the page
-        const emergencyContainer = document.getElementById('emergencyHelp');
-        if (emergencyContainer) {
-            emergencyContainer.innerHTML = this.createEmergencyButtons();
-            this.addEmergencyButtonListeners();
-        }
-    }
-
-    createEmergencyButtons() {
-        return `
-            <div class="row g-3">
-                <div class="col-md-6 col-lg-4">
-                    <div class="card emergency-card crisis-card h-100">
-                        <div class="card-body text-center">
-                            <i class="bi bi-telephone-fill fs-1 text-danger mb-3"></i>
-                            <h5 class="card-title">Crisis Support</h5>
-                            <p class="card-text">Immediate help for crisis situations</p>
-                            <button class="btn btn-danger btn-lg w-100" data-contact="crisis">
-                                <i class="bi bi-telephone me-2"></i>Call 988
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card emergency-card substance-card h-100">
-                        <div class="card-body text-center">
-                            <i class="bi bi-capsule fs-1 text-primary mb-3"></i>
-                            <h5 class="card-title">Substance Use Help</h5>
-                            <p class="card-text">Treatment and recovery support</p>
-                            <button class="btn btn-primary btn-lg w-100" data-contact="substance">
-                                <i class="bi bi-telephone me-2"></i>Call SAMHSA
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card emergency-card local-card h-100">
-                        <div class="card-body text-center">
-                            <i class="bi bi-geo-alt-fill fs-1 text-success mb-3"></i>
-                            <h5 class="card-title">Local Help</h5>
-                            <p class="card-text">Spokane area crisis services</p>
-                            <button class="btn btn-success btn-lg w-100" data-contact="local">
-                                <i class="bi bi-telephone me-2"></i>Call Local
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+        // Add emergency button listeners to existing cards
+        this.addEmergencyButtonListeners();
     }
 
     addEmergencyButtonListeners() {
@@ -161,46 +114,8 @@ class EmergencyHelp {
     }
 
     setupQuickHelp() {
-        // Add quick help section if it exists
-        const quickHelpContainer = document.getElementById('quickHelp');
-        if (quickHelpContainer) {
-            quickHelpContainer.innerHTML = this.createQuickHelpSection();
-        }
-    }
-
-    createQuickHelpSection() {
-        return `
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-shield-check text-success me-2"></i>
-                                Safe Exit
-                            </h5>
-                            <p class="card-text">If you need to quickly leave this page for safety reasons, click the button below.</p>
-                            <button class="btn btn-outline-success" onclick="window.open('https://www.google.com', '_blank')">
-                                <i class="bi bi-box-arrow-up-right me-2"></i>Safe Exit
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-geo-alt text-primary me-2"></i>
-                                Find Nearest Help
-                            </h5>
-                            <p class="card-text">Get directions to the nearest emergency services or treatment centers.</p>
-                            <button class="btn btn-outline-primary" onclick="findNearestHelp()">
-                                <i class="bi bi-map me-2"></i>Find Help
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+        // Quick Help section is now handled in the Pug template
+        // This method is kept for potential future enhancements
     }
 }
 

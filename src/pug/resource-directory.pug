@@ -115,6 +115,8 @@ html(lang='en')
                 border: none;
                 box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1);
                 transition: all 0.3s ease;
+                background: rgba(255,255,255,0.98);
+                backdrop-filter: blur(10px);
             }
             .emergency-card:hover {
                 transform: translateY(-5px);
@@ -128,6 +130,39 @@ html(lang='en')
             }
             .local-card {
                 border-left: 4px solid #198754;
+            }
+            .domestic-card {
+                border-left: 4px solid #ffc107;
+            }
+            .youth-card {
+                border-left: 4px solid #0dcaf0;
+            }
+            .emergency-card .card-body {
+                padding: 2rem 1.5rem;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+            .emergency-card .card-title {
+                color: #212529 !important;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+            .emergency-card .card-text {
+                color: #6c757d !important;
+                flex-grow: 1;
+                margin-bottom: 1.5rem;
+            }
+            .emergency-card .btn {
+                font-weight: 600;
+                padding: 0.75rem 1.5rem;
+                border-radius: 0.5rem;
+                transition: all 0.3s ease;
+                margin-top: auto;
+            }
+            .emergency-card .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.2);
             }
 
     body#page-top
@@ -179,12 +214,13 @@ html(lang='en')
                         
                         .filter-card
                             .row.g-3
-                                .col-md-8
+                                .col-md-12
                                     .input-group
                                         input#resourceSearch.form-control.search-input(type='text', placeholder='Search for shelters, treatment centers, food banks, support groups...')
                                         button.btn.btn-primary.search-btn(type='button')
                                             i.bi.bi-search
                                             |  Search
+                            .row.mt-3
                                 .col-md-4
                                     select#categoryFilter.form-select.filter-select
                                         option(value='all') All Categories
@@ -193,7 +229,9 @@ html(lang='en')
                                         option(value='treatment') Treatment Centers
                                         option(value='support') Support Groups
                                         option(value='medical') Medical & Mental Health
-                            .row.mt-3
+                                        option(value='employment') Employment & Training
+                                        option(value='legal') Legal & Advocacy
+                                        option(value='transportation') Transportation
                                 .col-md-4
                                     select#availabilityFilter.form-select.filter-select
                                         option(value='all') All Availability
@@ -218,41 +256,70 @@ html(lang='en')
                 // Results Container
                 #resourceResults.row.g-4
 
-        // Stats Section
-        section.page-section.bg-light
-            .container.px-4.px-lg-5
-                .row.g-4
-                    .col-md-3
-                        .stats-card
-                            i.bi.bi-house-door.fs-1.mb-2
-                            h4.mb-0 15+
-                            p.mb-0 Shelters
-                    .col-md-3
-                        .stats-card
-                            i.bi.bi-capsule.fs-1.mb-2
-                            h4.mb-0 25+
-                            p.mb-0 Treatment Centers
-                    .col-md-3
-                        .stats-card
-                            i.bi.bi-people-fill.fs-1.mb-2
-                            h4.mb-0 40+
-                            p.mb-0 Support Groups
-                    .col-md-3
-                        .stats-card
-                            i.bi.bi-heart-pulse.fs-1.mb-2
-                            h4.mb-0 30+
-                            p.mb-0 Medical Services
+
 
         // Emergency Help Section
         section.page-section.bg-danger.text-white
             .container.px-4.px-lg-5
                 .row.justify-content-center
-                    .col-lg-10
-                        h2.text-center.mb-4
-                            i.bi.bi-exclamation-triangle.me-2
-                            | Emergency Help
-                        p.text-center.mb-4 If you're in crisis or need immediate assistance, use these resources:
-                        #emergencyHelp
+                    .col-lg-12
+                        .text-center.mb-5
+                            h2.display-4.fw-bold
+                                i.bi.bi-exclamation-triangle.me-3
+                                | Emergency Help
+                            p.lead.mb-0 If you're in crisis or need immediate assistance, use these resources:
+                            p.small.opacity-75 Available 24/7 • Confidential • Free
+                        
+                        // Emergency Contact Cards
+                        #emergencyHelp.row.g-4.justify-content-center
+                            .col-md-6.col-lg-4
+                                .card.emergency-card.crisis-card.h-100
+                                    .card-body.text-center
+                                        i.bi.bi-telephone-fill.fs-1.text-danger.mb-3
+                                        h5.card-title Crisis Support
+                                        p.card-text Immediate help for crisis situations and suicide prevention
+                                        button.btn.btn-danger.btn-lg.w-100(data-contact='crisis')
+                                            i.bi.bi-telephone.me-2
+                                            | Call 988
+                            .col-md-6.col-lg-4
+                                .card.emergency-card.substance-card.h-100
+                                    .card-body.text-center
+                                        i.bi.bi-capsule.fs-1.text-primary.mb-3
+                                        h5.card-title Substance Use Help
+                                        p.card-text Treatment referral and recovery support
+                                        button.btn.btn-primary.btn-lg.w-100(data-contact='substance')
+                                            i.bi.bi-telephone.me-2
+                                            | Call SAMHSA
+                            .col-md-6.col-lg-4
+                                .card.emergency-card.local-card.h-100
+                                    .card-body.text-center
+                                        i.bi.bi-geo-alt-fill.fs-1.text-success.mb-3
+                                        h5.card-title Local Help
+                                        p.card-text Spokane area crisis intervention services
+                                        button.btn.btn-success.btn-lg.w-100(data-contact='local')
+                                            i.bi.bi-telephone.me-2
+                                            | Call Local
+                        
+                        // Additional Emergency Resources
+                        .row.mt-5.g-4.justify-content-center
+                            .col-md-6.col-lg-4
+                                .card.emergency-card.domestic-card.h-100
+                                    .card-body.text-center
+                                        i.bi.bi-shield-fill.fs-1.text-warning.mb-3
+                                        h5.card-title Domestic Violence
+                                        p.card-text Support for domestic violence situations
+                                        button.btn.btn-warning.btn-lg.w-100(data-contact='domestic')
+                                            i.bi.bi-telephone.me-2
+                                            | Call Hotline
+                            .col-md-6.col-lg-4
+                                .card.emergency-card.youth-card.h-100
+                                    .card-body.text-center
+                                        i.bi.bi-chat-fill.fs-1.text-info.mb-3
+                                        h5.card-title Text Support
+                                        p.card-text Crisis support via text message for immediate help
+                                        button.btn.btn-info.btn-lg.w-100(data-contact='youth')
+                                            i.bi.bi-chat.me-2
+                                            | Text HOME to 741741
 
         // Quick Actions
         section.page-section.bg-primary
@@ -278,9 +345,39 @@ html(lang='en')
         section#quickHelp.page-section.bg-light
             .container.px-4.px-lg-5
                 .row.justify-content-center
-                    .col-lg-10
-                        h2.text-center.mb-4 Quick Help Tools
-                        #quickHelp
+                    .col-lg-12
+                        .text-center.mb-5
+                            h2.display-5.fw-bold Quick Help Tools
+                            p.lead.text-muted Additional resources and tools to support your recovery journey
+                        
+                        #quickHelp.row.g-4.justify-content-center
+                            .col-md-6.col-lg-4
+                                .card.h-100.shadow-sm
+                                    .card-body.text-center
+                                        i.bi.bi-shield-check.fs-1.text-success.mb-3
+                                        h5.card-title Safe Exit
+                                        p.card-text If you need to quickly leave this page for safety reasons, click the button below.
+                                        button.btn.btn-outline-success.btn-lg.w-100(onclick="window.open('https://www.google.com', '_blank')")
+                                            i.bi.bi-box-arrow-up-right.me-2
+                                            | Safe Exit
+                            .col-md-6.col-lg-4
+                                .card.h-100.shadow-sm
+                                    .card-body.text-center
+                                        i.bi.bi-geo-alt.fs-1.text-primary.mb-3
+                                        h5.card-title Find Nearest Help
+                                        p.card-text Get directions to the nearest emergency services or treatment centers.
+                                        button.btn.btn-outline-primary.btn-lg.w-100(onclick="findNearestHelp()")
+                                            i.bi.bi-map.me-2
+                                            | Find Help
+                            .col-md-6.col-lg-4
+                                .card.h-100.shadow-sm
+                                    .card-body.text-center
+                                        i.bi.bi-calendar-check.fs-1.text-info.mb-3
+                                        h5.card-title Recovery Resources
+                                        p.card-text Access our comprehensive directory of recovery resources and support services.
+                                        a.btn.btn-outline-info.btn-lg.w-100(href="#resourceDirectory")
+                                            i.bi.bi-list.me-2
+                                            | Browse Resources
 
         // Footer
         footer.bg-light.py-5
