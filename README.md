@@ -1,4 +1,4 @@
-# Sober Spokane
+# Get Sober Spokane
 
 A comprehensive resource website for the sober community in Spokane, Washington. This website provides information and resources for addiction treatment, mental health support, housing, employment, food assistance, and community engagement activities.
 
