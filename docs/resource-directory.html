@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Find recovery resources in Spokane - shelters, treatment centers, support groups, and more" />
+        <meta name="author" content="Get Sober Spokane" />
+        <title>Resource Directory - Get Sober Spokane</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap Icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <!-- Custom styles for resource directory-->
+        <style>
+            .search-section {
+                background: linear-gradient(135deg, #2c5aa0 0%, #1e3a8a 100%);
+                color: white;
+                padding: 6rem 0;
+                margin-top: 2rem;
+            }
+            .filter-card {
+                background: white;
+                border-radius: 1rem;
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+                padding: 3rem;
+                margin-bottom: 3rem;
+            }
+            .resource-card {
+                border: none;
+                box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+            .resource-card:hover {
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            }
+            .search-input {
+                border-radius: 0.75rem 0 0 0.75rem;
+                border: 2px solid #e9ecef;
+                padding: 1.25rem 1.5rem;
+                font-size: 1.2rem;
+                height: auto;
+                min-height: 3.5rem;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease;
+            }
+            .search-input:focus {
+                border-color: #2c5aa0;
+                box-shadow: 0 0 0 0.2rem rgba(44, 90, 160, 0.25);
+                outline: none;
+            }
+            .search-btn {
+                border-radius: 0 0.75rem 0.75rem 0;
+                border: 2px solid #2c5aa0;
+                padding: 1.25rem 2rem;
+                font-size: 1.2rem;
+                font-weight: 600;
+                min-height: 3.5rem;
+                transition: all 0.3s ease;
+            }
+            .search-btn:hover {
+                background-color: #1e3a8a;
+                border-color: #1e3a8a;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+            .filter-select {
+                border-radius: 0.75rem;
+                border: 2px solid #e9ecef;
+                padding: 0.75rem 1rem;
+                font-size: 1rem;
+                min-height: 3.5rem;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease;
+            }
+            .filter-select:focus {
+                border-color: #2c5aa0;
+                box-shadow: 0 0 0 0.2rem rgba(44, 90, 160, 0.25);
+                outline: none;
+            }
+            .stats-card {
+                background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                color: white;
+                border-radius: 1rem;
+                padding: 2rem;
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+            .emergency-banner {
+                background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+                color: white;
+                padding: 2rem 1rem;
+                border-radius: 0.5rem;
+                margin-bottom: 2rem;
+                margin-top: 6rem !important;
+            }
+            .navbar {
+                z-index: 1030;
+            }
+            body {
+                padding-top: 0;
+            }
+            .emergency-card {
+                border: none;
+                box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+            .emergency-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            }
+            .crisis-card {
+                border-left: 4px solid #dc3545;
+            }
+            .substance-card {
+                border-left: 4px solid #0d6efd;
+            }
+            .local-card {
+                border-left: 4px solid #198754;
+            }
+        </style>
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand d-flex align-items-center" href="index.html">
+                    <img class="logo" src="assets/img/logo.png" alt="Get Sober Spokane Logo" />
+                    <span class="ms-2">Get Sober Spokane</span>
+                </a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#services">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" href="resource-directory.html">Resources</a></li>
+                        <li class="nav-item"><a class="nav-link" href="donations.html">Donations</a></li>
+                        <li class="nav-item"><a class="nav-link" href="map.html">Map</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Emergency Banner-->
+        <section class="emergency-banner mt-5 pt-5">
+            <div class="container px-4 px-lg-5">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="mb-0">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Need immediate help? Call the National Suicide Prevention Lifeline: 988 or 1-800-273-8255
+                        </h5>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <a class="btn btn-light btn-sm" href="tel:988">
+                            <i class="bi bi-telephone me-1"></i>
+                            Call Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Search Section-->
+        <section class="search-section">
+            <div class="container px-4 px-lg-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="text-center mb-4">
+                            <h1 class="display-4 fw-bold">Find Recovery Resources</h1>
+                            <p class="lead">Find shelters, treatment centers, support groups, and more in the Spokane area</p>
+                        </div>
+                        <div class="filter-card">
+                            <div class="row g-3">
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <input class="form-control search-input" id="resourceSearch" type="text" placeholder="Search for shelters, treatment centers, food banks, support groups..." />
+                                        <button class="btn btn-primary search-btn" type="button">
+                                            <i class="bi bi-search"></i>
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select filter-select" id="categoryFilter">
+                                        <option value="all">All Categories</option>
+                                        <option value="shelter">Shelters</option>
+                                        <option value="food">Food Banks</option>
+                                        <option value="treatment">Treatment Centers</option>
+                                        <option value="support">Support Groups</option>
+                                        <option value="medical">Medical & Mental Health</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <select class="form-select filter-select" id="availabilityFilter">
+                                        <option value="all">All Availability</option>
+                                        <option value="available">Available</option>
+                                        <option value="limited">Limited</option>
+                                        <option value="full">Full</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-select filter-select" id="sortResources">
+                                        <option value="relevance">Sort By</option>
+                                        <option value="name">Name</option>
+                                        <option value="rating">Rating</option>
+                                        <option value="distance">Distance</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Resource Results-->
+        <section class="page-section" id="resourceDirectory">
+            <div class="container px-4 px-lg-5">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center mb-4">Recovery Resources in Spokane</h2>
+                        <p class="text-center text-muted mb-5">Find the help you need with our comprehensive directory of recovery resources</p>
+                    </div>
+                </div>
+                <!-- Results Container-->
+                <div class="row g-4" id="resourceResults"></div>
+            </div>
+        </section>
+        <!-- Stats Section-->
+        <section class="page-section bg-light">
+            <div class="container px-4 px-lg-5">
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="bi bi-house-door fs-1 mb-2"></i>
+                            <h4 class="mb-0">15+</h4>
+                            <p class="mb-0">Shelters</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="bi bi-capsule fs-1 mb-2"></i>
+                            <h4 class="mb-0">25+</h4>
+                            <p class="mb-0">Treatment Centers</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="bi bi-people-fill fs-1 mb-2"></i>
+                            <h4 class="mb-0">40+</h4>
+                            <p class="mb-0">Support Groups</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card">
+                            <i class="bi bi-heart-pulse fs-1 mb-2"></i>
+                            <h4 class="mb-0">30+</h4>
+                            <p class="mb-0">Medical Services</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Emergency Help Section-->
+        <section class="page-section bg-danger text-white">
+            <div class="container px-4 px-lg-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <h2 class="text-center mb-4">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Emergency Help
+                        </h2>
+                        <p class="text-center mb-4">If you're in crisis or need immediate assistance, use these resources:</p>
+                        <div id="emergencyHelp"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Quick Actions-->
+        <section class="page-section bg-primary">
+            <div class="container px-4 px-lg-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <h2 class="text-white mb-4">Additional Resources</h2>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <a class="btn btn-light btn-lg w-100" href="map.html">
+                                    <i class="bi bi-map me-2"></i>
+                                    View Map
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a class="btn btn-light btn-lg w-100" href="index.html#contact">
+                                    <i class="bi bi-envelope me-2"></i>
+                                    Contact Us
+                                </a>
+                            </div>
+                            <div class="col-md-4">
+                                <a class="btn btn-light btn-lg w-100" href="#quickHelp">
+                                    <i class="bi bi-shield-check me-2"></i>
+                                    Quick Help
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Quick Help Section-->
+        <section class="page-section bg-light" id="quickHelp">
+            <div class="container px-4 px-lg-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <h2 class="text-center mb-4">Quick Help Tools</h2>
+                        <div id="quickHelp"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="bg-light py-5">
+            <div class="container px-4 px-lg-5">
+                <a href="index.html"><img class="footer-logo" src="assets/img/logo.png" alt="Get Sober Spokane Logo" /></a>
+                <div class="small text-center text-muted">
+                    Copyright © 2025 - Get Sober Spokane
+                    <br />
+                    <a href="privacy-policy.html">Privacy Policy</a>
+                    |
+                    <a href="terms-of-service.html">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Resource Directory JS-->
+        <script src="js/resource-directory.js"></script>
+        <!-- Emergency Help JS-->
+        <script src="js/emergency-help.js"></script>
+        <!-- Feedback System JS-->
+        <script src="js/feedback-system.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

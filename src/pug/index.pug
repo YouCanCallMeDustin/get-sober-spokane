@@ -43,6 +43,8 @@ html(lang='en')
                         li.nav-item
                             a.nav-link(href='index.html#services') Services
                         li.nav-item
+                            a.nav-link(href='resource-directory.html') Resources
+                        li.nav-item
                             a.nav-link(href='donations.html') Donations
                         li.nav-item
                             a.nav-link(href='map.html') Map
@@ -130,7 +132,16 @@ html(lang='en')
         section.page-section.bg-dark.text-white
             .container.px-4.px-lg-5.text-center
                 h2.mb-4 Ready to Start Your Recovery Journey?
-                a.btn.btn-light.btn-xl(href='#contact') Get Connected Today
+                .row.justify-content-center
+                    .col-lg-8
+                        p.mb-4 Find comprehensive resources, treatment centers, and support groups in our interactive directory.
+                        .row.g-3
+                            .col-md-6
+                                a.btn.btn-light.btn-xl.w-100(href='resource-directory.html')
+                                    i.bi.bi-search.me-2
+                                    | Browse Resources
+                            .col-md-6
+                                a.btn.btn-outline-light.btn-xl.w-100(href='#contact') Get Connected Today
 
         // Contact
         section#contact.page-section
