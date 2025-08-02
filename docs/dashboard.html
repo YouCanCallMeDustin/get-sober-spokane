@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Get Sober Spokane</title>
+        <meta name="description" content="Recovery support community in Spokane, WA" />
+        <!-- Bootstrap Icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+        <style>
+            /* Fix navigation text visibility */
+            .navbar.navbar-light .navbar-nav .nav-link {
+                color: #333 !important;
+                font-weight: 500;
+            }
+
+            .navbar.navbar-light .navbar-nav .nav-link:hover {
+                color: #007bff !important;
+            }
+
+            .navbar.navbar-light .navbar-brand {
+                color: #333 !important;
+                font-weight: 600;
+            }
+
+            .navbar.navbar-light .navbar-brand:hover {
+                color: #007bff !important;
+            }
+
+            /* Ensure navbar has proper background */
+            .navbar.navbar-light {
+                background-color: rgba(255, 255, 255, 0.95) !important;
+                backdrop-filter: blur(10px);
+            }
+        </style>
+        <style>
+            /* Dashboard specific styles to fix header overlap */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 100;
+                padding: 48px 0 0;
+                box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar-sticky {
+                position: relative;
+                top: 0;
+                height: calc(100vh - 48px);
+                padding-top: 0.5rem;
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+
+            /* Ensure main content doesn't overlap with fixed navbar */
+            .col-md-9.ms-sm-auto.col-lg-10.px-md-4 {
+                margin-top: 60px; /* Add top margin to account for fixed navbar */
+            }
+
+            /* Additional spacing for the dashboard header */
+            .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center {
+                padding-top: 2rem !important;
+            }
+
+            /* Ensure the dashboard title is clearly visible */
+            .h2 {
+                margin-bottom: 0;
+                font-weight: 600;
+                color: #333;
+            }
+
+            /* Fix header text visibility */
+            .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center h1.h2 {
+                color: #333 !important;
+                font-weight: 700;
+            }
+
+            /* Ensure all text in the header area is visible */
+            .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center {
+                color: #333;
+            }
+
+            /* Make sure the dashboard title stands out */
+            .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center .h2 {
+                color: #2c3e50 !important;
+                text-shadow: none;
+            }
+        </style>
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <img class="logo" src="/assets/img/logo.png" alt="Get Sober Spokane Logo" />
+                    <span class="ms-2">Get Sober Spokane</span>
+                </a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/resource-directory.html">Resources</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/community-forum.html">Community</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/success-stories.html">Stories</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar-->
+                <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                    <div class="position-sticky pt-3">
+                        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light">
+                            <div class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                                <img class="rounded-circle me-2" src="/assets/img/logo.png" alt="Logo" width="32" height="32" />
+                                <span class="fs-4" id="user-display-name">User Dashboard</span>
+                            </div>
+                            <hr />
+                            <ul class="nav nav-pills flex-column mb-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#overview" data-bs-toggle="pill">
+                                        <i class="bi bi-house-door me-2"></i>
+                                        Overview
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#profile" data-bs-toggle="pill">
+                                        <i class="bi bi-person me-2"></i>
+                                        Profile
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#recovery" data-bs-toggle="pill">
+                                        <i class="bi bi-heart me-2"></i>
+                                        Recovery Journey
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#resources" data-bs-toggle="pill">
+                                        <i class="bi bi-bookmark-star me-2"></i>
+                                        Favorite Resources
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#community" data-bs-toggle="pill">
+                                        <i class="bi bi-people me-2"></i>
+                                        Community
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#stories" data-bs-toggle="pill">
+                                        <i class="bi bi-chat-quote me-2"></i>
+                                        My Stories
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#settings" data-bs-toggle="pill">
+                                        <i class="bi bi-gear me-2"></i>
+                                        Settings
+                                    </a>
+                                </li>
+                            </ul>
+                            <hr />
+                            <div class="dropdown">
+                                <a class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img class="rounded-circle me-2" src="/assets/img/logo.png" alt="" width="32" height="32" />
+                                    <strong id="user-name">User</strong>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                                    <li><a class="dropdown-item" href="#profile" data-bs-toggle="pill">Profile</a></li>
+                                    <li><a class="dropdown-item" href="#settings" data-bs-toggle="pill">Settings</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="#" onclick="handleLogout()">Sign out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Main content-->
+                <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-5 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Dashboard</h1>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" onclick="exportData()">Export</button>
+                                <button class="btn btn-sm btn-outline-secondary" type="button" onclick="printDashboard()">Print</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tab content-->
+                    <div class="tab-content" id="dashboardTabs">
+                        <!-- Overview Tab-->
+                        <div class="tab-pane fade show active" id="overview">
+                            <div class="row">
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Days Sober</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="sobriety-counter">0 days</div>
+                                                </div>
+                                                <div class="col-auto"><i class="bi bi-calendar-check fa-2x text-gray-300"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-success shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Milestones</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="milestones-count">0</div>
+                                                </div>
+                                                <div class="col-auto"><i class="bi bi-trophy fa-2x text-gray-300"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-info shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Favorite Resources</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="favorites-count">0</div>
+                                                </div>
+                                                <div class="col-auto"><i class="bi bi-heart fa-2x text-gray-300"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-warning shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Community Posts</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="posts-count">0</div>
+                                                </div>
+                                                <div class="col-auto"><i class="bi bi-chat-dots fa-2x text-gray-300"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Recent Activity</h6></div>
+                                        <div class="card-body">
+                                            <div id="recent-activity"><p class="text-muted">No recent activity</p></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6></div>
+                                        <div class="card-body">
+                                            <div class="d-grid gap-2">
+                                                <button class="btn btn-primary btn-sm" onclick="showNewPostModal()">
+                                                    <i class="bi bi-plus-circle me-2"></i>
+                                                    New Forum Post
+                                                </button>
+                                                <button class="btn btn-outline-primary btn-sm" onclick="showStorySubmissionModal()">
+                                                    <i class="bi bi-pencil me-2"></i>
+                                                    Share Story
+                                                </button>
+                                                <button class="btn btn-outline-success btn-sm" onclick="addMilestone()">
+                                                    <i class="bi bi-trophy me-2"></i>
+                                                    Add Milestone
+                                                </button>
+                                                <button class="btn btn-outline-info btn-sm" onclick="browseResources()">
+                                                    <i class="bi bi-search me-2"></i>
+                                                    Find Resources
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Profile Tab-->
+                        <div class="tab-pane fade" id="profile">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Profile Information</h6></div>
+                                        <div class="card-body">
+                                            <form id="profile-form">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label" for="profile-display-name">Display Name</label>
+                                                        <input class="form-control" id="profile-display-name" type="text" placeholder="Enter display name" />
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label" for="profile-email">Email</label>
+                                                        <input class="form-control" id="profile-email" type="email" readonly />
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label" for="profile-privacy">Privacy Level</label>
+                                                        <select class="form-select" id="profile-privacy">
+                                                            <option value="public">Public</option>
+                                                            <option value="standard">Standard</option>
+                                                            <option value="high">High</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="form-label" for="profile-theme">Theme</label>
+                                                        <select class="form-select" id="profile-theme">
+                                                            <option value="light">Light</option>
+                                                            <option value="dark">Dark</option>
+                                                            <option value="auto">Auto</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="profile-bio">Bio</label>
+                                                    <textarea class="form-control" id="profile-bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" id="profile-notifications" type="checkbox" />
+                                                        <label class="form-check-label" for="profile-notifications">Enable email notifications</label>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-primary" type="button" onclick="updateProfile()">Save Changes</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Account Status</h6></div>
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-3">
+                                                <i class="bi bi-shield-check text-success me-2"></i>
+                                                <span>Account Verified</span>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <i class="bi bi-calendar text-info me-2"></i>
+                                                <span>Member since</span>
+                                                <span class="text-muted ms-1" id="member-since">January 2025</span>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <i class="bi bi-person text-warning me-2"></i>
+                                                <span id="account-type">Anonymous User</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Recovery Journey Tab-->
+                        <div class="tab-pane fade" id="recovery">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Recovery Journey</h6></div>
+                                        <div class="card-body">
+                                            <div class="row mb-4">
+                                                <div class="col-md-6">
+                                                    <label class="form-label" for="sobriety-date">Sobriety Date</label>
+                                                    <input class="form-control" id="sobriety-date" type="date" />
+                                                    <button class="btn btn-primary btn-sm mt-2" onclick="setSobrietyDate()">Set Date</button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card bg-primary text-white">
+                                                        <div class="card-body text-center">
+                                                            <h4 class="card-title" id="sobriety-counter-large">0 days sober</h4>
+                                                            <p class="card-text">Keep going strong!</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-4">
+                                                <h6>Recovery Milestones</h6>
+                                                <div id="recovery-milestones">
+                                                    <p class="text-muted">No milestones recorded yet.</p>
+                                                </div>
+                                                <button class="btn btn-outline-primary btn-sm" onclick="showMilestoneModal()">
+                                                    <i class="bi bi-plus-circle"></i>
+                                                    Add Milestone
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Progress Chart</h6></div>
+                                        <div class="card-body"><canvas id="recovery-chart" width="400" height="200"></canvas></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Favorite Resources Tab-->
+                        <div class="tab-pane fade" id="resources">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Favorite Resources</h6></div>
+                                        <div class="card-body">
+                                            <div id="favorite-resources">
+                                                <p class="text-muted">No favorite resources yet.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Personalized Recommendations</h6></div>
+                                        <div class="card-body">
+                                            <div id="personalized-recommendations">
+                                                <p class="text-muted">Loading recommendations...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Community Tab-->
+                        <div class="tab-pane fade" id="community">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">My Community Activity</h6></div>
+                                        <div class="card-body">
+                                            <ul class="nav nav-tabs" id="communityTabs" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab">My Posts</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab">My Comments</button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab">Messages</button>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content" id="communityTabContent">
+                                                <div class="tab-pane fade show active" id="posts" role="tabpanel">
+                                                    <div id="my-posts">
+                                                        <p class="text-muted">No posts yet.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="comments" role="tabpanel">
+                                                    <div id="my-comments">
+                                                        <p class="text-muted">No comments yet.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="messages" role="tabpanel">
+                                                    <div id="my-messages">
+                                                        <p class="text-muted">No messages yet.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Community Stats</h6></div>
+                                        <div class="card-body">
+                                            <div class="d-flex.justify-content-between.mb-2">
+                                                <span>Posts:</span>
+                                                <span id="community-posts-count">0</span>
+                                            </div>
+                                            <div class="d-flex.justify-content-between.mb-2">
+                                                <span>Comments:</span>
+                                                <span id="community-comments-count">0</span>
+                                            </div>
+                                            <div class="d-flex.justify-content-between.mb-2">
+                                                <span>Likes Received:</span>
+                                                <span id="community-likes-count">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Stories Tab-->
+                        <div class="tab-pane fade" id="stories">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">My Success Stories</h6></div>
+                                        <div class="card-body">
+                                            <div id="my-stories">
+                                                <p class="text-muted">No stories shared yet.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Story Stats</h6></div>
+                                        <div class="card-body">
+                                            <div class="d-flex.justify-content-between.mb-2">
+                                                <span>Stories Shared:</span>
+                                                <span id="stories-count">0</span>
+                                            </div>
+                                            <div class="d-flex.justify-content-between.mb-2">
+                                                <span>Total Views:</span>
+                                                <span id="stories-views">0</span>
+                                            </div>
+                                            <div class="d-flex.justify-content-between.mb-2">
+                                                <span>Total Likes:</span>
+                                                <span id="stories-likes">0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Settings Tab-->
+                        <div class="tab-pane fade" id="settings">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Account Settings</h6></div>
+                                        <div class="card-body">
+                                            <form id="settings-form">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Email Notifications</label>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="email-community" />
+                                                        <label class="form-check-label" for="email-community"><Community>updates</Community></label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="email-resources" />
+                                                        <label class="form-check-label" for="email-resources"><New>resources</New></label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="email-stories" />
+                                                        <label class="form-check-label" for="email-stories"><Success>stories</Success></label>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Privacy Settings</label>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="privacy" id="privacy-public" value="public" />
+                                                        <label class="form-check-label" for="privacy-public"><Public>profile</Public></label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="privacy" id="privacy-standard" value="standard" />
+                                                        <label class="form-check-label" for="privacy-standard"><Standard>privacy</Standard></label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="privacy" id="privacy-high" value="high" />
+                                                        <label class="form-check-label" for="privacy-high"><High>privacy</High></label>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">Danger Zone</h6></div>
+                                        <div class="card-body">
+                                            <div class="d-grid.gap-2">
+                                                <button class="btn btn-outline-warning" onclick="exportData()">
+                                                    <i class="bi.bi-download.me-2"></i>
+                                                    Export Data
+                                                </button>
+                                                <button class="btn btn-outline-danger" onclick="deleteAccount()">
+                                                    <i class="bi.bi-trash.me-2"></i>
+                                                    Delete Account
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Milestone Modal-->
+        <div class="modal fade" id="milestoneModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Recovery Milestone</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="milestone-form">
+                            <div class="mb-3">
+                                <label for="milestone-title" class="form-label">Milestone Title</label>
+                                <input type="text" class="form-control" id="milestone-title" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="milestone-description" class="form-label">Description</label>
+                                <textarea class="form-control" id="milestone-description" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="milestone-date" class="form-label">Date Achieved</label>
+                                <input type="date" class="form-control" id="milestone-date" required />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="submitMilestone()">Add Milestone</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer-->
+        <footer class="bg-light py-5">
+            <div class="container px-4 px-lg-5">
+                <a href="/"><img class="footer-logo" src="/assets/img/logo.png" alt="Get Sober Spokane Logo" /></a>
+                <div class="small text-center text-muted">
+                    Copyright © 2025 - Get Sober Spokane
+                    <br />
+                    <a href="/privacy-policy.html">Privacy Policy</a>
+                    |
+                    <a href="/terms-of-service.html">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Supabase-->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <!-- Core theme JS-->
+        <script src="/js/supabaseClient.js"></script>
+        <script src="/js/auth.js"></script>
+        <script src="/js/auth-modal.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="/js/supabaseClient.js"></script>
+        <script src="/js/auth.js"></script>
+        <script src="/js/dashboard.js"></script>
+    </body>
+</html>

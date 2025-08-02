@@ -1,0 +1,508 @@
+extends layout
+
+block head
+  style.
+    /* Dashboard specific styles to fix header overlap */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      padding: 48px 0 0;
+      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    }
+    
+    .sidebar-sticky {
+      position: relative;
+      top: 0;
+      height: calc(100vh - 48px);
+      padding-top: .5rem;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    
+    /* Ensure main content doesn't overlap with fixed navbar */
+    .col-md-9.ms-sm-auto.col-lg-10.px-md-4 {
+      margin-top: 60px; /* Add top margin to account for fixed navbar */
+    }
+    
+    /* Additional spacing for the dashboard header */
+    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center {
+      padding-top: 2rem !important;
+    }
+    
+         /* Ensure the dashboard title is clearly visible */
+     .h2 {
+       margin-bottom: 0;
+       font-weight: 600;
+       color: #333;
+     }
+     
+     /* Fix header text visibility */
+     .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center h1.h2 {
+       color: #333 !important;
+       font-weight: 700;
+     }
+     
+     /* Ensure all text in the header area is visible */
+     .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center {
+       color: #333;
+     }
+     
+     /* Make sure the dashboard title stands out */
+     .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center .h2 {
+       color: #2c3e50 !important;
+       text-shadow: none;
+     }
+
+block content
+  .container-fluid
+    .row
+      // Sidebar
+      .col-md-3.col-lg-2.d-md-block.bg-light.sidebar.collapse
+        .position-sticky.pt-3
+          .d-flex.flex-column.flex-shrink-0.p-3.bg-light
+            .d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none
+              img.rounded-circle.me-2(src="/assets/img/logo.png" alt="Logo" width="32" height="32")
+              span.fs-4#user-display-name User Dashboard
+            
+            hr
+            
+            ul.nav.nav-pills.flex-column.mb-auto
+              li.nav-item
+                a.nav-link.active(href="#overview" data-bs-toggle="pill")
+                  i.bi.bi-house-door.me-2
+                  | Overview
+              li.nav-item
+                a.nav-link(href="#profile" data-bs-toggle="pill")
+                  i.bi.bi-person.me-2
+                  | Profile
+              li.nav-item
+                a.nav-link(href="#recovery" data-bs-toggle="pill")
+                  i.bi.bi-heart.me-2
+                  | Recovery Journey
+              li.nav-item
+                a.nav-link(href="#resources" data-bs-toggle="pill")
+                  i.bi.bi-bookmark-star.me-2
+                  | Favorite Resources
+              li.nav-item
+                a.nav-link(href="#community" data-bs-toggle="pill")
+                  i.bi.bi-people.me-2
+                  | Community
+              li.nav-item
+                a.nav-link(href="#stories" data-bs-toggle="pill")
+                  i.bi.bi-chat-quote.me-2
+                  | My Stories
+              li.nav-item
+                a.nav-link(href="#settings" data-bs-toggle="pill")
+                  i.bi.bi-gear.me-2
+                  | Settings
+            
+            hr
+            
+            .dropdown
+              a.d-flex.align-items-center.link-dark.text-decoration-none.dropdown-toggle#dropdownUser1(data-bs-toggle="dropdown" aria-expanded="false")
+                img.rounded-circle.me-2(src="/assets/img/logo.png" alt="" width="32" height="32")
+                strong#user-name User
+              ul.dropdown-menu.dropdown-menu-dark.text-small.shadow(aria-labelledby="dropdownUser1")
+                li
+                  a.dropdown-item(href="#profile" data-bs-toggle="pill") Profile
+                li
+                  a.dropdown-item(href="#settings" data-bs-toggle="pill") Settings
+                li
+                  hr.dropdown-divider
+                li
+                  a.dropdown-item(href="#" onclick="handleLogout()") Sign out
+
+      // Main content
+      .col-md-9.ms-sm-auto.col-lg-10.px-md-4
+        .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-5.pb-2.mb-3.border-bottom
+          h1.h2 Dashboard
+          .btn-toolbar.mb-2.mb-md-0
+            .btn-group.me-2
+              button.btn.btn-sm.btn-outline-secondary(type="button" onclick="exportData()") Export
+              button.btn.btn-sm.btn-outline-secondary(type="button" onclick="printDashboard()") Print
+
+        // Tab content
+        .tab-content#dashboardTabs
+          // Overview Tab
+          .tab-pane.fade.show.active#overview
+            .row
+              .col-xl-3.col-md-6.mb-4
+                .card.border-left-primary.shadow.h-100.py-2
+                  .card-body
+                    .row.no-gutters.align-items-center
+                      .col.mr-2
+                        .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1
+                          | Days Sober
+                        .h5.mb-0.font-weight-bold.text-gray-800#sobriety-counter 0 days
+                      .col-auto
+                        i.bi.bi-calendar-check.fa-2x.text-gray-300
+
+              .col-xl-3.col-md-6.mb-4
+                .card.border-left-success.shadow.h-100.py-2
+                  .card-body
+                    .row.no-gutters.align-items-center
+                      .col.mr-2
+                        .text-xs.font-weight-bold.text-success.text-uppercase.mb-1
+                          | Milestones
+                        .h5.mb-0.font-weight-bold.text-gray-800#milestones-count 0
+                      .col-auto
+                        i.bi.bi-trophy.fa-2x.text-gray-300
+
+              .col-xl-3.col-md-6.mb-4
+                .card.border-left-info.shadow.h-100.py-2
+                  .card-body
+                    .row.no-gutters.align-items-center
+                      .col.mr-2
+                        .text-xs.font-weight-bold.text-info.text-uppercase.mb-1
+                          | Favorite Resources
+                        .h5.mb-0.font-weight-bold.text-gray-800#favorites-count 0
+                      .col-auto
+                        i.bi.bi-heart.fa-2x.text-gray-300
+
+              .col-xl-3.col-md-6.mb-4
+                .card.border-left-warning.shadow.h-100.py-2
+                  .card-body
+                    .row.no-gutters.align-items-center
+                      .col.mr-2
+                        .text-xs.font-weight-bold.text-warning.text-uppercase.mb-1
+                          | Community Posts
+                        .h5.mb-0.font-weight-bold.text-gray-800#posts-count 0
+                      .col-auto
+                        i.bi.bi-chat-dots.fa-2x.text-gray-300
+
+            .row
+              .col-lg-8
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Activity</h6>
+                  .card-body
+                    #recent-activity
+                      p.text-muted No recent activity
+
+              .col-lg-4
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                  .card-body
+                    .d-grid.gap-2
+                      button.btn.btn-primary.btn-sm(onclick="showNewPostModal()")
+                        i.bi.bi-plus-circle.me-2
+                        | New Forum Post
+                      button.btn.btn-outline-primary.btn-sm(onclick="showStorySubmissionModal()")
+                        i.bi.bi-pencil.me-2
+                        | Share Story
+                      button.btn.btn-outline-success.btn-sm(onclick="addMilestone()")
+                        i.bi.bi-trophy.me-2
+                        | Add Milestone
+                      button.btn.btn-outline-info.btn-sm(onclick="browseResources()")
+                        i.bi.bi-search.me-2
+                        | Find Resources
+
+          // Profile Tab
+          .tab-pane.fade#profile
+            .row
+              .col-lg-8
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Profile Information</h6>
+                  .card-body
+                    form#profile-form
+                      .row.mb-3
+                        .col-md-6
+                          label.form-label(for="profile-display-name") Display Name
+                          input.form-control#profile-display-name(type="text" placeholder="Enter display name")
+                        .col-md-6
+                          label.form-label(for="profile-email") Email
+                          input.form-control#profile-email(type="email" readonly)
+                      
+                      .row.mb-3
+                        .col-md-6
+                          label.form-label(for="profile-privacy") Privacy Level
+                          select.form-select#profile-privacy
+                            option(value="public") Public
+                            option(value="standard") Standard
+                            option(value="high") High
+                        .col-md-6
+                          label.form-label(for="profile-theme") Theme
+                          select.form-select#profile-theme
+                            option(value="light") Light
+                            option(value="dark") Dark
+                            option(value="auto") Auto
+                      
+                      .mb-3
+                        label.form-label(for="profile-bio") Bio
+                        textarea.form-control#profile-bio(rows="3" placeholder="Tell us about yourself...")
+                      
+                      .mb-3
+                        .form-check
+                          input.form-check-input#profile-notifications(type="checkbox")
+                          label.form-check-label(for="profile-notifications")
+                            | Enable email notifications
+                      
+                      button.btn.btn-primary(type="button" onclick="updateProfile()") Save Changes
+
+              .col-lg-4
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Account Status</h6>
+                  .card-body
+                    .d-flex.align-items-center.mb-3
+                      i.bi.bi-shield-check.text-success.me-2
+                      span Account Verified
+                    
+                    .d-flex.align-items-center.mb-3
+                      i.bi.bi-calendar.text-info.me-2
+                      span Member since 
+                      span#member-since.text-muted.ms-1 January 2025
+                    
+                    .d-flex.align-items-center
+                      i.bi.bi-person.text-warning.me-2
+                      span#account-type Anonymous User
+
+          // Recovery Journey Tab
+          .tab-pane.fade#recovery
+            .row
+              .col-lg-8
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Recovery Journey</h6>
+                  .card-body
+                    .row.mb-4
+                      .col-md-6
+                        label.form-label(for="sobriety-date") Sobriety Date
+                        input.form-control#sobriety-date(type="date")
+                        button.btn.btn-primary.btn-sm.mt-2(onclick="setSobrietyDate()") Set Date
+                      
+                      .col-md-6
+                        .card.bg-primary.text-white
+                          .card-body.text-center
+                            <h4 class="card-title" id="sobriety-counter-large">0 days sober</h4>
+                            <p class="card-text">Keep going strong!</p>
+                    
+                    .mb-4
+                      <h6>Recovery Milestones</h6>
+                      <div id="recovery-milestones">
+                        <p class="text-muted">No milestones recorded yet.</p>
+                      </div>
+                      <button class="btn btn-outline-primary btn-sm" onclick="showMilestoneModal()">
+                        <i class="bi bi-plus-circle"></i> Add Milestone
+                      </button>
+
+              .col-lg-4
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Progress Chart</h6>
+                  .card-body
+                    <canvas id="recovery-chart" width="400" height="200"></canvas>
+
+          // Favorite Resources Tab
+          .tab-pane.fade#resources
+            .row
+              .col-lg-8
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Favorite Resources</h6>
+                  .card-body
+                    <div id="favorite-resources">
+                      <p class="text-muted">No favorite resources yet.</p>
+                    </div>
+
+              .col-lg-4
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Personalized Recommendations</h6>
+                  .card-body
+                    <div id="personalized-recommendations">
+                      <p class="text-muted">Loading recommendations...</p>
+                    </div>
+
+          // Community Tab
+          .tab-pane.fade#community
+            .row
+              .col-lg-8
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">My Community Activity</h6>
+                  .card-body
+                    <ul class="nav nav-tabs" id="communityTabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab">My Posts</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab">My Comments</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab">Messages</button>
+                      </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="communityTabContent">
+                      <div class="tab-pane fade show active" id="posts" role="tabpanel">
+                        <div id="my-posts">
+                          <p class="text-muted">No posts yet.</p>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="comments" role="tabpanel">
+                        <div id="my-comments">
+                          <p class="text-muted">No comments yet.</p>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="messages" role="tabpanel">
+                        <div id="my-messages">
+                          <p class="text-muted">No messages yet.</p>
+                        </div>
+                      </div>
+                    </div>
+
+              .col-lg-4
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Community Stats</h6>
+                  .card-body
+                    <div class="d-flex.justify-content-between.mb-2">
+                      <span>Posts:</span>
+                      <span id="community-posts-count">0</span>
+                    </div>
+                    <div class="d-flex.justify-content-between.mb-2">
+                      <span>Comments:</span>
+                      <span id="community-comments-count">0</span>
+                    </div>
+                    <div class="d-flex.justify-content-between.mb-2">
+                      <span>Likes Received:</span>
+                      <span id="community-likes-count">0</span>
+                    </div>
+
+          // Stories Tab
+          .tab-pane.fade#stories
+            .row
+              .col-lg-8
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">My Success Stories</h6>
+                  .card-body
+                    <div id="my-stories">
+                      <p class="text-muted">No stories shared yet.</p>
+                    </div>
+
+              .col-lg-4
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Story Stats</h6>
+                  .card-body
+                    <div class="d-flex.justify-content-between.mb-2">
+                      <span>Stories Shared:</span>
+                      <span id="stories-count">0</span>
+                    </div>
+                    <div class="d-flex.justify-content-between.mb-2">
+                      <span>Total Views:</span>
+                      <span id="stories-views">0</span>
+                    </div>
+                    <div class="d-flex.justify-content-between.mb-2">
+                      <span>Total Likes:</span>
+                      <span id="stories-likes">0</span>
+                    </div>
+
+          // Settings Tab
+          .tab-pane.fade#settings
+            .row
+              .col-lg-8
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Account Settings</h6>
+                  .card-body
+                    <form id="settings-form">
+                      <div class="mb-3">
+                        <label class="form-label">Email Notifications</label>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="email-community">
+                          <label class="form-check-label" for="email-community">
+                            Community updates
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="email-resources">
+                          <label class="form-check-label" for="email-resources">
+                            New resources
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="email-stories">
+                          <label class="form-check-label" for="email-stories">
+                            Success stories
+                          </label>
+                        </div>
+                      </div>
+                      
+                      <div class="mb-3">
+                        <label class="form-label">Privacy Settings</label>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="privacy" id="privacy-public" value="public">
+                          <label class="form-check-label" for="privacy-public">
+                            Public profile
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="privacy" id="privacy-standard" value="standard">
+                          <label class="form-check-label" for="privacy-standard">
+                            Standard privacy
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input class="form-check-input" type="radio" name="privacy" id="privacy-high" value="high">
+                          <label class="form-check-label" for="privacy-high">
+                            High privacy
+                          </label>
+                        </div>
+                      </div>
+                      
+                      <button type="button" class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+                    </form>
+
+              .col-lg-4
+                .card.shadow.mb-4
+                  .card-header.py-3
+                    <h6 class="m-0 font-weight-bold text-primary">Danger Zone</h6>
+                  .card-body
+                    <div class="d-grid.gap-2">
+                      <button class="btn btn-outline-warning" onclick="exportData()">
+                        <i class="bi.bi-download.me-2"></i>Export Data
+                      </button>
+                      <button class="btn btn-outline-danger" onclick="deleteAccount()">
+                        <i class="bi.bi-trash.me-2"></i>Delete Account
+                      </button>
+                    </div>
+
+  // Milestone Modal
+  .modal.fade#milestoneModal(tabindex="-1")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          <h5 class="modal-title">Add Recovery Milestone</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        .modal-body
+          <form id="milestone-form">
+            <div class="mb-3">
+              <label for="milestone-title" class="form-label">Milestone Title</label>
+              <input type="text" class="form-control" id="milestone-title" required>
+            </div>
+            <div class="mb-3">
+              <label for="milestone-description" class="form-label">Description</label>
+              <textarea class="form-control" id="milestone-description" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="milestone-date" class="form-label">Date Achieved</label>
+              <input type="date" class="form-control" id="milestone-date" required>
+            </div>
+          </form>
+        .modal-footer
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="submitMilestone()">Add Milestone</button>
+
+block scripts
+  script(src="https://cdn.jsdelivr.net/npm/chart.js")
+  script(src="/js/supabaseClient.js")
+  script(src="/js/auth.js")
+  script(src="/js/dashboard.js") 

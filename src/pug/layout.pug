@@ -1,0 +1,94 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    title= title || "Get Sober Spokane"
+    meta(name="description" content=description || "Recovery support community in Spokane, WA")
+    
+    // Bootstrap Icons
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet")
+    // Google fonts
+    link(href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet")
+    link(href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css")
+    // Core theme CSS (includes Bootstrap)
+    link(href="/css/styles.css" rel="stylesheet")
+    
+    style.
+      /* Fix navigation text visibility */
+      .navbar.navbar-light .navbar-nav .nav-link {
+        color: #333 !important;
+        font-weight: 500;
+      }
+      
+      .navbar.navbar-light .navbar-nav .nav-link:hover {
+        color: #007bff !important;
+      }
+      
+      .navbar.navbar-light .navbar-brand {
+        color: #333 !important;
+        font-weight: 600;
+      }
+      
+      .navbar.navbar-light .navbar-brand:hover {
+        color: #007bff !important;
+      }
+      
+      /* Ensure navbar has proper background */
+      .navbar.navbar-light {
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px);
+      }
+    
+    block head
+
+  body#page-top
+    // Navigation
+    nav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3#mainNav
+      .container.px-4.px-lg-5
+        a.navbar-brand.d-flex.align-items-center(href="/")
+          img.logo(src="/assets/img/logo.png" alt="Get Sober Spokane Logo")
+          span.ms-2 Get Sober Spokane
+        button.navbar-toggler.navbar-toggler-right(type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation")
+          span.navbar-toggler-icon
+        .collapse.navbar-collapse#navbarResponsive
+          ul.navbar-nav.ms-auto.my-2.my-lg-0
+            li.nav-item
+              a.nav-link(href="/") Home
+            li.nav-item
+              a.nav-link(href="/#about") About
+            li.nav-item
+              a.nav-link(href="/resource-directory.html") Resources
+            li.nav-item
+              a.nav-link(href="/community-forum.html") Community
+            li.nav-item
+              a.nav-link(href="/success-stories.html") Stories
+            li.nav-item
+              a.nav-link(href="/dashboard.html") Dashboard
+            li.nav-item
+              a.nav-link(href="/#contact") Contact
+
+    block content
+
+    // Footer
+    footer.bg-light.py-5
+      .container.px-4.px-lg-5
+        a(href="/")
+          img.footer-logo(src="/assets/img/logo.png" alt="Get Sober Spokane Logo")
+        .small.text-center.text-muted
+          | Copyright © 2025 - Get Sober Spokane
+          br
+          a(href="/privacy-policy.html") Privacy Policy
+          |  |
+          a(href="/terms-of-service.html") Terms of Service
+
+    // Bootstrap core JS
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js")
+    // Supabase
+    script(src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2")
+    // Core theme JS
+    script(src="/js/supabaseClient.js")
+    script(src="/js/auth.js")
+    script(src="/js/auth-modal.js")
+    
+    block scripts 
