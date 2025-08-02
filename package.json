@@ -8,9 +8,12 @@
         "build:pug": "node scripts/build-pug.js",
         "build:scripts": "node scripts/build-scripts.js",
         "build:scss": "node scripts/build-scss.js",
+        "build:seo": "node scripts/build-seo.js",
+        "build:full": "npm run build:seo && npm run build",
         "clean": "node scripts/clean.js",
-        "start": "npm run build && node scripts/start.js",
-        "start:debug": "npm run build && node scripts/start-debug.js"
+        "start": "npm run build:full && node scripts/start.js",
+        "start:debug": "npm run build:full && node scripts/start-debug.js",
+        "seo:optimize": "node scripts/seo-optimizer.js"
     },
     "description": "Creative is a stylish one page HTML theme built with Bootstrap.",
     "keywords": [
@@ -43,7 +46,8 @@
         "dotenv": "^17.2.0",
         "express": "^5.1.0",
         "nodemailer": "^7.0.5",
-        "open": "^10.1.2"
+        "open": "^10.1.2",
+        "sharp": "^0.32.6"
     },
     "devDependencies": {
         "autoprefixer": "10.4.14",
