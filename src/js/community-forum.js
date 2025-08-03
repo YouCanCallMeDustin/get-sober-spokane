@@ -4,24 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('Community forum page loaded');
 });
 
-// HTML sanitization function to prevent XSS attacks
-function sanitizeHTML(str) {
-    if (!str) return '';
-    
-    // Create a temporary div element
-    const temp = document.createElement('div');
-    temp.textContent = str;
-    
-    // Additional security: strip common XSS patterns
-    return temp.innerHTML
-        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-        .replace(/javascript:/gi, '')
-        .replace(/on\w+\s*=/gi, '')
-        .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
-        .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
-        .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '');
-}
-
 // Forum state management
 let forumData = {
     posts: [],
@@ -585,22 +567,18 @@ window.viewPost = async function(postId) {
         const displayName = user?.is_anonymous ? 'Anonymous User' : (user?.display_name || 'Unknown User');
         const userAvatar = user?.is_anonymous ? '/assets/img/logo.png' : (auth.currentUser?.user_metadata?.avatar_url || '/assets/img/logo.png');
         
-        // Sanitize user content to prevent XSS
-        const sanitizedContent = sanitizeHTML(post.content);
-        const sanitizedDisplayName = sanitizeHTML(displayName);
-        
         document.getElementById('post-detail-content').innerHTML = `
             <div class="post-header mb-3">
                 <div class="d-flex align-items-center">
-                    <img src="${userAvatar}" alt="${sanitizedDisplayName}" class="user-avatar me-3">
+                    <img src="${userAvatar}" alt="${displayName}" class="user-avatar me-3">
                     <div>
-                        <h6 class="mb-0">${sanitizedDisplayName}</h6>
+                        <h6 class="mb-0">${displayName}</h6>
                         <small class="text-muted">${formatTimeAgo(post.created_at)}</small>
                     </div>
                 </div>
             </div>
             <div class="post-content">
-                <p>${sanitizedContent}</p>
+                <p>${post.content}</p>
             </div>
         `;
         
@@ -635,20 +613,16 @@ async function loadComments(postId) {
             const displayName = user?.is_anonymous ? 'Anonymous User' : (user?.display_name || 'Unknown User');
             const userAvatar = user?.is_anonymous ? '/assets/img/logo.png' : (auth.currentUser?.user_metadata?.avatar_url || '/assets/img/logo.png');
             
-            // Sanitize user content to prevent XSS
-            const sanitizedContent = sanitizeHTML(comment.content);
-            const sanitizedDisplayName = sanitizeHTML(displayName);
-            
             return `
                 <div class="comment">
                     <div class="d-flex">
-                        <img src="${userAvatar}" alt="${sanitizedDisplayName}" class="user-avatar me-2" style="width: 30px; height: 30px;">
+                        <img src="${userAvatar}" alt="${displayName}" class="user-avatar me-2" style="width: 30px; height: 30px;">
                         <div class="flex-grow-1">
                             <div class="d-flex justify-content-between align-items-start">
-                                <h6 class="mb-1">${sanitizedDisplayName}</h6>
+                                <h6 class="mb-1">${displayName}</h6>
                                 <small class="text-muted">${formatTimeAgo(comment.created_at)}</small>
                         </div>
-                            <p class="mb-0">${sanitizedContent}</p>
+                            <p class="mb-0">${comment.content}</p>
                 </div>
             </div>
         </div>

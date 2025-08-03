@@ -39,9 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let authReadyTimeout;
     let maxTimeout;
     
-    let attempts = 0;
-    const maxAttempts = 150; // 15 seconds maximum wait time
-    
     const checkAuthReady = () => {
         if (typeof supabase !== 'undefined' && supabase.auth && window.supabase) {
             console.log('Supabase ready - initializing auth system');
@@ -50,14 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             initializeAuth();
             setupAuthListeners();
         } else {
-            attempts++;
-            if (attempts < maxAttempts) {
-                authReadyTimeout = setTimeout(checkAuthReady, 100);
-            } else {
-                console.error('Auth system not ready after 15 seconds. Maximum attempts reached.');
-                clearTimeout(authReadyTimeout);
-                clearTimeout(maxTimeout);
-            }
+            authReadyTimeout = setTimeout(checkAuthReady, 100);
         }
     };
     
@@ -130,16 +120,17 @@ async function initializeAuth() {
                 return;
             }
             
-            // Test network connectivity first (removed hardcoded credentials)
+            // Test network connectivity first
             console.log('Testing network connectivity...');
             try {
-                // Use the Supabase client for connectivity test instead of hardcoded URLs
-                const { data: testData, error: testError } = await window.supabase.auth.getUser();
-                if (testError && testError.status) {
-                    console.log('Network test response status:', testError.status);
-                } else {
-                    console.log('Network connectivity test successful');
-                }
+                const response = await fetch('https://iquczuhmkemjytrqnbxg.supabase.co/auth/v1/user', {
+                    method: 'GET',
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxdWN6dWhta2Vtanl0cnFuYnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxMDMzMjcsImV4cCI6MjA2OTY3OTMyN30.FFzZFBUAM1ZgQSTlzPNSuJIikUiQkvSBKvc19wdzulk',
+                        'Authorization': 'Bearer ' + (localStorage.getItem('sb-iquczuhmkemjytrqnbxg-auth-token') || '')
+                    }
+                });
+                console.log('Network test response status:', response.status);
             } catch (networkError) {
                 console.error('Network connectivity test failed:', networkError);
             }
