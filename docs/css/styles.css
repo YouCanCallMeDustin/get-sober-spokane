@@ -10942,6 +10942,12 @@ hr.divider-light {
   background-color: #fff;
   transition: all 0.3s ease;
   padding: 1rem 0;
+  transform: translateY(-100%);
+  opacity: 0;
+}
+#mainNav.navbar-shrink {
+  transform: translateY(0);
+  opacity: 1;
 }
 #mainNav .navbar-brand {
   font-family: "Merriweather", serif;
@@ -10958,14 +10964,67 @@ hr.divider-light {
   padding: 0.75rem 1.25rem;
   border-radius: 6px;
   transition: all 0.3s ease;
+  position: relative;
 }
 #mainNav .navbar-nav .nav-item .nav-link:hover, #mainNav .navbar-nav .nav-item .nav-link:active {
   color: #2c5aa0;
   background-color: rgba(44, 90, 160, 0.05);
+  transform: translateY(-1px);
 }
 #mainNav .navbar-nav .nav-item .nav-link.active {
   color: #2c5aa0 !important;
   background-color: rgba(44, 90, 160, 0.1);
+}
+#mainNav .navbar-nav .nav-item .nav-link.dropdown-toggle::after {
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+}
+#mainNav .navbar-nav .nav-item .nav-link:hover.dropdown-toggle::after {
+  transform: rotate(180deg);
+}
+#mainNav .navbar-nav .nav-item .dropdown-menu {
+  border: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+  min-width: 200px;
+}
+#mainNav .navbar-nav .nav-item .dropdown-menu .dropdown-item {
+  padding: 0.75rem 1.5rem;
+  color: #1a365d;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-radius: 0;
+}
+#mainNav .navbar-nav .nav-item .dropdown-menu .dropdown-item:hover {
+  background-color: rgba(44, 90, 160, 0.05);
+  color: #2c5aa0;
+  transform: translateX(4px);
+}
+#mainNav .navbar-nav .nav-item .dropdown-menu .dropdown-item:active {
+  background-color: rgba(44, 90, 160, 0.1);
+  color: #2c5aa0;
+}
+#mainNav .navbar-nav .nav-item .dropdown-menu .dropdown-divider {
+  margin: 0.5rem 0;
+  border-color: rgba(26, 54, 93, 0.1);
+}
+#mainNav .navbar-nav .auth-button {
+  margin-left: 1rem;
+}
+#mainNav .navbar-nav .auth-button .btn {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+}
+#mainNav .navbar-nav .auth-button .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+#mainNav .navbar-nav .auth-button .dropdown-menu {
+  min-width: 180px;
 }
 #mainNav .logo {
   height: 40px;
@@ -10977,6 +11036,8 @@ hr.divider-light {
     box-shadow: none;
     background-color: transparent;
     padding: 1.5rem 0;
+    transform: translateY(-100%);
+    opacity: 0;
   }
   #mainNav .navbar-brand {
     color: #fff;
@@ -10997,13 +11058,27 @@ hr.divider-light {
     background-color: rgba(255, 255, 255, 0.1);
     transform: translateY(-1px);
   }
+  #mainNav .navbar-nav .nav-item .dropdown-menu {
+    background-color: #fff;
+    border: 1px solid rgba(26, 54, 93, 0.1);
+  }
   #mainNav .navbar-nav .nav-item:last-child .nav-link {
     padding-right: 1.25rem;
+  }
+  #mainNav .navbar-nav .auth-button .btn {
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #fff;
+  }
+  #mainNav .navbar-nav .auth-button .btn:hover {
+    background-color: #fff;
+    color: #2c5aa0;
   }
   #mainNav.navbar-shrink {
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     padding: 0.75rem 0;
+    transform: translateY(0);
+    opacity: 1;
   }
   #mainNav.navbar-shrink .navbar-brand {
     color: #2c5aa0;
@@ -11018,8 +11093,32 @@ hr.divider-light {
     color: #2c5aa0;
     background-color: rgba(44, 90, 160, 0.05);
   }
+  #mainNav.navbar-shrink .navbar-nav .auth-button .btn {
+    border-color: #2c5aa0;
+    color: #2c5aa0;
+  }
+  #mainNav.navbar-shrink .navbar-nav .auth-button .btn:hover {
+    background-color: #2c5aa0;
+    color: #fff;
+  }
 }
 
+@media (max-width: 991.98px) {
+  #mainNav .navbar-nav {
+    margin-top: 1rem;
+  }
+  #mainNav .navbar-nav .nav-item {
+    margin-bottom: 0.5rem;
+  }
+  #mainNav .navbar-nav .nav-item .nav-link {
+    padding: 0.75rem 1rem;
+  }
+  #mainNav .navbar-nav .auth-button {
+    margin-left: 0;
+    margin-top: 1rem;
+    text-align: center;
+  }
+}
 .footer-logo {
   height: 128px;
   width: auto;

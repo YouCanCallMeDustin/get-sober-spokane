@@ -1,24 +1,149 @@
-// src/js/community-forum.js - Community Forum System
+// Community Forum JavaScript
+
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Community forum page loaded');
+});
 
 // Forum state management
-let forumPosts = [];
-let currentCategory = 'all';
-let currentSort = 'newest';
-let userPosts = [];
-let privateMessages = [];
+let forumData = {
+    posts: [],
+    comments: [],
+    currentPost: null,
+    filters: {
+        search: '',
+        category: '',
+        sort: 'newest'
+    }
+};
 
 // Initialize forum
 document.addEventListener('DOMContentLoaded', function() {
-    initializeForum();
-    setupForumListeners();
+    console.log('Initializing community forum...');
+    
+    // Check if we're already on the forum page and need to initialize auth
+    if (typeof auth === 'undefined') {
+        console.log('Waiting for authentication system...');
+        // Wait for auth to be loaded
+        const checkAuth = setInterval(() => {
+            if (typeof auth !== 'undefined') {
+                console.log('Authentication system ready');
+                clearInterval(checkAuth);
+                checkAuthAndInitialize();
+            }
+        }, 100);
+        
+        // Timeout after 15 seconds
+        setTimeout(() => {
+            clearInterval(checkAuth);
+            console.error('Authentication system not ready after 15 seconds');
+            showNotification('Authentication system not ready. Please refresh the page.', 'error');
+        }, 15000);
+    } else {
+        console.log('Authentication system available');
+        checkAuthAndInitialize();
+    }
 });
+
+// Check auth and initialize forum
+async function checkAuthAndInitialize() {
+    try {
+        // Check if user has a session
+        const { data: { session }, error } = await window.supabase.auth.getSession();
+        
+        if (error) {
+            console.error('Error getting session:', error);
+            showNotification('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        if (session) {
+            console.log('User authenticated:', session.user.email);
+            // Update global auth object
+            window.auth.currentUser = session.user;
+            // Update UI for authenticated user
+            if (typeof updateUIForAuthenticatedUser === 'function') {
+                updateUIForAuthenticatedUser();
+            }
+            // Load user profile if not already loaded
+            if (!window.auth.userProfile) {
+                await loadUserProfile();
+            }
+            initializeForum();
+        } else {
+            console.log('No active session - user not authenticated');
+            // Clear global auth object
+            window.auth.currentUser = null;
+            window.auth.userProfile = null;
+            window.auth.isAnonymous = false;
+            // Update UI for unauthenticated user
+            if (typeof updateUIForUnauthenticatedUser === 'function') {
+                updateUIForUnauthenticatedUser();
+            }
+            // Initialize forum without user-specific features
+            initializeForum();
+        }
+    } catch (error) {
+        console.error('Error checking authentication:', error);
+        showNotification('Error checking authentication. Please refresh the page.', 'error');
+    }
+}
+
+// Load user profile
+async function loadUserProfile() {
+    try {
+        const { data: { session } } = await window.supabase.auth.getSession();
+        if (!session) return;
+        
+        const { data: profile, error } = await window.supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .single();
+        
+        if (error && error.code !== 'PGRST116') {
+            console.error('Error loading user profile:', error);
+            return;
+        }
+        
+        if (profile) {
+            window.auth.userProfile = profile;
+            console.log('User profile loaded:', profile);
+        } else {
+            // Create profile if it doesn't exist
+            const newProfile = {
+                user_id: session.user.id,
+                display_name: session.user.user_metadata?.full_name || 'User',
+                email: session.user.email,
+                is_anonymous: false
+            };
+            
+            const { data: createdProfile, error: createError } = await window.supabase
+                .from('user_profiles')
+                .insert([newProfile])
+                .select()
+                .single();
+            
+            if (createError) {
+                console.error('Error creating user profile:', createError);
+                return;
+            }
+            
+            window.auth.userProfile = createdProfile;
+            console.log('User profile created:', createdProfile);
+        }
+    } catch (error) {
+        console.error('Error in loadUserProfile:', error);
+    }
+}
 
 // Initialize forum system
 async function initializeForum() {
     try {
-        await loadForumPosts();
-        await loadCategories();
-        setupForumUI();
+        console.log('Initializing forum...');
+        await loadForumData();
+        setupForumListeners();
+        updateForumStats();
+        console.log('Forum initialized successfully');
     } catch (error) {
         console.error('Forum initialization error:', error);
         showNotification('Error loading forum: ' + error.message, 'error');
@@ -27,245 +152,292 @@ async function initializeForum() {
 
 // Setup forum event listeners
 function setupForumListeners() {
+    // Search functionality
+    const searchInput = document.getElementById('search-posts');
+    if (searchInput) {
+        searchInput.addEventListener('input', debounce(function() {
+            forumData.filters.search = this.value;
+            filterAndDisplayPosts();
+        }, 300));
+    }
+    
     // Category filter
-    const categorySelect = document.getElementById('forum-category');
-    if (categorySelect) {
-        categorySelect.addEventListener('change', function() {
-            currentCategory = this.value;
+    const categoryFilter = document.getElementById('category-filter');
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', function() {
+            forumData.filters.category = this.value;
             filterAndDisplayPosts();
         });
     }
 
-    // Sort options
-    const sortSelect = document.getElementById('forum-sort');
-    if (sortSelect) {
-        sortSelect.addEventListener('change', function() {
-            currentSort = this.value;
+    // Sort filter
+    const sortFilter = document.getElementById('sort-filter');
+    if (sortFilter) {
+        sortFilter.addEventListener('change', function() {
+            forumData.filters.sort = this.value;
             filterAndDisplayPosts();
         });
+    }
+    
+    // Category sidebar clicks
+    const categoryItems = document.querySelectorAll('[id^="category-"]');
+    categoryItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const category = this.id.replace('category-', '');
+            forumData.filters.category = category;
+            document.getElementById('category-filter').value = category;
+            filterAndDisplayPosts();
+        });
+    });
+}
+
+// Load forum data
+async function loadForumData() {
+    console.log('Loading forum data...');
+    
+    try {
+        // Load posts without foreign key relationships
+        const { data: posts, error: postsError } = await window.supabase
+            .from('forum_posts')
+            .select('*')
+            .eq('status', 'approved')
+            .order('created_at', { ascending: false });
+        
+        if (postsError) throw postsError;
+        
+        // Load comments without foreign key relationships
+        const { data: comments, error: commentsError } = await window.supabase
+            .from('forum_comments')
+            .select('*')
+            .eq('status', 'approved')
+            .order('created_at', { ascending: false });
+        
+        if (commentsError) throw commentsError;
+        
+        // Load user profiles for posts and comments
+        const userIds = new Set();
+        posts?.forEach(post => userIds.add(post.user_id));
+        comments?.forEach(comment => userIds.add(comment.user_id));
+        
+        let userProfiles = {};
+        if (userIds.size > 0) {
+            const { data: profiles, error: profilesError } = await window.supabase
+                .from('user_profiles')
+                .select('user_id, display_name, email, is_anonymous')
+                .in('user_id', Array.from(userIds));
+            
+            if (profilesError) {
+                console.error('Error loading user profiles:', profilesError);
+            } else {
+                profiles?.forEach(profile => {
+                    userProfiles[profile.user_id] = profile;
+                });
+            }
+        }
+        
+        // Attach user profiles to posts and comments
+        const postsWithProfiles = posts?.map(post => ({
+            ...post,
+            user_profiles: userProfiles[post.user_id] || null
+        })) || [];
+        
+        const commentsWithProfiles = comments?.map(comment => ({
+            ...comment,
+            user_profiles: userProfiles[comment.user_id] || null
+        })) || [];
+        
+        forumData.posts = postsWithProfiles;
+        forumData.comments = commentsWithProfiles;
+        
+        console.log('Forum data loaded:', { posts: forumData.posts.length, comments: forumData.comments.length });
+        
+        // Display posts
+        displayPosts();
+        updateCategoryCounts();
+        loadRecentActivity();
+        
+    } catch (error) {
+        console.error('Error loading forum data:', error);
+        throw error;
     }
 }
 
-// Setup forum UI
-function setupForumUI() {
-    const forumContainer = document.getElementById('forum-container');
-    if (!forumContainer) return;
-
-    forumContainer.innerHTML = `
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Community Forum</h2>
+// Display posts
+function displayPosts() {
+    const container = document.getElementById('posts-container');
+    if (!container) return;
+    
+    if (forumData.posts.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-5">
+                <i class="bi bi-chat-dots display-1 text-muted"></i>
+                <h4 class="mt-3">No posts yet</h4>
+                <p class="text-muted">Be the first to start a conversation!</p>
                     <button class="btn btn-primary" onclick="showNewPostModal()">
-                        <i class="bi bi-plus-circle"></i> New Post
+                    <i class="bi bi-plus-circle.me-2"></i>Create First Post
                     </button>
                 </div>
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <select id="forum-category" class="form-select">
-                            <option value="all">All Categories</option>
-                        </select>
+        `;
+        return;
+    }
+    
+    const html = forumData.posts.map(post => createPostCard(post)).join('');
+    container.innerHTML = html;
+}
+
+// Create post card HTML
+function createPostCard(post) {
+    const user = post.user_profiles;
+    const displayName = user?.is_anonymous ? 'Anonymous User' : (user?.display_name || 'Unknown User');
+    const userAvatar = user?.is_anonymous ? '/assets/img/logo.png' : (auth.currentUser?.user_metadata?.avatar_url || '/assets/img/logo.png');
+    
+    const commentCount = forumData.comments.filter(c => c.post_id === post.id).length;
+    const timeAgo = formatTimeAgo(post.created_at);
+    
+    return `
+        <div class="post-card" data-post-id="${post.id}">
+            <div class="post-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <img src="${userAvatar}" alt="${displayName}" class="user-avatar me-3">
+                        <div>
+                            <h6 class="mb-0">${displayName}</h6>
+                            <small class="text-muted">${timeAgo}</small>
                     </div>
-                    <div class="col-md-6">
-                        <select id="forum-sort" class="form-select">
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                            <option value="popular">Most Popular</option>
-                            <option value="recent">Recently Active</option>
-                        </select>
                     </div>
+                    <span class="category-badge">${getCategoryDisplayName(post.category)}</span>
                 </div>
-                
-                <div id="forum-posts"></div>
             </div>
-            
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Forum Guidelines</h5>
+            <div class="post-content">
+                <h5 class="mb-2">${post.title}</h5>
+                <p class="mb-0">${truncateText(post.content, 200)}</p>
                     </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled mb-0">
-                            <li><i class="bi bi-check-circle text-success"></i> Be supportive and respectful</li>
-                            <li><i class="bi bi-check-circle text-success"></i> Share experiences, not medical advice</li>
-                            <li><i class="bi bi-check-circle text-success"></i> Protect your privacy</li>
-                            <li><i class="bi bi-check-circle text-success"></i> Report inappropriate content</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h5 class="mb-0">Quick Actions</h5>
-                    </div>
-                    <div class="card-body">
-                        <button class="btn btn-outline-primary btn-sm w-100 mb-2" onclick="showNewPostModal()">
-                            <i class="bi bi-plus-circle"></i> New Post
+            <div class="post-footer">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="interaction-buttons">
+                        <button class="btn-interaction" onclick="likePost('${post.id}')" data-post-id="${post.id}">
+                            <i class="bi bi-heart${post.liked ? '-fill text-danger' : ''}"></i>
+                            <span class="ms-1">${post.likes || 0}</span>
                         </button>
-                        <button class="btn btn-outline-secondary btn-sm w-100 mb-2" onclick="showPrivateMessages()">
-                            <i class="bi bi-envelope"></i> Messages
+                        <button class="btn-interaction" onclick="viewPost('${post.id}')">
+                            <i class="bi bi-chat"></i>
+                            <span class="ms-1">${commentCount}</span>
                         </button>
-                        <button class="btn btn-outline-info btn-sm w-100" onclick="showMyPosts()">
-                            <i class="bi bi-person"></i> My Posts
+                        <button class="btn-interaction" onclick="sharePost('${post.id}')">
+                            <i class="bi bi-share"></i>
                         </button>
                     </div>
+                    <button class="btn btn-outline-primary btn-sm" onclick="viewPost('${post.id}')">
+                        Read More
+                    </button>
                 </div>
             </div>
         </div>
     `;
 }
 
-// Load forum posts
-async function loadForumPosts() {
-    try {
-        const { data, error } = await supabase
-            .from('forum_posts')
-            .select(`
-                *,
-                user_profiles(display_name, is_anonymous),
-                forum_comments(count)
-            `)
-            .order('created_at', { ascending: false });
-        
-        if (error) throw error;
-        
-        forumPosts = data || [];
-        filterAndDisplayPosts();
-    } catch (error) {
-        console.error('Error loading forum posts:', error);
-        throw error;
-    }
-}
-
-// Load categories
-async function loadCategories() {
-    try {
-        const { data, error } = await supabase
-            .from('forum_categories')
-            .select('*')
-            .order('name');
-        
-        if (error) throw error;
-        
-        const categorySelect = document.getElementById('forum-category');
-        if (categorySelect && data) {
-            const options = data.map(category => 
-                `<option value="${category.id}">${category.name}</option>`
-            ).join('');
-            categorySelect.innerHTML += options;
-        }
-    } catch (error) {
-        console.error('Error loading categories:', error);
-    }
-}
-
 // Filter and display posts
 function filterAndDisplayPosts() {
-    let filteredPosts = [...forumPosts];
+    let filteredPosts = [...forumData.posts];
     
-    // Filter by category
-    if (currentCategory !== 'all') {
-        filteredPosts = filteredPosts.filter(post => post.category_id === currentCategory);
+    // Apply search filter
+    if (forumData.filters.search) {
+        const searchTerm = forumData.filters.search.toLowerCase();
+        filteredPosts = filteredPosts.filter(post => 
+            post.title.toLowerCase().includes(searchTerm) ||
+            post.content.toLowerCase().includes(searchTerm)
+        );
     }
     
-    // Sort posts
-    switch (currentSort) {
-        case 'newest':
-            filteredPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            break;
+    // Apply category filter
+    if (forumData.filters.category) {
+        filteredPosts = filteredPosts.filter(post => post.category === forumData.filters.category);
+    }
+    
+    // Apply sort filter
+    switch (forumData.filters.sort) {
         case 'oldest':
             filteredPosts.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
             break;
         case 'popular':
-            filteredPosts.sort((a, b) => (b.upvotes || 0) - (a.upvotes || 0));
+            filteredPosts.sort((a, b) => (b.likes || 0) - (a.likes || 0));
             break;
         case 'recent':
             filteredPosts.sort((a, b) => new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at));
             break;
+        default: // newest
+            filteredPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
     }
     
-    displayForumPosts(filteredPosts);
-}
-
-// Display forum posts
-function displayForumPosts(posts) {
-    const container = document.getElementById('forum-posts');
+    // Display filtered posts
+    const container = document.getElementById('posts-container');
     if (!container) return;
     
-    if (posts.length === 0) {
+    if (filteredPosts.length === 0) {
         container.innerHTML = `
             <div class="text-center py-5">
-                <i class="bi bi-chat-dots fs-1 text-muted"></i>
-                <h4 class="text-muted mt-3">No posts found</h4>
-                <p class="text-muted">Be the first to start a discussion!</p>
-                <button class="btn btn-primary" onclick="showNewPostModal()">Create First Post</button>
+                <i class="bi bi-search display-1 text-muted"></i>
+                <h4 class="mt-3">No posts found</h4>
+                <p class="text-muted">Try adjusting your search or filters.</p>
             </div>
         `;
         return;
     }
     
-    const html = posts.map(post => `
-        <div class="card mb-3 forum-post" data-post-id="${post.id}">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                    <div>
-                        <h5 class="card-title mb-1">
-                            <a href="#" onclick="showPostDetail('${post.id}')" class="text-decoration-none">
-                                ${post.title}
-                            </a>
-                        </h5>
-                        <div class="mb-2">
-                            ${post.tags ? post.tags.map(tag => 
-                                `<span class="badge bg-secondary me-1">${tag}</span>`
-                            ).join('') : ''}
-                        </div>
+    const html = filteredPosts.map(post => createPostCard(post)).join('');
+    container.innerHTML = html;
+}
+
+// Update forum statistics
+function updateForumStats() {
+    const totalPosts = document.getElementById('total-posts');
+    const totalComments = document.getElementById('total-comments');
+    const activeUsers = document.getElementById('active-users');
+    const totalViews = document.getElementById('total-views');
+    
+    if (totalPosts) totalPosts.textContent = forumData.posts.length;
+    if (totalComments) totalComments.textContent = forumData.comments.length;
+    if (activeUsers) activeUsers.textContent = new Set(forumData.posts.map(p => p.user_id)).size;
+    if (totalViews) totalViews.textContent = forumData.posts.reduce((sum, post) => sum + (post.views || 0), 0);
+}
+
+// Update category counts
+function updateCategoryCounts() {
+    const categories = ['general', 'support', 'resources', 'milestones', 'challenges'];
+    
+    categories.forEach(category => {
+        const count = forumData.posts.filter(post => post.category === category).length;
+        const badge = document.querySelector(`#category-${category} .badge`);
+        if (badge) {
+            badge.textContent = count;
+        }
+    });
+}
+
+// Load recent activity
+function loadRecentActivity() {
+    const container = document.getElementById('recent-activity');
+    if (!container) return;
+    
+    const recentPosts = forumData.posts.slice(0, 5);
+    
+    if (recentPosts.length === 0) {
+        container.innerHTML = `
+            <div class="text-muted text-center">
+                <i class="bi bi-clock.me-2"></i>No recent activity
                     </div>
-                    <div class="text-end">
-                        <small class="text-muted">
-                            ${post.user_profiles?.is_anonymous ? 'Anonymous' : post.user_profiles?.display_name || 'User'}
-                        </small>
-                        <br>
-                        <small class="text-muted">
-                            ${formatDate(post.created_at)}
-                        </small>
+        `;
+        return;
+    }
+    
+    const html = recentPosts.map(post => `
+        <div class="d-flex align-items-center mb-2">
+            <div class="flex-shrink-0">
+                <i class="bi bi-chat-dots text-primary"></i>
                     </div>
-                </div>
-                
-                <p class="card-text">${truncateText(post.content, 200)}</p>
-                
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group btn-group-sm">
-                        <button class="btn btn-outline-primary" onclick="upvotePost('${post.id}')">
-                            <i class="bi bi-arrow-up"></i> ${post.upvotes || 0}
-                        </button>
-                        <button class="btn btn-outline-secondary" onclick="showPostDetail('${post.id}')">
-                            <i class="bi bi-chat"></i> ${post.forum_comments?.[0]?.count || 0}
-                        </button>
-                        <button class="btn btn-outline-info" onclick="sharePost('${post.id}')">
-                            <i class="bi bi-share"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="dropdown">
-                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-three-dots"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="reportPost('${post.id}')">
-                                <i class="bi bi-flag"></i> Report
-                            </a></li>
-                            ${post.user_id === (auth.currentUser?.id || '') ? `
-                                <li><a class="dropdown-item" href="#" onclick="editPost('${post.id}')">
-                                    <i class="bi bi-pencil"></i> Edit
-                                </a></li>
-                                <li><a class="dropdown-item text-danger" href="#" onclick="deletePost('${post.id}')">
-                                    <i class="bi bi-trash"></i> Delete
-                                </a></li>
-                            ` : ''}
-                        </ul>
-                    </div>
-                </div>
+            <div class="flex-grow-1 ms-2">
+                <small class="d-block">${post.title}</small>
+                <small class="text-muted">${formatTimeAgo(post.created_at)}</small>
             </div>
         </div>
     `).join('');
@@ -274,395 +446,315 @@ function displayForumPosts(posts) {
 }
 
 // Show new post modal
-window.showNewPostModal = function() {
-    if (!auth.currentUser && !auth.isAnonymous) {
+window.showNewPostModal = async function() {
+    try {
+        // Check if user is authenticated
+        const { data: { session }, error } = await window.supabase.auth.getSession();
+        
+        if (error) {
+            console.error('Error checking session:', error);
+            showNotification('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        if (!session) {
         showNotification('Please log in to create a post', 'warning');
         return;
     }
     
-    const modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.id = 'newPostModal';
-    modal.innerHTML = `
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create New Post</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="newPostForm">
-                        <div class="mb-3">
-                            <label for="post-title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="post-title" required maxlength="200">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="post-category" class="form-label">Category</label>
-                            <select class="form-select" id="post-category" required>
-                                <option value="">Select a category</option>
-                            </select>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="post-tags" class="form-label">Tags (comma-separated)</label>
-                            <input type="text" class="form-control" id="post-tags" placeholder="recovery, support, advice">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="post-content" class="form-label">Content</label>
-                            <textarea class="form-control" id="post-content" rows="8" required 
-                                placeholder="Share your thoughts, experiences, or questions..."></textarea>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="post-anonymous">
-                                <label class="form-check-label" for="post-anonymous">
-                                    Post anonymously
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="alert alert-info">
-                            <i class="bi bi-info-circle"></i>
-                            <strong>Community Guidelines:</strong> Be supportive, respectful, and mindful of others' privacy. 
-                            Share experiences rather than medical advice.
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="submitNewPost()">Create Post</button>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // Load categories for the select
-    loadCategoriesForModal();
-    
-    const modalInstance = new bootstrap.Modal(modal);
-    modalInstance.show();
-    
-    // Clean up modal when hidden
-    modal.addEventListener('hidden.bs.modal', function() {
-        modal.remove();
-    });
-};
-
-// Load categories for modal
-async function loadCategoriesForModal() {
-    try {
-        const { data, error } = await supabase
-            .from('forum_categories')
-            .select('*')
-            .order('name');
-        
-        if (error) throw error;
-        
-        const categorySelect = document.getElementById('post-category');
-        if (categorySelect && data) {
-            const options = data.map(category => 
-                `<option value="${category.id}">${category.name}</option>`
-            ).join('');
-            categorySelect.innerHTML += options;
+        // Ensure user profile is loaded
+        if (!auth.userProfile) {
+            await loadUserProfile();
         }
+        
+        if (!auth.userProfile) {
+            showNotification('Error loading user profile. Please try again.', 'error');
+            return;
+        }
+        
+        const modal = new bootstrap.Modal(document.getElementById('newPostModal'));
+        modal.show();
+        
     } catch (error) {
-        console.error('Error loading categories:', error);
+        console.error('Error in showNewPostModal:', error);
+        showNotification('Error opening post modal. Please try again.', 'error');
     }
-}
+};
 
 // Submit new post
 window.submitNewPost = async function() {
+    try {
+        // Check authentication first
+        const { data: { session }, error } = await window.supabase.auth.getSession();
+        
+        if (error) {
+            console.error('Error checking session:', error);
+            showNotification('Authentication error. Please log in again.', 'error');
+            return;
+        }
+        
+        if (!session) {
+            showNotification('Please log in to create a post', 'warning');
+            return;
+        }
+        
     const title = document.getElementById('post-title').value.trim();
-    const categoryId = document.getElementById('post-category').value;
-    const tags = document.getElementById('post-tags').value.trim();
+        const category = document.getElementById('post-category').value;
     const content = document.getElementById('post-content').value.trim();
-    const isAnonymous = document.getElementById('post-anonymous').checked;
+        const anonymous = document.getElementById('post-anonymous').checked;
     
-    if (!title || !categoryId || !content) {
+        if (!title || !category || !content) {
         showNotification('Please fill in all required fields', 'warning');
         return;
     }
     
-    // AI content moderation
-    const moderationResult = await moderateContent(content);
-    if (!moderationResult.approved) {
-        showNotification('Content flagged for review: ' + moderationResult.reason, 'warning');
-        return;
-    }
-    
-    try {
-        const postData = {
-            title,
-            content,
-            category_id: categoryId,
-            tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-            user_id: auth.currentUser?.id || 'anonymous',
-            is_anonymous: isAnonymous || auth.isAnonymous,
-            upvotes: 0,
-            downvotes: 0,
-            status: 'active'
+        const newPost = {
+            title: title,
+            category: category,
+            content: content,
+            user_id: session.user.id,
+            is_anonymous: anonymous,
+            status: 'approved',
+            likes: 0,
+            views: 0
         };
         
-        const { data, error } = await supabase
+        const { data, error: insertError } = await window.supabase
             .from('forum_posts')
-            .insert([postData])
-            .select()
-            .single();
+            .insert([newPost])
+            .select();
         
-        if (error) throw error;
+        if (insertError) throw insertError;
         
         // Close modal
         const modal = bootstrap.Modal.getInstance(document.getElementById('newPostModal'));
         modal.hide();
         
-        // Reload posts
-        await loadForumPosts();
+        // Clear form
+        document.getElementById('post-title').value = '';
+        document.getElementById('post-category').value = '';
+        document.getElementById('post-content').value = '';
+        document.getElementById('post-anonymous').checked = false;
+        
+        // Reload forum data
+        await loadForumData();
+        updateForumStats();
+        
         showNotification('Post created successfully!', 'success');
+        
     } catch (error) {
+        console.error('Error creating post:', error);
         showNotification('Error creating post: ' + error.message, 'error');
     }
 };
 
-// AI content moderation
-async function moderateContent(content) {
-    // Simple keyword-based moderation (in production, use a proper AI service)
-    const flaggedWords = ['spam', 'advertisement', 'promotion'];
-    const hasFlaggedWords = flaggedWords.some(word => 
-        content.toLowerCase().includes(word)
-    );
-    
-    if (hasFlaggedWords) {
-        return {
-            approved: false,
-            reason: 'Content contains flagged words'
-        };
-    }
-    
-    // Check for appropriate tone and length
-    if (content.length < 10) {
-        return {
-            approved: false,
-            reason: 'Content too short'
-        };
-    }
-    
-    return { approved: true };
-}
-
-// Show post detail
-window.showPostDetail = async function(postId) {
+// View post detail
+window.viewPost = async function(postId) {
     try {
-        const { data, error } = await supabase
-            .from('forum_posts')
-            .select(`
-                *,
-                user_profiles(display_name, is_anonymous),
-                forum_comments(
-                    *,
-                    user_profiles(display_name, is_anonymous)
-                )
-            `)
-            .eq('id', postId)
-            .single();
+        const post = forumData.posts.find(p => p.id === postId);
+        if (!post) {
+            showNotification('Post not found', 'error');
+            return;
+        }
         
-        if (error) throw error;
+        forumData.currentPost = post;
         
-        displayPostDetail(data);
+        // Update modal title
+        document.getElementById('post-detail-title').textContent = post.title;
+        
+        // Load post content
+        const user = post.user_profiles;
+        const displayName = user?.is_anonymous ? 'Anonymous User' : (user?.display_name || 'Unknown User');
+        const userAvatar = user?.is_anonymous ? '/assets/img/logo.png' : (auth.currentUser?.user_metadata?.avatar_url || '/assets/img/logo.png');
+        
+        document.getElementById('post-detail-content').innerHTML = `
+            <div class="post-header mb-3">
+                <div class="d-flex align-items-center">
+                    <img src="${userAvatar}" alt="${displayName}" class="user-avatar me-3">
+                    <div>
+                        <h6 class="mb-0">${displayName}</h6>
+                        <small class="text-muted">${formatTimeAgo(post.created_at)}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>${post.content}</p>
+            </div>
+        `;
+        
+        // Load comments
+        await loadComments(postId);
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('postDetailModal'));
+        modal.show();
+        
     } catch (error) {
+        console.error('Error viewing post:', error);
         showNotification('Error loading post: ' + error.message, 'error');
     }
 };
 
-// Display post detail
-function displayPostDetail(post) {
-    const modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.id = 'postDetailModal';
-    modal.innerHTML = `
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">${post.title}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div>
-                                <small class="text-muted">
-                                    By ${post.user_profiles?.is_anonymous ? 'Anonymous' : post.user_profiles?.display_name || 'User'}
-                                </small>
-                                <br>
-                                <small class="text-muted">
-                                    ${formatDate(post.created_at)}
-                                </small>
-                            </div>
-                            <div class="btn-group btn-group-sm">
-                                <button class="btn btn-outline-primary" onclick="upvotePost('${post.id}')">
-                                    <i class="bi bi-arrow-up"></i> ${post.upvotes || 0}
-                                </button>
-                                <button class="btn btn-outline-secondary" onclick="downvotePost('${post.id}')">
-                                    <i class="bi bi-arrow-down"></i> ${post.downvotes || 0}
-                                </button>
-                            </div>
+// Load comments for a post
+async function loadComments(postId) {
+    const container = document.getElementById('comments-container');
+    if (!container) return;
+    
+    try {
+        const postComments = forumData.comments.filter(c => c.post_id === postId);
+        
+        if (postComments.length === 0) {
+            container.innerHTML = '<p class="text-muted">No comments yet. Be the first to comment!</p>';
+            return;
+        }
+        
+        const html = postComments.map(comment => {
+            const user = comment.user_profiles;
+            const displayName = user?.is_anonymous ? 'Anonymous User' : (user?.display_name || 'Unknown User');
+            const userAvatar = user?.is_anonymous ? '/assets/img/logo.png' : (auth.currentUser?.user_metadata?.avatar_url || '/assets/img/logo.png');
+            
+            return `
+                <div class="comment">
+                    <div class="d-flex">
+                        <img src="${userAvatar}" alt="${displayName}" class="user-avatar me-2" style="width: 30px; height: 30px;">
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="mb-1">${displayName}</h6>
+                                <small class="text-muted">${formatTimeAgo(comment.created_at)}</small>
                         </div>
-                        
-                        <div class="mb-3">
-                            ${post.tags ? post.tags.map(tag => 
-                                `<span class="badge bg-secondary me-1">${tag}</span>`
-                            ).join('') : ''}
-                        </div>
-                        
-                        <div class="post-content">
-                            ${formatPostContent(post.content)}
-                        </div>
-                    </div>
-                    
-                    <hr>
-                    
-                    <div class="comments-section">
-                        <h6>Comments (${post.forum_comments?.length || 0})</h6>
-                        <div id="comments-container">
-                            ${displayComments(post.forum_comments || [])}
-                        </div>
-                        
-                        <div class="mt-3">
-                            <textarea class="form-control" id="new-comment" rows="3" 
-                                placeholder="Add a comment..."></textarea>
-                            <button class="btn btn-primary btn-sm mt-2" onclick="addComment('${post.id}')">
-                                Add Comment
-                            </button>
-                        </div>
-                    </div>
+                            <p class="mb-0">${comment.content}</p>
                 </div>
             </div>
         </div>
     `;
-    
-    document.body.appendChild(modal);
-    
-    const modalInstance = new bootstrap.Modal(modal);
-    modalInstance.show();
-    
-    modal.addEventListener('hidden.bs.modal', function() {
-        modal.remove();
-    });
-};
-
-// Display comments
-function displayComments(comments) {
-    if (comments.length === 0) {
-        return '<p class="text-muted">No comments yet. Be the first to comment!</p>';
+        }).join('');
+        
+        container.innerHTML = html;
+        
+    } catch (error) {
+        console.error('Error loading comments:', error);
+        container.innerHTML = '<p class="text-muted">Error loading comments.</p>';
     }
-    
-    return comments.map(comment => `
-        <div class="card mb-2">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <small class="text-muted">
-                        ${comment.user_profiles?.is_anonymous ? 'Anonymous' : comment.user_profiles?.display_name || 'User'}
-                    </small>
-                    <small class="text-muted">
-                        ${formatDate(comment.created_at)}
-                    </small>
-                </div>
-                <p class="mb-1">${comment.content}</p>
-                <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-primary btn-sm" onclick="upvoteComment('${comment.id}')">
-                        <i class="bi bi-arrow-up"></i> ${comment.upvotes || 0}
-                    </button>
-                    <button class="btn btn-outline-secondary btn-sm" onclick="replyToComment('${comment.id}')">
-                        <i class="bi bi-reply"></i> Reply
-                    </button>
-                </div>
-            </div>
-        </div>
-    `).join('');
 }
 
-// Add comment
-window.addComment = async function(postId) {
-    if (!auth.currentUser && !auth.isAnonymous) {
+// Submit comment
+window.submitComment = async function() {
+    if (!auth.userProfile) {
         showNotification('Please log in to comment', 'warning');
         return;
     }
     
-    const content = document.getElementById('new-comment').value.trim();
+    if (!forumData.currentPost) {
+        showNotification('No post selected', 'error');
+        return;
+    }
+    
+    const content = document.getElementById('comment-content').value.trim();
+    const anonymous = document.getElementById('comment-anonymous').checked;
+    
     if (!content) {
         showNotification('Please enter a comment', 'warning');
         return;
     }
     
     try {
-        const commentData = {
-            post_id: postId,
-            content,
-            user_id: auth.currentUser?.id || 'anonymous',
-            is_anonymous: auth.isAnonymous,
-            upvotes: 0,
-            downvotes: 0
+        const newComment = {
+            post_id: forumData.currentPost.id,
+            content: content,
+            user_id: auth.currentUser.id,
+            is_anonymous: anonymous,
+            status: 'approved'
         };
         
-        const { data, error } = await supabase
+        const { data, error: insertError } = await window.supabase
             .from('forum_comments')
-            .insert([commentData])
-            .select()
-            .single();
+            .insert([newComment])
+            .select();
         
-        if (error) throw error;
+        if (insertError) throw insertError;
         
-        // Clear comment input
-        document.getElementById('new-comment').value = '';
+        // Clear form
+        document.getElementById('comment-content').value = '';
+        document.getElementById('comment-anonymous').checked = false;
         
-        // Reload post detail
-        await showPostDetail(postId);
+        // Reload comments
+        await loadComments(forumData.currentPost.id);
+        
+        // Update forum data
+        await loadForumData();
+        updateForumStats();
+        
         showNotification('Comment added successfully!', 'success');
+        
     } catch (error) {
+        console.error('Error adding comment:', error);
         showNotification('Error adding comment: ' + error.message, 'error');
     }
 };
 
-// Upvote post
-window.upvotePost = async function(postId) {
-    if (!auth.currentUser && !auth.isAnonymous) {
-        showNotification('Please log in to vote', 'warning');
+// Like post
+window.likePost = async function(postId) {
+    if (!auth.userProfile) {
+        showNotification('Please log in to like posts', 'warning');
         return;
     }
     
     try {
-        const { data, error } = await supabase
+        const post = forumData.posts.find(p => p.id === postId);
+        if (!post) return;
+        
+        // Toggle like status (in a real app, you'd have a separate likes table)
+        const newLikes = (post.likes || 0) + 1;
+        
+        const { error } = await window.supabase
             .from('forum_posts')
-            .update({ upvotes: supabase.sql`upvotes + 1` })
-            .eq('id', postId)
-            .select()
-            .single();
+            .update({ likes: newLikes })
+            .eq('id', postId);
         
         if (error) throw error;
         
         // Update UI
-        await loadForumPosts();
-        showNotification('Post upvoted!', 'success');
+        const likeButton = document.querySelector(`[data-post-id="${postId}"] .btn-interaction`);
+        if (likeButton) {
+            const icon = likeButton.querySelector('i');
+            const count = likeButton.querySelector('span');
+            icon.className = 'bi bi-heart-fill text-danger';
+            count.textContent = newLikes;
+        }
+        
+        // Update forum data
+        await loadForumData();
+        
     } catch (error) {
-        showNotification('Error upvoting post: ' + error.message, 'error');
+        console.error('Error liking post:', error);
+        showNotification('Error liking post: ' + error.message, 'error');
     }
 };
 
-// Report post
-window.reportPost = function(postId) {
-    const reason = prompt('Please provide a reason for reporting this post:');
-    if (reason) {
-        // In production, send to moderation queue
-        showNotification('Post reported. Thank you for helping keep our community safe.', 'info');
+// Share post
+window.sharePost = function(postId) {
+    const post = forumData.posts.find(p => p.id === postId);
+    if (!post) return;
+    
+    const url = `${window.location.origin}/community-forum.html#post-${postId}`;
+    const text = `Check out this post: ${post.title}`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: post.title,
+            text: text,
+            url: url
+        });
+    } else {
+        // Fallback: copy to clipboard
+        navigator.clipboard.writeText(url).then(() => {
+            showNotification('Link copied to clipboard!', 'success');
+        });
     }
 };
 
 // Utility functions
-function formatDate(dateString) {
+function formatTimeAgo(dateString) {
     const date = new Date(dateString);
     const now = new Date();
     const diffInHours = (now - date) / (1000 * 60 * 60);
@@ -683,20 +775,166 @@ function truncateText(text, maxLength) {
     return text.substring(0, maxLength) + '...';
 }
 
-function formatPostContent(content) {
-    // Simple formatting - in production, use a proper markdown parser
-    return content
-        .replace(/\n/g, '<br>')
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>');
+function getCategoryDisplayName(category) {
+    const categories = {
+        'general': 'General Discussion',
+        'support': 'Support & Encouragement',
+        'resources': 'Resources & Tips',
+        'milestones': 'Milestones & Celebrations',
+        'challenges': 'Challenges & Struggles'
+    };
+    return categories[category] || category;
 }
 
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Test authentication status
+window.testAuthStatus = async function() {
+    try {
+        console.log('=== Authentication Status Test ===');
+        
+        // Check Supabase client
+        if (typeof supabase === 'undefined') {
+            console.log('❌ Supabase library not loaded');
+            return false;
+        }
+        console.log('✅ Supabase library loaded');
+        
+        // Check session
+        const { data: { session }, error } = await window.supabase.auth.getSession();
+        if (error) {
+            console.log('❌ Error getting session:', error);
+            return false;
+        }
+        
+        if (session) {
+            console.log('✅ User authenticated:', session.user.email);
+            console.log('   User ID:', session.user.id);
+            console.log('   Provider:', session.user.app_metadata?.provider);
+            console.log('   Session expires:', new Date(session.expires_at * 1000).toLocaleString());
+        } else {
+            console.log('❌ No active session');
+        }
+        
+        // Check global auth object
+        if (window.auth) {
+            console.log('✅ Global auth object available');
+            console.log('   Current user:', window.auth.currentUser?.email || 'null');
+            console.log('   User profile:', window.auth.userProfile ? 'loaded' : 'not loaded');
+        } else {
+            console.log('❌ Global auth object not available');
+        }
+        
+        // Check localStorage tokens
+        const authTokens = Object.keys(localStorage).filter(k => k.includes('sb-') && k.includes('auth-token'));
+        console.log('📦 Auth tokens in localStorage:', authTokens.length);
+        
+        console.log('=== End Test ===');
+        return !!session;
+    } catch (error) {
+        console.error('❌ Auth status test failed:', error);
+        return false;
+    }
+};
+
+// Force UI update for current auth state
+window.forceAuthUIUpdate = async function() {
+    try {
+        console.log('=== Forcing Auth UI Update ===');
+        
+        // Check current session
+        const { data: { session }, error } = await window.supabase.auth.getSession();
+        
+        if (error) {
+            console.error('Error getting session:', error);
+            return false;
+        }
+        
+        if (session) {
+            console.log('✅ Session found, updating UI for authenticated user');
+            currentUser = session.user;
+            window.auth.currentUser = session.user;
+            
+            // Load profile if not already loaded
+            if (!userProfile) {
+                await loadUserProfile();
+            }
+            
+            // Update UI
+            updateUIForAuthenticatedUser();
+            return true;
+        } else {
+            console.log('❌ No session found, updating UI for unauthenticated user');
+            currentUser = null;
+            userProfile = null;
+            window.auth.currentUser = null;
+            window.auth.userProfile = null;
+            updateUIForUnauthenticatedUser();
+            return false;
+        }
+    } catch (error) {
+        console.error('Error in forceAuthUIUpdate:', error);
+        return false;
+    }
+};
+
+// Test Supabase client functionality
+window.testSupabaseClient = async function() {
+    try {
+        console.log('=== Testing Supabase Client ===');
+        
+        // Test 1: Check if supabase is available
+        if (typeof supabase === 'undefined') {
+            console.log('❌ Supabase library not loaded');
+            return false;
+        }
+        console.log('✅ Supabase library loaded');
+        
+        // Test 2: Check if auth is available
+        if (!window.supabase.auth) {
+            console.log('❌ Supabase auth not available');
+            return false;
+        }
+        console.log('✅ Supabase auth available');
+        
+        // Test 3: Test basic auth call
+        console.log('Testing basic auth call...');
+        const { data, error } = await window.supabase.auth.getSession();
+        
+        if (error) {
+            console.log('❌ Error in basic auth call:', error);
+            return false;
+        }
+        
+        console.log('✅ Basic auth call successful');
+        console.log('Session data:', data);
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Supabase client test failed:', error);
+        return false;
+    }
+};
+
 // Export functions for global access
-window.forum = {
-    loadForumPosts,
+window.communityForum = {
     showNewPostModal,
-    showPostDetail,
-    addComment,
-    upvotePost,
-    reportPost
+    submitNewPost,
+    viewPost,
+    submitComment,
+    likePost,
+    sharePost,
+    testAuthStatus,
+    forceAuthUIUpdate,
+    testSupabaseClient
 }; 

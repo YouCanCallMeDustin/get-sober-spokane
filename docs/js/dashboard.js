@@ -4,38 +4,73 @@
 let dashboardData = {};
 let recoveryChart = null;
 
+// Initialize dashboard object early to avoid undefined errors
+window.dashboard = {
+    onAuthReady: function() {
+        console.log('Dashboard received auth ready notification');
+        clearErrorBanner();
+        initializeDashboard();
+        setupDashboardListeners();
+    }
+};
+
 // Initialize dashboard
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Dashboard DOM Content Loaded');
+    
     // Wait for auth to be ready before initializing dashboard
-    if (typeof auth !== 'undefined' && auth.userProfile) {
+    if (window.auth && window.auth.userProfile) {
+        console.log('Auth ready immediately, initializing dashboard');
+        clearErrorBanner();
         initializeDashboard();
         setupDashboardListeners();
     } else {
+        console.log('Auth not ready, waiting...');
         // Wait for auth to load
         const checkAuth = setInterval(() => {
-            if (typeof auth !== 'undefined' && auth.userProfile) {
+            if (window.auth && window.auth.userProfile) {
+                console.log('Auth became ready, initializing dashboard');
                 clearInterval(checkAuth);
+                clearErrorBanner();
                 initializeDashboard();
                 setupDashboardListeners();
             }
         }, 100);
         
-        // Timeout after 5 seconds
+        // Timeout after 15 seconds (increased from 10)
         setTimeout(() => {
             clearInterval(checkAuth);
-            console.error('Auth system not ready after 5 seconds');
-            showNotification('Error loading user data. Please refresh the page.', 'error');
-        }, 5000);
+            console.error('Auth system not ready after 15 seconds');
+            // Don't show error notification if we're still waiting for auth
+            // The auth system will handle its own error display
+        }, 15000);
     }
 });
+
+// Clear error banner when data loads successfully
+function clearErrorBanner() {
+    const errorBanner = document.querySelector('.alert-danger, .alert-error');
+    if (errorBanner) {
+        console.log('Clearing error banner');
+        errorBanner.remove();
+    }
+}
 
 // Initialize dashboard system
 async function initializeDashboard() {
     try {
+        console.log('Initializing dashboard...');
         await loadDashboardData();
         setupDashboardUI();
-        initializeCharts();
+        
+        // Only initialize charts if they haven't been initialized yet
+        if (!recoveryChart) {
+            initializeCharts();
+        }
+        
         updateDashboardCounts();
+        clearErrorBanner(); // Clear any error banners on successful load
+        console.log('Dashboard initialized successfully');
     } catch (error) {
         console.error('Dashboard initialization error:', error);
         showNotification('Error loading dashboard: ' + error.message, 'error');
@@ -880,6 +915,28 @@ window.browseResources = function() {
     window.location.href = '/resource-directory.html';
 };
 
+// Show new post modal
+window.showNewPostModal = function() {
+    window.location.href = '/community-forum.html';
+};
+
+// Show story submission modal
+window.showStorySubmissionModal = function() {
+    // For now, show a notification that this feature is coming soon
+    showNotification('Success stories feature is coming soon! You can browse resources in the meantime.', 'info');
+    // Navigate to resource directory as an alternative
+    setTimeout(() => {
+        window.location.href = '/resource-directory.html';
+    }, 2000);
+};
+
+// Add milestone
+window.addMilestone = function() {
+    // Show the milestone modal
+    const milestoneModal = new bootstrap.Modal(document.getElementById('milestoneModal'));
+    milestoneModal.show();
+};
+
 // Utility functions
 function formatDate(dateString) {
     const date = new Date(dateString);
@@ -912,5 +969,6 @@ window.dashboard = {
     setSobrietyDate,
     submitMilestone,
     exportData,
-    printDashboard
+    printDashboard,
+    onAuthReady: window.dashboard.onAuthReady
 }; 

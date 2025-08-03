@@ -132,29 +132,9 @@ window.showAuthModal = function() {
     });
 };
 
-// Add auth button to navigation
-function addAuthButton() {
-    const navbar = document.querySelector('.navbar-nav');
-    if (!navbar) return;
-    
-    // Check if auth button already exists
-    if (document.getElementById('auth-button')) return;
-    
-    const authButton = document.createElement('li');
-    authButton.className = 'nav-item';
-    authButton.id = 'auth-button';
-    authButton.innerHTML = `
-        <button class="btn btn-outline-primary btn-sm" onclick="showAuthModal()">
-            <i class="bi bi-person me-1"></i>Login
-        </button>
-    `;
-    
-    navbar.appendChild(authButton);
-}
-
 // Update auth button based on authentication state
 function updateAuthButton() {
-    const authButton = document.getElementById('auth-button');
+    const authButton = document.querySelector('.auth-button');
     if (!authButton) return;
     
     if (auth.currentUser || auth.isAnonymous) {
@@ -182,8 +162,6 @@ function updateAuthButton() {
 
 // Initialize auth modal functionality
 document.addEventListener('DOMContentLoaded', function() {
-    addAuthButton();
-    
     // Update button when auth state changes
     if (typeof auth !== 'undefined') {
         updateAuthButton();
@@ -206,6 +184,5 @@ document.addEventListener('DOMContentLoaded', function() {
 // Export functions for global access
 window.authModal = {
     showAuthModal,
-    addAuthButton,
     updateAuthButton
 }; 

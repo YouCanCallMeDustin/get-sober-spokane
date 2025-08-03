@@ -15,14 +15,23 @@ html(lang="en")
     link(href="/css/styles.css" rel="stylesheet")
     
     style.
-      /* Fix navigation text visibility */
+      /* Professional navigation styling */
       .navbar.navbar-light .navbar-nav .nav-link {
         color: #333 !important;
         font-weight: 500;
+        position: relative;
+        transition: all 0.3s ease;
       }
       
       .navbar.navbar-light .navbar-nav .nav-link:hover {
         color: #007bff !important;
+        transform: translateY(-1px);
+      }
+      
+      .navbar.navbar-light .navbar-nav .nav-link.active {
+        color: #007bff !important;
+        background-color: rgba(0, 123, 255, 0.1);
+        border-radius: 6px;
       }
       
       .navbar.navbar-light .navbar-brand {
@@ -39,6 +48,63 @@ html(lang="en")
         background-color: rgba(255, 255, 255, 0.95) !important;
         backdrop-filter: blur(10px);
       }
+      
+      /* Professional tab styling */
+      .nav-tabs {
+        border-bottom: 2px solid #e9ecef;
+      }
+      
+      .nav-tabs .nav-link {
+        border: none;
+        color: #6c757d;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        margin-right: 0.5rem;
+        border-radius: 6px 6px 0 0;
+        transition: all 0.3s ease;
+      }
+      
+      .nav-tabs .nav-link:hover {
+        border: none;
+        color: #007bff;
+        background-color: rgba(0, 123, 255, 0.05);
+      }
+      
+      .nav-tabs .nav-link.active {
+        color: #007bff;
+        background-color: #fff;
+        border: 2px solid #007bff;
+        border-bottom: 2px solid #fff;
+        margin-bottom: -2px;
+      }
+      
+      /* Login button styling */
+      .auth-button {
+        margin-left: 1rem;
+      }
+      
+      .auth-button .btn {
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+      
+      .auth-button .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+      }
+      
+      /* Responsive navigation */
+      @media (max-width: 991.98px) {
+        .navbar-nav {
+          margin-top: 1rem;
+        }
+        
+        .auth-button {
+          margin-left: 0;
+          margin-top: 1rem;
+        }
+      }
     
     block head
 
@@ -53,20 +119,80 @@ html(lang="en")
           span.navbar-toggler-icon
         .collapse.navbar-collapse#navbarResponsive
           ul.navbar-nav.ms-auto.my-2.my-lg-0
-            li.nav-item
-              a.nav-link(href="/") Home
-            li.nav-item
-              a.nav-link(href="/#about") About
-            li.nav-item
-              a.nav-link(href="/resource-directory.html") Resources
-            li.nav-item
-              a.nav-link(href="/community-forum.html") Community
-            li.nav-item
-              a.nav-link(href="/success-stories.html") Stories
-            li.nav-item
-              a.nav-link(href="/dashboard.html") Dashboard
-            li.nav-item
-              a.nav-link(href="/#contact") Contact
+            // Main Navigation
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false")
+                i.bi.bi-house.me-1
+                | Home
+              ul.dropdown-menu
+                li
+                  a.dropdown-item(href="/") Home
+                li
+                  a.dropdown-item(href="/#about") About
+                li
+                  a.dropdown-item(href="/#contact") Contact
+            
+            // Resources & Services
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false")
+                i.bi.bi-heart.me-1
+                | Resources
+              ul.dropdown-menu
+                li
+                  a.dropdown-item(href="/resource-directory.html") Resource Directory
+                li
+                  a.dropdown-item(href="/addiction-treatments-support.html") Treatment & Support
+                li
+                  a.dropdown-item(href="/medical-mental-health.html") Medical & Mental Health
+                li
+                  a.dropdown-item(href="/shelter-housing.html") Shelter & Housing
+                li
+                  a.dropdown-item(href="/food-basic-needs.html") Food & Basic Needs
+                li
+                  a.dropdown-item(href="/employment-skills.html") Employment & Skills
+            
+            // Community
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false")
+                i.bi.bi-people.me-1
+                | Community
+              ul.dropdown-menu
+                li
+                  a.dropdown-item(href="/community-forum.html") Community Forum
+                li
+                  a.dropdown-item(href="/community-engagement-sober-activities.html") Sober Activities
+                li
+                  a.dropdown-item(href="/success-stories.html") Success Stories
+            
+            // Tools
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false")
+                i.bi.bi-tools.me-1
+                | Tools
+              ul.dropdown-menu
+                li
+                  a.dropdown-item(href="/dashboard.html") Dashboard
+                li
+                  a.dropdown-item(href="/map.html") Resource Map
+                li
+                  a.dropdown-item(href="/emergency-help.html") Emergency Help
+            
+            // Support
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false")
+                i.bi.bi-hand-heart.me-1
+                | Support
+              ul.dropdown-menu
+                li
+                  a.dropdown-item(href="/donations.html") Donations
+                li
+                  a.dropdown-item(href="/feedback-system.html") Feedback
+            
+            // Login Button
+            li.nav-item.auth-button
+              button.btn.btn-outline-primary.btn-sm(onclick="showAuthModal()")
+                i.bi.bi-person.me-1
+                | Login
 
     block content
 

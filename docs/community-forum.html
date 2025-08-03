@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Get Sober Spokane</title>
+        <meta name="description" content="Recovery support community in Spokane, WA" />
+        <!-- Bootstrap Icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/css/styles.css" rel="stylesheet" />
+        <style>
+            /* Professional navigation styling */
+            .navbar.navbar-light .navbar-nav .nav-link {
+                color: #333 !important;
+                font-weight: 500;
+                position: relative;
+                transition: all 0.3s ease;
+            }
+
+            .navbar.navbar-light .navbar-nav .nav-link:hover {
+                color: #007bff !important;
+                transform: translateY(-1px);
+            }
+
+            .navbar.navbar-light .navbar-nav .nav-link.active {
+                color: #007bff !important;
+                background-color: rgba(0, 123, 255, 0.1);
+                border-radius: 6px;
+            }
+
+            .navbar.navbar-light .navbar-brand {
+                color: #333 !important;
+                font-weight: 600;
+            }
+
+            .navbar.navbar-light .navbar-brand:hover {
+                color: #007bff !important;
+            }
+
+            /* Ensure navbar has proper background */
+            .navbar.navbar-light {
+                background-color: rgba(255, 255, 255, 0.95) !important;
+                backdrop-filter: blur(10px);
+            }
+
+            /* Professional tab styling */
+            .nav-tabs {
+                border-bottom: 2px solid #e9ecef;
+            }
+
+            .nav-tabs .nav-link {
+                border: none;
+                color: #6c757d;
+                font-weight: 500;
+                padding: 0.75rem 1.5rem;
+                margin-right: 0.5rem;
+                border-radius: 6px 6px 0 0;
+                transition: all 0.3s ease;
+            }
+
+            .nav-tabs .nav-link:hover {
+                border: none;
+                color: #007bff;
+                background-color: rgba(0, 123, 255, 0.05);
+            }
+
+            .nav-tabs .nav-link.active {
+                color: #007bff;
+                background-color: #fff;
+                border: 2px solid #007bff;
+                border-bottom: 2px solid #fff;
+                margin-bottom: -2px;
+            }
+
+            /* Login button styling */
+            .auth-button {
+                margin-left: 1rem;
+            }
+
+            .auth-button .btn {
+                border-radius: 6px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+
+            .auth-button .btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+            }
+
+            /* Responsive navigation */
+            @media (max-width: 991.98px) {
+                .navbar-nav {
+                    margin-top: 1rem;
+                }
+
+                .auth-button {
+                    margin-left: 0;
+                    margin-top: 1rem;
+                }
+            }
+        </style>
+        <style>
+            .forum-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                margin-top: 80px; /* Add top margin to account for fixed navbar */
+            }
+
+            .forum-header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 40px 20px;
+                border-radius: 10px;
+                margin-bottom: 30px;
+                text-align: center;
+                position: relative;
+                z-index: 1;
+            }
+
+            .forum-stats {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 20px;
+            }
+
+            .stat-item {
+                text-align: center;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+                font-weight: bold;
+            }
+
+            .post-card {
+                border: 1px solid #e9ecef;
+                border-radius: 10px;
+                margin-bottom: 20px;
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+
+            .post-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .post-header {
+                padding: 15px 20px;
+                border-bottom: 1px solid #e9ecef;
+                background-color: #f8f9fa;
+                border-radius: 10px 10px 0 0;
+            }
+
+            .post-content {
+                padding: 20px;
+            }
+
+            .post-footer {
+                padding: 15px 20px;
+                border-top: 1px solid #e9ecef;
+                background-color: #f8f9fa;
+                border-radius: 0 0 10px 10px;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .category-badge {
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                color: white;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 500;
+            }
+
+            .interaction-buttons {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .btn-interaction {
+                background: none;
+                border: 1px solid #dee2e6;
+                border-radius: 20px;
+                padding: 5px 15px;
+                font-size: 0.9rem;
+                transition: all 0.2s;
+            }
+
+            .btn-interaction:hover {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+            }
+
+            .btn-interaction.active {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+            }
+
+            .comments-section {
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid #e9ecef;
+            }
+
+            .comment {
+                padding: 10px 0;
+                border-bottom: 1px solid #f1f3f4;
+            }
+
+            .comment:last-child {
+                border-bottom: none;
+            }
+
+            .sidebar {
+                background: white;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .filter-section {
+                margin-bottom: 30px;
+            }
+
+            .search-box {
+                border-radius: 25px;
+                border: 2px solid #e9ecef;
+                padding: 10px 20px;
+                transition: border-color 0.2s;
+            }
+
+            .search-box:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            }
+
+            /* Responsive adjustments for fixed navbar */
+            @media (max-width: 768px) {
+                .forum-container {
+                    margin-top: 70px;
+                    padding: 15px;
+                }
+
+                .forum-header {
+                    padding: 30px 15px;
+                }
+
+                .forum-stats {
+                    flex-direction: column;
+                    gap: 15px;
+                }
+            }
+        </style>
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <img class="logo" src="/assets/img/logo.png" alt="Get Sober Spokane Logo" />
+                    <span class="ms-2">Get Sober Spokane</span>
+                </a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                        <!-- Main Navigation-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-house me-1"></i>
+                                Home
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/">Home</a></li>
+                                <li><a class="dropdown-item" href="/#about">About</a></li>
+                                <li><a class="dropdown-item" href="/#contact">Contact</a></li>
+                            </ul>
+                        </li>
+                        <!-- Resources & Services-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-heart me-1"></i>
+                                Resources
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/resource-directory.html">Resource Directory</a></li>
+                                <li><a class="dropdown-item" href="/addiction-treatments-support.html">Treatment & Support</a></li>
+                                <li><a class="dropdown-item" href="/medical-mental-health.html">Medical & Mental Health</a></li>
+                                <li><a class="dropdown-item" href="/shelter-housing.html">Shelter & Housing</a></li>
+                                <li><a class="dropdown-item" href="/food-basic-needs.html">Food & Basic Needs</a></li>
+                                <li><a class="dropdown-item" href="/employment-skills.html">Employment & Skills</a></li>
+                            </ul>
+                        </li>
+                        <!-- Community-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-people me-1"></i>
+                                Community
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/community-forum.html">Community Forum</a></li>
+                                <li><a class="dropdown-item" href="/community-engagement-sober-activities.html">Sober Activities</a></li>
+                                <li><a class="dropdown-item" href="/success-stories.html">Success Stories</a></li>
+                            </ul>
+                        </li>
+                        <!-- Tools-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-tools me-1"></i>
+                                Tools
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/dashboard.html">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="/map.html">Resource Map</a></li>
+                                <li><a class="dropdown-item" href="/emergency-help.html">Emergency Help</a></li>
+                            </ul>
+                        </li>
+                        <!-- Support-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-hand-heart me-1"></i>
+                                Support
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/donations.html">Donations</a></li>
+                                <li><a class="dropdown-item" href="/feedback-system.html">Feedback</a></li>
+                            </ul>
+                        </li>
+                        <!-- Login Button-->
+                        <li class="nav-item auth-button">
+                            <button class="btn btn-outline-primary btn-sm" onclick="showAuthModal()">
+                                <i class="bi bi-person me-1"></i>
+                                Login
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="forum-container">
+            <!-- Forum Header-->
+            <div class="forum-header">
+                <h1 class="display-4 mb-3">Community Forum</h1>
+                <p class="lead mb-4">Connect with others on your recovery journey. Share experiences, ask questions, and support each other.</p>
+                <div class="forum-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-posts">0</div>
+                        <div class="stat-label">Posts</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-comments">0</div>
+                        <div class="stat-label">Comments</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="active-users">0</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-views">0</div>
+                        <div class="stat-label">Views</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Filter and Search Section-->
+                    <div class="filter-section">
+                        <div class="row align-items-center">
+                            <div class="col-md-6"><input class="form-control search-box" id="search-posts" type="text" placeholder="Search posts..." /></div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="category-filter">
+                                    <option value="">All Categories</option>
+                                    <option value="general">General Discussion</option>
+                                    <option value="support">Support & Encouragement</option>
+                                    <option value="resources">Resources & Tips</option>
+                                    <option value="milestones">Milestones & Celebrations</option>
+                                    <option value="challenges">Challenges & Struggles</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="sort-filter">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="popular">Most Popular</option>
+                                    <option value="recent">Recently Active</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Create New Post Button-->
+                    <div class="mb-4">
+                        <button class="btn btn-primary btn-lg w-100" onclick="showNewPostModal()">
+                            <i class="bi bi-plus-circle me-2"></i>
+                            Create New Post
+                        </button>
+                    </div>
+                    <!-- Posts Container-->
+                    <div id="posts-container">
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status"></div>
+                            <p class="mt-3">Loading posts...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="sidebar">
+                        <!-- Quick Actions-->
+                        <h5 class="mb-3">Quick Actions</h5>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-outline-primary" onclick="showNewPostModal()">
+                                <i class="bi bi-plus-circle me-2"></i>
+                                New Post
+                            </button>
+                            <button class="btn btn-outline-success" onclick="showStorySubmissionModal()">
+                                <i class="bi bi-chat-quote me-2"></i>
+                                Share Story
+                            </button>
+                            <button class="btn btn-outline-info" onclick="browseResources()">
+                                <i class="bi bi-search me-2"></i>
+                                Find Resources
+                            </button>
+                        </div>
+                        <hr />
+                        <!-- Categories-->
+                        <h5 class="mb-3">Categories</h5>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex justify-content-between align-items-center" id="category-general">
+                                General Discussion
+                                <span class="badge bg-primary rounded-pill">0</span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center" id="category-support">
+                                Support & Encouragement
+                                <span class="badge bg-primary rounded-pill">0</span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center" id="category-resources">
+                                Resources & Tips
+                                <span class="badge bg-primary rounded-pill">0</span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center" id="category-milestones">
+                                Milestones & Celebrations
+                                <span class="badge bg-primary rounded-pill">0</span>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center" id="category-challenges">
+                                Challenges & Struggles
+                                <span class="badge bg-primary rounded-pill">0</span>
+                            </div>
+                        </div>
+                        <hr />
+                        <!-- Recent Activity-->
+                        <h5 class="mb-3">Recent Activity</h5>
+                        <div id="recent-activity">
+                            <div class="text-muted text-center">
+                                <i class="bi bi-clock me-2"></i>
+                                No recent activity
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- New Post Modal-->
+        <div class="modal fade" id="newPostModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create New Post</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="new-post-form">
+                            <div class="mb-3">
+                                <label class="form-label" for="post-title">Title</label>
+                                <input class="form-control" id="post-title" type="text" required placeholder="Enter post title..." />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="post-category">Category</label>
+                                <select class="form-select" id="post-category" required>
+                                    <option value="">Select a category</option>
+                                    <option value="general">General Discussion</option>
+                                    <option value="support">Support & Encouragement</option>
+                                    <option value="resources">Resources & Tips</option>
+                                    <option value="milestones">Milestones & Celebrations</option>
+                                    <option value="challenges">Challenges & Struggles</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="post-content">Content</label>
+                                <textarea class="form-control" id="post-content" rows="8" required placeholder="Share your thoughts, questions, or experiences..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="post-anonymous" type="checkbox" />
+                                    <label class="form-check-label" for="post-anonymous">Post anonymously</label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="button" onclick="submitNewPost()">Create Post</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Post Detail Modal-->
+        <div class="modal fade" id="postDetailModal" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="post-detail-title">Post Title</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="post-detail-content">
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status"></div>
+                                <p class="mt-3">Loading post...</p>
+                            </div>
+                        </div>
+                        <hr />
+                        <!-- Comments Section-->
+                        <h6 class="mb-3">Comments</h6>
+                        <div id="comments-container">
+                            <div class="text-center py-3">
+                                <div class="spinner-border text-primary" role="status"></div>
+                                <p class="mt-3">Loading comments...</p>
+                            </div>
+                        </div>
+                        <!-- Add Comment Form-->
+                        <div class="mt-4">
+                            <form id="new-comment-form">
+                                <div class="mb-3"><textarea class="form-control" id="comment-content" rows="3" placeholder="Add a comment..." required></textarea></div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" id="comment-anonymous" type="checkbox" />
+                                        <label class="form-check-label" for="comment-anonymous">Comment anonymously</label>
+                                    </div>
+                                    <button class="btn btn-primary" type="button" onclick="submitComment()">Add Comment</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer-->
+        <footer class="bg-light py-5">
+            <div class="container px-4 px-lg-5">
+                <a href="/"><img class="footer-logo" src="/assets/img/logo.png" alt="Get Sober Spokane Logo" /></a>
+                <div class="small text-center text-muted">
+                    Copyright © 2025 - Get Sober Spokane
+                    <br />
+                    <a href="/privacy-policy.html">Privacy Policy</a>
+                    |
+                    <a href="/terms-of-service.html">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Supabase-->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <!-- Core theme JS-->
+        <script src="/js/supabaseClient.js"></script>
+        <script src="/js/auth.js"></script>
+        <script src="/js/auth-modal.js"></script>
+        <script src="/js/community-forum.js"></script>
+    </body>
+</html>

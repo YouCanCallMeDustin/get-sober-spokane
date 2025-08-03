@@ -7,6 +7,13 @@
     background-color: $white;
     transition: all 0.3s ease;
     padding: 1rem 0;
+    transform: translateY(-100%);
+    opacity: 0;
+
+    &.navbar-shrink {
+        transform: translateY(0);
+        opacity: 1;
+    }
 
     .navbar-brand {
         font-family: 'Merriweather', serif;
@@ -26,17 +33,84 @@
                 padding: 0.75rem 1.25rem;
                 border-radius: 6px;
                 transition: all 0.3s ease;
+                position: relative;
 
                 &:hover,
                 &:active {
                     color: $primary-blue;
                     background-color: fade-out($primary-blue, 0.95);
+                    transform: translateY(-1px);
                 }
 
                 &.active {
                     color: $primary-blue !important;
                     background-color: fade-out($primary-blue, 0.9);
                 }
+
+                // Dropdown arrow styling
+                &.dropdown-toggle::after {
+                    margin-left: 0.5rem;
+                    transition: transform 0.2s ease;
+                }
+
+                &:hover.dropdown-toggle::after {
+                    transform: rotate(180deg);
+                }
+            }
+
+            // Dropdown menu styling
+            .dropdown-menu {
+                border: none;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                border-radius: 8px;
+                padding: 0.5rem 0;
+                margin-top: 0.5rem;
+                min-width: 200px;
+
+                .dropdown-item {
+                    padding: 0.75rem 1.5rem;
+                    color: $dark-navy;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                    border-radius: 0;
+
+                    &:hover {
+                        background-color: fade-out($primary-blue, 0.95);
+                        color: $primary-blue;
+                        transform: translateX(4px);
+                    }
+
+                    &:active {
+                        background-color: fade-out($primary-blue, 0.9);
+                        color: $primary-blue;
+                    }
+                }
+
+                .dropdown-divider {
+                    margin: 0.5rem 0;
+                    border-color: fade-out($dark-navy, 0.9);
+                }
+            }
+        }
+
+        // Auth button styling
+        .auth-button {
+            margin-left: 1rem;
+
+            .btn {
+                border-radius: 6px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                padding: 0.5rem 1rem;
+
+                &:hover {
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+                }
+            }
+
+            .dropdown-menu {
+                min-width: 180px;
             }
         }
     }
@@ -52,6 +126,8 @@
         box-shadow: none;
         background-color: transparent;
         padding: 1.5rem 0;
+        transform: translateY(-100%);
+        opacity: 0;
 
         .navbar-brand {
             color: $white;
@@ -78,9 +154,26 @@
                     }
                 }
 
+                .dropdown-menu {
+                    background-color: $white;
+                    border: 1px solid fade-out($dark-navy, 0.9);
+                }
+
                 &:last-child {
                     .nav-link {
                         padding-right: 1.25rem;
+                    }
+                }
+            }
+
+            .auth-button {
+                .btn {
+                    border-color: fade-out($white, 0.3);
+                    color: $white;
+
+                    &:hover {
+                        background-color: $white;
+                        color: $primary-blue;
                     }
                 }
             }
@@ -91,6 +184,8 @@
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
             background-color: $white;
             padding: 0.75rem 0;
+            transform: translateY(0);
+            opacity: 1;
 
             .navbar-brand {
                 color: $primary-blue;
@@ -111,6 +206,41 @@
                         }
                     }
                 }
+
+                .auth-button {
+                    .btn {
+                        border-color: $primary-blue;
+                        color: $primary-blue;
+
+                        &:hover {
+                            background-color: $primary-blue;
+                            color: $white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive navigation adjustments
+@media (max-width: 991.98px) {
+    #mainNav {
+        .navbar-nav {
+            margin-top: 1rem;
+            
+            .nav-item {
+                margin-bottom: 0.5rem;
+                
+                .nav-link {
+                    padding: 0.75rem 1rem;
+                }
+            }
+            
+            .auth-button {
+                margin-left: 0;
+                margin-top: 1rem;
+                text-align: center;
             }
         }
     }

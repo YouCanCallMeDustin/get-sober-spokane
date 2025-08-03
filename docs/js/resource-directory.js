@@ -722,6 +722,24 @@ class ResourceDirectory {
                 website: 'https://svt.org',
                 rating: 3.9,
                 reviews: 89
+            },
+            {
+                id: 'community-1',
+                name: 'Mighty To Save Ministries',
+                category: 'community',
+                subcategory: 'faith-based',
+                address: '', // Address unknown, can be updated later
+                phone: '', // Phone unknown, can be updated later
+                hours: '', // Hours unknown, can be updated later
+                availability: 'available',
+                description: 'Faith-based community organization offering support, resources, and outreach for recovery and life transformation.',
+                services: ['spiritual support', 'community outreach', 'recovery resources'],
+                coordinates: null, // Unknown
+                accessibility: [], // Unknown
+                requirements: [], // Unknown
+                website: 'https://www.Mighty2Save.com',
+                rating: null, // No rating yet
+                reviews: 0
             }
         ];
     }
@@ -990,7 +1008,8 @@ class ResourceDirectory {
             'medical': 'bi-heart-pulse',
             'employment': 'bi-briefcase',
             'legal': 'bi-shield-check',
-            'transportation': 'bi-bus-front'
+            'transportation': 'bi-bus-front',
+            'community': 'bi-people' // Added for Mighty To Save Ministries
         };
         return icons[category] || 'bi-question-circle';
     }

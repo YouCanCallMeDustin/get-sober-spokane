@@ -1,0 +1,333 @@
+extends layout
+
+block head
+  style.
+    .forum-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      margin-top: 80px; /* Add top margin to account for fixed navbar */
+    }
+    
+    .forum-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .forum-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    
+    .post-card {
+      border: 1px solid #e9ecef;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .post-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .post-header {
+      padding: 15px 20px;
+      border-bottom: 1px solid #e9ecef;
+      background-color: #f8f9fa;
+      border-radius: 10px 10px 0 0;
+    }
+    
+    .post-content {
+      padding: 20px;
+    }
+    
+    .post-footer {
+      padding: 15px 20px;
+      border-top: 1px solid #e9ecef;
+      background-color: #f8f9fa;
+      border-radius: 0 0 10px 10px;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .category-badge {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .interaction-buttons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .btn-interaction {
+      background: none;
+      border: 1px solid #dee2e6;
+      border-radius: 20px;
+      padding: 5px 15px;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    
+    .btn-interaction:hover {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    
+    .btn-interaction.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+    
+    .comments-section {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #e9ecef;
+    }
+    
+    .comment {
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f3f4;
+    }
+    
+    .comment:last-child {
+      border-bottom: none;
+    }
+    
+    .sidebar {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .filter-section {
+      margin-bottom: 30px;
+    }
+    
+    .search-box {
+      border-radius: 25px;
+      border: 2px solid #e9ecef;
+      padding: 10px 20px;
+      transition: border-color 0.2s;
+    }
+    
+    .search-box:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    /* Responsive adjustments for fixed navbar */
+    @media (max-width: 768px) {
+      .forum-container {
+        margin-top: 70px;
+        padding: 15px;
+      }
+      
+      .forum-header {
+        padding: 30px 15px;
+      }
+      
+      .forum-stats {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+
+block content
+  .forum-container
+    // Forum Header
+    .forum-header
+      h1.display-4.mb-3 Community Forum
+      p.lead.mb-4 Connect with others on your recovery journey. Share experiences, ask questions, and support each other.
+      .forum-stats
+        .stat-item
+          .stat-number#total-posts 0
+          .stat-label Posts
+        .stat-item
+          .stat-number#total-comments 0
+          .stat-label Comments
+        .stat-item
+          .stat-number#active-users 0
+          .stat-label Active Users
+        .stat-item
+          .stat-number#total-views 0
+          .stat-label Views
+    
+    .row
+      .col-lg-8
+        // Filter and Search Section
+        .filter-section
+          .row.align-items-center
+            .col-md-6
+              input.form-control.search-box#search-posts(type="text" placeholder="Search posts...")
+            .col-md-3
+              select.form-select#category-filter
+                option(value="") All Categories
+                option(value="general") General Discussion
+                option(value="support") Support & Encouragement
+                option(value="resources") Resources & Tips
+                option(value="milestones") Milestones & Celebrations
+                option(value="challenges") Challenges & Struggles
+            .col-md-3
+              select.form-select#sort-filter
+                option(value="newest") Newest First
+                option(value="oldest") Oldest First
+                option(value="popular") Most Popular
+                option(value="recent") Recently Active
+        
+        // Create New Post Button
+        .mb-4
+          button.btn.btn-primary.btn-lg.w-100(onclick="showNewPostModal()")
+            i.bi.bi-plus-circle.me-2
+            | Create New Post
+        
+        // Posts Container
+        #posts-container
+          .text-center.py-5
+            .spinner-border.text-primary(role="status")
+            p.mt-3 Loading posts...
+      
+      .col-lg-4
+        .sidebar
+          // Quick Actions
+          h5.mb-3 Quick Actions
+          .d-grid.gap-2
+            button.btn.btn-outline-primary(onclick="showNewPostModal()")
+              i.bi.bi-plus-circle.me-2
+              | New Post
+            button.btn.btn-outline-success(onclick="showStorySubmissionModal()")
+              i.bi.bi-chat-quote.me-2
+              | Share Story
+            button.btn.btn-outline-info(onclick="browseResources()")
+              i.bi.bi-search.me-2
+              | Find Resources
+          
+          hr
+          
+          // Categories
+          h5.mb-3 Categories
+          .list-group.list-group-flush
+            .list-group-item.d-flex.justify-content-between.align-items-center#category-general
+              | General Discussion
+              span.badge.bg-primary.rounded-pill 0
+            .list-group-item.d-flex.justify-content-between.align-items-center#category-support
+              | Support & Encouragement
+              span.badge.bg-primary.rounded-pill 0
+            .list-group-item.d-flex.justify-content-between.align-items-center#category-resources
+              | Resources & Tips
+              span.badge.bg-primary.rounded-pill 0
+            .list-group-item.d-flex.justify-content-between.align-items-center#category-milestones
+              | Milestones & Celebrations
+              span.badge.bg-primary.rounded-pill 0
+            .list-group-item.d-flex.justify-content-between.align-items-center#category-challenges
+              | Challenges & Struggles
+              span.badge.bg-primary.rounded-pill 0
+          
+          hr
+          
+          // Recent Activity
+          h5.mb-3 Recent Activity
+          #recent-activity
+            .text-muted.text-center
+              i.bi.bi-clock.me-2
+              | No recent activity
+
+  // New Post Modal
+  .modal.fade#newPostModal(tabindex="-1")
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header
+          h5.modal-title Create New Post
+          button.btn-close(type="button" data-bs-dismiss="modal")
+        .modal-body
+          form#new-post-form
+            .mb-3
+              label.form-label(for="post-title") Title
+              input.form-control#post-title(type="text" required placeholder="Enter post title...")
+            .mb-3
+              label.form-label(for="post-category") Category
+              select.form-select#post-category(required)
+                option(value="") Select a category
+                option(value="general") General Discussion
+                option(value="support") Support & Encouragement
+                option(value="resources") Resources & Tips
+                option(value="milestones") Milestones & Celebrations
+                option(value="challenges") Challenges & Struggles
+            .mb-3
+              label.form-label(for="post-content") Content
+              textarea.form-control#post-content(rows="8" required placeholder="Share your thoughts, questions, or experiences...")
+            .mb-3
+              .form-check
+                input.form-check-input#post-anonymous(type="checkbox")
+                label.form-check-label(for="post-anonymous")
+                  | Post anonymously
+        .modal-footer
+          button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+          button.btn.btn-primary(type="button" onclick="submitNewPost()") Create Post
+
+  // Post Detail Modal
+  .modal.fade#postDetailModal(tabindex="-1")
+    .modal-dialog.modal-xl
+      .modal-content
+        .modal-header
+          h5.modal-title#post-detail-title Post Title
+          button.btn-close(type="button" data-bs-dismiss="modal")
+        .modal-body
+          #post-detail-content
+            .text-center.py-5
+              .spinner-border.text-primary(role="status")
+              p.mt-3 Loading post...
+          
+          hr
+          
+          // Comments Section
+          h6.mb-3 Comments
+          #comments-container
+            .text-center.py-3
+              .spinner-border.text-primary(role="status")
+              p.mt-3 Loading comments...
+          
+          // Add Comment Form
+          .mt-4
+            form#new-comment-form
+              .mb-3
+                textarea.form-control#comment-content(rows="3" placeholder="Add a comment..." required)
+              .d-flex.justify-content-between.align-items-center
+                .form-check
+                  input.form-check-input#comment-anonymous(type="checkbox")
+                  label.form-check-label(for="comment-anonymous")
+                    | Comment anonymously
+                button.btn.btn-primary(type="button" onclick="submitComment()") Add Comment
+
+block scripts
+  script(src="/js/community-forum.js") 

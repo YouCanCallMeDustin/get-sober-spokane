@@ -13,14 +13,23 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="/css/styles.css" rel="stylesheet" />
         <style>
-            /* Fix navigation text visibility */
+            /* Professional navigation styling */
             .navbar.navbar-light .navbar-nav .nav-link {
                 color: #333 !important;
                 font-weight: 500;
+                position: relative;
+                transition: all 0.3s ease;
             }
 
             .navbar.navbar-light .navbar-nav .nav-link:hover {
                 color: #007bff !important;
+                transform: translateY(-1px);
+            }
+
+            .navbar.navbar-light .navbar-nav .nav-link.active {
+                color: #007bff !important;
+                background-color: rgba(0, 123, 255, 0.1);
+                border-radius: 6px;
             }
 
             .navbar.navbar-light .navbar-brand {
@@ -36,6 +45,63 @@
             .navbar.navbar-light {
                 background-color: rgba(255, 255, 255, 0.95) !important;
                 backdrop-filter: blur(10px);
+            }
+
+            /* Professional tab styling */
+            .nav-tabs {
+                border-bottom: 2px solid #e9ecef;
+            }
+
+            .nav-tabs .nav-link {
+                border: none;
+                color: #6c757d;
+                font-weight: 500;
+                padding: 0.75rem 1.5rem;
+                margin-right: 0.5rem;
+                border-radius: 6px 6px 0 0;
+                transition: all 0.3s ease;
+            }
+
+            .nav-tabs .nav-link:hover {
+                border: none;
+                color: #007bff;
+                background-color: rgba(0, 123, 255, 0.05);
+            }
+
+            .nav-tabs .nav-link.active {
+                color: #007bff;
+                background-color: #fff;
+                border: 2px solid #007bff;
+                border-bottom: 2px solid #fff;
+                margin-bottom: -2px;
+            }
+
+            /* Login button styling */
+            .auth-button {
+                margin-left: 1rem;
+            }
+
+            .auth-button .btn {
+                border-radius: 6px;
+                font-weight: 500;
+                transition: all 0.3s ease;
+            }
+
+            .auth-button .btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+            }
+
+            /* Responsive navigation */
+            @media (max-width: 991.98px) {
+                .navbar-nav {
+                    margin-top: 1rem;
+                }
+
+                .auth-button {
+                    margin-left: 0;
+                    margin-top: 1rem;
+                }
             }
         </style>
         <style>
@@ -96,7 +162,7 @@
     </head>
     <body id="page-top">
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand d-flex align-items-center" href="/">
                     <img class="logo" src="/assets/img/logo.png" alt="Get Sober Spokane Logo" />
@@ -105,13 +171,75 @@
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto my-2 my-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/resource-directory.html">Resources</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/community-forum.html">Community</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/success-stories.html">Stories</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
+                        <!-- Main Navigation-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-house me-1"></i>
+                                Home
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/">Home</a></li>
+                                <li><a class="dropdown-item" href="/#about">About</a></li>
+                                <li><a class="dropdown-item" href="/#contact">Contact</a></li>
+                            </ul>
+                        </li>
+                        <!-- Resources & Services-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-heart me-1"></i>
+                                Resources
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/resource-directory.html">Resource Directory</a></li>
+                                <li><a class="dropdown-item" href="/addiction-treatments-support.html">Treatment & Support</a></li>
+                                <li><a class="dropdown-item" href="/medical-mental-health.html">Medical & Mental Health</a></li>
+                                <li><a class="dropdown-item" href="/shelter-housing.html">Shelter & Housing</a></li>
+                                <li><a class="dropdown-item" href="/food-basic-needs.html">Food & Basic Needs</a></li>
+                                <li><a class="dropdown-item" href="/employment-skills.html">Employment & Skills</a></li>
+                            </ul>
+                        </li>
+                        <!-- Community-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-people me-1"></i>
+                                Community
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/community-forum.html">Community Forum</a></li>
+                                <li><a class="dropdown-item" href="/community-engagement-sober-activities.html">Sober Activities</a></li>
+                                <li><a class="dropdown-item" href="/success-stories.html">Success Stories</a></li>
+                            </ul>
+                        </li>
+                        <!-- Tools-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-tools me-1"></i>
+                                Tools
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/dashboard.html">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="/map.html">Resource Map</a></li>
+                                <li><a class="dropdown-item" href="/emergency-help.html">Emergency Help</a></li>
+                            </ul>
+                        </li>
+                        <!-- Support-->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-hand-heart me-1"></i>
+                                Support
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/donations.html">Donations</a></li>
+                                <li><a class="dropdown-item" href="/feedback-system.html">Feedback</a></li>
+                            </ul>
+                        </li>
+                        <!-- Login Button-->
+                        <li class="nav-item auth-button">
+                            <button class="btn btn-outline-primary btn-sm" onclick="showAuthModal()">
+                                <i class="bi bi-person me-1"></i>
+                                Login
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -645,8 +773,6 @@
         <script src="/js/auth.js"></script>
         <script src="/js/auth-modal.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="/js/supabaseClient.js"></script>
-        <script src="/js/auth.js"></script>
         <script src="/js/dashboard.js"></script>
     </body>
 </html>

@@ -23,11 +23,31 @@ window.addEventListener('DOMContentLoaded', event => {
 
     };
 
-    // Shrink the navbar 
+    // Navbar fade-in animation function
+    var navbarFadeIn = function () {
+        const navbarCollapsible = document.body.querySelector('#mainNav');
+        if (!navbarCollapsible) {
+            return;
+        }
+        
+        // Add initial state
+        if (window.scrollY === 0) {
+            navbarCollapsible.style.transform = 'translateY(-100%)';
+            navbarCollapsible.style.opacity = '0';
+        } else {
+            // Trigger fade-in animation
+            navbarCollapsible.style.transform = 'translateY(0)';
+            navbarCollapsible.style.opacity = '1';
+        }
+    };
+
+    // Initialize navbar state
     navbarShrink();
+    navbarFadeIn();
 
     // Shrink the navbar when page is scrolled
     document.addEventListener('scroll', navbarShrink);
+    document.addEventListener('scroll', navbarFadeIn);
 
     // Activate Bootstrap scrollspy on the main nav element
     const mainNav = document.body.querySelector('#mainNav');
