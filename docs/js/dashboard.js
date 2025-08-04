@@ -44,6 +44,10 @@ async function initializeDashboard() {
 
 // Setup dashboard event listeners
 function setupDashboardListeners() {
+    // Initialize Bootstrap dropdowns
+    const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
+    const dropdownList = [...dropdownElementList].map(dropdownToggleEl => new bootstrap.Dropdown(dropdownToggleEl));
+    
     // Tab navigation
     const tabLinks = document.querySelectorAll('[data-bs-toggle="pill"]');
     tabLinks.forEach(link => {

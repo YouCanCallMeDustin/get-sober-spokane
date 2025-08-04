@@ -38,6 +38,59 @@
                     background-color: fade-out($primary-blue, 0.9);
                 }
             }
+            
+            // Dropdown styling
+            &.dropdown {
+                .dropdown-toggle {
+                    &::after {
+                        margin-left: 0.5rem;
+                        transition: transform 0.2s ease;
+                    }
+                    
+                    &[aria-expanded="true"]::after {
+                        transform: rotate(180deg);
+                    }
+                }
+                
+                .dropdown-menu {
+                    border: none;
+                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                    border-radius: 8px;
+                    padding: 0.5rem 0;
+                    margin-top: 0.5rem;
+                    min-width: 220px;
+                    animation: dropdownFadeIn 0.2s ease;
+                    
+                    .dropdown-item {
+                        padding: 0.75rem 1.5rem;
+                        font-weight: 500;
+                        color: $dark-navy;
+                        transition: all 0.2s ease;
+                        display: flex;
+                        align-items: center;
+                        
+                        i {
+                            width: 16px;
+                            text-align: center;
+                        }
+                        
+                        &:hover {
+                            background-color: fade-out($primary-blue, 0.95);
+                            color: $primary-blue;
+                            transform: translateX(3px);
+                        }
+                        
+                        &:active {
+                            background-color: fade-out($primary-blue, 0.9);
+                        }
+                    }
+                    
+                    .dropdown-divider {
+                        margin: 0.25rem 0;
+                        border-color: fade-out($dark-navy, 0.8);
+                    }
+                }
+            }
         }
     }
 
@@ -64,6 +117,9 @@
         }
 
         .navbar-nav {
+            justify-content: center;
+            flex: 1;
+            
             .nav-item {
                 .nav-link {
                     color: fade-out($white, 0.15);
@@ -75,6 +131,23 @@
                         color: $white;
                         background-color: fade-out($white, 0.9);
                         transform: translateY(-1px);
+                    }
+                }
+                
+                &.dropdown {
+                    .dropdown-menu {
+                        background-color: $white;
+                        border: none;
+                        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                        
+                        .dropdown-item {
+                            color: $dark-navy;
+                            
+                            &:hover {
+                                background-color: fade-out($primary-blue, 0.95);
+                                color: $primary-blue;
+                            }
+                        }
                     }
                 }
 
@@ -108,6 +181,61 @@
                         &:hover {
                             color: $primary-blue;
                             background-color: fade-out($primary-blue, 0.95);
+                        }
+                    }
+                    
+                    &.dropdown {
+                        .dropdown-menu {
+                            background-color: $white;
+                            
+                            .dropdown-item {
+                                color: $dark-navy;
+                                
+                                &:hover {
+                                    background-color: fade-out($primary-blue, 0.95);
+                                    color: $primary-blue;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Dropdown animation
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Responsive adjustments
+@include media-breakpoint-down(lg) {
+    #mainNav {
+        .navbar-nav {
+            justify-content: flex-start;
+            
+            .nav-item.dropdown {
+                .dropdown-menu {
+                    border: none;
+                    box-shadow: none;
+                    background-color: transparent;
+                    padding-left: 1rem;
+                    
+                    .dropdown-item {
+                        color: $dark-navy;
+                        padding: 0.5rem 1rem;
+                        
+                        &:hover {
+                            background-color: fade-out($primary-blue, 0.95);
+                            color: $primary-blue;
                         }
                     }
                 }
