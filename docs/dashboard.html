@@ -82,6 +82,20 @@
                     justify-content: flex-start;
                 }
             }
+
+            /* Auth button styling */
+            #auth-button {
+                margin-left: 0.5rem;
+            }
+
+            #auth-button .btn {
+                font-weight: 500;
+                border-radius: 6px;
+            }
+
+            #auth-button .dropdown-toggle::after {
+                margin-left: 0.5rem;
+            }
         </style>
         <style>
             /* Dashboard specific styles to fix header overlap */
@@ -224,6 +238,7 @@
                         </li>
                         <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
+                        <!-- Auth button will be dynamically added here by auth.js-->
                     </ul>
                 </div>
             </div>
@@ -756,10 +771,37 @@
         <script src="/js/supabaseClient.js"></script>
         <script src="/js/auth.js"></script>
         <script src="/js/auth-modal.js"></script>
+        <!-- Initialize Bootstrap dropdowns for navigation-->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Initialize all dropdowns
+                const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
+                const dropdownList = [...dropdownElementList].map((dropdownToggleEl) => new bootstrap.Dropdown(dropdownToggleEl));
+
+                // Ensure dropdowns work on mobile
+                const navbarToggler = document.querySelector('.navbar-toggler');
+                if (navbarToggler) {
+                    navbarToggler.addEventListener('click', function () {
+                        // Re-initialize dropdowns after navbar collapse
+                        setTimeout(() => {
+                            const mobileDropdowns = document.querySelectorAll('.dropdown-toggle');
+                            mobileDropdowns.forEach((dropdown) => {
+                                if (!dropdown._dropdown) {
+                                    dropdown._dropdown = new bootstrap.Dropdown(dropdown);
+                                }
+                            });
+                        }, 100);
+                    });
+                }
+
+                // Ensure auth button is properly initialized
+                if (typeof setupAuthButton === 'function') {
+                    setupAuthButton();
+                }
+            });
+        </script>
         <!-- Chart.js for dashboard charts-->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="/js/supabaseClient.js"></script>
-        <script src="/js/auth.js"></script>
         <script src="/js/dashboard.js"></script>
     </body>
 </html>

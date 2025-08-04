@@ -84,6 +84,20 @@ html(lang="en")
           justify-content: flex-start;
         }
       }
+      
+      /* Auth button styling */
+      #auth-button {
+        margin-left: 0.5rem;
+      }
+      
+      #auth-button .btn {
+        font-weight: 500;
+        border-radius: 6px;
+      }
+      
+      #auth-button .dropdown-toggle::after {
+        margin-left: 0.5rem;
+      }
     
     block head
 
@@ -152,6 +166,7 @@ html(lang="en")
               a.nav-link(href="/dashboard.html") Dashboard
             li.nav-item
               a.nav-link(href="/#contact") Contact
+            // Auth button will be dynamically added here by auth.js
 
     block content
 
@@ -197,6 +212,11 @@ html(lang="en")
               });
             }, 100);
           });
+        }
+        
+        // Ensure auth button is properly initialized
+        if (typeof setupAuthButton === 'function') {
+          setupAuthButton();
         }
       });
     

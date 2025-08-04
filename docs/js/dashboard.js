@@ -7,31 +7,46 @@ let recoveryChart = null;
 // Initialize dashboard
 document.addEventListener('DOMContentLoaded', function() {
     // Wait for auth to be ready before initializing dashboard
-    if (typeof auth !== 'undefined' && auth.userProfile) {
+    if (typeof auth !== 'undefined' && auth.isAuthInitialized && auth.isAuthInitialized()) {
         initializeDashboard();
         setupDashboardListeners();
     } else {
-        // Wait for auth to load
+        // Listen for auth ready event
+        window.addEventListener('authReady', function(event) {
+            console.log('Auth ready event received:', event.detail);
+            initializeDashboard();
+            setupDashboardListeners();
+        });
+        
+        // Fallback: check periodically for auth initialization
         const checkAuth = setInterval(() => {
-            if (typeof auth !== 'undefined' && auth.userProfile) {
+            if (typeof auth !== 'undefined' && auth.isAuthInitialized && auth.isAuthInitialized()) {
                 clearInterval(checkAuth);
+                console.log('Auth system ready, initializing dashboard');
                 initializeDashboard();
                 setupDashboardListeners();
             }
         }, 100);
         
-        // Timeout after 5 seconds
+        // Timeout after 10 seconds
         setTimeout(() => {
             clearInterval(checkAuth);
-            console.error('Auth system not ready after 5 seconds');
+            console.error('Auth system not ready after 10 seconds');
             showNotification('Error loading user data. Please refresh the page.', 'error');
-        }, 5000);
+        }, 10000);
     }
 });
 
 // Initialize dashboard system
 async function initializeDashboard() {
     try {
+        console.log('Initializing dashboard...');
+        console.log('Auth state:', {
+            currentUser: auth.currentUser,
+            userProfile: auth.userProfile,
+            isAuthenticated: auth.isAuthenticated()
+        });
+        
         await loadDashboardData();
         setupDashboardUI();
         initializeCharts();
@@ -721,26 +736,42 @@ function initializeCharts() {
     const ctx = document.getElementById('recovery-chart');
     if (!ctx) return;
     
-    recoveryChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Recovery Progress',
-                data: [],
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
+    // Destroy existing chart if it exists
+    if (recoveryChart) {
+        recoveryChart.destroy();
+        recoveryChart = null;
+    }
+    
+    // Check if Chart.js is available
+    if (typeof Chart === 'undefined') {
+        console.warn('Chart.js not available, skipping chart initialization');
+        return;
+    }
+    
+    try {
+        recoveryChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Recovery Progress',
+                    data: [],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
+    } catch (error) {
+        console.error('Error initializing chart:', error);
+    }
 }
 
 // Update recovery chart

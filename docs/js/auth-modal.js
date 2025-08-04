@@ -94,6 +94,13 @@ function createAuthModal() {
 
 // Show authentication modal
 window.showAuthModal = function() {
+    // Check if user is already authenticated
+    if (typeof auth !== 'undefined' && auth.isAuthenticated && auth.isAuthenticated()) {
+        console.log('User is already authenticated, not showing modal');
+        showNotification('You are already logged in!', 'info');
+        return;
+    }
+    
     // Remove existing modal if present
     const existingModal = document.getElementById('authModal');
     if (existingModal) {
@@ -130,6 +137,14 @@ window.showAuthModal = function() {
     modal.addEventListener('hidden.bs.modal', function() {
         modal.remove();
     });
+    
+    // Focus on first input
+    setTimeout(() => {
+        const firstInput = modal.querySelector('input');
+        if (firstInput) {
+            firstInput.focus();
+        }
+    }, 500);
 };
 
 // Add auth button to navigation
@@ -182,30 +197,12 @@ function updateAuthButton() {
 
 // Initialize auth modal functionality
 document.addEventListener('DOMContentLoaded', function() {
-    addAuthButton();
-    
-    // Update button when auth state changes
-    if (typeof auth !== 'undefined') {
-        updateAuthButton();
-        
-        // Listen for auth state changes
-        const originalUpdateUI = auth.updateUIForAuthenticatedUser;
-        auth.updateUIForAuthenticatedUser = function() {
-            originalUpdateUI();
-            updateAuthButton();
-        };
-        
-        const originalUpdateUnauthenticated = auth.updateUIForUnauthenticatedUser;
-        auth.updateUIForUnauthenticatedUser = function() {
-            originalUpdateUnauthenticated();
-            updateAuthButton();
-        };
-    }
+    // The auth button setup is now handled in auth.js
+    console.log('Auth modal initialized');
 });
 
 // Export functions for global access
 window.authModal = {
     showAuthModal,
-    addAuthButton,
-    updateAuthButton
+    createAuthModal
 }; 

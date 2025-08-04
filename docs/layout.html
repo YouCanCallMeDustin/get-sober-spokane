@@ -82,6 +82,20 @@
                     justify-content: flex-start;
                 }
             }
+
+            /* Auth button styling */
+            #auth-button {
+                margin-left: 0.5rem;
+            }
+
+            #auth-button .btn {
+                font-weight: 500;
+                border-radius: 6px;
+            }
+
+            #auth-button .dropdown-toggle::after {
+                margin-left: 0.5rem;
+            }
         </style>
     </head>
     <body id="page-top">
@@ -169,6 +183,7 @@
                         </li>
                         <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
+                        <!-- Auth button will be dynamically added here by auth.js-->
                     </ul>
                 </div>
             </div>
@@ -215,6 +230,11 @@
                             });
                         }, 100);
                     });
+                }
+
+                // Ensure auth button is properly initialized
+                if (typeof setupAuthButton === 'function') {
+                    setupAuthButton();
                 }
             });
         </script>
