@@ -98,6 +98,28 @@ class ResourceDirectory {
                 reviews: 23
             },
             {
+                id: 'ministry-1',
+                name: 'Mighty to Save Ministries',
+                category: 'ministry',
+                subcategory: 'christian',
+                address: '901 E Best Ave, Coeur d\'Alene, ID 83814',
+                phone: '+1 (208) 929-2054',
+                hours: 'By appointment',
+                availability: 'available',
+                description: 'Christian ministry focused on reaching the lost and brokenhearted, and those growing in addiction. We desire to be a front-line ministry reaching the lost and brokenhearted, and those growing in addiction. We will hold firm to the faith, knowing that our God is mighty to save!',
+                services: ['spiritual counseling', 'addiction support', 'street ministry', 'evangelical outreach', 'recovery support'],
+                coordinates: { lat: 47.6777, lng: -116.7805 },
+                accessibility: ['wheelchair accessible'],
+                requirements: ['open to all'],
+                website: 'https://mighty2save.com',
+                email: 'mightytosaveministries01@gmail.com',
+                rating: 4.8,
+                reviews: 5,
+                mission: 'To be United together with Christ, to bring the good news, that God is mighty to save.',
+                focus: 'We desire to go where the Lord appoints us and be willing to stand at that ordained time and place to be a light to the people on the streets of our communities.',
+                scripture: 'Isaiah 61:1, Matthew 5:14'
+            },
+            {
                 id: 'shelter-5',
                 name: 'Catholic Charities St. Margaret\'s Shelter',
                 category: 'shelter',
@@ -990,7 +1012,8 @@ class ResourceDirectory {
             'medical': 'bi-heart-pulse',
             'employment': 'bi-briefcase',
             'legal': 'bi-shield-check',
-            'transportation': 'bi-bus-front'
+            'transportation': 'bi-bus-front',
+            'ministry': 'bi-pray'
         };
         return icons[category] || 'bi-question-circle';
     }
