@@ -1,5 +1,5 @@
 // Initialize Supabase client using config
-const supabase = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+const supabase = window.supabaseClient;
 
 // DOM Elements
 const loginForm = document.getElementById('login-form');

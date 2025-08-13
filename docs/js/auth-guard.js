@@ -2,7 +2,7 @@
 // This file should be included in any page that requires authentication
 
 // Initialize Supabase client using config
-const supabase = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+const supabase = window.supabaseClient;
 
 // Check if user is authenticated
 async function requireAuth() {
