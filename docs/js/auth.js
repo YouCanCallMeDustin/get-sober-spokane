@@ -1,5 +1,26 @@
-// Initialize Supabase client using config
-const supabase = window.supabaseClient;
+// Initialize Supabase client using config (with guards for load order)
+let supabase = window.supabaseClient;
+
+function ensureSupabase() {
+    if (!supabase) {
+        if (window.supabaseClient) {
+            supabase = window.supabaseClient;
+        } else if (window.supabase && typeof window.supabase.createClient === 'function' && window.CONFIG) {
+            // Fallback: initialize client if config loaded but client not yet created
+            window.supabaseClient = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+            supabase = window.supabaseClient;
+        }
+    }
+    return !!supabase;
+}
+
+async function ensureSupabaseAsync(maxAttempts = 10, delayMs = 150) {
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        if (ensureSupabase()) return true;
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+    return ensureSupabase();
+}
 
 // DOM Elements
 const loginForm = document.getElementById('login-form');
@@ -12,6 +33,8 @@ const alertContainer = document.getElementById('alert-container');
 // Check if user is already authenticated
 async function checkAuthStatus() {
     try {
+        const ready = await ensureSupabaseAsync();
+        if (!ready) return;
         const { data: { user }, error } = await supabase.auth.getUser();
         
         if (user && !error) {
@@ -58,6 +81,21 @@ async function handleLogin(event) {
     setLoadingState(true);
     
     try {
+        // Enforce cooldown to avoid 429 from Supabase
+        const now = Date.now();
+        const lastSent = Number(localStorage.getItem(CONFIG.STORAGE_KEYS.MAGIC_LINK_LAST_SENT) || 0);
+        const cooldownMs = (CONFIG.AUTH?.MAGIC_LINK_COOLDOWN_SECONDS || 15) * 1000;
+        const remainingMs = lastSent + cooldownMs - now;
+        if (remainingMs > 0) {
+            const remainingSec = Math.ceil(remainingMs / 1000);
+            showAlert(`Please wait ${remainingSec}s before requesting another magic link.`, 'danger');
+            return;
+        }
+
+        const ready = await ensureSupabaseAsync();
+        if (!ready) {
+            throw new Error('Supabase not initialized');
+        }
         // Send magic link via Supabase
         const { data, error } = await supabase.auth.signInWithOtp({
             email: email,
@@ -67,12 +105,19 @@ async function handleLogin(event) {
         });
         
         if (error) {
+            // Specific handling for Supabase throttle
+            if (error.status === 429) {
+                localStorage.setItem(CONFIG.STORAGE_KEYS.MAGIC_LINK_LAST_SENT, String(Date.now()));
+                showAlert('For security, please wait 15 seconds before requesting another link.', 'danger');
+                return;
+            }
             throw error;
         }
         
         // Success - show message to check email
         showAlert('Magic link sent! Please check your email and click the link to sign in.', 'success');
         loginForm.reset();
+        localStorage.setItem(CONFIG.STORAGE_KEYS.MAGIC_LINK_LAST_SENT, String(Date.now()));
         
     } catch (error) {
         console.error('Login error:', error);
@@ -102,10 +147,14 @@ function isValidEmail(email) {
 }
 
 // Handle authentication state changes
-supabase.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN' && session) {
-        // User successfully signed in, redirect to dashboard
-        window.location.href = 'dashboard.html';
+ensureSupabaseAsync().then((ready) => {
+    if (ready && supabase?.auth?.onAuthStateChange) {
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN' && session) {
+                // User successfully signed in, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
+        });
     }
 });
 
@@ -121,6 +170,6 @@ document.addEventListener('DOMContentLoaded', checkAuthStatus);
 window.auth = {
     supabase,
     checkAuthStatus,
-    signOut: () => supabase.auth.signOut(),
-    getUser: () => supabase.auth.getUser()
+    signOut: () => { ensureSupabase(); return supabase ? supabase.auth.signOut() : Promise.resolve(); },
+    getUser: () => { ensureSupabase(); return supabase ? supabase.auth.getUser() : Promise.resolve({ data: { user: null } }); }
 };
