@@ -27,6 +27,7 @@ let recoveryChart = null;
 document.addEventListener('DOMContentLoaded', function() {
     initializeDashboard();
     setupDashboardListeners();
+    setupMobileSidebar();
 });
 
 // Initialize dashboard system
@@ -36,6 +37,10 @@ async function initializeDashboard() {
         setupDashboardUI();
         initializeCharts();
         updateDashboardCounts();
+        
+        // Handle mobile responsiveness
+        handleMobileLayout();
+        window.addEventListener('resize', handleMobileLayout);
     } catch (error) {
         console.error('Dashboard initialization error:', error);
         showNotification('Error loading dashboard: ' + error.message, 'error');
@@ -54,6 +59,16 @@ function setupDashboardListeners() {
         link.addEventListener('click', function(e) {
             const target = this.getAttribute('href');
             loadTabContent(target.substring(1));
+            
+            // Close mobile sidebar after tab change
+            if (window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar');
+                const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+                if (sidebar && sidebarBackdrop) {
+                    sidebar.classList.remove('show');
+                    sidebarBackdrop.classList.remove('show');
+                }
+            }
         });
     });
     
@@ -75,6 +90,109 @@ function setupDashboardListeners() {
     }
 }
 
+// Setup mobile sidebar functionality
+function setupMobileSidebar() {
+    const mobileNavToggle = document.getElementById('mobileNavToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+    if (mobileNavToggle && sidebar && sidebarBackdrop) {
+        // Toggle sidebar
+        mobileNavToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarBackdrop.classList.toggle('show');
+            
+            // Update toggle button icon
+            const icon = this.querySelector('i');
+            if (icon) {
+                if (sidebar.classList.contains('show')) {
+                    icon.className = 'bi bi-x-lg';
+                } else {
+                    icon.className = 'bi bi-list';
+                }
+            }
+        });
+
+        // Close sidebar when clicking backdrop
+        sidebarBackdrop.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            sidebarBackdrop.classList.remove('show');
+            
+            // Reset toggle button icon
+            if (mobileNavToggle) {
+                const icon = mobileNavToggle.querySelector('i');
+                if (icon) {
+                    icon.className = 'bi bi-list';
+                }
+            }
+        });
+
+        // Close sidebar when clicking on nav links on mobile
+        const sidebarNavLinks = sidebar.querySelectorAll('.nav-link');
+        sidebarNavLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth < 768) {
+                    sidebar.classList.remove('show');
+                    sidebarBackdrop.classList.remove('show');
+                    
+                    // Reset toggle button icon
+                    if (mobileNavToggle) {
+                        const icon = mobileNavToggle.querySelector('i');
+                        if (icon) {
+                            icon.className = 'bi bi-list';
+                        }
+                    }
+                }
+            });
+        });
+
+        // Close sidebar on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                sidebarBackdrop.classList.remove('show');
+                
+                // Reset toggle button icon
+                if (mobileNavToggle) {
+                    const icon = mobileNavToggle.querySelector('i');
+                    if (icon) {
+                        icon.className = 'bi bi-list';
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Handle mobile layout adjustments
+function handleMobileLayout() {
+    const isMobile = window.innerWidth < 768;
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.querySelector('.main-content');
+    
+    if (sidebar && mainContent) {
+        if (isMobile) {
+            // On mobile, ensure sidebar is hidden by default
+            sidebar.classList.remove('show');
+            mainContent.style.marginLeft = '0';
+            
+            // Hide backdrop
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+            if (sidebarBackdrop) {
+                sidebarBackdrop.classList.remove('show');
+            }
+        } else {
+            // On desktop, show sidebar and adjust main content
+            mainContent.style.marginLeft = '250px';
+        }
+    }
+    
+    // Adjust chart sizes for mobile
+    if (recoveryChart) {
+        recoveryChart.resize();
+    }
+}
+
 // Setup dashboard UI
 function setupDashboardUI() {
     // Set current date for sobriety date input
@@ -86,6 +204,29 @@ function setupDashboardUI() {
     // Load user profile data into forms
     loadProfileData();
     loadSettingsData();
+    
+    // Initialize mobile-specific UI elements
+    initializeMobileUI();
+}
+
+// Initialize mobile-specific UI elements
+function initializeMobileUI() {
+    // Ensure proper touch targets on mobile
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        if (window.innerWidth < 768) {
+            button.style.minHeight = '44px'; // iOS recommended minimum
+        }
+    });
+    
+    // Improve form inputs for mobile
+    const formInputs = document.querySelectorAll('input, select, textarea');
+    formInputs.forEach(input => {
+        if (window.innerWidth < 768) {
+            // Prevent zoom on iOS
+            input.style.fontSize = '16px';
+        }
+    });
 }
 
 // Load dashboard data

@@ -2,7 +2,14 @@ extends layout
 
 block head
   style.
-    /* Dashboard specific styles to fix header overlap */
+    /* Mobile-First Dashboard Styles */
+    
+    /* Base dashboard layout */
+    .dashboard-container {
+      padding-top: 80px; /* Account for fixed navbar */
+    }
+    
+    /* Sidebar styles */
     .sidebar {
       position: fixed;
       top: 0;
@@ -10,57 +17,365 @@ block head
       left: 0;
       z-index: 100;
       padding: 48px 0 0;
-      box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+      box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
+      background: #f8f9fa;
+      transition: transform 0.3s ease;
     }
-    
+
     .sidebar-sticky {
       position: relative;
       top: 0;
       height: calc(100vh - 48px);
-      padding-top: .5rem;
+      padding-top: 0.5rem;
       overflow-x: hidden;
       overflow-y: auto;
     }
-    
-    /* Ensure main content doesn't overlap with fixed navbar */
-    .col-md-9.ms-sm-auto.col-lg-10.px-md-4 {
-      margin-top: 60px; /* Add top margin to account for fixed navbar */
+
+    /* Mobile sidebar behavior */
+    @media (max-width: 767.98px) {
+      .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+      }
+      
+      .sidebar.show {
+        transform: translateX(0);
+      }
+      
+      .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 99;
+        display: none;
+      }
+      
+      .sidebar-backdrop.show {
+        display: block;
+      }
     }
-    
-    /* Additional spacing for the dashboard header */
-    .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center {
-      padding-top: 2rem !important;
+
+    /* Main content area */
+    .main-content {
+      margin-left: 0;
+      transition: margin-left 0.3s ease;
     }
-    
-         /* Ensure the dashboard title is clearly visible */
-     .h2 {
-       margin-bottom: 0;
-       font-weight: 600;
-       color: #333;
-     }
-     
-     /* Fix header text visibility */
-     .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center h1.h2 {
-       color: #333 !important;
-       font-weight: 700;
-     }
-     
-     /* Ensure all text in the header area is visible */
-     .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center {
-       color: #333;
-     }
-     
-     /* Make sure the dashboard title stands out */
-     .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center .h2 {
-       color: #2c3e50 !important;
-       text-shadow: none;
-     }
+
+    @media (min-width: 768px) {
+      .main-content {
+        margin-left: 250px;
+      }
+    }
+
+    /* Dashboard header */
+    .dashboard-header {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid #e9ecef;
+      margin-bottom: 2rem;
+    }
+
+    .dashboard-header h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    /* Stats cards */
+    .stats-grid {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 576px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-card.border-left-primary { border-left-color: #007bff; }
+    .stat-card.border-left-success { border-left-color: #28a745; }
+    .stat-card.border-left-info { border-left-color: #17a2b8; }
+    .stat-card.border-left-warning { border-left-color: #ffc107; }
+
+    .stat-card .stat-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #6c757d;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-card .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 0;
+    }
+
+    .stat-card .stat-icon {
+      font-size: 2rem;
+      color: #dee2e6;
+      text-align: right;
+    }
+
+    /* Content cards */
+    .content-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .content-card .card-header {
+      background: #f8f9fa;
+      border-bottom: 1px solid #e9ecef;
+      padding: 1rem 1.5rem;
+    }
+
+    .content-card .card-header h6 {
+      margin: 0;
+      font-weight: 600;
+      color: #495057;
+    }
+
+    .content-card .card-body {
+      padding: 1.5rem;
+    }
+
+    /* Content layout */
+    .content-layout {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .content-layout {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+
+    /* Quick actions */
+    .quick-actions {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .quick-actions .btn {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .quick-actions .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form improvements */
+    .form-row {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media (min-width: 576px) {
+      .form-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .form-control, .form-select {
+      border-radius: 6px;
+      border: 1px solid #ced4da;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    /* Mobile navigation toggle */
+    .mobile-nav-toggle {
+      display: none;
+      position: fixed;
+      top: 90px;
+      left: 1rem;
+      z-index: 101;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 767.98px) {
+      .mobile-nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    /* Tab navigation improvements */
+    .nav-pills .nav-link {
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      padding: 0.75rem 1rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .nav-pills .nav-link:hover {
+      background-color: #e9ecef;
+      color: #495057;
+    }
+
+    .nav-pills .nav-link.active {
+      background-color: #007bff;
+      color: white;
+    }
+
+    /* Responsive text sizing */
+    @media (max-width: 575.98px) {
+      .dashboard-header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .stat-card .stat-value {
+        font-size: 1.25rem;
+      }
+      
+      .stat-card .stat-icon {
+        font-size: 1.5rem;
+      }
+      
+      .content-card .card-body {
+        padding: 1rem;
+      }
+      
+      .quick-actions .btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Ensure proper spacing on mobile */
+    @media (max-width: 767.98px) {
+      .dashboard-container {
+        padding-top: 100px;
+      }
+      
+      .stats-grid {
+        margin-bottom: 1.5rem;
+      }
+      
+      .content-layout {
+        gap: 1rem;
+      }
+    }
+
+    /* Fix for mobile form layouts */
+    @media (max-width: 575.98px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .col-md-6, .col-lg-4, .col-lg-8 {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+    }
+
+    /* Mobile-friendly buttons */
+    @media (max-width: 575.98px) {
+      .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+      
+      .btn-toolbar .btn-group {
+        width: 100%;
+      }
+      
+      .btn-toolbar .btn-group .btn {
+        flex: 1;
+      }
+    }
+
+    /* Fix for mobile tab content */
+    .tab-content {
+      padding: 1rem 0;
+    }
+
+    @media (max-width: 767.98px) {
+      .tab-content {
+        padding: 0.5rem 0;
+      }
+    }
+
+    /* Mobile sidebar improvements */
+    @media (max-width: 767.98px) {
+      .sidebar .nav-pills .nav-link {
+        padding: 1rem;
+        margin-bottom: 0.25rem;
+        border-radius: 0;
+        border-left: 3px solid transparent;
+      }
+      
+      .sidebar .nav-pills .nav-link.active {
+        border-left-color: #007bff;
+        background-color: rgba(0, 123, 255, 0.1);
+      }
+      
+      .sidebar .d-flex.align-items-center {
+        padding: 1rem;
+        border-bottom: 1px solid #e9ecef;
+      }
+    }
 
 block content
-  .container-fluid
+  // Mobile Navigation Toggle
+  button.mobile-nav-toggle#mobileNavToggle(aria-label="Toggle navigation")
+    i.bi.bi-list
+  
+  // Sidebar Backdrop for Mobile
+  .sidebar-backdrop#sidebarBackdrop
+  
+  .dashboard-container
     .row
       // Sidebar
-      .col-md-3.col-lg-2.d-md-block.bg-light.sidebar.collapse
+      .col-md-3.col-lg-2.d-md-block.bg-light.sidebar.collapse#sidebar
         .position-sticky.pt-3
           .d-flex.flex-column.flex-shrink-0.p-3.bg-light
             .d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none
@@ -98,94 +413,81 @@ block content
                 a.nav-link(href="#settings" data-bs-toggle="pill")
                   i.bi.bi-gear.me-2
                   | Settings
-            
-
-
+      
       // Main content
-      .col-md-9.ms-sm-auto.col-lg-10.px-md-4
-        .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pt-5.pb-2.mb-3.border-bottom
-          h1.h2 Dashboard
-          .btn-toolbar.mb-2.mb-md-0
-            .btn-group.me-2
-              button.btn.btn-sm.btn-outline-secondary(type="button" onclick="exportData()") Export
-              button.btn.btn-sm.btn-outline-secondary(type="button" onclick="printDashboard()") Print
-
+      .col-md-9.ms-sm-auto.col-lg-10.px-md-4.main-content
+        .dashboard-header
+          .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center
+            h1 Dashboard
+            .btn-toolbar.mb-2.mb-md-0
+              .btn-group.me-2
+                button.btn.btn-sm.btn-outline-secondary(type="button" onclick="exportData()") Export
+                button.btn.btn-sm.btn-outline-secondary(type="button" onclick="printDashboard()") Print
+        
         // Tab content
         .tab-content#dashboardTabs
           // Overview Tab
           .tab-pane.fade.show.active#overview
-            .row
-              .col-xl-3.col-md-6.mb-4
-                .card.border-left-primary.shadow.h-100.py-2
-                  .card-body
-                    .row.no-gutters.align-items-center
-                      .col.mr-2
-                        .text-xs.font-weight-bold.text-primary.text-uppercase.mb-1
-                          | Days Sober
-                        .h5.mb-0.font-weight-bold.text-gray-800#sobriety-counter 0 days
-                      .col-auto
-                        i.bi.bi-calendar-check.fa-2x.text-gray-300
-
-              .col-xl-3.col-md-6.mb-4
-                .card.border-left-success.shadow.h-100.py-2
-                  .card-body
-                    .row.no-gutters.align-items-center
-                      .col.mr-2
-                        .text-xs.font-weight-bold.text-success.text-uppercase.mb-1
-                          | Milestones
-                        .h5.mb-0.font-weight-bold.text-gray-800#milestones-count 0
-                      .col-auto
-                        i.bi.bi-trophy.fa-2x.text-gray-300
-
-              .col-xl-3.col-md-6.mb-4
-                .card.border-left-info.shadow.h-100.py-2
-                  .card-body
-                    .row.no-gutters.align-items-center
-                      .col.mr-2
-                        .text-xs.font-weight-bold.text-info.text-uppercase.mb-1
-                          | Resources
-                        .h5.mb-0.font-weight-bold.text-gray-800#favorites-count 0
-                      .col-auto
-                        i.bi.bi-heart.fa-2x.text-gray-300
-
-              .col-xl-3.col-md-6.mb-4
-                .card.border-left-warning.shadow.h-100.py-2
-                  .card-body
-                    .row.no-gutters.align-items-center
-                      .col.mr-2
-                        .text-xs.font-weight-bold.text-warning.text-uppercase.mb-1
-                          | Community Posts
-                        .h5.mb-0.font-weight-bold.text-gray-800#posts-count 0
-                      .col-auto
-                        i.bi.bi-chat-dots.fa-2x.text-gray-300
-
-            .row
-              .col-lg-8
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Recent Activity</h6>
-                  .card-body
-                    #recent-activity
-                      p.text-muted No recent activity
-
-              .col-lg-4
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
-                  .card-body
-                    .d-grid.gap-2
-                      button.btn.btn-primary.btn-sm(onclick="showNewPostModal()")
-                        i.bi.bi-plus-circle.me-2
-                        | New Forum Post
-                      button.btn.btn-outline-primary.btn-sm(onclick="showStorySubmissionModal()")
-                        i.bi.bi-pencil.me-2
-                        | Share Story
-                      button.btn.btn-outline-success.btn-sm(onclick="addMilestone()")
-                        i.bi.bi-trophy.me-2
-                        | Add Milestone
-                      button.btn.btn-outline-info.btn-sm(onclick="browseResources()")
-                        i.bi.bi-search.me-2
-                        | Find Resources
+            // Stats Grid
+            .stats-grid
+              .stat-card.border-left-primary
+                .d-flex.justify-content-between.align-items-center
+                  div
+                    .stat-label Days Sober
+                    .stat-value#sobriety-counter 0 days
+                  .stat-icon
+                    i.bi.bi-calendar-check
+              
+              .stat-card.border-left-success
+                .d-flex.justify-content-between.align-items-center
+                  div
+                    .stat-label Milestones
+                    .stat-value#milestones-count 0
+                  .stat-icon
+                    i.bi.bi-trophy
+              
+              .stat-card.border-left-info
+                .d-flex.justify-content-between.align-items-center
+                  div
+                    .stat-label Resources
+                    .stat-value#favorites-count 0
+                  .stat-icon
+                    i.bi.bi-heart
+              
+              .stat-card.border-left-warning
+                .d-flex.justify-content-between.align-items-center
+                  div
+                    .stat-label Community Posts
+                    .stat-value#posts-count 0
+                  .stat-icon
+                    i.bi.bi-chat-dots
+            
+            // Content Layout
+            .content-layout
+              .content-card
+                .card-header
+                  h6 Recent Activity
+                .card-body
+                  #recent-activity
+                    p.text-muted No recent activity
+              
+              .content-card
+                .card-header
+                  h6 Quick Actions
+                .card-body
+                  .quick-actions
+                    button.btn.btn-primary(onclick="showNewPostModal()")
+                      i.bi.bi-plus-circle.me-2
+                      | New Forum Post
+                    button.btn.btn-outline-primary(onclick="showStorySubmissionModal()")
+                      i.bi.bi-pencil.me-2
+                      | Share Story
+                    button.btn.btn-outline-success(onclick="addMilestone()")
+                      i.bi.bi-trophy.me-2
+                      | Add Milestone
+                    button.btn.btn-outline-info(onclick="browseResources()")
+                      i.bi.bi-search.me-2
+                      | Find Resources
 
           // Profile Tab
           .tab-pane.fade#profile
