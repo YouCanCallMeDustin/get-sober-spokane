@@ -65,7 +65,7 @@ block content
           .d-flex.flex-column.flex-shrink-0.p-3.bg-light
             .d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none
               img.rounded-circle.me-2(src="/assets/img/logo.png" alt="Logo" width="32" height="32")
-              span.fs-4#user-display-name User Dashboard
+              span.fs-4#user-display-name Recovery Dashboard
             
             hr
             
@@ -85,7 +85,7 @@ block content
               li.nav-item
                 a.nav-link(href="#resources" data-bs-toggle="pill")
                   i.bi.bi-bookmark-star.me-2
-                  | Favorite Resources
+                  | Resources
               li.nav-item
                 a.nav-link(href="#community" data-bs-toggle="pill")
                   i.bi.bi-people.me-2
@@ -93,27 +93,13 @@ block content
               li.nav-item
                 a.nav-link(href="#stories" data-bs-toggle="pill")
                   i.bi.bi-chat-quote.me-2
-                  | My Stories
+                  | Success Stories
               li.nav-item
                 a.nav-link(href="#settings" data-bs-toggle="pill")
                   i.bi.bi-gear.me-2
                   | Settings
             
-            hr
-            
-            .dropdown
-              a.d-flex.align-items-center.link-dark.text-decoration-none.dropdown-toggle#dropdownUser1(data-bs-toggle="dropdown" aria-expanded="false")
-                img.rounded-circle.me-2(src="/assets/img/logo.png" alt="" width="32" height="32")
-                strong#user-name User
-              ul.dropdown-menu.dropdown-menu-dark.text-small.shadow(aria-labelledby="dropdownUser1")
-                li
-                  a.dropdown-item(href="#profile" data-bs-toggle="pill") Profile
-                li
-                  a.dropdown-item(href="#settings" data-bs-toggle="pill") Settings
-                li
-                  hr.dropdown-divider
-                li
-                  a.dropdown-item(href="#" onclick="handleLogout()") Sign out
+
 
       // Main content
       .col-md-9.ms-sm-auto.col-lg-10.px-md-4
@@ -157,7 +143,7 @@ block content
                     .row.no-gutters.align-items-center
                       .col.mr-2
                         .text-xs.font-weight-bold.text-info.text-uppercase.mb-1
-                          | Favorite Resources
+                          | Resources
                         .h5.mb-0.font-weight-bold.text-gray-800#favorites-count 0
                       .col-auto
                         i.bi.bi-heart.fa-2x.text-gray-300
@@ -504,6 +490,4 @@ block content
 block scripts
   // Chart.js for dashboard charts
   script(src="https://cdn.jsdelivr.net/npm/chart.js")
-  script(src="/js/supabaseClient.js")
-  script(src="/js/auth.js")
   script(src="/js/dashboard.js") 

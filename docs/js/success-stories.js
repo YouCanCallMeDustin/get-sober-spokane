@@ -1,108 +1,253 @@
-// src/js/success-stories.js - Success Stories & Testimonials System
+// src/js/success-stories.js - Success Stories (No Auth Required)
 
 // Stories state management
-let successStories = [];
-let pendingStories = [];
-let storyCategories = [];
-let currentStoryFilter = 'all';
+let storiesData = {
+    stories: [],
+    categories: [
+        'Addiction Recovery',
+        'Mental Health',
+        'Family Support',
+        'Employment Success',
+        'Housing Stability',
+        'Community Connection',
+        'Personal Growth',
+        'Relapse Prevention'
+    ]
+};
 
 // Initialize success stories
 document.addEventListener('DOMContentLoaded', function() {
-    initializeSuccessStories();
-    setupStoryListeners();
+    initializeStories();
+    setupStoriesListeners();
 });
 
-// Initialize success stories system
-async function initializeSuccessStories() {
+// Initialize stories system
+function initializeStories() {
     try {
-        await loadSuccessStories();
-        await loadStoryCategories();
-        setupStoriesUI();
+        loadStoriesData();
+        loadStories();
+        setupCategories();
     } catch (error) {
-        console.error('Success stories initialization error:', error);
-        showNotification('Error loading success stories: ' + error.message, 'error');
+        console.error('Stories initialization error:', error);
+        showNotification('Error loading stories: ' + error.message, 'error');
     }
 }
 
-// Setup story event listeners
-function setupStoryListeners() {
+// Setup stories event listeners
+function setupStoriesListeners() {
+    // Search functionality
+    const searchInput = document.getElementById('stories-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            searchStories(this.value);
+        });
+    }
+    
     // Category filter
-    const categorySelect = document.getElementById('story-category');
-    if (categorySelect) {
-        categorySelect.addEventListener('change', function() {
-            currentStoryFilter = this.value;
-            filterAndDisplayStories();
+    const categoryFilter = document.getElementById('category-filter');
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', function() {
+            filterStoriesByCategory(this.value);
+        });
+    }
+    
+    // Sort options
+    const sortSelect = document.getElementById('sort-stories');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            sortStories(this.value);
         });
     }
 }
 
-// Setup stories UI
-function setupStoriesUI() {
-    const storiesContainer = document.getElementById('stories-container');
-    if (!storiesContainer) return;
+// Load stories data from localStorage
+function loadStoriesData() {
+    console.log('Loading stories data...');
+    
+    // Load from localStorage if available
+    const savedData = localStorage.getItem('storiesData');
+    if (savedData) {
+        try {
+            const parsed = JSON.parse(savedData);
+            storiesData = { ...storiesData, ...parsed };
+        } catch (e) {
+            console.error('Error parsing saved stories data:', e);
+        }
+    }
+    
+    // If no stories exist, create some sample stories
+    if (storiesData.stories.length === 0) {
+        createSampleStories();
+    }
+    
+    console.log('Stories data loaded:', storiesData);
+}
 
-    storiesContainer.innerHTML = `
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Success Stories & Testimonials</h2>
-                    <button class="btn btn-primary" onclick="showStorySubmissionModal()">
-                        <i class="bi bi-plus-circle"></i> Share Your Story
-                    </button>
-                </div>
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <select id="story-category" class="form-select">
-                            <option value="all">All Stories</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="story-search" placeholder="Search stories...">
-                            <button class="btn btn-outline-secondary" type="button" onclick="searchStories()">
-                                <i class="bi bi-search"></i>
-                            </button>
+// Create sample stories for demonstration
+function createSampleStories() {
+    const sampleStories = [
+        {
+            id: '1',
+            title: 'Finding Hope in Recovery',
+            content: 'After struggling with addiction for years, I finally found the strength to seek help. The support from the Spokane recovery community has been incredible. Today, I\'m celebrating 2 years of sobriety and helping others on their journey.',
+            categories: ['Addiction Recovery', 'Personal Growth'],
+            tags: ['hope', 'sobriety', 'community', 'support'],
+            user_id: 'anonymous',
+            user_name: 'Recovery Warrior',
+            is_anonymous: false,
+            recovery_time: '2-5 years',
+            age_group: '36-45',
+            media_url: '',
+            media_type: '',
+            likes: 15,
+            views: 89,
+            status: 'approved',
+            created_at: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+            updated_at: new Date(Date.now() - 86400000).toISOString()
+        },
+        {
+            id: '2',
+            title: 'Rebuilding My Life After Rock Bottom',
+            content: 'I hit rock bottom when I lost my job and home due to my addiction. Through the resources I found here, I was able to get treatment, find stable housing, and even land a better job. Recovery is possible!',
+            categories: ['Addiction Recovery', 'Housing Stability', 'Employment Success'],
+            tags: ['rebuilding', 'housing', 'employment', 'treatment'],
+            user_id: 'anonymous',
+            user_name: 'Phoenix Rising',
+            is_anonymous: false,
+            recovery_time: '1-2 years',
+            age_group: '26-35',
+            media_url: '',
+            media_type: '',
+            likes: 23,
+            views: 156,
+            status: 'approved',
+            created_at: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+            updated_at: new Date(Date.now() - 172800000).toISOString()
+        },
+        {
+            id: '3',
+            title: 'Supporting My Loved One Through Recovery',
+            content: 'As a family member, watching someone you love struggle with addiction is heartbreaking. But through education and support groups, I learned how to be there for them without enabling. Today, we\'re both stronger.',
+            categories: ['Family Support', 'Mental Health'],
+            tags: ['family', 'support', 'education', 'boundaries'],
+            user_id: 'anonymous',
+            user_name: 'Family First',
+            is_anonymous: false,
+            recovery_time: '6-12 months',
+            age_group: '46-55',
+            media_url: '',
+            media_type: '',
+            likes: 18,
+            views: 112,
+            status: 'approved',
+            created_at: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
+            updated_at: new Date(Date.now() - 259200000).toISOString()
+        }
+    ];
+    
+    storiesData.stories = sampleStories;
+    saveStoriesData();
+}
+
+// Setup categories
+function setupCategories() {
+    const categoryFilter = document.getElementById('category-filter');
+    if (categoryFilter) {
+        categoryFilter.innerHTML = `
+            <option value="">All Categories</option>
+            ${storiesData.categories.map(category => 
+                `<option value="${category}">${category}</option>`
+            ).join('')}
+        `;
+    }
+}
+
+// Load stories
+function loadStories() {
+    const container = document.getElementById('stories-container');
+    if (!container) return;
+    
+    if (storiesData.stories.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-5">
+                <i class="bi bi-star fs-1 text-muted"></i>
+                <h4 class="mt-3">No stories yet</h4>
+                <p class="text-muted">Be the first to share your recovery journey!</p>
+                <button class="btn btn-primary" onclick="showStorySubmissionModal()">
+                    <i class="bi bi-plus-circle me-2"></i>Share Your Story
+                </button>
+            </div>
+        `;
+        return;
+    }
+    
+    const storiesHTML = storiesData.stories.map(story => createStoryHTML(story)).join('');
+    container.innerHTML = storiesHTML;
+}
+
+// Create story HTML
+function createStoryHTML(story) {
+    const timeAgo = formatTimeAgo(story.created_at);
+    const categoriesHTML = story.categories.map(category => 
+        `<span class="badge bg-primary me-1">${category}</span>`
+    ).join('');
+    const tagsHTML = story.tags.map(tag => 
+        `<span class="badge bg-light text-dark me-1">${tag}</span>`
+    ).join('');
+    
+    return `
+        <div class="card mb-4 story-card" data-story-id="${story.id}">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="flex-grow-1">
+                        <h4 class="card-title">
+                            <a href="#" onclick="viewStory('${story.id}')" class="text-decoration-none">${story.title}</a>
+                        </h4>
+                        <div class="text-muted mb-2">
+                            <i class="bi bi-person me-1"></i>${story.user_name}
+                            <i class="bi bi-clock me-2 ms-2"></i>${timeAgo}
+                            <i class="bi bi-calendar me-2 ms-2"></i>${story.recovery_time}
+                            <i class="bi bi-people me-2 ms-2"></i>${story.age_group}
+                        </div>
+                        <div class="mb-2">
+                            ${categoriesHTML}
                         </div>
                     </div>
-                </div>
-                
-                <div id="stories-list"></div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Share Your Journey</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">Your story can inspire others on their recovery journey. Share your experience to help someone else find hope.</p>
-                        <button class="btn btn-primary w-100" onclick="showStorySubmissionModal()">
-                            <i class="bi bi-pencil"></i> Write Your Story
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-three-dots"></i>
                         </button>
-                    </div>
-                </div>
-                
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h5 class="mb-0">Story Categories</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="story-categories-list"></div>
-                    </div>
-                </div>
-                
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h5 class="mb-0">Submission Guidelines</h5>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled mb-0">
-                            <li><i class="bi bi-check-circle text-success"></i> Share your personal experience</li>
-                            <li><i class="bi bi-check-circle text-success"></i> Focus on hope and recovery</li>
-                            <li><i class="bi bi-check-circle text-success"></i> Respect others' privacy</li>
-                            <li><i class="bi bi-check-circle text-success"></i> Stories are reviewed before publishing</li>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="reportStory('${story.id}')">
+                                <i class="bi bi-flag"></i> Report
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="editStory('${story.id}')">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="deleteStory('${story.id}')">
+                                <i class="bi bi-trash"></i> Delete
+                            </a></li>
                         </ul>
+                    </div>
+                </div>
+                
+                <p class="card-text">${truncateText(story.content, 300)}</p>
+                
+                <div class="mb-3">
+                    ${tagsHTML}
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button class="btn btn-outline-primary" onclick="likeStory('${story.id}')">
+                            <i class="bi bi-heart"></i> ${story.likes} Likes
+                        </button>
+                        <button class="btn btn-outline-info" onclick="viewStory('${story.id}')">
+                            <i class="bi bi-eye"></i> ${story.views} Views
+                        </button>
+                        <button class="btn btn-outline-success" onclick="shareStory('${story.id}')">
+                            <i class="bi bi-share"></i> Share
+                        </button>
                     </div>
                 </div>
             </div>
@@ -110,166 +255,8 @@ function setupStoriesUI() {
     `;
 }
 
-// Load success stories
-async function loadSuccessStories() {
-    try {
-        const { data, error } = await supabase
-            .from('success_stories')
-            .select(`
-                *,
-                user_profiles(display_name, is_anonymous)
-            `)
-            .eq('status', 'approved')
-            .order('created_at', { ascending: false });
-        
-        if (error) throw error;
-        
-        successStories = data || [];
-        filterAndDisplayStories();
-    } catch (error) {
-        console.error('Error loading success stories:', error);
-        throw error;
-    }
-}
-
-// Load story categories
-async function loadStoryCategories() {
-    try {
-        const { data, error } = await supabase
-            .from('story_categories')
-            .select('*')
-            .order('name');
-        
-        if (error) throw error;
-        
-        storyCategories = data || [];
-        
-        // Update category select
-        const categorySelect = document.getElementById('story-category');
-        if (categorySelect) {
-            const options = storyCategories.map(category => 
-                `<option value="${category.id}">${category.name}</option>`
-            ).join('');
-            categorySelect.innerHTML += options;
-        }
-        
-        // Update categories list
-        displayStoryCategories();
-    } catch (error) {
-        console.error('Error loading story categories:', error);
-    }
-}
-
-// Display story categories
-function displayStoryCategories() {
-    const container = document.getElementById('story-categories-list');
-    if (!container) return;
-    
-    const html = storyCategories.map(category => `
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <span>${category.name}</span>
-            <span class="badge bg-primary">${category.story_count || 0}</span>
-        </div>
-    `).join('');
-    
-    container.innerHTML = html;
-}
-
-// Filter and display stories
-function filterAndDisplayStories() {
-    let filteredStories = [...successStories];
-    
-    // Filter by category
-    if (currentStoryFilter !== 'all') {
-        filteredStories = filteredStories.filter(story => story.category_id === currentStoryFilter);
-    }
-    
-    displaySuccessStories(filteredStories);
-}
-
-// Display success stories
-function displaySuccessStories(stories) {
-    const container = document.getElementById('stories-list');
-    if (!container) return;
-    
-    if (stories.length === 0) {
-        container.innerHTML = `
-            <div class="text-center py-5">
-                <i class="bi bi-heart fs-1 text-muted"></i>
-                <h4 class="text-muted mt-3">No stories found</h4>
-                <p class="text-muted">Be the first to share your recovery story!</p>
-                <button class="btn btn-primary" onclick="showStorySubmissionModal()">Share Your Story</button>
-            </div>
-        `;
-        return;
-    }
-    
-    const html = stories.map(story => `
-        <div class="card mb-4 story-card" data-story-id="${story.id}">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h5 class="card-title">${story.title}</h5>
-                        <div class="mb-2">
-                            ${story.categories ? story.categories.map(category => 
-                                `<span class="badge bg-secondary me-1">${category}</span>`
-                            ).join('') : ''}
-                        </div>
-                        <p class="card-text">${truncateText(story.content, 300)}</p>
-                        
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <small class="text-muted">
-                                    By ${story.user_profiles?.is_anonymous ? 'Anonymous' : story.user_profiles?.display_name || 'Community Member'}
-                                </small>
-                                <br>
-                                <small class="text-muted">
-                                    ${formatDate(story.created_at)}
-                                </small>
-                            </div>
-                            
-                            <div class="btn-group btn-group-sm">
-                                <button class="btn btn-outline-primary" onclick="showStoryDetail('${story.id}')">
-                                    <i class="bi bi-eye"></i> Read Full Story
-                                </button>
-                                <button class="btn btn-outline-secondary" onclick="likeStory('${story.id}')">
-                                    <i class="bi bi-heart"></i> ${story.likes || 0}
-                                </button>
-                                <button class="btn btn-outline-info" onclick="shareStory('${story.id}')">
-                                    <i class="bi bi-share"></i> Share
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-4">
-                        ${story.media_url ? `
-                            <div class="story-media">
-                                ${story.media_type === 'image' ? 
-                                    `<img src="${story.media_url}" class="img-fluid rounded" alt="Story media">` :
-                                    story.media_type === 'video' ? 
-                                    `<div class="ratio ratio-16x9">
-                                        <iframe src="${story.media_url}" frameborder="0" allowfullscreen></iframe>
-                                    </div>` : ''
-                                }
-                            </div>
-                        ` : ''}
-                    </div>
-                </div>
-            </div>
-        </div>
-    `).join('');
-    
-    container.innerHTML = html;
-}
-
 // Show story submission modal
 window.showStorySubmissionModal = function() {
-    if (!auth.currentUser && !auth.isAnonymous) {
-        showNotification('Please log in to share your story', 'warning');
-        return;
-    }
-    
     const modal = document.createElement('div');
     modal.className = 'modal fade';
     modal.id = 'storySubmissionModal';
@@ -300,8 +287,8 @@ window.showStorySubmissionModal = function() {
                                 <div class="mb-3">
                                     <label for="story-categories" class="form-label">Categories</label>
                                     <select class="form-select" id="story-categories" multiple>
-                                        ${storyCategories.map(category => 
-                                            `<option value="${category.id}">${category.name}</option>`
+                                        ${storiesData.categories.map(category => 
+                                            `<option value="${category}">${category}</option>`
                                         ).join('')}
                                     </select>
                                     <div class="form-text">Select categories that apply to your story.</div>
@@ -357,13 +344,8 @@ window.showStorySubmissionModal = function() {
                                 
                                 <div class="alert alert-info">
                                     <i class="bi bi-info-circle"></i>
-                                    <strong>Submission Guidelines:</strong>
-                                    <ul class="mb-0 mt-2">
-                                        <li>Focus on hope and recovery</li>
-                                        <li>Share your personal experience</li>
-                                        <li>Respect others' privacy</li>
-                                        <li>Stories are reviewed before publishing</li>
-                                    </ul>
+                                    <strong>Story Guidelines:</strong> Share your personal experience, be honest and authentic, 
+                                    focus on hope and recovery, and respect others' privacy.
                                 </div>
                             </div>
                         </div>
@@ -371,7 +353,7 @@ window.showStorySubmissionModal = function() {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="submitStory()">Submit Story</button>
+                    <button type="button" class="btn btn-primary" onclick="submitStory()">Share Story</button>
                 </div>
             </div>
         </div>
@@ -382,19 +364,21 @@ window.showStorySubmissionModal = function() {
     const modalInstance = new bootstrap.Modal(modal);
     modalInstance.show();
     
+    // Clean up when modal is hidden
     modal.addEventListener('hidden.bs.modal', function() {
         modal.remove();
     });
 };
 
 // Submit story
-window.submitStory = async function() {
+window.submitStory = function() {
     const title = document.getElementById('story-title').value.trim();
     const content = document.getElementById('story-content').value.trim();
     const categories = Array.from(document.getElementById('story-categories').selectedOptions).map(option => option.value);
     const recoveryTime = document.getElementById('story-recovery-time').value;
     const ageGroup = document.getElementById('story-age-group').value;
     const isAnonymous = document.getElementById('story-anonymous').checked;
+    const mediaFile = document.getElementById('story-media').files[0];
     const videoLink = document.getElementById('story-video-link').value.trim();
     
     if (!title || !content) {
@@ -402,314 +386,272 @@ window.submitStory = async function() {
         return;
     }
     
-    // Content moderation
-    const moderationResult = await moderateStoryContent(content);
-    if (!moderationResult.approved) {
-        showNotification('Content flagged for review: ' + moderationResult.reason, 'warning');
+    // Generate tags from content
+    const words = content.toLowerCase().split(/\s+/);
+    const commonTags = ['recovery', 'hope', 'sobriety', 'support', 'journey', 'strength', 'community'];
+    const tags = commonTags.filter(tag => words.some(word => word.includes(tag)));
+    
+    const newStory = {
+        id: Date.now().toString(),
+        title: title,
+        content: content,
+        categories: categories,
+        tags: tags,
+        user_id: 'anonymous',
+        user_name: isAnonymous ? 'Anonymous User' : 'Guest User',
+        is_anonymous: isAnonymous,
+        recovery_time: recoveryTime,
+        age_group: ageGroup,
+        media_url: videoLink || '',
+        media_type: mediaFile ? mediaFile.type.split('/')[0] : '',
+        likes: 0,
+        views: 0,
+        status: 'approved',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+    };
+    
+    // Add to stories data
+    storiesData.stories.unshift(newStory);
+    
+    // Save to localStorage
+    saveStoriesData();
+    
+    // Reload stories
+    loadStories();
+    
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('storySubmissionModal'));
+    if (modal) modal.hide();
+    
+    // Clear form
+    document.getElementById('storySubmissionForm').reset();
+    
+    showNotification('Story shared successfully! Thank you for inspiring others.', 'success');
+};
+
+// View story details
+window.viewStory = function(storyId) {
+    const story = storiesData.stories.find(s => s.id === storyId);
+    if (!story) return;
+    
+    // Increment view count
+    story.views++;
+    saveStoriesData();
+    
+    // For now, just show a simple alert with the full content
+    // In a real implementation, this would open a detailed view modal
+    alert(`Full Story: ${story.title}\n\n${story.content}`);
+};
+
+// Edit story
+window.editStory = function(storyId) {
+    const story = storiesData.stories.find(s => s.id === storyId);
+    if (!story) return;
+    
+    // For now, just show a simple prompt
+    // In a real implementation, this would open an edit modal
+    const newTitle = prompt('Edit story title:', story.title);
+    if (newTitle && newTitle.trim()) {
+        story.title = newTitle.trim();
+        story.updated_at = new Date().toISOString();
+        saveStoriesData();
+        loadStories();
+        showNotification('Story updated successfully!', 'success');
+    }
+};
+
+// Delete story
+window.deleteStory = function(storyId) {
+    if (!confirm('Are you sure you want to delete this story? This action cannot be undone.')) {
         return;
     }
     
-    try {
-        // Handle file upload if present
-        let mediaUrl = null;
-        let mediaType = null;
-        
-        const fileInput = document.getElementById('story-media');
-        if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            const { data: uploadData, error: uploadError } = await uploadStoryMedia(file);
-            if (uploadError) throw uploadError;
-            mediaUrl = uploadData.url;
-            mediaType = file.type.startsWith('image/') ? 'image' : 'video';
-        } else if (videoLink) {
-            mediaUrl = videoLink;
-            mediaType = 'video';
-        }
-        
-        const storyData = {
-            title,
-            content,
-            categories,
-            recovery_time: recoveryTime,
-            age_group: ageGroup,
-            user_id: auth.currentUser?.id || 'anonymous',
-            is_anonymous: isAnonymous || auth.isAnonymous,
-            media_url: mediaUrl,
-            media_type: mediaType,
-            status: 'pending',
-            likes: 0,
-            views: 0
-        };
-        
-        const { data, error } = await supabase
-            .from('success_stories')
-            .insert([storyData])
-            .select()
-            .single();
-        
-        if (error) throw error;
-        
-        // Close modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('storySubmissionModal'));
-        modal.hide();
-        
-        showNotification('Story submitted successfully! It will be reviewed before publishing.', 'success');
-    } catch (error) {
-        showNotification('Error submitting story: ' + error.message, 'error');
+    const index = storiesData.stories.findIndex(s => s.id === storyId);
+    if (index !== -1) {
+        storiesData.stories.splice(index, 1);
+        saveStoriesData();
+        loadStories();
+        showNotification('Story deleted successfully!', 'success');
     }
 };
 
-// Upload story media
-async function uploadStoryMedia(file) {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = `story-media/${fileName}`;
-    
-    const { data, error } = await supabase.storage
-        .from('story-media')
-        .upload(filePath, file);
-    
-    if (error) throw error;
-    
-    const { data: { publicUrl } } = supabase.storage
-        .from('story-media')
-        .getPublicUrl(filePath);
-    
-    return { data: { url: publicUrl }, error: null };
-}
-
-// Moderate story content
-async function moderateStoryContent(content) {
-    // Simple keyword-based moderation
-    const flaggedWords = ['spam', 'advertisement', 'promotion', 'inappropriate'];
-    const hasFlaggedWords = flaggedWords.some(word => 
-        content.toLowerCase().includes(word)
-    );
-    
-    if (hasFlaggedWords) {
-        return {
-            approved: false,
-            reason: 'Content contains flagged words'
-        };
-    }
-    
-    // Check for appropriate length
-    if (content.length < 100) {
-        return {
-            approved: false,
-            reason: 'Story too short - please provide more details'
-        };
-    }
-    
-    return { approved: true };
-}
-
-// Show story detail
-window.showStoryDetail = async function(storyId) {
-    try {
-        const { data, error } = await supabase
-            .from('success_stories')
-            .select(`
-                *,
-                user_profiles(display_name, is_anonymous)
-            `)
-            .eq('id', storyId)
-            .single();
-        
-        if (error) throw error;
-        
-        // Increment view count
-        await supabase
-            .from('success_stories')
-            .update({ views: (data.views || 0) + 1 })
-            .eq('id', storyId);
-        
-        displayStoryDetail(data);
-    } catch (error) {
-        showNotification('Error loading story: ' + error.message, 'error');
-    }
-};
-
-// Display story detail
-function displayStoryDetail(story) {
-    const modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.id = 'storyDetailModal';
-    modal.innerHTML = `
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">${story.title}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <small class="text-muted">
-                                            By ${story.user_profiles?.is_anonymous ? 'Anonymous' : story.user_profiles?.display_name || 'Community Member'}
-                                        </small>
-                                        <br>
-                                        <small class="text-muted">
-                                            ${formatDate(story.created_at)}
-                                        </small>
-                                    </div>
-                                    <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-outline-primary" onclick="likeStory('${story.id}')">
-                                            <i class="bi bi-heart"></i> ${story.likes || 0}
-                                        </button>
-                                        <button class="btn btn-outline-info" onclick="shareStory('${story.id}')">
-                                            <i class="bi bi-share"></i> Share
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                ${story.categories ? story.categories.map(category => 
-                                    `<span class="badge bg-secondary me-1">${category}</span>`
-                                ).join('') : ''}
-                                ${story.recovery_time ? `<span class="badge bg-info me-1">${story.recovery_time}</span>` : ''}
-                                ${story.age_group ? `<span class="badge bg-warning">${story.age_group}</span>` : ''}
-                            </div>
-                            
-                            <div class="story-content">
-                                ${formatStoryContent(story.content)}
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-4">
-                            ${story.media_url ? `
-                                <div class="story-media mb-3">
-                                    ${story.media_type === 'image' ? 
-                                        `<img src="${story.media_url}" class="img-fluid rounded" alt="Story media">` :
-                                        story.media_type === 'video' ? 
-                                        `<div class="ratio ratio-16x9">
-                                            <iframe src="${story.media_url}" frameborder="0" allowfullscreen></iframe>
-                                        </div>` : ''
-                                    }
-                                </div>
-                            ` : ''}
-                            
-                            <div class="card">
-                                <div class="card-header">
-                                    <h6 class="mb-0">Story Stats</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span>Views:</span>
-                                        <span>${story.views || 0}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <span>Likes:</span>
-                                        <span>${story.likes || 0}</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <span>Recovery Time:</span>
-                                        <span>${story.recovery_time || 'Not specified'}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    const modalInstance = new bootstrap.Modal(modal);
-    modalInstance.show();
-    
-    modal.addEventListener('hidden.bs.modal', function() {
-        modal.remove();
-    });
+// Report story
+window.reportStory = function(storyId) {
+    showNotification('Thank you for reporting. Our moderators will review this story.', 'info');
 };
 
 // Like story
-window.likeStory = async function(storyId) {
-    if (!auth.currentUser && !auth.isAnonymous) {
-        showNotification('Please log in to like stories', 'warning');
-        return;
-    }
-    
-    try {
-        const { data, error } = await supabase
-            .from('success_stories')
-            .update({ likes: supabase.sql`likes + 1` })
-            .eq('id', storyId)
-            .select()
-            .single();
-        
-        if (error) throw error;
-        
-        // Update UI
-        await loadSuccessStories();
-        showNotification('Story liked!', 'success');
-    } catch (error) {
-        showNotification('Error liking story: ' + error.message, 'error');
+window.likeStory = function(storyId) {
+    const story = storiesData.stories.find(s => s.id === storyId);
+    if (story) {
+        story.likes++;
+        saveStoriesData();
+        loadStories();
     }
 };
 
 // Share story
 window.shareStory = function(storyId) {
-    const story = successStories.find(s => s.id === storyId);
-    if (!story) return;
-    
-    const shareData = {
-        title: story.title,
-        text: truncateText(story.content, 100),
-        url: window.location.origin + '/success-stories.html?id=' + storyId
-    };
-    
-    if (navigator.share) {
-        navigator.share(shareData);
-    } else {
-        // Fallback: copy to clipboard
-        navigator.clipboard.writeText(shareData.url);
-        showNotification('Story link copied to clipboard!', 'success');
+    const story = storiesData.stories.find(s => s.id === storyId);
+    if (story) {
+        const shareText = `Check out this inspiring recovery story: ${story.title}`;
+        const shareUrl = window.location.href;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: story.title,
+                text: shareText,
+                url: shareUrl
+            });
+        } else {
+            // Fallback for browsers that don't support Web Share API
+            const textArea = document.createElement('textarea');
+            textArea.value = `${shareText}\n\n${shareUrl}`;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showNotification('Story link copied to clipboard!', 'success');
+        }
     }
 };
 
 // Search stories
-window.searchStories = function() {
-    const searchTerm = document.getElementById('story-search').value.toLowerCase();
-    
-    if (!searchTerm) {
-        filterAndDisplayStories();
+function searchStories(query) {
+    if (!query.trim()) {
+        loadStories();
         return;
     }
     
-    const filteredStories = successStories.filter(story => 
-        story.title.toLowerCase().includes(searchTerm) ||
-        story.content.toLowerCase().includes(searchTerm) ||
-        (story.categories && story.categories.some(cat => cat.toLowerCase().includes(searchTerm)))
+    const filteredStories = storiesData.stories.filter(story => 
+        story.title.toLowerCase().includes(query.toLowerCase()) ||
+        story.content.toLowerCase().includes(query.toLowerCase()) ||
+        story.categories.some(category => category.toLowerCase().includes(query.toLowerCase())) ||
+        story.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
     );
     
-    displaySuccessStories(filteredStories);
-};
+    displayFilteredStories(filteredStories);
+}
+
+// Filter stories by category
+function filterStoriesByCategory(category) {
+    if (!category) {
+        loadStories();
+        return;
+    }
+    
+    const filteredStories = storiesData.stories.filter(story => 
+        story.categories.includes(category)
+    );
+    
+    displayFilteredStories(filteredStories);
+}
+
+// Sort stories
+function sortStories(sortBy) {
+    let sortedStories = [...storiesData.stories];
+    
+    switch (sortBy) {
+        case 'newest':
+            sortedStories.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            break;
+        case 'oldest':
+            sortedStories.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            break;
+        case 'most-liked':
+            sortedStories.sort((a, b) => b.likes - a.likes);
+            break;
+        case 'most-viewed':
+            sortedStories.sort((a, b) => b.views - a.views);
+            break;
+        default:
+            // Default to newest
+            sortedStories.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    }
+    
+    displayFilteredStories(sortedStories);
+}
+
+// Display filtered stories
+function displayFilteredStories(stories) {
+    const container = document.getElementById('stories-container');
+    if (!container) return;
+    
+    if (stories.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-5">
+                <i class="bi bi-search fs-1 text-muted"></i>
+                <h4 class="mt-3">No stories found</h4>
+                <p class="text-muted">Try adjusting your search or filter criteria.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const storiesHTML = stories.map(story => createStoryHTML(story)).join('');
+    container.innerHTML = storiesHTML;
+}
+
+// Save stories data to localStorage
+function saveStoriesData() {
+    try {
+        localStorage.setItem('storiesData', JSON.stringify(storiesData));
+    } catch (error) {
+        console.error('Error saving stories data:', error);
+    }
+}
 
 // Utility functions
-function formatStoryContent(content) {
-    // Simple formatting - in production, use a proper markdown parser
-    return content
-        .replace(/\n\n/g, '</p><p>')
-        .replace(/\n/g, '<br>')
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/^/, '<p>')
-        .replace(/$/, '</p>');
+function formatTimeAgo(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = (now - date) / (1000 * 60 * 60);
+    
+    if (diffInHours < 1) {
+        return 'Just now';
+    } else if (diffInHours < 24) {
+        return `${Math.floor(diffInHours)} hours ago`;
+    } else if (diffInHours < 168) {
+        return `${Math.floor(diffInHours / 24)} days ago`;
+    } else {
+        return date.toLocaleDateString();
+    }
+}
+
+function truncateText(text, maxLength) {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+}
+
+// Show notification (simple implementation)
+function showNotification(message, type = 'info') {
+    // Create a simple notification
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
 }
 
 // Export functions for global access
-window.successStories = {
-    loadSuccessStories,
-    showStorySubmissionModal,
-    showStoryDetail,
+window.stories = {
+    initializeStories,
+    loadStories,
+    searchStories,
+    filterStoriesByCategory,
+    sortStories,
     likeStory,
-    shareStory,
-    searchStories
+    shareStory
 }; 

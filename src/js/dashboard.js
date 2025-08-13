@@ -1,38 +1,38 @@
-// src/js/dashboard.js - Dashboard Functionality
+// src/js/dashboard.js - Dashboard Functionality (No Auth Required)
 
 // Dashboard state management
-let dashboardData = {};
+let dashboardData = {
+    posts: [],
+    comments: [],
+    milestones: [],
+    resources: [],
+    sobrietyDate: null,
+    profile: {
+        display_name: 'Guest User',
+        email: 'guest@example.com',
+        phone: '',
+        recovery_goals: '',
+        support_network: '',
+        emergency_contacts: []
+    },
+    preferences: {
+        email_notifications: false,
+        privacy_level: 'standard'
+    }
+};
+
 let recoveryChart = null;
 
 // Initialize dashboard
 document.addEventListener('DOMContentLoaded', function() {
-    // Wait for auth to be ready before initializing dashboard
-    if (typeof auth !== 'undefined' && auth.userProfile) {
-        initializeDashboard();
-        setupDashboardListeners();
-    } else {
-        // Wait for auth to load
-        const checkAuth = setInterval(() => {
-            if (typeof auth !== 'undefined' && auth.userProfile) {
-                clearInterval(checkAuth);
-                initializeDashboard();
-                setupDashboardListeners();
-            }
-        }, 100);
-        
-        // Timeout after 5 seconds
-        setTimeout(() => {
-            clearInterval(checkAuth);
-            console.error('Auth system not ready after 5 seconds');
-            showNotification('Error loading user data. Please refresh the page.', 'error');
-        }, 5000);
-    }
+    initializeDashboard();
+    setupDashboardListeners();
 });
 
 // Initialize dashboard system
 async function initializeDashboard() {
     try {
-        await loadDashboardData();
+        loadDashboardData();
         setupDashboardUI();
         initializeCharts();
         updateDashboardCounts();
@@ -89,636 +89,235 @@ function setupDashboardUI() {
 }
 
 // Load dashboard data
-async function loadDashboardData() {
-    console.log('loadDashboardData called');
-    console.log('auth.userProfile:', auth.userProfile);
+function loadDashboardData() {
+    console.log('Loading dashboard data...');
     
-    if (!auth.userProfile) {
-        console.log('No user profile available, creating default data');
-        dashboardData = {
-            posts: [],
-            comments: [],
-            stories: [],
-            profile: null
-        };
-        return;
+    // Load from localStorage if available
+    const savedData = localStorage.getItem('dashboardData');
+    if (savedData) {
+        try {
+            const parsed = JSON.parse(savedData);
+            dashboardData = { ...dashboardData, ...parsed };
+        } catch (e) {
+            console.error('Error parsing saved data:', e);
+        }
     }
     
-    try {
-        // Load user's posts
-        const { data: posts, error: postsError } = await supabase
-            .from('forum_posts')
-            .select('*')
-            .eq('user_id', auth.currentUser?.id || 'anonymous')
-            .order('created_at', { ascending: false });
-        
-        if (postsError) throw postsError;
-        
-        // Load user's comments
-        const { data: comments, error: commentsError } = await supabase
-            .from('forum_comments')
-            .select('*')
-            .eq('user_id', auth.currentUser?.id || 'anonymous')
-            .order('created_at', { ascending: false });
-        
-        if (commentsError) throw commentsError;
-        
-        // Load user's stories
-        const { data: stories, error: storiesError } = await supabase
-            .from('success_stories')
-            .select('*')
-            .eq('user_id', auth.currentUser?.id || 'anonymous')
-            .order('created_at', { ascending: false });
-        
-        if (storiesError) throw storiesError;
-        
-        dashboardData = {
-            posts: posts || [],
-            comments: comments || [],
-            stories: stories || [],
-            profile: auth.userProfile
-        };
-        
-        updateDashboardCounts();
-    } catch (error) {
-        console.error('Error loading dashboard data:', error);
-        throw error;
-    }
-}
-
-// Update dashboard counts
-function updateDashboardCounts() {
-    const data = dashboardData;
-    
-    // Update sobriety counter
-    updateSobrietyCounter();
-    
-    // Update overview cards
-    const milestonesCount = document.getElementById('milestones-count');
-    if (milestonesCount) {
-        milestonesCount.textContent = data.profile?.recovery_milestones?.length || 0;
-    }
-    
-    const favoritesCount = document.getElementById('favorites-count');
-    if (favoritesCount) {
-        favoritesCount.textContent = data.profile?.favorite_resources?.length || 0;
-    }
-    
-    const postsCount = document.getElementById('posts-count');
-    if (postsCount) {
-        postsCount.textContent = data.posts?.length || 0;
-    }
-    
-    // Update community stats
-    const communityPostsCount = document.getElementById('community-posts-count');
-    if (communityPostsCount) {
-        communityPostsCount.textContent = data.posts?.length || 0;
-    }
-    
-    const communityCommentsCount = document.getElementById('community-comments-count');
-    if (communityCommentsCount) {
-        communityCommentsCount.textContent = data.comments?.length || 0;
-    }
-    
-    const communityLikesCount = document.getElementById('community-likes-count');
-    if (communityLikesCount) {
-        const totalLikes = (data.posts || []).reduce((sum, post) => sum + (post.upvotes || 0), 0);
-        communityLikesCount.textContent = totalLikes;
-    }
-    
-    // Update story stats
-    const storiesCount = document.getElementById('stories-count');
-    if (storiesCount) {
-        storiesCount.textContent = data.stories?.length || 0;
-    }
-    
-    const storiesViews = document.getElementById('stories-views');
-    if (storiesViews) {
-        const totalViews = (data.stories || []).reduce((sum, story) => sum + (story.views || 0), 0);
-        storiesViews.textContent = totalViews;
-    }
-    
-    const storiesLikes = document.getElementById('stories-likes');
-    if (storiesLikes) {
-        const totalLikes = (data.stories || []).reduce((sum, story) => sum + (story.likes || 0), 0);
-        storiesLikes.textContent = totalLikes;
-    }
-}
-
-// Load tab content
-async function loadTabContent(tabName) {
-    switch (tabName) {
-        case 'overview':
-            await loadOverviewContent();
-            break;
-        case 'profile':
-            loadProfileContent();
-            break;
-        case 'recovery':
-            await loadRecoveryContent();
-            break;
-        case 'resources':
-            await loadResourcesContent();
-            break;
-        case 'community':
-            await loadCommunityContent();
-            break;
-        case 'stories':
-            await loadStoriesContent();
-            break;
-        case 'settings':
-            loadSettingsContent();
-            break;
-    }
-}
-
-// Load overview content
-async function loadOverviewContent() {
-    const recentActivity = document.getElementById('recent-activity');
-    if (!recentActivity) return;
-    
-    const activities = [];
-    
-    // Add recent posts
-    if (dashboardData.posts) {
-        dashboardData.posts.slice(0, 3).forEach(post => {
-            activities.push({
-                type: 'post',
-                title: post.title,
-                date: post.created_at,
-                icon: 'bi-chat-dots'
-            });
-        });
-    }
-    
-    // Add recent comments
-    if (dashboardData.comments) {
-        dashboardData.comments.slice(0, 3).forEach(comment => {
-            activities.push({
-                type: 'comment',
-                title: `Commented on a post`,
-                date: comment.created_at,
-                icon: 'bi-chat'
-            });
-        });
-    }
-    
-    // Add recent stories
-    if (dashboardData.stories) {
-        dashboardData.stories.slice(0, 3).forEach(story => {
-            activities.push({
-                type: 'story',
-                title: story.title,
-                date: story.created_at,
-                icon: 'bi-chat-quote'
-            });
-        });
-    }
-    
-    // Sort by date
-    activities.sort((a, b) => new Date(b.date) - new Date(a.date));
-    
-    if (activities.length === 0) {
-        recentActivity.innerHTML = '<p class="text-muted">No recent activity</p>';
-        return;
-    }
-    
-    const html = activities.slice(0, 5).map(activity => `
-        <div class="d-flex align-items-center mb-2">
-            <i class="bi ${activity.icon} text-primary me-2"></i>
-            <div class="flex-grow-1">
-                <small class="text-muted">${activity.title}</small>
-                <br>
-                <small class="text-muted">${formatDate(activity.date)}</small>
-            </div>
-        </div>
-    `).join('');
-    
-    recentActivity.innerHTML = html;
-}
-
-// Load profile content
-function loadProfileContent() {
-    loadProfileData();
-}
-
-// Load recovery content
-async function loadRecoveryContent() {
-    await loadRecoveryMilestones();
-    updateRecoveryChart();
-    updateSobrietyCounter();
-}
-
-// Load resources content
-async function loadResourcesContent() {
-    await loadFavoriteResources();
-    await loadPersonalizedRecommendations();
-}
-
-// Load community content
-async function loadCommunityContent() {
-    await loadUserPosts();
-    await loadUserComments();
-    await loadUserMessages();
-}
-
-// Load stories content
-async function loadStoriesContent() {
-    await loadUserStories();
-}
-
-// Load settings content
-function loadSettingsContent() {
-    loadSettingsData();
+    console.log('Dashboard data loaded:', dashboardData);
 }
 
 // Load profile data into forms
 function loadProfileData() {
-    if (!auth.userProfile) return;
+    const profile = dashboardData.profile;
     
-    const profile = auth.userProfile;
+    // Populate profile form fields
+    const displayNameInput = document.getElementById('display-name');
+    if (displayNameInput) displayNameInput.value = profile.display_name || '';
     
-    const displayNameInput = document.getElementById('profile-display-name');
-    if (displayNameInput) {
-        displayNameInput.value = profile.display_name || '';
-    }
+    const emailInput = document.getElementById('email');
+    if (emailInput) emailInput.value = profile.email || '';
     
-    const emailInput = document.getElementById('profile-email');
-    if (emailInput) {
-        emailInput.value = profile.email || '';
-    }
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) phoneInput.value = profile.phone || '';
     
-    const privacySelect = document.getElementById('profile-privacy');
-    if (privacySelect) {
-        privacySelect.value = profile.preferences?.privacy_level || 'standard';
-    }
+    const goalsInput = document.getElementById('recovery-goals');
+    if (goalsInput) goalsInput.value = profile.recovery_goals || '';
     
-    const themeSelect = document.getElementById('profile-theme');
-    if (themeSelect) {
-        themeSelect.value = profile.preferences?.theme || 'light';
-    }
+    const networkInput = document.getElementById('support-network');
+    if (networkInput) networkInput.value = profile.support_network || '';
     
-    const bioTextarea = document.getElementById('profile-bio');
-    if (bioTextarea) {
-        bioTextarea.value = profile.bio || '';
-    }
-    
-    const notificationsCheckbox = document.getElementById('profile-notifications');
-    if (notificationsCheckbox) {
-        notificationsCheckbox.checked = profile.preferences?.notifications_enabled || false;
-    }
-    
-    // Update account status
-    const memberSince = document.getElementById('member-since');
-    if (memberSince) {
-        const date = new Date(profile.created_at || Date.now());
-        memberSince.textContent = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-    }
-    
-    const accountType = document.getElementById('account-type');
-    if (accountType) {
-        accountType.textContent = profile.is_anonymous ? 'Anonymous User' : 'Registered User';
+    const sobrietyInput = document.getElementById('sobriety-date');
+    if (sobrietyInput && profile.sobrietyDate) {
+        sobrietyInput.value = profile.sobrietyDate;
     }
 }
 
-// Load settings data
+// Load settings data into forms
 function loadSettingsData() {
-    if (!auth.userProfile) return;
+    const preferences = dashboardData.preferences;
     
-    const preferences = auth.userProfile.preferences || {};
-    
-    // Email notifications
+    // Populate settings form fields
     const emailCommunity = document.getElementById('email-community');
-    if (emailCommunity) {
-        emailCommunity.checked = preferences.notifications_enabled || false;
-    }
+    if (emailCommunity) emailCommunity.checked = preferences.email_notifications || false;
     
     const emailResources = document.getElementById('email-resources');
-    if (emailResources) {
-        emailResources.checked = preferences.resource_notifications || false;
-    }
+    if (emailResources) emailResources.checked = preferences.email_notifications || false;
     
     const emailStories = document.getElementById('email-stories');
-    if (emailStories) {
-        emailStories.checked = preferences.story_notifications || false;
-    }
+    if (emailStories) emailStories.checked = preferences.email_notifications || false;
     
     // Privacy settings
-    const privacyLevel = preferences.privacy_level || 'standard';
-    const privacyRadio = document.getElementById(`privacy-${privacyLevel}`);
-    if (privacyRadio) {
-        privacyRadio.checked = true;
+    const privacyPublic = document.getElementById('privacy-public');
+    const privacyStandard = document.getElementById('privacy-standard');
+    const privacyHigh = document.getElementById('privacy-high');
+    
+    if (privacyPublic && privacyStandard && privacyHigh) {
+        if (preferences.privacy_level === 'public') privacyPublic.checked = true;
+        else if (preferences.privacy_level === 'high') privacyHigh.checked = true;
+        else privacyStandard.checked = true;
     }
 }
 
 // Update profile
-window.updateProfile = async function() {
-    const displayName = document.getElementById('profile-display-name').value;
-    const privacy = document.getElementById('profile-privacy').value;
-    const theme = document.getElementById('profile-theme').value;
-    const bio = document.getElementById('profile-bio').value;
-    const notifications = document.getElementById('profile-notifications').checked;
-    
+async function updateProfile() {
     try {
+        const formData = new FormData(document.getElementById('profile-form'));
+        
         const updates = {
-            display_name: displayName,
-            bio: bio,
-            preferences: {
-                privacy_level: privacy,
-                theme: theme,
-                notifications_enabled: notifications
-            }
+            display_name: formData.get('display_name') || '',
+            email: formData.get('email') || '',
+            phone: formData.get('phone') || '',
+            recovery_goals: formData.get('recovery_goals') || '',
+            support_network: formData.get('support_network') || ''
         };
         
-        await auth.updateUserProfile(updates);
+        // Update local data
+        dashboardData.profile = { ...dashboardData.profile, ...updates };
         
-        // Update UI
-        const userDisplayName = document.getElementById('user-display-name');
-        if (userDisplayName) {
-            userDisplayName.textContent = displayName;
-        }
+        // Save to localStorage
+        saveDashboardData();
         
         showNotification('Profile updated successfully!', 'success');
+        loadProfileData(); // Refresh the form
     } catch (error) {
+        console.error('Error updating profile:', error);
         showNotification('Error updating profile: ' + error.message, 'error');
     }
-};
+}
 
 // Save settings
-window.saveSettings = async function() {
-    const emailCommunity = document.getElementById('email-community').checked;
-    const emailResources = document.getElementById('email-resources').checked;
-    const emailStories = document.getElementById('email-stories').checked;
-    const privacy = document.querySelector('input[name="privacy"]:checked')?.value || 'standard';
-    
+async function saveSettings() {
     try {
+        const emailCommunity = document.getElementById('email-community')?.checked || false;
+        const emailResources = document.getElementById('email-resources')?.checked || false;
+        const emailStories = document.getElementById('email-stories')?.checked || false;
+        
+        const privacyPublic = document.getElementById('privacy-public')?.checked || false;
+        const privacyStandard = document.getElementById('privacy-standard')?.checked || false;
+        const privacyHigh = document.getElementById('privacy-high')?.checked || false;
+        
+        let privacyLevel = 'standard';
+        if (privacyPublic) privacyLevel = 'public';
+        else if (privacyHigh) privacyLevel = 'high';
+        
         const updates = {
-            preferences: {
-                notifications_enabled: emailCommunity,
-                resource_notifications: emailResources,
-                story_notifications: emailStories,
-                privacy_level: privacy
-            }
+            email_notifications: emailCommunity || emailResources || emailStories,
+            privacy_level: privacyLevel
         };
         
-        await auth.updateUserProfile(updates);
+        // Update local data
+        dashboardData.preferences = { ...dashboardData.preferences, ...updates };
+        
+        // Save to localStorage
+        saveDashboardData();
+        
         showNotification('Settings saved successfully!', 'success');
     } catch (error) {
+        console.error('Error saving settings:', error);
         showNotification('Error saving settings: ' + error.message, 'error');
     }
-};
+}
 
 // Set sobriety date
-window.setSobrietyDate = async function() {
-    const dateInput = document.getElementById('sobriety-date');
-    const date = dateInput.value;
-    
-    if (!date) {
-        showNotification('Please select a sobriety date', 'warning');
-        return;
-    }
-    
+async function setSobrietyDate(date) {
     try {
-        await auth.setSobrietyDate(date);
-        updateSobrietyCounter();
-        showNotification('Sobriety date set successfully!', 'success');
+        dashboardData.profile.sobrietyDate = date;
+        dashboardData.profile = { ...dashboardData.profile };
+        
+        // Save to localStorage
+        saveDashboardData();
+        
+        // Update UI
+        updateSobrietyDisplay();
+        showNotification('Sobriety date updated!', 'success');
     } catch (error) {
+        console.error('Error setting sobriety date:', error);
         showNotification('Error setting sobriety date: ' + error.message, 'error');
     }
-};
+}
 
-// Show milestone modal
-window.showMilestoneModal = function() {
-    const modal = new bootstrap.Modal(document.getElementById('milestoneModal'));
-    modal.show();
-};
-
-// Submit milestone
-window.submitMilestone = async function() {
-    const title = document.getElementById('milestone-title').value.trim();
-    const description = document.getElementById('milestone-description').value.trim();
-    const date = document.getElementById('milestone-date').value;
-    
-    if (!title || !description || !date) {
-        showNotification('Please fill in all fields', 'warning');
-        return;
-    }
-    
+// Add recovery milestone
+async function addRecoveryMilestone(title, description) {
     try {
-        await auth.addRecoveryMilestone(title, description);
+        const milestone = {
+            id: Date.now().toString(),
+            title: title,
+            description: description,
+            date: new Date().toISOString().split('T')[0],
+            created_at: new Date().toISOString()
+        };
         
-        // Close modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('milestoneModal'));
-        modal.hide();
+        dashboardData.milestones.push(milestone);
         
-        // Clear form
-        document.getElementById('milestone-title').value = '';
-        document.getElementById('milestone-description').value = '';
-        document.getElementById('milestone-date').value = '';
+        // Save to localStorage
+        saveDashboardData();
         
-        // Reload data
-        await loadDashboardData();
-        await loadRecoveryMilestones();
-        
+        // Update UI
+        updateMilestonesDisplay();
         showNotification('Milestone added successfully!', 'success');
     } catch (error) {
+        console.error('Error adding milestone:', error);
         showNotification('Error adding milestone: ' + error.message, 'error');
     }
-};
+}
 
-// Load recovery milestones
-async function loadRecoveryMilestones() {
-    const container = document.getElementById('recovery-milestones');
-    if (!container) return;
+// Save dashboard data to localStorage
+function saveDashboardData() {
+    try {
+        localStorage.setItem('dashboardData', JSON.stringify(dashboardData));
+    } catch (error) {
+        console.error('Error saving dashboard data:', error);
+    }
+}
+
+// Update sobriety display
+function updateSobrietyDisplay() {
+    const sobrietyDate = dashboardData.profile.sobrietyDate;
+    if (!sobrietyDate) return;
     
-    const milestones = auth.userProfile?.recovery_milestones || [];
+    const startDate = new Date(sobrietyDate);
+    const today = new Date();
+    const timeDiff = today.getTime() - startDate.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
     
+    const sobrietyDisplay = document.getElementById('sobriety-display');
+    if (sobrietyDisplay) {
+        sobrietyDisplay.textContent = `${daysDiff} days`;
+    }
+    
+    // Update chart if available
+    if (recoveryChart) {
+        updateRecoveryChart();
+    }
+}
+
+// Update milestones display
+function updateMilestonesDisplay() {
+    const milestonesContainer = document.getElementById('milestones-container');
+    if (!milestonesContainer) return;
+    
+    const milestones = dashboardData.milestones;
     if (milestones.length === 0) {
-        container.innerHTML = '<p class="text-muted">No milestones recorded yet.</p>';
+        milestonesContainer.innerHTML = '<p class="text-muted">No milestones yet. Add your first one!</p>';
         return;
     }
     
-    const html = milestones.map(milestone => `
-        <div class="card mb-2">
+    const milestonesHTML = milestones.map(milestone => `
+        <div class="card mb-3">
             <div class="card-body">
                 <h6 class="card-title">${milestone.title}</h6>
                 <p class="card-text">${milestone.description}</p>
-                <small class="text-muted">Achieved on ${new Date(milestone.date).toLocaleDateString()}</small>
+                <small class="text-muted">Achieved on ${milestone.date}</small>
             </div>
         </div>
     `).join('');
     
-    container.innerHTML = html;
-}
-
-// Load favorite resources
-async function loadFavoriteResources() {
-    const container = document.getElementById('favorite-resources');
-    if (!container) return;
-    
-    const favorites = auth.userProfile?.favorite_resources || [];
-    
-    if (favorites.length === 0) {
-        container.innerHTML = '<p class="text-muted">No favorite resources yet.</p>';
-        return;
-    }
-    
-    try {
-        const { data, error } = await supabase
-            .from('resources')
-            .select('*')
-            .in('id', favorites);
-        
-        if (error) throw error;
-        
-        const html = data.map(resource => `
-            <div class="card mb-2">
-                <div class="card-body">
-                    <h6 class="card-title">${resource.name}</h6>
-                    <p class="card-text">${resource.description}</p>
-                    <a href="${resource.url}" class="btn btn-primary btn-sm" target="_blank">Visit</a>
-                    <button class="btn btn-outline-danger btn-sm ms-2" onclick="removeFavoriteResource('${resource.id}')">
-                        <i class="bi bi-heart-fill"></i> Remove
-                    </button>
-                </div>
-            </div>
-        `).join('');
-        
-        container.innerHTML = html;
-    } catch (error) {
-        console.error('Error loading favorite resources:', error);
-        container.innerHTML = '<p class="text-muted">Error loading favorite resources.</p>';
-    }
-}
-
-// Load personalized recommendations
-async function loadPersonalizedRecommendations() {
-    const container = document.getElementById('personalized-recommendations');
-    if (!container) return;
-    
-    try {
-        const { data, error } = await supabase
-            .from('resources')
-            .select('*')
-            .limit(3);
-        
-        if (error) throw error;
-        
-        if (data.length === 0) {
-            container.innerHTML = '<p class="text-muted">No recommendations available.</p>';
-            return;
-        }
-        
-        const html = data.map(resource => `
-            <div class="card mb-2">
-                <div class="card-body">
-                    <h6 class="card-title">${resource.name}</h6>
-                    <p class="card-text">${resource.description}</p>
-                    <a href="${resource.url}" class="btn btn-primary btn-sm" target="_blank">Learn More</a>
-                </div>
-            </div>
-        `).join('');
-        
-        container.innerHTML = html;
-    } catch (error) {
-        console.error('Error loading recommendations:', error);
-        container.innerHTML = '<p class="text-muted">Error loading recommendations.</p>';
-    }
-}
-
-// Load user posts
-async function loadUserPosts() {
-    const container = document.getElementById('my-posts');
-    if (!container) return;
-    
-    const posts = dashboardData.posts || [];
-    
-    if (posts.length === 0) {
-        container.innerHTML = '<p class="text-muted">No posts yet.</p>';
-        return;
-    }
-    
-    const html = posts.map(post => `
-        <div class="card mb-2">
-            <div class="card-body">
-                <h6 class="card-title">${post.title}</h6>
-                <p class="card-text">${truncateText(post.content, 100)}</p>
-                <small class="text-muted">${formatDate(post.created_at)}</small>
-                <div class="mt-2">
-                    <button class="btn btn-outline-primary btn-sm" onclick="editPost('${post.id}')">Edit</button>
-                    <button class="btn btn-outline-danger btn-sm ms-2" onclick="deletePost('${post.id}')">Delete</button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-    
-    container.innerHTML = html;
-}
-
-// Load user comments
-async function loadUserComments() {
-    const container = document.getElementById('my-comments');
-    if (!container) return;
-    
-    const comments = dashboardData.comments || [];
-    
-    if (comments.length === 0) {
-        container.innerHTML = '<p class="text-muted">No comments yet.</p>';
-        return;
-    }
-    
-    const html = comments.map(comment => `
-        <div class="card mb-2">
-            <div class="card-body">
-                <p class="card-text">${comment.content}</p>
-                <small class="text-muted">${formatDate(comment.created_at)}</small>
-            </div>
-        </div>
-    `).join('');
-    
-    container.innerHTML = html;
-}
-
-// Load user messages
-async function loadUserMessages() {
-    const container = document.getElementById('my-messages');
-    if (!container) return;
-    
-    container.innerHTML = '<p class="text-muted">No messages yet.</p>';
-}
-
-// Load user stories
-async function loadUserStories() {
-    const container = document.getElementById('my-stories');
-    if (!container) return;
-    
-    const stories = dashboardData.stories || [];
-    
-    if (stories.length === 0) {
-        container.innerHTML = '<p class="text-muted">No stories shared yet.</p>';
-        return;
-    }
-    
-    const html = stories.map(story => `
-        <div class="card mb-2">
-            <div class="card-body">
-                <h6 class="card-title">${story.title}</h6>
-                <p class="card-text">${truncateText(story.content, 100)}</p>
-                <small class="text-muted">${formatDate(story.created_at)} - Status: ${story.status}</small>
-                <div class="mt-2">
-                    <button class="btn btn-outline-primary btn-sm" onclick="editStory('${story.id}')">Edit</button>
-                    <button class="btn btn-outline-danger btn-sm ms-2" onclick="deleteStory('${story.id}')">Delete</button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-    
-    container.innerHTML = html;
+    milestonesContainer.innerHTML = milestonesHTML;
 }
 
 // Initialize charts
 function initializeCharts() {
-    const ctx = document.getElementById('recovery-chart');
+    const ctx = document.getElementById('recoveryChart');
     if (!ctx) return;
     
     recoveryChart = new Chart(ctx, {
@@ -741,180 +340,193 @@ function initializeCharts() {
             }
         }
     });
+    
+    updateRecoveryChart();
 }
 
 // Update recovery chart
 function updateRecoveryChart() {
     if (!recoveryChart) return;
     
-    const milestones = auth.userProfile?.recovery_milestones || [];
-    const labels = milestones.map(m => new Date(m.date).toLocaleDateString());
-    const data = milestones.map((_, index) => index + 1);
+    const sobrietyDate = dashboardData.profile.sobrietyDate;
+    if (!sobrietyDate) return;
+    
+    const startDate = new Date(sobrietyDate);
+    const today = new Date();
+    const daysDiff = Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+    
+    // Generate sample data for the chart
+    const labels = [];
+    const data = [];
+    
+    for (let i = 0; i <= Math.min(daysDiff, 30); i++) {
+        const date = new Date(startDate);
+        date.setDate(date.getDate() + i);
+        labels.push(date.toLocaleDateString());
+        data.push(i); // Simple linear progression
+    }
     
     recoveryChart.data.labels = labels;
     recoveryChart.data.datasets[0].data = data;
     recoveryChart.update();
 }
 
-// Update sobriety counter
-function updateSobrietyCounter() {
-    console.log('updateSobrietyCounter called');
-    console.log('auth object:', auth);
-    console.log('auth.userProfile:', auth.userProfile);
+// Update dashboard counts
+function updateDashboardCounts() {
+    const milestonesCount = document.getElementById('milestones-count');
+    if (milestonesCount) {
+        milestonesCount.textContent = dashboardData.milestones.length;
+    }
     
-    const sobrietyDate = auth.userProfile?.sobriety_date;
-    console.log('Sobriety date from profile:', sobrietyDate);
+    const resourcesCount = document.getElementById('resources-count');
+    if (resourcesCount) {
+        resourcesCount.textContent = dashboardData.resources.length;
+    }
+}
+
+// Load tab content
+function loadTabContent(tabName) {
+    switch (tabName) {
+        case 'profile':
+            loadProfileData();
+            break;
+        case 'settings':
+            loadSettingsData();
+            break;
+        case 'milestones':
+            updateMilestonesDisplay();
+            break;
+        case 'resources':
+            // Load resources tab content
+            break;
+    }
+}
+
+// Submit milestone
+window.submitMilestone = function() {
+    const title = document.getElementById('milestone-title').value;
+    const description = document.getElementById('milestone-description').value;
+    const date = document.getElementById('milestone-date').value;
     
-    if (!sobrietyDate) {
-        console.log('No sobriety date found, returning early');
+    if (!title || !description || !date) {
+        showNotification('Please fill in all fields', 'warning');
         return;
     }
     
-    const date = new Date(sobrietyDate);
-    const today = new Date();
+    addRecoveryMilestone(title, description);
     
-    // Debug logging
-    console.log('Sobriety date string:', sobrietyDate);
-    console.log('Parsed date object:', date);
-    console.log('Today:', today);
-    console.log('Date.getTime():', date.getTime());
-    console.log('Today.getTime():', today.getTime());
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('milestoneModal'));
+    if (modal) modal.hide();
     
-    const daysSober = Math.floor((today - date) / (1000 * 60 * 60 * 24));
-    console.log('Days sober calculation:', daysSober);
-    
-    // Check if the date is in the future (likely a data entry error)
-    if (daysSober < 0) {
-        console.warn('Sobriety date is in the future. This might be a data entry error.');
-        // Try to interpret as previous year if it's a future date
-        const currentYear = today.getFullYear();
-        const correctedDate = new Date(sobrietyDate);
-        correctedDate.setFullYear(currentYear - 1);
-        
-        const correctedDaysSober = Math.floor((today - correctedDate) / (1000 * 60 * 60 * 24));
-        console.log('Corrected date:', correctedDate);
-        console.log('Corrected days sober:', correctedDaysSober);
-        
-        if (correctedDaysSober > 0) {
-            // Use the corrected calculation
-            const displayDays = correctedDaysSober;
-            console.log('Using corrected display days:', displayDays);
-            
-            const counterElements = [
-                document.getElementById('sobriety-counter'),
-                document.getElementById('sobriety-counter-large')
-            ];
-            
-            console.log('Counter elements found:', counterElements);
-            
-            counterElements.forEach(element => {
-                if (element) {
-                    console.log('Updating element:', element, 'with text:', `${displayDays} days sober`);
-                    element.textContent = `${displayDays} days sober`;
-                }
-            });
-            
-            // Show a notification about the date correction
-            showNotification('Sobriety date corrected from future date. Please verify your sobriety date is correct.', 'warning');
-            return;
-        }
-    }
-    
-    // Handle future dates (show 0 days)
-    const displayDays = Math.max(0, daysSober);
-    console.log('Final display days:', displayDays);
-    
-    const counterElements = [
-        document.getElementById('sobriety-counter'),
-        document.getElementById('sobriety-counter-large')
-    ];
-    
-    console.log('Counter elements found:', counterElements);
-    
-    counterElements.forEach(element => {
-        if (element) {
-            console.log('Updating element:', element, 'with text:', `${displayDays} days sober`);
-            element.textContent = `${displayDays} days sober`;
-        }
-    });
-    
-    // Also update the date input field to show the current sobriety date
-    const sobrietyDateInput = document.getElementById('sobriety-date');
-    if (sobrietyDateInput) {
-        sobrietyDateInput.value = sobrietyDate;
-    }
-}
+    // Clear form
+    document.getElementById('milestone-form').reset();
+};
 
 // Export data
 window.exportData = function() {
-    const data = {
-        profile: auth.userProfile,
-        posts: dashboardData.posts,
-        comments: dashboardData.comments,
-        stories: dashboardData.stories,
-        exportDate: new Date().toISOString()
-    };
-    
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'sober-spokane-data.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    
-    showNotification('Data exported successfully!', 'success');
+    try {
+        const dataStr = JSON.stringify(dashboardData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'dashboard-data.json';
+        link.click();
+        
+        URL.revokeObjectURL(url);
+        showNotification('Data exported successfully!', 'success');
+    } catch (error) {
+        console.error('Error exporting data:', error);
+        showNotification('Error exporting data: ' + error.message, 'error');
+    }
 };
 
-// Print dashboard
-window.printDashboard = function() {
-    window.print();
-};
-
-// Delete account
+// Delete account (local data only)
 window.deleteAccount = function() {
-    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-        // In production, implement proper account deletion
-        showNotification('Account deletion not implemented in demo', 'warning');
+    if (confirm('Are you sure you want to delete all your data? This action cannot be undone.')) {
+        try {
+            localStorage.removeItem('dashboardData');
+            dashboardData = {
+                posts: [],
+                comments: [],
+                milestones: [],
+                resources: [],
+                sobrietyDate: null,
+                profile: {
+                    display_name: 'Guest User',
+                    email: 'guest@example.com',
+                    phone: '',
+                    recovery_goals: '',
+                    support_network: '',
+                    emergency_contacts: []
+                },
+                preferences: {
+                    email_notifications: false,
+                    privacy_level: 'standard'
+                }
+            };
+            
+            // Refresh the page
+            location.reload();
+        } catch (error) {
+            console.error('Error deleting account:', error);
+            showNotification('Error deleting account: ' + error.message, 'error');
+        }
     }
 };
 
-// Browse resources
-window.browseResources = function() {
-    window.location.href = '/resource-directory.html';
-};
-
-// Utility functions
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = (now - date) / (1000 * 60 * 60);
+// Show notification (simple implementation)
+function showNotification(message, type = 'info') {
+    // Create a simple notification
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
     
-    if (diffInHours < 1) {
-        return 'Just now';
-    } else if (diffInHours < 24) {
-        return `${Math.floor(diffInHours)} hours ago`;
-    } else if (diffInHours < 168) {
-        return `${Math.floor(diffInHours / 24)} days ago`;
-    } else {
-        return date.toLocaleDateString();
-    }
-}
-
-function truncateText(text, maxLength) {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + '...';
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
 }
 
 // Export functions for global access
 window.dashboard = {
-    loadDashboardData,
-    updateDashboardCounts,
-    loadTabContent,
+    initializeDashboard,
     updateProfile,
     saveSettings,
     setSobrietyDate,
-    submitMilestone,
+    addRecoveryMilestone,
     exportData,
-    printDashboard
+    printDashboard: exportData
+};
+
+// Add missing functions for dashboard template
+window.showNewPostModal = function() {
+    // Redirect to community forum page
+    window.location.href = '/community-engagement-sober-activities.html';
+};
+
+window.showStorySubmissionModal = function() {
+    // Redirect to success stories page
+    window.location.href = '/success-stories.html';
+};
+
+window.addMilestone = function() {
+    // Show milestone modal
+    const modal = new bootstrap.Modal(document.getElementById('milestoneModal'));
+    modal.show();
+};
+
+window.browseResources = function() {
+    // Redirect to resource directory
+    window.location.href = '/resource-directory.html';
 }; 
