@@ -676,12 +676,12 @@ window.dashboard = {
 // Add missing functions for dashboard template
 window.showNewPostModal = function() {
     // Redirect to community forum page
-    window.location.href = '/community-engagement-sober-activities.html';
+    window.location.href = '/get-sober-spokane/community-engagement-sober-activities.html';
 };
 
 window.showStorySubmissionModal = function() {
     // Redirect to success stories page
-    window.location.href = '/success-stories.html';
+    window.location.href = '/get-sober-spokane/success-stories.html';
 };
 
 window.addMilestone = function() {
@@ -692,5 +692,5 @@ window.addMilestone = function() {
 
 window.browseResources = function() {
     // Redirect to resource directory
-    window.location.href = '/resource-directory.html';
+    window.location.href = '/get-sober-spokane/resource-directory.html';
 }; 

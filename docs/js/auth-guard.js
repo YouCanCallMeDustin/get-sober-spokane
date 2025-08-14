@@ -11,14 +11,14 @@ async function requireAuth() {
         
         if (error || !user) {
             // User is not authenticated, redirect to login
-            window.location.href = 'login.html';
+            window.location.href = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
             return null;
         }
         
         return user;
     } catch (error) {
         console.error('Auth check error:', error);
-        window.location.href = 'login.html';
+        window.location.href = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
         return null;
     }
 }
@@ -49,11 +49,11 @@ async function signOut() {
         }
         
         // Redirect to login page
-        window.location.href = 'login.html';
+        window.location.href = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
     } catch (error) {
         console.error('Sign out error:', error);
         // Force redirect even if there's an error
-        window.location.href = 'login.html';
+        window.location.href = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
     }
 }
 
@@ -90,7 +90,7 @@ async function initAuthGuard() {
         supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_OUT') {
                 // User signed out, redirect to login
-                window.location.href = 'login.html';
+                window.location.href = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
             }
         });
     }

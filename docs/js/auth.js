@@ -39,7 +39,7 @@ async function checkAuthStatus() {
         
         if (user && !error) {
             // User is already logged in, redirect to dashboard
-            window.location.href = 'dashboard.html';
+            window.location.href = CONFIG.REDIRECT_URLS.AFTER_LOGIN;
         }
     } catch (error) {
         console.error('Error checking auth status:', error);
@@ -100,7 +100,7 @@ async function handleLogin(event) {
         const { data, error } = await supabase.auth.signInWithOtp({
             email: email,
             options: {
-                emailRedirectTo: window.location.origin + '/dashboard.html'
+                emailRedirectTo: window.location.origin + CONFIG.REDIRECT_URLS.AFTER_LOGIN
             }
         });
         
@@ -152,7 +152,7 @@ ensureSupabaseAsync().then((ready) => {
         supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_IN' && session) {
                 // User successfully signed in, redirect to dashboard
-                window.location.href = 'dashboard.html';
+                window.location.href = CONFIG.REDIRECT_URLS.AFTER_LOGIN;
             }
         });
     }

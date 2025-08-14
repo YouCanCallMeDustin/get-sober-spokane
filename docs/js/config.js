@@ -23,11 +23,11 @@ const CONFIG = {
         }
     },
     
-    // Redirect URLs
+    // Redirect URLs - Updated for GitHub Pages with repository name
     REDIRECT_URLS: {
-        AFTER_LOGIN: 'dashboard.html',
-        AFTER_LOGOUT: 'login.html',
-        LOGIN_PAGE: 'login.html'
+        AFTER_LOGIN: '/get-sober-spokane/dashboard.html',
+        AFTER_LOGOUT: '/get-sober-spokane/login.html',
+        LOGIN_PAGE: '/get-sober-spokane/login.html'
     },
     
     // Local Storage Keys

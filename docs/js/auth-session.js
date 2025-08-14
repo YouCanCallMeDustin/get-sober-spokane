@@ -2,8 +2,8 @@
 // Requires: js/config.js to be loaded first (provides initSupabaseWithRetry and supabaseClient)
 
 (function () {
-    const LOGIN_HREF = 'login.html';
-    const DASHBOARD_HREF = 'dashboard.html';
+    const LOGIN_HREF = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
+    const DASHBOARD_HREF = CONFIG.REDIRECT_URLS.AFTER_LOGIN;
 
     function findLoginLinks() {
         const nav = document.querySelector('#navbarResponsive, nav .navbar-nav') || document;
@@ -31,7 +31,7 @@
             } catch (err) {
                 // Ignore and still redirect
             } finally {
-                window.location.href = LOGIN_HREF;
+                window.location.href = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
             }
         });
         li.appendChild(a);

@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         const { data: { user }, error } = await window.supabaseClient.auth.getUser();
         if (error || !user) {
             console.error('No authenticated user found');
-            window.location.href = 'login.html';
+            window.location.href = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
             return;
         }
         
@@ -268,7 +268,7 @@ async function loadDashboardData() {
         const { data: profileData, error: profileError } = await window.supabaseClient
             .from('profiles')
             .select('*')
-            .eq('id', currentUser.id)
+            .eq('user_id', currentUser.id)
             .single();
 
         if (profileError && profileError.code !== 'PGRST116') { // PGRST116 = no rows returned
@@ -397,11 +397,11 @@ async function updateProfile() {
             updated_at: new Date().toISOString()
         };
 
-        // Update profile in Supabase
+        // Update profile in Supabase (using user_id column)
         const { data, error } = await window.supabaseClient
             .from('profiles')
             .upsert({
-                id: currentUser.id,
+                user_id: currentUser.id,
                 email: currentUser.email,
                 ...updates
             })
@@ -448,11 +448,11 @@ async function saveSettings() {
             updated_at: new Date().toISOString()
         };
         
-        // Update profile in Supabase
+        // Update profile in Supabase (using user_id column)
         const { data, error } = await window.supabaseClient
             .from('profiles')
             .upsert({
-                id: currentUser.id,
+                user_id: currentUser.id,
                 email: currentUser.email,
                 ...updates
             })
@@ -501,11 +501,11 @@ async function setSobrietyDate(date) {
             return;
         }
 
-        // Update profile in Supabase
+        // Update profile in Supabase (using user_id column)
         const { data, error } = await window.supabaseClient
             .from('profiles')
             .upsert({
-                id: currentUser.id,
+                user_id: currentUser.id,
                 email: currentUser.email,
                 sobriety_date: selectedDate,
                 updated_at: new Date().toISOString()
@@ -766,11 +766,11 @@ window.deleteAccount = async function() {
             await window.supabaseClient
                 .from('profiles')
                 .delete()
-                .eq('id', currentUser.id);
+                .eq('user_id', currentUser.id);
 
             // Sign out and redirect
             await window.supabaseClient.auth.signOut();
-            window.location.href = 'login.html';
+            window.location.href = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
         } catch (error) {
             console.error('Error deleting account:', error);
             showNotification('Error deleting account: ' + error.message, 'error');
@@ -813,12 +813,12 @@ window.dashboard = {
 // Add missing functions for dashboard template
 window.showNewPostModal = function() {
     // Redirect to community forum page
-    window.location.href = '/community-engagement-sober-activities.html';
+    window.location.href = '/get-sober-spokane/community-engagement-sober-activities.html';
 };
 
 window.showStorySubmissionModal = function() {
     // Redirect to success stories page
-    window.location.href = '/success-stories.html';
+    window.location.href = '/get-sober-spokane/success-stories.html';
 };
 
 window.addMilestone = function() {
@@ -835,5 +835,5 @@ window.showMilestoneModal = function() {
 
 window.browseResources = function() {
     // Redirect to resource directory
-    window.location.href = '/resource-directory.html';
+    window.location.href = '/get-sober-spokane/resource-directory.html';
 }; 
