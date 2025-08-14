@@ -47,6 +47,24 @@ const CONFIG = {
 // Export configuration
 window.CONFIG = CONFIG;
 
+// Detect base path dynamically so local dev (/) and GitHub Pages (/get-sober-spokane)
+// both work without changing code
+(function detectBasePath() {
+    try {
+        const pathname = window.location?.pathname || '';
+        const repoSegment = '/get-sober-spokane';
+        CONFIG.BASE_PATH = pathname.includes(repoSegment) ? repoSegment : '';
+    } catch (_) {
+        CONFIG.BASE_PATH = '';
+    }
+    // Helper to prefix app-relative paths with BASE_PATH
+    window.appPath = function appPath(relativePath) {
+        if (!relativePath) return CONFIG.BASE_PATH || '';
+        const needsSlash = relativePath[0] !== '/';
+        return (CONFIG.BASE_PATH || '') + (needsSlash ? '/' : '') + relativePath;
+    };
+})();
+
 // Robust Supabase initialization with retries to avoid race conditions
 function getSupabaseGlobal() {
     return window.supabase || window.Supabase || null;

@@ -63,6 +63,8 @@ async function initializeDashboard() {
         updateSobrietyDisplay();
         initializeCharts();
         updateDashboardCounts();
+        // Ensure milestones list is rendered on initial load
+        updateMilestonesDisplay();
         
         // Handle mobile responsiveness
         handleMobileLayout();
@@ -702,6 +704,9 @@ function loadTabContent(tabName) {
         case 'milestones':
             updateMilestonesDisplay();
             break;
+        case 'recovery':
+            updateMilestonesDisplay();
+            break;
         case 'resources':
             // Load resources tab content
             break;
@@ -812,8 +817,9 @@ window.dashboard = {
 
 // Add missing functions for dashboard template
 window.showNewPostModal = function() {
-    // Redirect to community forum page
-    window.location.href = '/get-sober-spokane/community-engagement-sober-activities.html';
+    // Redirect to dedicated community forum page and open new-post modal
+    const target = (window.appPath ? window.appPath('community-forum.html') : '/get-sober-spokane/community-forum.html') + '#new';
+    window.location.href = target;
 };
 
 window.showStorySubmissionModal = function() {

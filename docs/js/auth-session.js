@@ -15,8 +15,11 @@
         const li = document.createElement('li');
         li.className = 'nav-item';
         const a = document.createElement('a');
-        a.className = 'nav-link btn btn-outline-secondary btn-sm text-dark px-3';
+        a.className = 'nav-link btn btn-warning btn-sm px-3 fw-semibold';
         a.style.borderRadius = '20px';
+        a.style.color = '#000';
+        a.style.border = '1px solid rgba(255,255,255,0.4)';
+        a.style.boxShadow = '0 0 0 2px rgba(0,0,0,0.2) inset';
         a.id = 'nav-signout-link';
         a.href = '#';
         a.textContent = 'Sign Out';
