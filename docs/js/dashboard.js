@@ -22,7 +22,6 @@ let dashboardData = {
 };
 
 let recoveryChart = null;
-
 // Initialize dashboard
 document.addEventListener('DOMContentLoaded', function() {
     initializeDashboard();
@@ -35,6 +34,8 @@ async function initializeDashboard() {
     try {
         loadDashboardData();
         setupDashboardUI();
+        // Reflect any saved sobriety date immediately
+        updateSobrietyDisplay();
         initializeCharts();
         updateDashboardCounts();
         
@@ -362,7 +363,27 @@ async function saveSettings() {
 // Set sobriety date
 async function setSobrietyDate(date) {
     try {
-        dashboardData.profile.sobrietyDate = date;
+        // If no date provided, read from input
+        let selectedDate = date;
+        if (!selectedDate) {
+            const input = document.getElementById('sobriety-date');
+            selectedDate = input ? input.value : null;
+        }
+
+        if (!selectedDate) {
+            showNotification('Please choose a sobriety date first.', 'warning');
+            return;
+        }
+
+        // Prevent future dates
+        const picked = new Date(selectedDate);
+        const today = new Date();
+        if (picked.getTime() > today.getTime()) {
+            showNotification('Sobriety date cannot be in the future.', 'warning');
+            return;
+        }
+
+        dashboardData.profile.sobrietyDate = selectedDate;
         dashboardData.profile = { ...dashboardData.profile };
         
         // Save to localStorage
@@ -421,10 +442,13 @@ function updateSobrietyDisplay() {
     const timeDiff = today.getTime() - startDate.getTime();
     const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
     
+    // Update all known counters in the UI
     const sobrietyDisplay = document.getElementById('sobriety-display');
-    if (sobrietyDisplay) {
-        sobrietyDisplay.textContent = `${daysDiff} days`;
-    }
+    if (sobrietyDisplay) sobrietyDisplay.textContent = `${daysDiff} days`;
+    const counterSmall = document.getElementById('sobriety-counter');
+    if (counterSmall) counterSmall.textContent = `${daysDiff} days`;
+    const counterLarge = document.getElementById('sobriety-counter-large');
+    if (counterLarge) counterLarge.textContent = `${daysDiff} days sober`;
     
     // Update chart if available
     if (recoveryChart) {
@@ -458,7 +482,8 @@ function updateMilestonesDisplay() {
 
 // Initialize charts
 function initializeCharts() {
-    const ctx = document.getElementById('recoveryChart');
+    // Support both legacy and current IDs
+    const ctx = document.getElementById('recovery-chart') || document.getElementById('recoveryChart');
     if (!ctx) return;
     
     recoveryChart = new Chart(ctx, {
@@ -519,10 +544,8 @@ function updateDashboardCounts() {
         milestonesCount.textContent = dashboardData.milestones.length;
     }
     
-    const resourcesCount = document.getElementById('resources-count');
-    if (resourcesCount) {
-        resourcesCount.textContent = dashboardData.resources.length;
-    }
+    const resourcesCount = document.getElementById('resources-count') || document.getElementById('favorites-count');
+    if (resourcesCount) resourcesCount.textContent = dashboardData.resources.length;
 }
 
 // Load tab content
