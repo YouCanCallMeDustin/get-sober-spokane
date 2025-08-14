@@ -39,31 +39,36 @@
     }
 
     function updateNavLoggedIn() {
-        const loginLinks = findLoginLinks();
-        if (loginLinks.length > 0) {
-            loginLinks.forEach((link) => {
-                link.href = DASHBOARD_HREF;
-                link.textContent = 'Dashboard';
-                link.classList.remove('btn-primary');
-                link.classList.add('btn', 'btn-primary', 'btn-sm', 'text-white');
-            });
-            const navList = loginLinks[0].closest('.navbar-nav') || document.querySelector('.navbar-nav');
-            if (navList) ensureSignOutControl(navList);
-        }
+		const loginLinks = findLoginLinks();
+		if (loginLinks.length > 0) {
+			// Hide the Sign In button instead of converting it to a purple Dashboard button
+			loginLinks.forEach((link) => {
+				const li = link.closest('li');
+				if (li) li.style.display = 'none';
+			});
+			const navList = loginLinks[0].closest('.navbar-nav') || document.querySelector('.navbar-nav');
+			if (navList) ensureSignOutControl(navList);
+		} else {
+			// No login link present on this page; still add Sign Out to the navbar
+			const navList = document.querySelector('.navbar-nav');
+			if (navList) ensureSignOutControl(navList);
+		}
     }
 
     function updateNavLoggedOut() {
-        const navList = document.querySelector('.navbar-nav');
-        const signOut = document.getElementById('nav-signout-link');
-        if (signOut && signOut.parentElement) signOut.parentElement.remove();
-        const loginLinks = findLoginLinks();
-        if (loginLinks.length > 0) {
-            loginLinks.forEach((link) => {
-                link.href = LOGIN_HREF;
-                link.textContent = 'Sign In';
-                link.classList.add('btn', 'btn-primary', 'btn-sm', 'text-white');
-            });
-        }
+		const navList = document.querySelector('.navbar-nav');
+		const signOut = document.getElementById('nav-signout-link');
+		if (signOut && signOut.parentElement) signOut.parentElement.remove();
+		const loginLinks = findLoginLinks();
+		if (loginLinks.length > 0) {
+			loginLinks.forEach((link) => {
+				// Restore Sign In button visibility and text without overwriting custom classes/styles
+				const li = link.closest('li');
+				if (li) li.style.display = '';
+				link.href = LOGIN_HREF;
+				link.textContent = 'Sign In';
+			});
+		}
     }
 
     async function init() {
