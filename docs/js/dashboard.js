@@ -264,7 +264,7 @@ async function loadDashboardData() {
             throw new Error('No authenticated user');
         }
 
-        // Load profile data from Supabase
+        // Load profile data from Supabase (using existing profiles table)
         const { data: profileData, error: profileError } = await window.supabaseClient
             .from('profiles')
             .select('*')
@@ -279,28 +279,28 @@ async function loadDashboardData() {
             // Update dashboard data with profile info
             dashboardData.profile = {
                 ...dashboardData.profile,
-                display_name: profileData.display_name || '',
+                display_name: profileData.display_name || profileData.name || '',
                 email: profileData.email || currentUser.email || '',
                 phone: profileData.phone || '',
-                bio: profileData.bio || '',
-                recovery_goals: profileData.recovery_goals || '',
-                support_network: profileData.support_network || '',
-                emergency_contacts: profileData.emergency_contacts || [],
-                sobriety_date: profileData.sobriety_date || null,
-                privacy_level: profileData.privacy_level || 'standard',
+                bio: profileData.bio || profileData.description || '',
+                recovery_goals: profileData.recovery_goals || profileData.goals || '',
+                support_network: profileData.support_network || profileData.network || '',
+                emergency_contacts: profileData.emergency_contacts || profileData.contacts || [],
+                sobriety_date: profileData.sobriety_date || profileData.sobrietyDate || null,
+                privacy_level: profileData.privacy_level || profileData.privacy || 'standard',
                 theme: profileData.theme || 'light'
             };
             
             // Update preferences
             dashboardData.preferences = {
                 ...dashboardData.preferences,
-                privacy_level: profileData.privacy_level || 'standard'
+                privacy_level: profileData.privacy_level || profileData.privacy || 'standard'
             };
         }
 
-        // Load milestones from Supabase
+        // Load milestones from Supabase (using existing recovery_milestones table)
         const { data: milestonesData, error: milestonesError } = await window.supabaseClient
-            .from('milestones')
+            .from('recovery_milestones')
             .select('*')
             .eq('user_id', currentUser.id)
             .order('date', { ascending: false });
@@ -544,9 +544,9 @@ async function addRecoveryMilestone(title, description, date) {
             created_at: new Date().toISOString()
         };
         
-        // Insert milestone into Supabase
+        // Insert milestone into Supabase (using existing recovery_milestones table)
         const { data, error } = await window.supabaseClient
-            .from('milestones')
+            .from('recovery_milestones')
             .insert(milestone)
             .select()
             .single();
@@ -757,9 +757,9 @@ window.deleteAccount = async function() {
                 throw new Error('No authenticated user');
             }
 
-            // Delete user data from Supabase
+            // Delete user data from Supabase (using existing table names)
             await window.supabaseClient
-                .from('milestones')
+                .from('recovery_milestones')
                 .delete()
                 .eq('user_id', currentUser.id);
 

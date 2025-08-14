@@ -6,6 +6,7 @@ This guide will help you set up the Supabase backend for the Get Sober Spokane d
 
 1. A Supabase account and project
 2. Your Supabase project URL and anon key (already configured in `docs/js/config.js`)
+3. **Existing tables**: `profiles` and `recovery_milestones` (already in your database)
 
 ## Database Setup
 
@@ -15,28 +16,29 @@ This guide will help you set up the Supabase backend for the Get Sober Spokane d
 2. Navigate to the "SQL Editor" section in the left sidebar
 3. Click "New Query"
 
-### Step 2: Run the Database Setup Script
+### Step 2: Run the Database Update Script
 
-1. Copy the contents of `supabase-setup.sql`
+1. Copy the contents of `check-existing-tables.sql`
 2. Paste it into the SQL Editor
 3. Click "Run" to execute the script
 
 This script will:
-- Create the `profiles` table for user profile data
-- Create the `milestones` table for recovery milestones
-- Set up Row Level Security (RLS) policies
-- Create necessary indexes for performance
-- Set up automatic profile creation on user signup
+- **Check your existing table structures** without modifying your data
+- **Add missing columns** to your existing `profiles` table if needed
+- **Add missing columns** to your existing `recovery_milestones` table if needed
+- **Set up Row Level Security (RLS) policies** for data security
+- **Create necessary indexes** for performance
+- **Set up automatic profile creation** on user signup
 
-### Step 3: Verify Tables Created
+### Step 3: Verify Tables Updated
 
 1. Go to "Table Editor" in the left sidebar
-2. You should see two new tables: `profiles` and `milestones`
-3. Click on each table to verify the structure
+2. You should see your existing `profiles` and `recovery_milestones` tables
+3. Click on each table to verify the structure includes the new columns
 
 ## What This Enables
 
-### User Profiles
+### User Profiles (using your existing `profiles` table)
 - **Display Name**: Custom name for the user
 - **Bio**: Personal description
 - **Privacy Level**: Public, Standard, or High privacy settings
@@ -44,7 +46,7 @@ This script will:
 - **Email Notifications**: Toggle for various notification types
 - **Sobriety Date**: The user's sobriety start date
 
-### Recovery Milestones
+### Recovery Milestones (using your existing `recovery_milestones` table)
 - **Title**: Milestone name
 - **Description**: Details about the achievement
 - **Date**: When the milestone was achieved
@@ -73,13 +75,13 @@ This script will:
    - Check that `auth-guard.js` is properly loaded
 
 2. **"Error loading profile"**
-   - Verify the `profiles` table exists
+   - Verify the `profiles` table exists and has the required columns
    - Check RLS policies are enabled
    - Ensure the user has a profile record
 
 3. **"Error updating profile"**
    - Check that the user is authenticated
-   - Verify the `profiles` table structure matches the expected schema
+   - Verify the `profiles` table structure includes the expected columns
 
 ### Database Schema Verification
 
@@ -90,14 +92,14 @@ Run this query to verify your tables are set up correctly:
 SELECT table_name, column_name, data_type, is_nullable
 FROM information_schema.columns
 WHERE table_schema = 'public' 
-AND table_name IN ('profiles', 'milestones')
+AND table_name IN ('profiles', 'recovery_milestones')
 ORDER BY table_name, ordinal_position;
 
 -- Check RLS policies
 SELECT schemaname, tablename, policyname, permissive, roles, cmd, qual
 FROM pg_policies
 WHERE schemaname = 'public' 
-AND tablename IN ('profiles', 'milestones');
+AND tablename IN ('profiles', 'recovery_milestones');
 ```
 
 ## Next Steps
@@ -123,3 +125,10 @@ If you encounter issues:
 2. Verify the Supabase connection in the Network tab
 3. Check the Supabase logs for any backend errors
 4. Ensure all required JavaScript files are loaded in the correct order
+
+## Important Notes
+
+- **Your existing data is preserved** - this setup only adds missing columns
+- **No duplicate tables are created** - we use your existing `profiles` and `recovery_milestones`
+- **The JavaScript code has been updated** to work with your existing table names
+- **RLS policies are added** to ensure data security without affecting existing functionality
