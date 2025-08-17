@@ -1,0 +1,71 @@
+extends ../layout
+
+block content
+  .auth-container
+    .auth-card
+      .auth-header
+        img.auth-logo(src="/assets/img/logo.png" alt="Sober Spokane")
+        h1.auth-title Reset Password
+        p.auth-subtitle Enter your email to receive a password reset link
+    
+    .auth-form
+      form#resetForm
+        .form-group
+          label(for="email") Email Address
+          input.form-control#email(type="email" name="email" required placeholder="Enter your email address")
+        
+        button.btn.btn-primary.btn-block#resetBtn(type="submit") Send Reset Link
+        
+        .auth-links
+          a(href="/auth/login.html") Back to Sign In
+          a(href="/auth/signup.html") Don't have an account? Sign up
+    
+    .auth-alert#authAlert(style="display: none;")
+
+block scripts
+  script(src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2")
+  script(src="/js/config.js")
+  script(src="/js/auth.js")
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      const resetForm = document.getElementById('resetForm');
+      const resetBtn = document.getElementById('resetBtn');
+      const authAlert = document.getElementById('authAlert');
+      
+      // Reset form submission
+      resetForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        
+        resetBtn.disabled = true;
+        resetBtn.textContent = 'Sending...';
+        
+        try {
+          if (window.authManager) {
+            const result = await window.authManager.resetPassword(email);
+            if (result.success) {
+              showAlert('Password reset link sent! Please check your email.', 'success');
+              resetForm.reset();
+            }
+          } else {
+            showAlert('Authentication system not ready. Please refresh the page.', 'danger');
+          }
+        } catch (error) {
+          showAlert('Password reset failed: ' + error.message, 'danger');
+        } finally {
+          resetBtn.disabled = false;
+          resetBtn.textContent = 'Send Reset Link';
+        }
+      });
+      
+      function showAlert(message, type) {
+        authAlert.className = `auth-alert alert alert-${type}`;
+        authAlert.textContent = message;
+        authAlert.style.display = 'block';
+        
+        setTimeout(() => {
+          authAlert.style.display = 'none';
+        }, 5000);
+      }
+    });

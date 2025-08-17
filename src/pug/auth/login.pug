@@ -1,0 +1,101 @@
+extends ../layout
+
+block content
+  .auth-container
+    .auth-card
+      .auth-header
+        img.auth-logo(src="/assets/img/logo.png" alt="Sober Spokane")
+        h1.auth-title Sign In
+        p.auth-subtitle Welcome back to your recovery journey
+    
+    .auth-form
+      form#loginForm
+        .form-group
+          label(for="email") Email
+          input.form-control#email(type="email" name="email" required)
+        
+        .form-group
+          label(for="password") Password
+          input.form-control#password(type="password" name="password" required)
+        
+        .form-group.form-check
+          input.form-check-input#rememberMe(type="checkbox" name="rememberMe")
+          label.form-check-label(for="rememberMe") Remember me
+        
+        button.btn.btn-primary.btn-block#loginBtn(type="submit") Sign In
+        
+        .auth-divider
+          span or
+        
+        button.btn.btn-google#googleSignIn(type="button")
+          img(src="https://developers.google.com/identity/images/g-logo.png" alt="Google")
+          Sign in with Google
+        
+        .auth-links
+          a(href="/auth/signup.html") Don't have an account? Sign up
+          a(href="/auth/reset.html") Forgot your password?
+    
+    .auth-alert#authAlert(style="display: none;")
+
+block scripts
+  script(src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2")
+  script(src="/js/config.js")
+  script(src="/js/auth.js")
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginForm = document.getElementById('loginForm');
+      const loginBtn = document.getElementById('loginBtn');
+      const googleSignIn = document.getElementById('googleSignIn');
+      const authAlert = document.getElementById('authAlert');
+      
+      // Login form submission
+      loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+        
+        loginBtn.disabled = true;
+        loginBtn.textContent = 'Signing In...';
+        
+        try {
+          if (window.authManager) {
+            const result = await window.authManager.signIn(email, password, rememberMe);
+            if (result.success) {
+              window.location.href = '/dashboard.html';
+            }
+          } else {
+            showAlert('Authentication system not ready. Please refresh the page.', 'danger');
+          }
+        } catch (error) {
+          showAlert('Login failed: ' + error.message, 'danger');
+        } finally {
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Sign In';
+        }
+      });
+      
+      // Google sign in
+      googleSignIn.addEventListener('click', async function() {
+        try {
+          if (window.authManager) {
+            await window.authManager.signInWithGoogle();
+          } else {
+            showAlert('Authentication system not ready. Please refresh the page.', 'danger');
+          }
+        } catch (error) {
+          showAlert('Google sign-in failed: ' + error.message, 'danger');
+        }
+      });
+      
+      function showAlert(message, type) {
+        authAlert.className = `auth-alert alert alert-${type}`;
+        authAlert.textContent = message;
+        authAlert.style.display = 'block';
+        
+        setTimeout(() => {
+          authAlert.style.display = 'none';
+        }, 5000);
+      }
+    });

@@ -1,795 +1,475 @@
 extends layout
 
-block head
-  style.
-    /* Mobile-First Dashboard Styles */
-    
-    /* Base dashboard layout */
-    .dashboard-container {
-      padding-top: 80px; /* Account for fixed navbar */
-    }
-    
-    /* Sidebar styles */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 100;
-      padding: 48px 0 0;
-      box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
-      background: #f8f9fa;
-      transition: transform 0.3s ease;
-    }
-
-    .sidebar-sticky {
-      position: relative;
-      top: 0;
-      height: calc(100vh - 48px);
-      padding-top: 0.5rem;
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
-
-    /* Mobile sidebar behavior */
-    @media (max-width: 767.98px) {
-      .sidebar {
-        transform: translateX(-100%);
-        width: 280px;
-      }
-      
-      .sidebar.show {
-        transform: translateX(0);
-      }
-      
-      .sidebar-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 99;
-        display: none;
-      }
-      
-      .sidebar-backdrop.show {
-        display: block;
-      }
-    }
-
-    /* Main content area */
-    .main-content {
-      margin-left: 0;
-      transition: margin-left 0.3s ease;
-    }
-
-    @media (min-width: 768px) {
-      .main-content {
-        margin-left: 250px;
-      }
-    }
-
-    /* Dashboard header */
-    .dashboard-header {
-      padding: 1.5rem 0;
-      border-bottom: 1px solid #e9ecef;
-      margin-bottom: 2rem;
-    }
-
-    .dashboard-header h1 {
-      margin: 0;
-      font-size: 1.75rem;
-      font-weight: 600;
-      color: #333;
-    }
-
-    /* Stats cards */
-    .stats-grid {
-      display: grid;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    @media (min-width: 576px) {
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (min-width: 768px) {
-      .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    .stat-card {
-      background: white;
-      border-radius: 8px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      border-left: 4px solid;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .stat-card.border-left-primary { border-left-color: #007bff; }
-    .stat-card.border-left-success { border-left-color: #28a745; }
-    .stat-card.border-left-info { border-left-color: #17a2b8; }
-    .stat-card.border-left-warning { border-left-color: #ffc107; }
-
-    .stat-card .stat-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      color: #6c757d;
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-card .stat-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #333;
-      margin-bottom: 0;
-    }
-
-    .stat-card .stat-icon {
-      font-size: 2rem;
-      color: #dee2e6;
-      text-align: right;
-    }
-
-    /* Content cards */
-    .content-card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      margin-bottom: 1.5rem;
-      overflow: hidden;
-    }
-
-    .content-card .card-header {
-      background: #f8f9fa;
-      border-bottom: 1px solid #e9ecef;
-      padding: 1rem 1.5rem;
-    }
-
-    .content-card .card-header h6 {
-      margin: 0;
-      font-weight: 600;
-      color: #495057;
-    }
-
-    .content-card .card-body {
-      padding: 1.5rem;
-    }
-
-    /* Content layout */
-    .content-layout {
-      display: grid;
-      gap: 1.5rem;
-    }
-
-    @media (min-width: 768px) {
-      .content-layout {
-        grid-template-columns: 2fr 1fr;
-      }
-    }
-
-    /* Quick actions */
-    .quick-actions {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .quick-actions .btn {
-      text-align: left;
-      padding: 0.75rem 1rem;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-
-    .quick-actions .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Form improvements */
-    .form-row {
-      display: grid;
-      gap: 1rem;
-    }
-
-    @media (min-width: 576px) {
-      .form-row {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .form-control, .form-select {
-      border-radius: 6px;
-      border: 1px solid #ced4da;
-      padding: 0.75rem;
-      font-size: 0.9rem;
-    }
-
-    .form-control:focus, .form-select:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
-
-    /* Mobile navigation toggle */
-    .mobile-nav-toggle {
-      display: none;
-      position: fixed;
-      top: 90px;
-      left: 1rem;
-      z-index: 101;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    @media (max-width: 767.98px) {
-      .mobile-nav-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    }
-
-    /* Tab navigation improvements */
-    .nav-pills .nav-link {
-      border-radius: 6px;
-      margin-bottom: 0.5rem;
-      padding: 0.75rem 1rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-
-    .nav-pills .nav-link:hover {
-      background-color: #e9ecef;
-      color: #495057;
-    }
-
-    .nav-pills .nav-link.active {
-      background-color: #007bff;
-      color: white;
-    }
-
-    /* Responsive text sizing */
-    @media (max-width: 575.98px) {
-      .dashboard-header h1 {
-        font-size: 1.5rem;
-      }
-      
-      .stat-card .stat-value {
-        font-size: 1.25rem;
-      }
-      
-      .stat-card .stat-icon {
-        font-size: 1.5rem;
-      }
-      
-      .content-card .card-body {
-        padding: 1rem;
-      }
-      
-      .quick-actions .btn {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.9rem;
-      }
-    }
-
-    /* Ensure proper spacing on mobile */
-    @media (max-width: 767.98px) {
-      .dashboard-container {
-        padding-top: 100px;
-      }
-      
-      .stats-grid {
-        margin-bottom: 1.5rem;
-      }
-      
-      .content-layout {
-        gap: 1rem;
-      }
-    }
-
-    /* Fix for mobile form layouts */
-    @media (max-width: 575.98px) {
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-      
-      .col-md-6, .col-lg-4, .col-lg-8 {
-        width: 100%;
-        margin-bottom: 1rem;
-      }
-    }
-
-    /* Mobile-friendly buttons */
-    @media (max-width: 575.98px) {
-      .btn {
-        width: 100%;
-        margin-bottom: 0.5rem;
-      }
-      
-      .btn-toolbar .btn-group {
-        width: 100%;
-      }
-      
-      .btn-toolbar .btn-group .btn {
-        flex: 1;
-      }
-    }
-
-    /* Fix for mobile tab content */
-    .tab-content {
-      padding: 1rem 0;
-    }
-
-    @media (max-width: 767.98px) {
-      .tab-content {
-        padding: 0.5rem 0;
-      }
-    }
-
-    /* Mobile sidebar improvements */
-    @media (max-width: 767.98px) {
-      .sidebar .nav-pills .nav-link {
-        padding: 1rem;
-        margin-bottom: 0.25rem;
-        border-radius: 0;
-        border-left: 3px solid transparent;
-      }
-      
-      .sidebar .nav-pills .nav-link.active {
-        border-left-color: #007bff;
-        background-color: rgba(0, 123, 255, 0.1);
-      }
-      
-      .sidebar .d-flex.align-items-center {
-        padding: 1rem;
-        border-bottom: 1px solid #e9ecef;
-      }
-    }
-
 block content
-  // Mobile Navigation Toggle
-  button.mobile-nav-toggle#mobileNavToggle(aria-label="Toggle navigation")
-    i.bi.bi-list
-  
-  // Sidebar Backdrop for Mobile
-  .sidebar-backdrop#sidebarBackdrop
-  
-  .dashboard-container
-    .row
-      // Sidebar
-      .col-md-3.col-lg-2.d-md-block.bg-light.sidebar.collapse#sidebar
-        .position-sticky.pt-3
-          .d-flex.flex-column.flex-shrink-0.p-3.bg-light
-            .d-flex.align-items-center.mb-3.mb-md-0.me-md-auto.link-dark.text-decoration-none
-              img.rounded-circle.me-2(src="/assets/img/logo.png" alt="Logo" width="32" height="32")
-              span.fs-4#user-display-name Recovery Dashboard
+  // Add top margin to account for fixed navigation
+  .dashboard-container(style="margin-top: 80px;")
+    .dashboard-header
+      .container
+        .row.align-items-center
+          .col-md-6
+            h1.dashboard-title Welcome, #{user ? user.displayName : 'User'}!
+            p.dashboard-subtitle Manage your recovery journey and access resources
+          .col-md-6.text-md-end
+            button.btn.btn-outline-danger#logoutBtn(type="button") Sign Out
+    
+    .dashboard-content
+      .container
+        .row
+          .col-lg-8
+            .dashboard-card
+              h3.card-title Recovery Progress
+              .progress-section
+                .progress-item
+                  h5 Sobriety Counter
+                  .sobriety-counter
+                    span.counter-number#sobrietyDays 0
+                    span.counter-label days
+                  p.counter-subtitle Since your last drink or drug use
+                  
+                  .sobriety-date-picker
+                    label(for="sobrietyDate") Update Sobriety Date:
+                    input.form-control#sobrietyDate(type="date" name="sobrietyDate")
+                    button.btn.btn-primary.btn-sm#updateSobrietyDate Update
+                
+                .progress-item
+                  h5 Recovery Milestones
+                  .milestones-list#milestonesList
+                    // Milestones will be loaded dynamically
+                  
+                  .add-milestone
+                    button.btn.btn-success#addMilestoneBtn(type="button") + Add Milestone
             
-            hr
+            .dashboard-card
+              h3.card-title Community Resources
+              .resources-grid
+                .resource-item
+                  i.bi.bi-people
+                  h6 Support Groups
+                  p Find local AA/NA meetings and support groups
+                  a.btn.btn-outline-primary.btn-sm(href="/community-engagement-sober-activities.html") Explore
+                
+                .resource-item
+                  i.bi.bi-heart-pulse
+                  h6 Treatment Centers
+                  p Access addiction treatment and mental health resources
+                  a.btn.btn-outline-primary.btn-sm(href="/addiction-treatments-support.html") Explore
+                
+                .resource-item
+                  i.bi.bi-house
+                  h6 Housing Support
+                  p Find sober housing and shelter options
+                  a.btn.btn-outline-primary.btn-sm(href="/shelter-housing.html") Explore
+          
+          .col-lg-4
+            .dashboard-card
+              h3.card-title Quick Actions
+              .quick-actions
+                a.btn.btn-primary.btn-block(href="/emergency-help.html")
+                  i.bi.bi-exclamation-triangle
+                  Emergency Help
+                
+                a.btn.btn-outline-primary.btn-block(href="/resource-directory.html")
+                  i.bi.bi-search
+                  Resource Directory
+                
+                a.btn.btn-outline-primary.btn-block(href="/community-engagement-sober-activities.html")
+                  i.bi.bi-people
+                  Community Forum
+                
+                a.btn.btn-outline-primary.btn-block(href="/donations.html")
+                  i.bi.bi-heart
+                  Support Our Mission
             
-            ul.nav.nav-pills.flex-column.mb-auto
-              li.nav-item
-                a.nav-link.active(href="#overview" data-bs-toggle="pill")
-                  i.bi.bi-house-door.me-2
-                  | Overview
-              li.nav-item
-                a.nav-link(href="#profile" data-bs-toggle="pill")
-                  i.bi.bi-person.me-2
-                  | Profile
-              li.nav-item
-                a.nav-link(href="#recovery" data-bs-toggle="pill")
-                  i.bi.bi-heart.me-2
-                  | Recovery Journey
-              li.nav-item
-                a.nav-link(href="#resources" data-bs-toggle="pill")
-                  i.bi.bi-bookmark-star.me-2
-                  | Resources
-              li.nav-item
-                a.nav-link(href="#community" data-bs-toggle="pill")
-                  i.bi.bi-people.me-2
-                  | Community
-              li.nav-item
-                a.nav-link(href="#stories" data-bs-toggle="pill")
-                  i.bi.bi-chat-quote.me-2
-                  | Success Stories
-              li.nav-item
-                a.nav-link(href="#settings" data-bs-toggle="pill")
-                  i.bi.bi-gear.me-2
-                  | Settings
-      
-      // Main content
-      .col-md-9.ms-sm-auto.col-lg-10.px-md-4.main-content
-        .dashboard-header
-          .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center
-            h1 Dashboard
-            .btn-toolbar.mb-2.mb-md-0
-              .btn-group.me-2
-                button.btn.btn-sm.btn-outline-secondary(type="button" onclick="exportData()") Export
-                button.btn.btn-sm.btn-outline-secondary(type="button" onclick="printDashboard()") Print
-        
-        // Tab content
-        .tab-content#dashboardTabs
-          // Overview Tab
-          .tab-pane.fade.show.active#overview
-            // Stats Grid
-            .stats-grid
-              .stat-card.border-left-primary
-                .d-flex.justify-content-between.align-items-center
-                  div
-                    .stat-label Days Sober
-                    .stat-value#sobriety-counter 0 days
-                  .stat-icon
-                    i.bi.bi-calendar-check
-              
-              .stat-card.border-left-success
-                .d-flex.justify-content-between.align-items-center
-                  div
-                    .stat-label Milestones
-                    .stat-value#milestones-count 0
-                  .stat-icon
-                    i.bi.bi-trophy
-              
-              .stat-card.border-left-info
-                .d-flex.justify-content-between.align-items-center
-                  div
-                    .stat-label Resources
-                    .stat-value#favorites-count 0
-                  .stat-icon
-                    i.bi.bi-heart
-              
-              .stat-card.border-left-warning
-                .d-flex.justify-content-between.align-items-center
-                  div
-                    .stat-label Community Posts
-                    .stat-value#posts-count 0
-                  .stat-icon
-                    i.bi.bi-chat-dots
-            
-            // Content Layout
-            .content-layout
-              .content-card
-                .card-header
-                  h6 Recent Activity
-                .card-body
-                  #recent-activity
-                    p.text-muted No recent activity
-              
-              .content-card
-                .card-header
-                  h6 Quick Actions
-                .card-body
-                  .quick-actions
-                    button.btn.btn-primary(onclick="showNewPostModal()")
-                      i.bi.bi-plus-circle.me-2
-                      | New Forum Post
-                    button.btn.btn-outline-primary(onclick="showStorySubmissionModal()")
-                      i.bi.bi-pencil.me-2
-                      | Share Story
-                    button.btn.btn-outline-success(onclick="addMilestone()")
-                      i.bi.bi-trophy.me-2
-                      | Add Milestone
-                    button.btn.btn-outline-info(onclick="browseResources()")
-                      i.bi.bi-search.me-2
-                      | Find Resources
-
-          // Profile Tab
-          .tab-pane.fade#profile
-            .row
-              .col-lg-8
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Profile Information</h6>
-                  .card-body
-                    form#profile-form
-                      .row.mb-3
-                        .col-md-6
-                          label.form-label(for="profile-display-name") Display Name
-                          input.form-control#profile-display-name(type="text" placeholder="Enter display name")
-                        .col-md-6
-                          label.form-label(for="profile-email") Email
-                          input.form-control#profile-email(type="email" readonly)
-                      
-                      .row.mb-3
-                        .col-md-6
-                          label.form-label(for="profile-privacy") Privacy Level
-                          select.form-select#profile-privacy
-                            option(value="public") Public
-                            option(value="standard") Standard
-                            option(value="high") High
-                        .col-md-6
-                          label.form-label(for="profile-theme") Theme
-                          select.form-select#profile-theme
-                            option(value="light") Light
-                            option(value="dark") Dark
-                            option(value="auto") Auto
-                      
-                      .mb-3
-                        label.form-label(for="profile-bio") Bio
-                        textarea.form-control#profile-bio(rows="3" placeholder="Tell us about yourself...")
-                      
-                      .mb-3
-                        .form-check
-                          input.form-check-input#profile-notifications(type="checkbox")
-                          label.form-check-label(for="profile-notifications")
-                            | Enable email notifications
-                      
-                      button.btn.btn-primary(type="button" onclick="updateProfile()") Save Changes
-
-              .col-lg-4
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Account Status</h6>
-                  .card-body
-                    .d-flex.align-items-center.mb-3
-                      i.bi.bi-shield-check.text-success.me-2
-                      span Account Verified
-                    
-                    .d-flex.align-items-center.mb-3
-                      i.bi.bi-calendar.text-info.me-2
-                      span Member since 
-                      span#member-since.text-muted.ms-1 January 2025
-                    
-                    .d-flex.align-items-center
-                      i.bi.bi-person.text-warning.me-2
-                      span#account-type Anonymous User
-
-          // Recovery Journey Tab
-          .tab-pane.fade#recovery
-            .row
-              .col-lg-8
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Recovery Journey</h6>
-                  .card-body
-                    .row.mb-4
-                      .col-md-6
-                        label.form-label(for="sobriety-date") Sobriety Date
-                        input.form-control#sobriety-date(type="date")
-                        button.btn.btn-primary.btn-sm.mt-2(onclick="setSobrietyDate()") Set Date
-                      
-                      .col-md-6
-                        .card.bg-primary.text-white
-                          .card-body.text-center
-                            <h4 class="card-title" id="sobriety-counter-large">0 days sober</h4>
-                            <p class="card-text">Keep going strong!</p>
-                    
-                    .mb-4
-                      <h6>Recovery Milestones</h6>
-                      <div id="recovery-milestones">
-                        <p class="text-muted">No milestones recorded yet.</p>
-                      </div>
-                      <button class="btn btn-outline-primary btn-sm" onclick="showMilestoneModal()">
-                        <i class="bi bi-plus-circle"></i> Add Milestone
-                      </button>
-
-              .col-lg-4
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Progress Chart</h6>
-                  .card-body
-                    <canvas id="recovery-chart" width="400" height="200"></canvas>
-
-          // Favorite Resources Tab
-          .tab-pane.fade#resources
-            .row
-              .col-lg-8
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Favorite Resources</h6>
-                  .card-body
-                    <div id="favorite-resources">
-                      <p class="text-muted">No favorite resources yet.</p>
-                    </div>
-
-              .col-lg-4
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Personalized Recommendations</h6>
-                  .card-body
-                    <div id="personalized-recommendations">
-                      <p class="text-muted">Loading recommendations...</p>
-                    </div>
-
-          // Community Tab
-          .tab-pane.fade#community
-            .row
-              .col-lg-8
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">My Community Activity</h6>
-                  .card-body
-                    <ul class="nav nav-tabs" id="communityTabs" role="tablist">
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab">My Posts</button>
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="comments-tab" data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab">My Comments</button>
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab">Messages</button>
-                      </li>
-                    </ul>
-                    
-                    <div class="tab-content" id="communityTabContent">
-                      <div class="tab-pane fade show active" id="posts" role="tabpanel">
-                        <div id="my-posts">
-                          <p class="text-muted">No posts yet.</p>
-                        </div>
-                      </div>
-                      <div class="tab-pane fade" id="comments" role="tabpanel">
-                        <div id="my-comments">
-                          <p class="text-muted">No comments yet.</p>
-                        </div>
-                      </div>
-                      <div class="tab-pane fade" id="messages" role="tabpanel">
-                        <div id="my-messages">
-                          <p class="text-muted">No messages yet.</p>
-                        </div>
-                      </div>
-                    </div>
-
-              .col-lg-4
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Community Stats</h6>
-                  .card-body
-                    <div class="d-flex.justify-content-between.mb-2">
-                      <span>Posts:</span>
-                      <span id="community-posts-count">0</span>
-                    </div>
-                    <div class="d-flex.justify-content-between.mb-2">
-                      <span>Comments:</span>
-                      <span id="community-comments-count">0</span>
-                    </div>
-                    <div class="d-flex.justify-content-between.mb-2">
-                      <span>Likes Received:</span>
-                      <span id="community-likes-count">0</span>
-                    </div>
-
-          // Stories Tab
-          .tab-pane.fade#stories
-            .row
-              .col-lg-8
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">My Success Stories</h6>
-                  .card-body
-                    <div id="my-stories">
-                      <p class="text-muted">No stories shared yet.</p>
-                    </div>
-
-              .col-lg-4
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Story Stats</h6>
-                  .card-body
-                    <div class="d-flex.justify-content-between.mb-2">
-                      <span>Stories Shared:</span>
-                      <span id="stories-count">0</span>
-                    </div>
-                    <div class="d-flex.justify-content-between.mb-2">
-                      <span>Total Views:</span>
-                      <span id="stories-views">0</span>
-                    </div>
-                    <div class="d-flex.justify-content-between.mb-2">
-                      <span>Total Likes:</span>
-                      <span id="stories-likes">0</span>
-                    </div>
-
-          // Settings Tab
-          .tab-pane.fade#settings
-            .row
-              .col-lg-8
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Account Settings</h6>
-                  .card-body
-                    <form id="settings-form">
-                      <div class="mb-3">
-                        <label class="form-label">Email Notifications</label>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="email-community">
-                          <label class="form-check-label" for="email-community">
-                            Community updates
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="email-resources">
-                          <label class="form-check-label" for="email-resources">
-                            New resources
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="email-stories">
-                          <label class="form-check-label" for="email-stories">
-                            Success stories
-                          </label>
-                        </div>
-                      </div>
-                      
-                      <div class="mb-3">
-                        <label class="form-label">Privacy Settings</label>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="privacy" id="privacy-public" value="public">
-                          <label class="form-check-label" for="privacy-public">
-                            Public profile
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="privacy" id="privacy-standard" value="standard">
-                          <label class="form-check-label" for="privacy-standard">
-                            Standard privacy
-                          </label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="privacy" id="privacy-high" value="high">
-                          <label class="form-check-label" for="privacy-high">
-                            High privacy
-                          </label>
-                        </div>
-                      </div>
-                      
-                      <button type="button" class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
-                    </form>
-
-              .col-lg-4
-                .card.shadow.mb-4
-                  .card-header.py-3
-                    <h6 class="m-0 font-weight-bold text-primary">Danger Zone</h6>
-                  .card-body
-                    <div class="d-grid.gap-2">
-                      <button class="btn btn-outline-warning" onclick="exportData()">
-                        <i class="bi.bi-download.me-2"></i>Export Data
-                      </button>
-                      <button class="btn btn-outline-danger" onclick="deleteAccount()">
-                        <i class="bi.bi-trash.me-2"></i>Delete Account
-                      </button>
-                    </div>
-
-  // Milestone Modal
-  .modal.fade#milestoneModal(tabindex="-1")
-    .modal-dialog
-      .modal-content
-        .modal-header
-          <h5 class="modal-title">Add Recovery Milestone</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        .modal-body
-          <form id="milestone-form">
-            <div class="mb-3">
-              <label for="milestone-title" class="form-label">Milestone Title</label>
-              <input type="text" class="form-control" id="milestone-title" required>
-            </div>
-            <div class="mb-3">
-              <label for="milestone-description" class="form-label">Description</label>
-              <textarea class="form-control" id="milestone-description" rows="3" required></textarea>
-            </div>
-            <div class="mb-3">
-              <label for="milestone-date" class="form-label">Date Achieved</label>
-              <input type="date" class="form-control" id="milestone-date" required>
-            </div>
-          </form>
-        .modal-footer
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" onclick="submitMilestone()">Add Milestone</button>
+            .dashboard-card
+              h3.card-title Profile Settings
+              .profile-settings
+                .form-group
+                  label(for="profileDisplayName") Display Name
+                  input.form-control#profileDisplayName(type="text" value=user ? user.displayName : "")
+                
+                .form-group
+                  label(for="profileBio") Bio
+                  textarea.form-control#profileBio(rows="3" placeholder="Tell us about yourself...")
+                
+                .form-group
+                  label(for="profilePrivacyLevel") Privacy Level
+                  select.form-control#profilePrivacyLevel
+                    option(value="public") Public
+                    option(value="standard") Standard
+                    option(value="high") High
+                
+                button.btn.btn-primary.btn-block#updateProfile Update Profile
 
 block scripts
-  // Chart.js for dashboard charts
-  script(src="https://cdn.jsdelivr.net/npm/chart.js")
-  script(src="/js/dashboard.js") 
+  script(src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2")
+  script(src="/js/config.js")
+  script(src="/js/auth.js")
+  script.
+    // Dashboard functionality with Supabase integration
+    let supabase;
+    let currentUser = null;
+    
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', async function() {
+      await initializeSupabase();
+      await initializeDashboard();
+      setupEventListeners();
+    });
+    
+    async function initializeSupabase() {
+      try {
+        // Get Supabase credentials from config
+        const supabaseUrl = window.APP_CONFIG?.SUPABASE_URL || '';
+        const supabaseKey = window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
+        
+        if (!supabaseUrl || !supabaseKey) {
+          console.error('Supabase credentials not found');
+          return;
+        }
+        
+        // Create Supabase client
+        supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        console.log('Supabase client initialized');
+        
+        // Check authentication state
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          currentUser = session.user;
+          updateUserDisplay();
+        }
+      } catch (error) {
+        console.error('Failed to initialize Supabase:', error);
+      }
+    }
+    
+    async function initializeDashboard() {
+      try {
+        if (!supabase) return;
+        
+        // Load user profile data
+        await loadProfile();
+        
+        // Load milestones
+        await loadMilestones();
+        
+        // Calculate sobriety days
+        calculateSobrietyDays();
+      } catch (error) {
+        console.error('Failed to initialize dashboard:', error);
+      }
+    }
+    
+    function setupEventListeners() {
+      // Logout functionality
+      document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      
+      // Update sobriety date
+      document.getElementById('updateSobrietyDate').addEventListener('click', handleUpdateSobrietyDate);
+      
+      // Add milestone
+      document.getElementById('addMilestoneBtn').addEventListener('click', showAddMilestoneModal);
+      
+      // Update profile
+      document.getElementById('updateProfile').addEventListener('click', handleUpdateProfile);
+    }
+    
+    async function handleLogout() {
+      try {
+        if (supabase) {
+          const { error } = await supabase.auth.signOut();
+          if (error) throw error;
+        }
+        
+        // Redirect to login page
+        window.location.href = '/auth/login.html';
+      } catch (error) {
+        console.error('Logout failed:', error);
+        showMessage('Logout failed. Please try again.', 'danger');
+      }
+      }
+    
+    async function handleUpdateSobrietyDate() {
+      try {
+        const sobrietyDate = document.getElementById('sobrietyDate').value;
+        if (!sobrietyDate) {
+          showMessage('Please select a date', 'warning');
+          return;
+        }
+        
+        if (!supabase || !currentUser) {
+          showMessage('Please log in to update your sobriety date', 'warning');
+          return;
+        }
+        
+        // Update profile in Supabase
+        const { error } = await supabase
+          .from('profiles')
+          .upsert({
+            user_id: currentUser.id,
+            sobriety_date: sobrietyDate,
+            updated_at: new Date().toISOString()
+          });
+        
+        if (error) throw error;
+        
+        showMessage('Sobriety date updated successfully!', 'success');
+        calculateSobrietyDays();
+      } catch (error) {
+        console.error('Failed to update sobriety date:', error);
+        showMessage('Failed to update sobriety date', 'danger');
+      }
+    }
+    
+    async function loadProfile() {
+      try {
+        if (!supabase || !currentUser) return;
+        
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', currentUser.id)
+          .single();
+        
+        if (error && error.code !== 'PGRST116') throw error;
+        
+        if (data) {
+          // Populate profile fields
+          document.getElementById('profileDisplayName').value = data.display_name || '';
+          document.getElementById('profileBio').value = data.bio || '';
+          document.getElementById('profilePrivacyLevel').value = data.privacy_level || 'standard';
+          
+          // Set sobriety date if available
+          if (data.sobriety_date) {
+            document.getElementById('sobrietyDate').value = data.sobriety_date;
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load profile:', error);
+      }
+    }
+    
+    async function loadMilestones() {
+      try {
+        if (!supabase || !currentUser) return;
+        
+        const { data, error } = await supabase
+          .from('recovery_milestones')
+          .select('*')
+          .eq('user_id', currentUser.id)
+          .order('created_at', { ascending: false });
+        
+        if (error) throw error;
+        
+        displayMilestones(data || []);
+      } catch (error) {
+        console.error('Failed to load milestones', error);
+      }
+    }
+    
+    function displayMilestones(milestones) {
+      const milestonesList = document.getElementById('milestonesList');
+      milestonesList.innerHTML = '';
+      
+      if (milestones.length === 0) {
+        milestonesList.innerHTML = '<p class="text-muted">No milestones yet. Add your first one!</p>';
+        return;
+      }
+      
+      milestones.forEach(milestone => {
+        const milestoneItem = document.createElement('div');
+        milestoneItem.className = 'milestone-item';
+        milestoneItem.innerHTML = `
+          <div class="milestone-content">
+            <h6>${milestone.title}</h6>
+            <p>${milestone.description}</p>
+            <small class="text-muted">${formatDate(milestone.created_at)}</small>
+          </div>
+          <div class="milestone-actions">
+            <button class="btn btn-sm btn-outline-primary" onclick="editMilestone('${milestone.id}')">Edit</button>
+            <button class="btn btn-sm btn-outline-danger" onclick="deleteMilestone('${milestone.id}')">Delete</button>
+          </div>
+        `;
+        milestonesList.appendChild(milestoneItem);
+      });
+    }
+    
+    function showAddMilestoneModal() {
+      const title = prompt('Enter milestone title:');
+      if (!title) return;
+      
+      const description = prompt('Enter milestone description:');
+      if (!description) return;
+      
+      addMilestone(title, description);
+    }
+    
+    async function addMilestone(title, description) {
+      try {
+        if (!supabase || !currentUser) {
+          showMessage('Please log in to add milestones', 'warning');
+          return;
+        }
+        
+        const { error } = await supabase
+          .from('recovery_milestones')
+          .insert({
+            user_id: currentUser.id,
+            title: title,
+            description: description,
+            created_at: new Date().toISOString()
+          });
+        
+        if (error) throw error;
+        
+        showMessage('Milestone added successfully!', 'success');
+        await loadMilestones();
+      } catch (error) {
+        console.error('Failed to add milestone:', error);
+        showMessage('Failed to add milestone', 'danger');
+      }
+    }
+    
+    async function editMilestone(milestoneId) {
+      try {
+        if (!supabase || !currentUser) return;
+        
+        const { data, error } = await supabase
+          .from('recovery_milestones')
+          .select('*')
+          .eq('id', milestoneId)
+          .eq('user_id', currentUser.id)
+          .single();
+        
+        if (error) throw error;
+        
+        const newTitle = prompt('Enter new title:', data.title);
+        if (!newTitle) return;
+        
+        const newDescription = prompt('Enter new description:', data.description);
+        if (!newDescription) return;
+        
+        const { error: updateError } = await supabase
+          .from('recovery_milestones')
+          .update({
+            title: newTitle,
+            description: newDescription,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', milestoneId)
+          .eq('user_id', currentUser.id);
+        
+        if (updateError) throw updateError;
+        
+        showMessage('Milestone updated successfully!', 'success');
+        await loadMilestones();
+      } catch (error) {
+        console.error('Failed to edit milestone:', error);
+        showMessage('Failed to edit milestone', 'danger');
+      }
+    }
+    
+    async function deleteMilestone(milestoneId) {
+      try {
+        if (!confirm('Are you sure you want to delete this milestone?')) return;
+        
+        if (!supabase || !currentUser) return;
+        
+        const { error } = await supabase
+          .from('recovery_milestones')
+          .delete()
+          .eq('id', milestoneId)
+          .eq('user_id', currentUser.id);
+        
+        if (error) throw error;
+        
+        showMessage('Milestone deleted successfully!', 'success');
+        await loadMilestones();
+      } catch (error) {
+        console.error('Failed to delete milestone:', error);
+        showMessage('Failed to delete milestone', 'danger');
+      }
+    }
+    
+    async function handleUpdateProfile() {
+      try {
+        if (!supabase || !currentUser) {
+          showMessage('Please log in to update your profile', 'warning');
+          return;
+        }
+        
+        const displayName = document.getElementById('profileDisplayName').value;
+        const bio = document.getElementById('profileBio').value;
+        const privacyLevel = document.getElementById('profilePrivacyLevel').value;
+        
+        const { error } = await supabase
+          .from('profiles')
+          .upsert({
+            user_id: currentUser.id,
+            display_name: displayName,
+            bio: bio,
+            privacy_level: privacyLevel,
+            updated_at: new Date().toISOString()
+          });
+        
+        if (error) throw error;
+        
+        showMessage('Profile updated successfully!', 'success');
+      } catch (error) {
+        console.error('Failed to update profile:', error);
+        showMessage('Failed to update profile', 'danger');
+      }
+    }
+    
+    function calculateSobrietyDays() {
+      const sobrietyDate = document.getElementById('sobrietyDate').value;
+      if (!sobrietyDate) {
+        document.getElementById('sobrietyDays').textContent = '0';
+        return;
+      }
+      
+      const startDate = new Date(sobrietyDate);
+      const today = new Date();
+      const timeDiff = today.getTime() - startDate.getTime();
+      const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      
+      document.getElementById('sobrietyDays').textContent = Math.max(0, daysDiff);
+    }
+    
+    function updateUserDisplay() {
+      if (currentUser) {
+        const displayName = currentUser.user_metadata?.display_name || currentUser.email || 'User';
+        document.querySelector('.dashboard-title').textContent = `Welcome, ${displayName}!`;
+      }
+    }
+    
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffTime = Math.abs(now - date);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      if (diffDays === 0) return 'Today';
+      if (diffDays === 1) return 'Yesterday';
+      if (diffDays < 7) return `${diffDays} days ago`;
+      if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+      if (diffDays < 365) return `${Math.floor(diffDays / 7)} months ago`;
+      return date.toLocaleDateString();
+    }
+    
+    function showMessage(message, type) {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      `;
+      
+      const container = document.querySelector('.dashboard-content .container');
+      container.insertBefore(alertDiv, container.firstChild);
+      
+      setTimeout(() => {
+        if (alertDiv.parentNode) {
+          alertDiv.remove();
+        }
+      }, 5000);
+    } 

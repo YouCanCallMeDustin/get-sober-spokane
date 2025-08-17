@@ -20,21 +20,6 @@ let forumData = {
 document.addEventListener('DOMContentLoaded', function() {
     initializeForum();
     setupForumListeners();
-    // If user arrived with #new or ?new=1, open the new post modal automatically
-    try {
-        const url = new URL(window.location.href);
-        if (url.hash === '#new' || url.searchParams.get('new') === '1') {
-            showNewPostModal();
-        }
-        // Deep link to a specific post: #post=<id> or ?post=<id>
-        const postIdFromHash = (url.hash.startsWith('#post=') ? url.hash.replace('#post=', '') : null);
-        const postIdFromQuery = url.searchParams.get('post');
-        const targetId = postIdFromHash || postIdFromQuery;
-        if (targetId) {
-            // Defer until posts are rendered
-            setTimeout(() => viewPost(targetId), 100);
-        }
-    } catch (_) {}
 });
 
 // Initialize forum system
@@ -374,147 +359,14 @@ window.submitNewPost = function() {
 };
 
 // View post details
-// View post details in a rich modal with comments and sharing
 window.viewPost = function(postId) {
     const post = forumData.posts.find(p => p.id === postId);
     if (!post) return;
     
-    // Update URL hash for deep linking without page reload
-    try {
-        const url = new URL(window.location.href);
-        url.hash = `post=${postId}`;
-        history.replaceState({}, '', url.toString());
-    } catch (_) {}
-
-    showPostDetailModal(post);
+    // For now, just show a simple alert with the full content
+    // In a real implementation, this would open a detailed view modal
+    alert(`Full Post: ${post.title}\n\n${post.content}`);
 };
-
-function showPostDetailModal(post) {
-    // Build modal shell
-    let existing = document.getElementById('postDetailModal');
-    if (existing) existing.remove();
-    const modal = document.createElement('div');
-    modal.className = 'modal fade';
-    modal.id = 'postDetailModal';
-    modal.innerHTML = `
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">${escapeHtml(post.title)}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-2 text-muted small">
-                        <i class="bi bi-person me-1"></i>${escapeHtml(post.user_name)}
-                        <i class="bi bi-tag ms-3 me-1"></i>${escapeHtml(post.category)}
-                        <i class="bi bi-clock ms-3 me-1"></i>${formatTimeAgo(post.created_at)}
-                    </div>
-                    <div class="mb-3">${formatContentAsHtml(post.content)}</div>
-                    <div class="d-flex gap-2 mb-4">
-                        <button class="btn btn-outline-primary btn-sm" onclick="upvotePost('${post.id}')"><i class="bi bi-arrow-up"></i> Upvote</button>
-                        <button class="btn btn-outline-secondary btn-sm" onclick="downvotePost('${post.id}')"><i class="bi bi-arrow-down"></i> Downvote</button>
-                        <button class="btn btn-outline-success btn-sm" onclick="sharePost('${post.id}')"><i class="bi bi-share"></i> Share</button>
-                        <button class="btn btn-outline-danger btn-sm" onclick="reportPost('${post.id}')"><i class="bi bi-flag"></i> Report</button>
-                    </div>
-                    <hr/>
-                    <h6 class="mb-3">Comments</h6>
-                    <div id="comments-container"></div>
-                    <div class="mt-3">
-                        <div class="mb-2">
-                            <input id="comment-author" class="form-control form-control-sm" placeholder="Your name (optional)" />
-                        </div>
-                        <div class="mb-2">
-                            <textarea id="comment-content" class="form-control" rows="3" placeholder="Write a supportive comment..."></textarea>
-                        </div>
-                        <button class="btn btn-primary btn-sm" onclick="submitComment('${post.id}')">Post Comment</button>
-                    </div>
-                </div>
-            </div>
-        </div>`;
-    document.body.appendChild(modal);
-    const modalInstance = new bootstrap.Modal(modal);
-    modalInstance.show();
-
-    // Load comments into the container
-    renderComments(post.id);
-
-    // Clean up URL hash on close
-    modal.addEventListener('hidden.bs.modal', function() {
-        try {
-            const url = new URL(window.location.href);
-            if (url.hash.startsWith('#post=')) {
-                url.hash = '';
-                history.replaceState({}, '', url.toString());
-            }
-        } catch (_) {}
-        modal.remove();
-    });
-}
-
-function renderComments(postId) {
-    const container = document.getElementById('comments-container');
-    if (!container) return;
-    const comments = (forumData.comments || []).filter(c => c.post_id === postId).sort((a,b)=> new Date(a.created_at)-new Date(b.created_at));
-    if (comments.length === 0) {
-        container.innerHTML = '<p class="text-muted">No comments yet. Be the first to share some support.</p>';
-        return;
-    }
-    const html = comments.map(c => `
-        <div class="mb-3">
-            <div class="d-flex align-items-center text-muted small mb-1">
-                <i class="bi bi-person me-1"></i>${escapeHtml(c.user_name || 'Anonymous')} · ${formatTimeAgo(c.created_at)}
-            </div>
-            <div>${formatContentAsHtml(c.content)}</div>
-        </div>
-    `).join('');
-    container.innerHTML = html;
-}
-
-window.submitComment = function(postId) {
-    const name = (document.getElementById('comment-author')?.value || '').trim();
-    const content = (document.getElementById('comment-content')?.value || '').trim();
-    if (!content) {
-        showNotification('Please write a comment first.', 'warning');
-        return;
-    }
-    const comment = {
-        id: Date.now().toString(),
-        post_id: postId,
-        user_name: name || 'Anonymous',
-        content,
-        created_at: new Date().toISOString()
-    };
-    forumData.comments = forumData.comments || [];
-    forumData.comments.push(comment);
-    saveForumData();
-    const textarea = document.getElementById('comment-content');
-    if (textarea) textarea.value = '';
-    renderComments(postId);
-    // Increment visible comments count in the list for better feedback
-    const post = forumData.posts.find(p => p.id === postId);
-    if (post) {
-        post.comments_count = (post.comments_count || 0) + 1;
-        saveForumData();
-        loadPosts();
-    }
-}
-
-window.sharePost = function(postId) {
-    const url = new URL(window.location.href);
-    url.hash = `post=${postId}`;
-    const shareUrl = url.toString();
-    if (navigator.share) {
-        navigator.share({ title: 'Community Post', url: shareUrl });
-    } else {
-        const ta = document.createElement('textarea');
-        ta.value = shareUrl;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        showNotification('Link copied to clipboard', 'success');
-    }
-}
 
 // Edit post
 window.editPost = function(postId) {
@@ -674,22 +526,6 @@ function formatTimeAgo(dateString) {
 function truncateText(text, maxLength) {
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
-}
-
-// Basic content formatting helpers
-function escapeHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
-function formatContentAsHtml(text) {
-    // Escape HTML then convert simple newlines to <br> and basic URLs to links
-    const escaped = escapeHtml(text).replace(/\n/g, '<br/>');
-    return escaped.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1<\/a>');
 }
 
 // Show notification (simple implementation)

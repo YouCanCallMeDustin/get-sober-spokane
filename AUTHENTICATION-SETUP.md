@@ -1,150 +1,268 @@
-# Authentication Setup Guide
+# Authentication System Setup Guide
 
-This guide will help you set up the email-only authentication system using Supabase for your Get Sober Spokane application.
+This guide will help you set up the complete authentication system for your Express.js app using Supabase, including login, signup, password reset, and Google OAuth.
 
 ## Prerequisites
 
-1. A Supabase account (free tier available)
-2. Basic knowledge of web development
-3. Your application deployed to GitHub Pages
+1. **Node.js** (v16 or higher)
+2. **Express.js** (v5.1)
+3. **Supabase account and project**
+4. **Google OAuth credentials** (for Google sign-in)
 
-## Step 1: Create a Supabase Project
+## Installation
 
-1. Go to [https://supabase.com](https://supabase.com)
-2. Sign up or log in to your account
-3. Click "New Project"
-4. Choose your organization
-5. Enter project details:
-   - **Name**: `sober-spokane-auth` (or your preferred name)
-   - **Database Password**: Create a strong password
-   - **Region**: Choose the closest region to your users
-6. Click "Create new project"
-7. Wait for the project to be created (this may take a few minutes)
+### 1. Install Dependencies
 
-## Step 2: Get Your Supabase Credentials
-
-1. In your Supabase project dashboard, go to **Settings** → **API**
-2. Copy the following values:
-   - **Project URL** (looks like: `https://abcdefghijklmnop.supabase.co`)
-   - **Anon public key** (starts with: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`)
-
-## Step 3: Configure Authentication
-
-1. In your Supabase dashboard, go to **Authentication** → **Settings**
-2. Under **Site URL**, add your GitHub Pages URL:
-   - `https://youcancallmedustin.github.io/get-sober-spokane`
-3. Under **Redirect URLs**, add:
-   - `https://youcancallmedustin.github.io/get-sober-spokane/dashboard.html`
-4. Click **Save**
-
-## Step 4: Update Configuration Files
-
-1. Open `docs/js/config.js`
-2. Replace the placeholder values with your actual Supabase credentials:
-
-```javascript
-const CONFIG = {
-    SUPABASE_URL: 'https://your-project-id.supabase.co',
-    SUPABASE_ANON_KEY: 'your-anon-key-here',
-    // ... rest of config
-};
+```bash
+npm install express-session
 ```
 
-## Step 5: Test the Authentication
+The following dependencies are already in your package.json:
+- `@supabase/supabase-js`
+- `express`
+- `dotenv`
+- `pug`
+- `bootstrap`
 
-1. Commit and push your changes to GitHub
-2. Wait for GitHub Pages to rebuild
-3. Navigate to your login page: `https://youcancallmedustin.github.io/get-sober-spokane/login.html`
-4. Enter your email address
-5. Check your email for the magic link
-6. Click the magic link to sign in
-7. You should be redirected to the dashboard
+### 2. Environment Configuration
 
-## How It Works
+Create a `.env` file in your project root:
 
-### Email-Only Authentication (Magic Links)
+```bash
+# Copy the example file
+cp env.example .env
+```
 
-1. **User enters email**: User visits login page and enters their email address
-2. **Magic link sent**: Supabase sends a secure, time-limited link to the user's email
-3. **User clicks link**: User clicks the link in their email
-4. **Automatic sign-in**: User is automatically signed in and redirected to the dashboard
-5. **Session maintained**: User stays signed in until they sign out or the session expires
+Edit `.env` with your actual values:
 
-### Security Features
+```env
+# Supabase Configuration
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 
-- **No passwords**: Eliminates password-related security risks
-- **Time-limited links**: Magic links expire after a set time
-- **Secure tokens**: Uses JWT tokens for session management
-- **HTTPS only**: All communication is encrypted
+# Session Secret (generate a random string)
+SESSION_SECRET=your_random_session_secret_here
 
-## Customization Options
+# Server Configuration
+PORT=3001
+NODE_ENV=development
+```
 
-### Email Templates
+## Supabase Setup
 
-You can customize the email templates in Supabase:
-1. Go to **Authentication** → **Email Templates**
-2. Customize the "Magic Link" template
-3. Add your branding and messaging
+### 1. Create Supabase Project
 
-### Redirect URLs
+1. Go to [supabase.com](https://supabase.com) and create a new project
+2. Note your project URL and anon key from the API settings
 
-You can change where users are redirected after login:
-1. Update `CONFIG.REDIRECT_URLS.AFTER_LOGIN` in `config.js`
-2. Update the redirect URL in Supabase settings
+### 2. Enable Authentication Providers
 
-### Session Duration
+In your Supabase dashboard:
 
-You can adjust how long users stay signed in:
-1. Go to **Authentication** → **Settings**
-2. Modify **JWT Expiry** (default is 1 hour)
+1. Go to **Authentication** → **Providers**
+2. Enable **Email** provider
+3. Enable **Google** provider and configure OAuth credentials
+
+### 3. Google OAuth Setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable Google+ API
+4. Go to **Credentials** → **Create Credentials** → **OAuth 2.0 Client IDs**
+5. Set application type to **Web application**
+6. Add authorized redirect URIs:
+   - `http://localhost:3001/auth/google/callback` (development)
+   - `https://yourdomain.com/auth/google/callback` (production)
+7. Copy the Client ID and Client Secret
+8. Add these to your Supabase Google provider settings
+
+### 4. Database Tables
+
+Your existing tables (`profiles` and `recovery_milestones`) are already set up. The authentication system will work with them.
+
+## Project Structure
+
+```
+src/
+├── pug/
+│   ├── auth/
+│   │   ├── login.pug          # Login page
+│   │   ├── signup.pug         # Signup page
+│   │   └── reset.pug          # Password reset page
+│   ├── dashboard.pug          # User dashboard
+│   └── layout.pug             # Base layout
+├── scss/
+│   ├── components/
+│   │   └── _auth.scss         # Authentication styles
+│   └── styles.scss            # Main styles file
+└── js/
+    ├── auth.js                # Authentication logic
+    └── config.js              # Configuration
+```
+
+## Features
+
+### ✅ Implemented Features
+
+1. **User Authentication**
+   - Email/password login and signup
+   - Google OAuth integration
+   - Session management with Express
+   - Remember me functionality
+
+2. **Security Features**
+   - Password validation (minimum 8 characters)
+   - Email verification for new accounts
+   - Secure session handling
+   - CSRF protection
+
+3. **User Experience**
+   - Clean, responsive UI with Bootstrap 5.2.3
+   - Form validation and error handling
+   - Success/error message display
+   - Automatic redirects
+
+4. **Pages**
+   - `/login` - User login
+   - `/signup` - User registration
+   - `/reset` - Password reset
+   - `/dashboard` - User dashboard (protected)
+
+### 🔧 Configuration Options
+
+The system is highly configurable through:
+
+- Environment variables
+- `src/js/config.js` for client-side settings
+- SCSS variables for styling
+- Feature flags for enabling/disabling functionality
+
+## Usage
+
+### Starting the Server
+
+```bash
+# Development
+npm run start:debug
+
+# Production
+npm run start
+```
+
+### Authentication Flow
+
+1. **New User Signup**
+   - User visits `/signup`
+   - Fills out form with email, password, display name
+   - Agrees to terms
+   - Receives verification email
+   - Redirected to login after verification
+
+2. **User Login**
+   - User visits `/login`
+   - Enters email and password
+   - Optionally checks "Remember me"
+   - Redirected to dashboard on success
+
+3. **Google OAuth**
+   - User clicks "Sign in with Google"
+   - Redirected to Google for authentication
+   - Returns to app and redirected to dashboard
+
+4. **Password Reset**
+   - User visits `/reset`
+   - Enters email address
+   - Receives reset link via email
+   - Sets new password
+
+5. **Dashboard Access**
+   - Authenticated users can access `/dashboard`
+   - Unauthenticated users are redirected to `/login`
+   - Users can update profile and manage recovery data
+
+## Customization
+
+### Styling
+
+The authentication system uses SCSS with Bootstrap 5.2.3. Customize by editing:
+
+- `src/scss/components/_auth.scss` - Authentication-specific styles
+- `src/scss/variables/_colors.scss` - Color scheme
+- `src/scss/variables/_typography.scss` - Font settings
+
+### Layout
+
+Modify the base layout in `src/pug/layout.pug` to match your site's design.
+
+### Authentication Logic
+
+Extend the `AuthManager` class in `src/js/auth.js` to add custom functionality.
+
+## Security Considerations
+
+1. **Environment Variables**: Never commit `.env` files to version control
+2. **Session Secret**: Use a strong, random session secret
+3. **HTTPS**: Use HTTPS in production for secure cookie transmission
+4. **Rate Limiting**: Consider adding rate limiting for auth endpoints
+5. **Input Validation**: All user inputs are validated on both client and server
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Magic link not received**
-   - Check spam folder
-   - Verify email address is correct
-   - Check Supabase logs for errors
+1. **"Supabase credentials not found"**
+   - Check your `.env` file
+   - Verify environment variables are loaded
 
-2. **Redirect not working**
-   - Verify redirect URLs in Supabase settings
-   - Check that your GitHub Pages URL is correct
+2. **Google OAuth not working**
+   - Verify redirect URIs in Google Cloud Console
+   - Check Supabase Google provider settings
+   - Ensure HTTPS in production
 
-3. **Authentication errors**
-   - Check browser console for error messages
-   - Verify Supabase credentials in `config.js`
-   - Ensure Supabase project is active
+3. **Session not persisting**
+   - Check `SESSION_SECRET` in `.env`
+   - Verify cookie settings
+   - Check browser cookie policies
+
+4. **Styling issues**
+   - Ensure SCSS is compiled
+   - Check Bootstrap CSS is loaded
+   - Verify PostCSS and Autoprefixer are working
 
 ### Debug Mode
 
-To enable debug mode, add this to your browser console:
-```javascript
-localStorage.setItem('supabase.auth.debug', 'true')
+Enable debug mode for detailed logging:
+
+```bash
+npm run start:debug
 ```
 
-## Next Steps
+Check the console for authentication state changes and errors.
 
-Once authentication is working, you can:
+## Production Deployment
 
-1. **Add user profiles**: Store additional user information in Supabase
-2. **Implement user roles**: Add admin/moderator capabilities
-3. **Add social login**: Integrate Google, Facebook, or other providers
-4. **Customize UI**: Modify the login page design to match your brand
-5. **Add analytics**: Track user engagement and recovery progress
+1. **Environment Variables**: Set production environment variables
+2. **HTTPS**: Enable HTTPS for secure cookie transmission
+3. **Domain**: Update Google OAuth redirect URIs
+4. **Session Store**: Consider using Redis for session storage
+5. **Monitoring**: Add logging and monitoring for auth events
 
 ## Support
 
-If you encounter issues:
+For issues or questions:
 
-1. Check the [Supabase documentation](https://supabase.com/docs)
-2. Review the [Supabase community forum](https://github.com/supabase/supabase/discussions)
-3. Check your browser's developer console for error messages
+1. Check the browser console for error messages
+2. Verify Supabase connection in Network tab
+3. Check server logs for backend errors
+4. Ensure all required files are loaded in correct order
 
-## Security Notes
+## Next Steps
 
-- Never commit your Supabase credentials to version control
-- Use environment variables in production
-- Regularly rotate your API keys
-- Monitor your Supabase usage and logs
-- Consider implementing rate limiting for login attempts
+After setting up authentication:
+
+1. **Test all flows**: Signup, login, logout, password reset
+2. **Customize UI**: Adjust colors, fonts, and layout
+3. **Add features**: Profile management, user roles, etc.
+4. **Deploy**: Move to production environment
+5. **Monitor**: Track authentication metrics and errors

@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://getsoberspokane.org/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Disallow admin areas (if any)
+Disallow: /admin/
+Disallow: /private/
+
+# Allow all important pages
+Allow: /shelter-housing.html
+Allow: /addiction-treatments-support.html
+Allow: /medical-mental-health.html
+Allow: /food-basic-needs.html
+Allow: /employment-skills.html
+Allow: /community-engagement-sober-activities.html
+Allow: /resource-directory.html
+Allow: /map.html
+Allow: /donations.html

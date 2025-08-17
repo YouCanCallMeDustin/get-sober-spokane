@@ -1,5 +1,4 @@
-// Dashboard Functionality with Supabase Integration
-// Requires: js/config.js and js/auth-guard.js to be loaded first
+// src/js/dashboard.js - Dashboard Functionality (No Auth Required)
 
 // Dashboard state management
 let dashboardData = {
@@ -7,17 +6,14 @@ let dashboardData = {
     comments: [],
     milestones: [],
     resources: [],
+    sobrietyDate: null,
     profile: {
-        display_name: '',
-        email: '',
+        display_name: 'Guest User',
+        email: 'guest@example.com',
         phone: '',
-        bio: '',
         recovery_goals: '',
         support_network: '',
-        emergency_contacts: [],
-        sobriety_date: null,
-        privacy_level: 'standard',
-        theme: 'light'
+        emergency_contacts: []
     },
     preferences: {
         email_notifications: false,
@@ -26,45 +22,22 @@ let dashboardData = {
 };
 
 let recoveryChart = null;
-let currentUser = null;
-
 // Initialize dashboard
-document.addEventListener('DOMContentLoaded', async function() {
-    try {
-        // Wait for Supabase to be ready
-        await window.initSupabaseWithRetry();
-        
-        // Get current user
-        const { data: { user }, error } = await window.supabaseClient.auth.getUser();
-        if (error || !user) {
-            console.error('No authenticated user found');
-            window.location.href = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
-            return;
-        }
-        
-        currentUser = user;
-        console.log('Current user:', currentUser);
-        
-        // Initialize dashboard with user data
-        await initializeDashboard();
-        setupDashboardListeners();
-        setupMobileSidebar();
-    } catch (error) {
-        console.error('Dashboard initialization error:', error);
-        showNotification('Error loading dashboard: ' + error.message, 'error');
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    initializeDashboard();
+    setupDashboardListeners();
+    setupMobileSidebar();
 });
 
 // Initialize dashboard system
 async function initializeDashboard() {
     try {
-        await loadDashboardData();
+        loadDashboardData();
         setupDashboardUI();
+        // Reflect any saved sobriety date immediately
         updateSobrietyDisplay();
         initializeCharts();
         updateDashboardCounts();
-        // Ensure milestones list is rendered on initial load
-        updateMilestonesDisplay();
         
         // Handle mobile responsiveness
         handleMobileLayout();
@@ -257,96 +230,47 @@ function initializeMobileUI() {
     });
 }
 
-// Load dashboard data from Supabase
-async function loadDashboardData() {
-    console.log('Loading dashboard data from Supabase...');
+// Load dashboard data
+function loadDashboardData() {
+    console.log('Loading dashboard data...');
     
-    try {
-        if (!currentUser) {
-            throw new Error('No authenticated user');
+    // Load from localStorage if available
+    const savedData = localStorage.getItem('dashboardData');
+    if (savedData) {
+        try {
+            const parsed = JSON.parse(savedData);
+            dashboardData = { ...dashboardData, ...parsed };
+        } catch (e) {
+            console.error('Error parsing saved data:', e);
         }
-
-        // Load profile data from Supabase (using existing profiles table)
-        const { data: profileData, error: profileError } = await window.supabaseClient
-            .from('profiles')
-            .select('*')
-            .eq('user_id', currentUser.id)
-            .single();
-
-        if (profileError && profileError.code !== 'PGRST116') { // PGRST116 = no rows returned
-            console.error('Error loading profile:', profileError);
-        }
-
-        if (profileData) {
-            // Update dashboard data with profile info
-            dashboardData.profile = {
-                ...dashboardData.profile,
-                display_name: profileData.display_name || profileData.name || '',
-                email: profileData.email || currentUser.email || '',
-                phone: profileData.phone || '',
-                bio: profileData.bio || profileData.description || '',
-                recovery_goals: profileData.recovery_goals || profileData.goals || '',
-                support_network: profileData.support_network || profileData.network || '',
-                emergency_contacts: profileData.emergency_contacts || profileData.contacts || [],
-                sobriety_date: profileData.sobriety_date || profileData.sobrietyDate || null,
-                privacy_level: profileData.privacy_level || profileData.privacy || 'standard',
-                theme: profileData.theme || 'light'
-            };
-            
-            // Update preferences
-            dashboardData.preferences = {
-                ...dashboardData.preferences,
-                privacy_level: profileData.privacy_level || profileData.privacy || 'standard'
-            };
-        }
-
-        // Load milestones from Supabase (using existing recovery_milestones table)
-        const { data: milestonesData, error: milestonesError } = await window.supabaseClient
-            .from('recovery_milestones')
-            .select('*')
-            .eq('user_id', currentUser.id)
-            .order('date', { ascending: false });
-
-        if (milestonesError) {
-            console.error('Error loading milestones:', milestonesError);
-        } else if (milestonesData) {
-            dashboardData.milestones = milestonesData;
-        }
-
-        console.log('Dashboard data loaded from Supabase:', dashboardData);
-    } catch (error) {
-        console.error('Error loading dashboard data:', error);
-        showNotification('Error loading data: ' + error.message, 'error');
     }
+    
+    console.log('Dashboard data loaded:', dashboardData);
 }
 
 // Load profile data into forms
 function loadProfileData() {
     const profile = dashboardData.profile;
     
-    // Populate profile form fields - using correct IDs from HTML
-    const displayNameInput = document.getElementById('profile-display-name');
+    // Populate profile form fields
+    const displayNameInput = document.getElementById('display-name');
     if (displayNameInput) displayNameInput.value = profile.display_name || '';
     
-    const emailInput = document.getElementById('profile-email');
+    const emailInput = document.getElementById('email');
     if (emailInput) emailInput.value = profile.email || '';
     
-    const bioInput = document.getElementById('profile-bio');
-    if (bioInput) bioInput.value = profile.bio || '';
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) phoneInput.value = profile.phone || '';
     
-    const privacyInput = document.getElementById('profile-privacy');
-    if (privacyInput) privacyInput.value = profile.privacy_level || 'standard';
+    const goalsInput = document.getElementById('recovery-goals');
+    if (goalsInput) goalsInput.value = profile.recovery_goals || '';
     
-    const themeInput = document.getElementById('profile-theme');
-    if (themeInput) themeInput.value = profile.theme || 'light';
+    const networkInput = document.getElementById('support-network');
+    if (networkInput) networkInput.value = profile.support_network || '';
     
-    const notificationsInput = document.getElementById('profile-notifications');
-    if (notificationsInput) notificationsInput.checked = profile.email_notifications || false;
-    
-    // Set sobriety date if available
     const sobrietyInput = document.getElementById('sobriety-date');
-    if (sobrietyInput && profile.sobriety_date) {
-        sobrietyInput.value = profile.sobriety_date;
+    if (sobrietyInput && profile.sobrietyDate) {
+        sobrietyInput.value = profile.sobrietyDate;
     }
 }
 
@@ -376,46 +300,24 @@ function loadSettingsData() {
     }
 }
 
-// Update profile with Supabase integration
+// Update profile
 async function updateProfile() {
     try {
-        if (!currentUser) {
-            throw new Error('No authenticated user');
-        }
-
-        // Get form data using correct field IDs
-        const displayName = document.getElementById('profile-display-name')?.value || '';
-        const bio = document.getElementById('profile-bio')?.value || '';
-        const privacyLevel = document.getElementById('profile-privacy')?.value || 'standard';
-        const theme = document.getElementById('profile-theme')?.value || 'light';
-        const notifications = document.getElementById('profile-notifications')?.checked || false;
-
+        const formData = new FormData(document.getElementById('profile-form'));
+        
         const updates = {
-            display_name: displayName,
-            bio: bio,
-            privacy_level: privacyLevel,
-            theme: theme,
-            email_notifications: notifications,
-            updated_at: new Date().toISOString()
+            display_name: formData.get('display_name') || '',
+            email: formData.get('email') || '',
+            phone: formData.get('phone') || '',
+            recovery_goals: formData.get('recovery_goals') || '',
+            support_network: formData.get('support_network') || ''
         };
-
-        // Update profile in Supabase (using user_id column)
-        const { data, error } = await window.supabaseClient
-            .from('profiles')
-            .upsert({
-                user_id: currentUser.id,
-                email: currentUser.email,
-                ...updates
-            })
-            .select()
-            .single();
-
-        if (error) {
-            throw error;
-        }
-
+        
         // Update local data
         dashboardData.profile = { ...dashboardData.profile, ...updates };
+        
+        // Save to localStorage
+        saveDashboardData();
         
         showNotification('Profile updated successfully!', 'success');
         loadProfileData(); // Refresh the form
@@ -425,13 +327,9 @@ async function updateProfile() {
     }
 }
 
-// Save settings with Supabase integration
+// Save settings
 async function saveSettings() {
     try {
-        if (!currentUser) {
-            throw new Error('No authenticated user');
-        }
-
         const emailCommunity = document.getElementById('email-community')?.checked || false;
         const emailResources = document.getElementById('email-resources')?.checked || false;
         const emailStories = document.getElementById('email-stories')?.checked || false;
@@ -446,28 +344,14 @@ async function saveSettings() {
         
         const updates = {
             email_notifications: emailCommunity || emailResources || emailStories,
-            privacy_level: privacyLevel,
-            updated_at: new Date().toISOString()
+            privacy_level: privacyLevel
         };
         
-        // Update profile in Supabase (using user_id column)
-        const { data, error } = await window.supabaseClient
-            .from('profiles')
-            .upsert({
-                user_id: currentUser.id,
-                email: currentUser.email,
-                ...updates
-            })
-            .select()
-            .single();
-
-        if (error) {
-            throw error;
-        }
-
         // Update local data
         dashboardData.preferences = { ...dashboardData.preferences, ...updates };
-        dashboardData.profile.privacy_level = privacyLevel;
+        
+        // Save to localStorage
+        saveDashboardData();
         
         showNotification('Settings saved successfully!', 'success');
     } catch (error) {
@@ -476,13 +360,9 @@ async function saveSettings() {
     }
 }
 
-// Set sobriety date with Supabase integration
+// Set sobriety date
 async function setSobrietyDate(date) {
     try {
-        if (!currentUser) {
-            throw new Error('No authenticated user');
-        }
-
         // If no date provided, read from input
         let selectedDate = date;
         if (!selectedDate) {
@@ -503,24 +383,11 @@ async function setSobrietyDate(date) {
             return;
         }
 
-        // Update profile in Supabase (using user_id column)
-        const { data, error } = await window.supabaseClient
-            .from('profiles')
-            .upsert({
-                user_id: currentUser.id,
-                email: currentUser.email,
-                sobriety_date: selectedDate,
-                updated_at: new Date().toISOString()
-            })
-            .select()
-            .single();
-
-        if (error) {
-            throw error;
-        }
-
-        // Update local data
-        dashboardData.profile.sobriety_date = selectedDate;
+        dashboardData.profile.sobrietyDate = selectedDate;
+        dashboardData.profile = { ...dashboardData.profile };
+        
+        // Save to localStorage
+        saveDashboardData();
         
         // Update UI
         updateSobrietyDisplay();
@@ -531,38 +398,24 @@ async function setSobrietyDate(date) {
     }
 }
 
-// Add recovery milestone with Supabase integration
-async function addRecoveryMilestone(title, description, date) {
+// Add recovery milestone
+async function addRecoveryMilestone(title, description) {
     try {
-        if (!currentUser) {
-            throw new Error('No authenticated user');
-        }
-
         const milestone = {
-            user_id: currentUser.id,
+            id: Date.now().toString(),
             title: title,
             description: description,
-            date: date || new Date().toISOString().split('T')[0],
+            date: new Date().toISOString().split('T')[0],
             created_at: new Date().toISOString()
         };
         
-        // Insert milestone into Supabase (using existing recovery_milestones table)
-        const { data, error } = await window.supabaseClient
-            .from('recovery_milestones')
-            .insert(milestone)
-            .select()
-            .single();
-
-        if (error) {
-            throw error;
-        }
-
-        // Add to local data
-        dashboardData.milestones.unshift(data);
+        dashboardData.milestones.push(milestone);
+        
+        // Save to localStorage
+        saveDashboardData();
         
         // Update UI
         updateMilestonesDisplay();
-        updateDashboardCounts();
         showNotification('Milestone added successfully!', 'success');
     } catch (error) {
         console.error('Error adding milestone:', error);
@@ -570,14 +423,18 @@ async function addRecoveryMilestone(title, description, date) {
     }
 }
 
-// Save dashboard data to localStorage (deprecated - now using Supabase)
+// Save dashboard data to localStorage
 function saveDashboardData() {
-    console.warn('saveDashboardData is deprecated - data is now saved to Supabase');
+    try {
+        localStorage.setItem('dashboardData', JSON.stringify(dashboardData));
+    } catch (error) {
+        console.error('Error saving dashboard data:', error);
+    }
 }
 
 // Update sobriety display
 function updateSobrietyDisplay() {
-    const sobrietyDate = dashboardData.profile.sobriety_date;
+    const sobrietyDate = dashboardData.profile.sobrietyDate;
     if (!sobrietyDate) return;
     
     const startDate = new Date(sobrietyDate);
@@ -601,8 +458,7 @@ function updateSobrietyDisplay() {
 
 // Update milestones display
 function updateMilestonesDisplay() {
-    // Support both container IDs used in the HTML
-    const milestonesContainer = document.getElementById('recovery-milestones') || document.getElementById('milestones-container');
+    const milestonesContainer = document.getElementById('milestones-container');
     if (!milestonesContainer) return;
     
     const milestones = dashboardData.milestones;
@@ -658,7 +514,7 @@ function initializeCharts() {
 function updateRecoveryChart() {
     if (!recoveryChart) return;
     
-    const sobrietyDate = dashboardData.profile.sobriety_date;
+    const sobrietyDate = dashboardData.profile.sobrietyDate;
     if (!sobrietyDate) return;
     
     const startDate = new Date(sobrietyDate);
@@ -704,16 +560,13 @@ function loadTabContent(tabName) {
         case 'milestones':
             updateMilestonesDisplay();
             break;
-        case 'recovery':
-            updateMilestonesDisplay();
-            break;
         case 'resources':
             // Load resources tab content
             break;
     }
 }
 
-// Submit milestone with date parameter
+// Submit milestone
 window.submitMilestone = function() {
     const title = document.getElementById('milestone-title').value;
     const description = document.getElementById('milestone-description').value;
@@ -724,7 +577,7 @@ window.submitMilestone = function() {
         return;
     }
     
-    addRecoveryMilestone(title, description, date);
+    addRecoveryMilestone(title, description);
     
     // Close modal
     const modal = bootstrap.Modal.getInstance(document.getElementById('milestoneModal'));
@@ -754,28 +607,33 @@ window.exportData = function() {
     }
 };
 
-// Delete account with Supabase cleanup
-window.deleteAccount = async function() {
+// Delete account (local data only)
+window.deleteAccount = function() {
     if (confirm('Are you sure you want to delete all your data? This action cannot be undone.')) {
         try {
-            if (!currentUser) {
-                throw new Error('No authenticated user');
-            }
-
-            // Delete user data from Supabase (using existing table names)
-            await window.supabaseClient
-                .from('recovery_milestones')
-                .delete()
-                .eq('user_id', currentUser.id);
-
-            await window.supabaseClient
-                .from('profiles')
-                .delete()
-                .eq('user_id', currentUser.id);
-
-            // Sign out and redirect
-            await window.supabaseClient.auth.signOut();
-            window.location.href = CONFIG.REDIRECT_URLS.LOGIN_PAGE;
+            localStorage.removeItem('dashboardData');
+            dashboardData = {
+                posts: [],
+                comments: [],
+                milestones: [],
+                resources: [],
+                sobrietyDate: null,
+                profile: {
+                    display_name: 'Guest User',
+                    email: 'guest@example.com',
+                    phone: '',
+                    recovery_goals: '',
+                    support_network: '',
+                    emergency_contacts: []
+                },
+                preferences: {
+                    email_notifications: false,
+                    privacy_level: 'standard'
+                }
+            };
+            
+            // Refresh the page
+            location.reload();
         } catch (error) {
             console.error('Error deleting account:', error);
             showNotification('Error deleting account: ' + error.message, 'error');
@@ -817,9 +675,8 @@ window.dashboard = {
 
 // Add missing functions for dashboard template
 window.showNewPostModal = function() {
-    // Redirect to dedicated community forum page and open new-post modal
-    const target = (window.appPath ? window.appPath('community-forum.html') : '/get-sober-spokane/community-forum.html') + '#new';
-    window.location.href = target;
+    // Redirect to community forum page
+    window.location.href = '/get-sober-spokane/community-engagement-sober-activities.html';
 };
 
 window.showStorySubmissionModal = function() {
@@ -828,12 +685,6 @@ window.showStorySubmissionModal = function() {
 };
 
 window.addMilestone = function() {
-    // Show milestone modal
-    const modal = new bootstrap.Modal(document.getElementById('milestoneModal'));
-    modal.show();
-};
-
-window.showMilestoneModal = function() {
     // Show milestone modal
     const modal = new bootstrap.Modal(document.getElementById('milestoneModal'));
     modal.show();

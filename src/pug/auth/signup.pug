@@ -1,0 +1,124 @@
+extends ../layout
+
+block content
+  .auth-container
+    .auth-card
+      .auth-header
+        img.auth-logo(src="/assets/img/logo.png" alt="Sober Spokane")
+        h1.auth-title Create Account
+        p.auth-subtitle Start your recovery journey with us
+    
+    .auth-form
+      form#signupForm
+        .form-group
+          label(for="displayName") Display Name
+          input.form-control#displayName(type="text" name="displayName" required)
+        
+        .form-group
+          label(for="email") Email
+          input.form-control#email(type="email" name="email" required)
+        
+        .form-group
+          label(for="password") Password
+          input.form-control#password(type="password" name="password" required minlength="8")
+        
+        .form-group
+          label(for="confirmPassword") Confirm Password
+          input.form-control#confirmPassword(type="password" name="confirmPassword" required minlength="8")
+        
+        .form-group.form-check
+          input.form-check-input#agreeTerms(type="checkbox" name="agreeTerms" required)
+          label.form-check-label(for="agreeTerms") I agree to the Terms of Service and Privacy Policy
+        
+        button.btn.btn-primary.btn-block#signupBtn(type="submit") Create Account
+        
+        .auth-divider
+          span or
+        
+        button.btn.btn-google#googleSignUp(type="button")
+          img(src="https://developers.google.com/identity/images/g-logo.png" alt="Google")
+          Sign up with Google
+        
+        .auth-links
+          a(href="/auth/login.html") Already have an account? Sign in
+    
+    .auth-alert#authAlert(style="display: none;")
+
+block scripts
+  script(src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2")
+  script(src="/js/config.js")
+  script(src="/js/auth.js")
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      const signupForm = document.getElementById('signupForm');
+      const signupBtn = document.getElementById('signupBtn');
+      const googleSignUp = document.getElementById('googleSignUp');
+      const authAlert = document.getElementById('authAlert');
+      
+      // Signup form submission
+      signupForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const displayName = document.getElementById('displayName').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const agreeTerms = document.getElementById('agreeTerms').checked;
+        
+        // Validation
+        if (password !== confirmPassword) {
+          showAlert('Passwords do not match', 'danger');
+          return;
+        }
+        
+        if (!agreeTerms) {
+          showAlert('Please agree to the terms and conditions', 'warning');
+          return;
+        }
+        
+        signupBtn.disabled = true;
+        signupBtn.textContent = 'Creating Account...';
+        
+        try {
+          if (window.authManager) {
+            const result = await window.authManager.signUp(email, password, displayName);
+            if (result.success) {
+              showAlert('Account created successfully! Please check your email for verification.', 'success');
+              setTimeout(() => {
+                window.location.href = '/auth/login.html';
+              }, 3000);
+            }
+          } else {
+            showAlert('Authentication system not ready. Please refresh the page.', 'danger');
+          }
+        } catch (error) {
+          showAlert('Signup failed: ' + error.message, 'danger');
+        } finally {
+          signupBtn.disabled = false;
+          signupBtn.textContent = 'Create Account';
+        }
+      });
+      
+      // Google sign up
+      googleSignUp.addEventListener('click', async function() {
+        try {
+          if (window.authManager) {
+            await window.authManager.signInWithGoogle();
+          } else {
+            showAlert('Authentication system not ready. Please refresh the page.', 'danger');
+          }
+        } catch (error) {
+          showAlert('Google sign-up failed: ' + error.message, 'danger');
+        }
+      });
+      
+      function showAlert(message, type) {
+        authAlert.className = `auth-alert alert alert-${type}`;
+        authAlert.textContent = message;
+        authAlert.style.display = 'block';
+        
+        setTimeout(() => {
+          authAlert.style.display = 'none';
+        }, 5000);
+      }
+    });
