@@ -23,8 +23,20 @@ class AuthManager {
       const supabaseUrl = window.APP_CONFIG?.SUPABASE_URL || '';
       const supabaseKey = window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
       
+      console.log('🔧 Initializing Supabase with:', { 
+        url: supabaseUrl, 
+        key: supabaseKey ? `${supabaseKey.substring(0, 10)}...` : 'undefined' 
+      });
+      
       if (!supabaseUrl || !supabaseKey) {
-        console.error('Supabase credentials not found');
+        console.error('❌ Supabase credentials not found');
+        console.error('   Please check your config.js file or environment variables');
+        return;
+      }
+
+      if (supabaseUrl === 'https://your-project-id.supabase.co' || supabaseKey === 'your_anon_key_here') {
+        console.error('❌ Supabase credentials are still using placeholder values');
+        console.error('   Please update your actual Supabase credentials');
         return;
       }
 
@@ -32,9 +44,9 @@ class AuthManager {
       const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
       this.supabase = createClient(supabaseUrl, supabaseKey);
       
-      console.log('Supabase client initialized');
+      console.log('✅ Supabase client initialized successfully');
     } catch (error) {
-      console.error('Failed to initialize Supabase:', error);
+      console.error('❌ Failed to initialize Supabase:', error);
     }
   }
 
@@ -130,25 +142,57 @@ class AuthManager {
 
   // Google OAuth Sign In
   async signInWithGoogle() {
+    console.log('🔧 Google OAuth sign-in initiated');
+    
     if (!this.supabase) {
-      console.error('Supabase not initialized');
-      return;
+      console.error('❌ Supabase not initialized');
+      this.showError('Authentication system not ready. Please refresh the page.');
+      return false;
     }
 
     try {
+      // Show loading state
+      this.showSuccess('Initiating Google sign-in...');
+      console.log('🔄 Starting Google OAuth flow...');
+      
       const { data, error } = await this.supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/google/callback`
+          redirectTo: `${window.location.origin}/dashboard.html`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent'
+          }
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Google OAuth error:', error);
+        throw error;
+      }
       
-      console.log('Google OAuth initiated:', data);
+      console.log('✅ Google OAuth initiated successfully:', data);
+      
+      // If we get a URL back, it means we need to redirect
+      if (data.url) {
+        console.log('🔄 Redirecting to Google OAuth URL:', data.url);
+        // Store a flag to indicate this is a Google OAuth return
+        sessionStorage.setItem('googleOAuth', 'true');
+        window.location.href = data.url;
+      } else {
+        console.log('ℹ️  No redirect URL received, OAuth might have completed automatically');
+        // If no URL, the OAuth might have completed automatically
+        this.showSuccess('Google sign-in completed successfully!');
+        setTimeout(() => {
+          window.location.href = '/dashboard.html';
+        }, 1500);
+      }
+      
+      return { success: true, data };
     } catch (error) {
-      console.error('Google sign-in failed:', error);
+      console.error('❌ Google sign-in failed:', error);
       this.showError('Google sign-in failed: ' + error.message);
+      return { success: false, error: error.message };
     }
   }
 
