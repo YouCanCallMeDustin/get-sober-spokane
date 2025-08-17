@@ -615,7 +615,45 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         
         <!-- Supabase Client - Load first -->
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script>
+            // Load Supabase with fallback
+            function loadSupabase() {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js';
+                script.onload = function() {
+                    console.log('✅ Supabase CDN loaded successfully');
+                    console.log('🔧 Testing Supabase object:', typeof window.supabase);
+                    if (typeof window.supabase !== 'undefined') {
+                        console.log('✅ window.supabase is available');
+                        console.log('🔧 createClient method:', typeof window.supabase.createClient);
+                    }
+                    window.supabaseLoaded = true;
+                };
+                script.onerror = function() {
+                    console.error('❌ Failed to load Supabase from CDN, trying fallback...');
+                    // Try fallback CDN
+                    const fallbackScript = document.createElement('script');
+                    fallbackScript.src = 'https://unpkg.com/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js';
+                    fallbackScript.onload = function() {
+                        console.log('✅ Supabase loaded from fallback CDN');
+                        console.log('🔧 Testing Supabase object:', typeof window.supabase);
+                        if (typeof window.supabase !== 'undefined') {
+                            console.log('✅ window.supabase is available');
+                            console.log('🔧 createClient method:', typeof window.supabase.createClient);
+                        }
+                        window.supabaseLoaded = true;
+                    };
+                    fallbackScript.onerror = function() {
+                        console.error('❌ All Supabase CDN sources failed');
+                    };
+                    document.head.appendChild(fallbackScript);
+                };
+                document.head.appendChild(script);
+            }
+            
+            // Load Supabase when page loads
+            loadSupabase();
+        </script>
         
         <!-- Initialize Bootstrap dropdowns for navigation-->
         <script>
@@ -647,131 +685,186 @@
         
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const loginForm = document.getElementById('loginForm');
-                const loginBtn = document.getElementById('loginBtn');
-                const googleSignIn = document.getElementById('googleSignIn');
-                const authAlert = document.getElementById('authAlert');
+                // Wait for Supabase to be loaded before initializing auth
+                function waitForSupabase() {
+                    if (window.supabaseLoaded && typeof window.supabase !== 'undefined') {
+                        console.log('✅ Supabase ready, initializing auth system...');
+                        initializeAuth();
+                    } else {
+                        console.log('⏳ Waiting for Supabase to load...');
+                        setTimeout(waitForSupabase, 100);
+                    }
+                }
+                
+                function initializeAuth() {
+                    // Clear any remaining auth state if coming from logout
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const isLogout = urlParams.get('logout');
+                    
+                    if (isLogout) {
+                        console.log('🔧 Logout detected, clearing auth state...');
+                        
+                        // Clear any stored auth data
+                        sessionStorage.removeItem('googleOAuth');
+                        localStorage.removeItem('rememberMe');
+                        
+                        // Clear any auth-related storage
+                        Object.keys(localStorage).forEach(key => {
+                            if (key.includes('supabase') || key.includes('auth')) {
+                                localStorage.removeItem(key);
+                            }
+                        });
+                        
+                        Object.keys(sessionStorage).forEach(key => {
+                            if (key.includes('supabase') || key.includes('auth')) {
+                                sessionStorage.removeItem(key);
+                            }
+                        });
+                        
+                        // Clear the logout parameter from URL
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        
+                        console.log('✅ Auth state cleared after logout');
+                    }
+                    
+                    const loginForm = document.getElementById('loginForm');
+                    const loginBtn = document.getElementById('loginBtn');
+                    const googleSignIn = document.getElementById('googleSignIn');
+                    const authAlert = document.getElementById('authAlert');
 
-                // Login form submission
-                loginForm.addEventListener('submit', async function (e) {
-                    e.preventDefault();
+                    // Login form submission
+                    loginForm.addEventListener('submit', async function (e) {
+                        e.preventDefault();
 
-                    const email = document.getElementById('email').value;
-                    const password = document.getElementById('password').value;
-                    const rememberMe = document.getElementById('rememberMe').checked;
+                        const email = document.getElementById('email').value;
+                        const password = document.getElementById('password').value;
+                        const rememberMe = document.getElementById('rememberMe').checked;
 
-                    loginBtn.disabled = true;
-                    loginBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-2"></i>Signing In...';
+                        loginBtn.disabled = true;
+                        loginBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-2"></i>Signing In...';
 
-                    try {
-                        if (window.authManager) {
-                            const result = await window.authManager.signIn(email, password, rememberMe);
-                            if (result.success) {
-                                showAlert('Welcome back! Redirecting to dashboard...', 'success');
-                                setTimeout(() => {
-                                    window.location.href = '/dashboard.html';
-                                }, 1500);
+                        try {
+                            if (window.authManager) {
+                                const result = await window.authManager.signIn(email, password, rememberMe);
+                                if (result.success) {
+                                    showAlert('Welcome back! Redirecting to dashboard...', 'success');
+                                    setTimeout(() => {
+                                        window.location.href = '/dashboard.html';
+                                    }, 1500);
+                                }
+                            } else {
+                                showAlert('Authentication system not ready. Please refresh the page.', 'danger');
+                            }
+                        } catch (error) {
+                            showAlert('Login failed: ' + error.message, 'danger');
+                        } finally {
+                            loginBtn.disabled = false;
+                            loginBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Sign In';
+                        }
+                    });
+
+                    // Google sign in
+                    googleSignIn.addEventListener('click', async function () {
+                        try {
+                            if (window.authManager) {
+                                // Check if this is a logout redirect
+                                const urlParams = new URLSearchParams(window.location.search);
+                                const isLogout = urlParams.get('logout');
+                                
+                                if (isLogout) {
+                                    // Clear the logout parameter
+                                    window.history.replaceState({}, document.title, window.location.pathname);
+                                }
+                                
+                                await window.authManager.signInWithGoogle();
+                            } else {
+                                showAlert('Authentication system not ready. Please refresh the page.', 'danger');
+                            }
+                        } catch (error) {
+                            showAlert('Google sign-in failed: ' + error.message, 'danger');
+                        }
+                    });
+
+                    // Debug functionality
+                    const debugStatus = document.getElementById('debugStatus');
+                    const testConfig = document.getElementById('testConfig');
+
+                    function updateDebugStatus() {
+                        const config = window.APP_CONFIG;
+                        if (config) {
+                            const supabaseUrl = config.SUPABASE_URL;
+                            const supabaseKey = config.SUPABASE_ANON_KEY;
+                            const isConfigured = supabaseUrl && supabaseKey && 
+                                               supabaseUrl !== 'https://your-project-id.supabase.co' && 
+                                               supabaseKey !== 'your_anon_key_here';
+                            
+                            if (isConfigured) {
+                                debugStatus.innerHTML = `
+                                    <span style="color: #28a745;">✅ Supabase configured</span><br>
+                                    <small>URL: ${supabaseUrl.substring(0, 30)}...</small><br>
+                                    <small>Key: ${supabaseKey.substring(0, 10)}...</small>
+                                `;
+                            } else {
+                                debugStatus.innerHTML = `
+                                    <span style="color: #dc3545;">❌ Supabase not configured</span><br>
+                                    <small>Please update your Supabase credentials</small>
+                                `;
                             }
                         } else {
-                            showAlert('Authentication system not ready. Please refresh the page.', 'danger');
+                            debugStatus.innerHTML = '<span style="color: #dc3545;">❌ Config not loaded</span>';
                         }
-                    } catch (error) {
-                        showAlert('Login failed: ' + error.message, 'danger');
-                    } finally {
-                        loginBtn.disabled = false;
-                        loginBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Sign In';
                     }
-                });
 
-                // Google sign in
-                googleSignIn.addEventListener('click', async function () {
-                    try {
-                        if (window.authManager) {
-                            await window.authManager.signInWithGoogle();
-                        } else {
-                            showAlert('Authentication system not ready. Please refresh the page.', 'danger');
-                        }
-                    } catch (error) {
-                        showAlert('Google sign-in failed: ' + error.message, 'danger');
-                    }
-                });
-
-                // Debug functionality
-                const debugStatus = document.getElementById('debugStatus');
-                const testConfig = document.getElementById('testConfig');
-
-                function updateDebugStatus() {
-                    const config = window.APP_CONFIG;
-                    if (config) {
-                        const supabaseUrl = config.SUPABASE_URL;
-                        const supabaseKey = config.SUPABASE_ANON_KEY;
-                        const isConfigured = supabaseUrl && supabaseKey && 
-                                           supabaseUrl !== 'https://your-project-id.supabase.co' && 
-                                           supabaseKey !== 'your_anon_key_here';
+                    testConfig.addEventListener('click', function() {
+                        console.log('🔧 Testing configuration...');
+                        updateDebugStatus();
                         
-                        if (isConfigured) {
-                            debugStatus.innerHTML = `
-                                <span style="color: #28a745;">✅ Supabase configured</span><br>
-                                <small>URL: ${supabaseUrl.substring(0, 30)}...</small><br>
-                                <small>Key: ${supabaseKey.substring(0, 10)}...</small>
-                            `;
-                        } else {
-                            debugStatus.innerHTML = `
-                                <span style="color: #dc3545;">❌ Supabase not configured</span><br>
-                                <small>Please update your Supabase credentials</small>
-                            `;
-                        }
-                    } else {
-                        debugStatus.innerHTML = '<span style="color: #dc3545;">❌ Config not loaded</span>';
-                    }
-                }
-
-                testConfig.addEventListener('click', function() {
-                    console.log('🔧 Testing configuration...');
-                    updateDebugStatus();
-                    
-                    // Test Supabase connection
-                    if (window.supabase) {
-                        console.log('✅ Supabase CDN loaded');
-                        
-                        if (window.authManager && window.authManager.supabase) {
-                            console.log('✅ AuthManager and Supabase are initialized');
+                        // Test Supabase connection
+                        if (window.supabase) {
+                            console.log('✅ Supabase CDN loaded');
                             
-                            // Test a simple Supabase call
-                            window.authManager.supabase.auth.getSession().then(({ data, error }) => {
-                                if (error) {
-                                    console.log('⚠️  Supabase connection test failed:', error);
-                                    showAlert('Supabase connection test failed. Check console for details.', 'warning');
-                                } else {
-                                    console.log('✅ Supabase connection test passed');
-                                    showAlert('Configuration test passed! Supabase is working correctly.', 'success');
-                                }
-                            });
+                            if (window.authManager && window.authManager.supabase) {
+                                console.log('✅ AuthManager and Supabase are initialized');
+                                
+                                // Test a simple Supabase call
+                                window.authManager.supabase.auth.getSession().then(({ data, error }) => {
+                                    if (error) {
+                                        console.log('⚠️  Supabase connection test failed:', error);
+                                        showAlert('Supabase connection test failed. Check console for details.', 'warning');
+                                    } else {
+                                        console.log('✅ Supabase connection test passed');
+                                        showAlert('Configuration test passed! Supabase is working correctly.', 'success');
+                                    }
+                                });
+                            } else {
+                                console.log('❌ AuthManager or Supabase not initialized');
+                                showAlert('Configuration test failed! AuthManager not ready.', 'danger');
+                            }
                         } else {
-                            console.log('❌ AuthManager or Supabase not initialized');
-                            showAlert('Configuration test failed! AuthManager not ready.', 'danger');
+                            console.log('❌ Supabase CDN not loaded');
+                            showAlert('Configuration test failed! Supabase not loaded.', 'danger');
                         }
-                    } else {
-                        console.log('❌ Supabase CDN not loaded');
-                        showAlert('Configuration test failed! Supabase not loaded.', 'danger');
+                    });
+
+                    // Update debug status when page loads
+                    setTimeout(updateDebugStatus, 1000);
+
+                    function showAlert(message, type) {
+                        authAlert.className = `auth-alert alert alert-${type}`;
+                        authAlert.innerHTML = `
+                            <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+                            ${message}
+                        `;
+                        authAlert.style.display = 'block';
+
+                        setTimeout(() => {
+                            authAlert.style.display = 'none';
+                        }, 5000);
                     }
-                });
-
-                // Update debug status when page loads
-                setTimeout(updateDebugStatus, 1000);
-
-                function showAlert(message, type) {
-                    authAlert.className = `auth-alert alert alert-${type}`;
-                    authAlert.innerHTML = `
-                        <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
-                        ${message}
-                    `;
-                    authAlert.style.display = 'block';
-
-                    setTimeout(() => {
-                        authAlert.style.display = 'none';
-                    }, 5000);
                 }
+                
+                // Start waiting for Supabase
+                waitForSupabase();
             });
         </script>
     </body>

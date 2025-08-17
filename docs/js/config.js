@@ -1,7 +1,12 @@
+/*!
+* Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
+* Copyright 2013-2025 Start Bootstrap
+* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
+*/
 // Application Configuration
 window.APP_CONFIG = {
   // Supabase Configuration
-  SUPABASE_URL: 'https://iquczuhmkemjytrynbxg.supabase.co',
+  SUPABASE_URL: 'https://iquczuhmkemjytrqnbxg.supabase.co',
   SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxdWN6dWhta2Vtanl0cnFuYnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxMDMzMjcsImV4cCI6MjA2OTY3OTMyN30.FFzZFBUAM1ZgQSTlzPNSuJIikUiQkvSBKvc19wdzulk',
   
   // App Settings
@@ -41,17 +46,19 @@ window.APP_CONFIG = {
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
   // Development environment
   window.APP_CONFIG.ENVIRONMENT = 'development';
-  window.APP_CONFIG.API.BASE_URL = 'http://localhost:3000';
+  window.APP_CONFIG.API.BASE_URL = 'http://localhost:3001';
   
-  console.log('🔧 Development environment detected');
-  console.log('✅ Supabase configured with:', {
-    url: window.APP_CONFIG.SUPABASE_URL,
-    key: window.APP_CONFIG.SUPABASE_ANON_KEY.substring(0, 20) + '...'
-  });
+  // For development, you can set default Supabase credentials here
+  // Make sure to replace these with your actual credentials
+  if (!window.APP_CONFIG.SUPABASE_URL) {
+    window.APP_CONFIG.SUPABASE_URL = 'https://your-project-id.supabase.co';
+  }
+  if (!window.APP_CONFIG.SUPABASE_ANON_KEY) {
+    window.APP_CONFIG.SUPABASE_ANON_KEY = 'your_anon_key_here';
+  }
 } else {
   // Production environment
   window.APP_CONFIG.ENVIRONMENT = 'production';
-  console.log('🔧 Production environment detected');
 }
 
 // Export for use in other modules

@@ -40,13 +40,30 @@ class AuthManager {
         return;
       }
 
-      // Import and create Supabase client
-      const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
-      this.supabase = createClient(supabaseUrl, supabaseKey);
+      // Wait for Supabase to load
+      let attempts = 0;
+      const maxAttempts = 50; // Wait up to 5 seconds
+      
+      while (attempts < maxAttempts && typeof window.supabase === 'undefined') {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        attempts++;
+      }
+
+      // Check if Supabase is available globally
+      if (typeof window.supabase !== 'undefined') {
+        console.log('✅ Supabase loaded globally from CDN');
+        this.supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+      } else {
+        console.error('❌ Supabase not available globally after waiting');
+        console.error('   Please check if the Supabase CDN script loaded properly');
+        console.error('   You may need to refresh the page or check your internet connection');
+        return;
+      }
       
       console.log('✅ Supabase client initialized successfully');
     } catch (error) {
       console.error('❌ Failed to initialize Supabase:', error);
+      console.error('   This might be due to network issues or CDN problems');
     }
   }
 
