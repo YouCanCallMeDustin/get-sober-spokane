@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://youcancallmedustin.github.io/get-sober-spokane/sitemap.xml
+Sitemap: https://getsoberspokane.org/sitemap.xml
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
