@@ -388,9 +388,72 @@ class AuthManager {
   }
 }
 
+// Provide a global, early authService shim for legacy code paths
+if (typeof window !== 'undefined' && !window.authService) {
+  window.authService = {
+    isAuthenticated: () => {
+      try { return !!(window.authManager && window.authManager.isAuthenticated()); } catch { return false; }
+    },
+    getCurrentUser: () => {
+      try { return window.authManager && window.authManager.getCurrentUser(); } catch { return null; }
+    },
+    signInWithGoogle: () => {
+      if (window.authManager && typeof window.authManager.signInWithGoogle === 'function') {
+        return window.authManager.signInWithGoogle();
+      }
+    },
+    signIn: (email, password, rememberMe = false) => {
+      if (window.authManager && typeof window.authManager.signIn === 'function') {
+        return window.authManager.signIn(email, password, rememberMe);
+      }
+    },
+    signUp: (email, password, displayName) => {
+      if (window.authManager && typeof window.authManager.signUp === 'function') {
+        return window.authManager.signUp(email, password, displayName);
+      }
+    },
+    signOut: () => {
+      if (window.authManager && typeof window.authManager.signOut === 'function') {
+        return window.authManager.signOut();
+      }
+    }
+  };
+}
+
 // Initialize authentication manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
   window.authManager = new AuthManager();
+  // Backwards compatibility shim for legacy code expecting `authService`
+  if (!window.authService) {
+    window.authService = {
+      isAuthenticated: () => {
+        try { return !!(window.authManager && window.authManager.isAuthenticated()); } catch { return false; }
+      },
+      getCurrentUser: () => {
+        try { return window.authManager && window.authManager.getCurrentUser(); } catch { return null; }
+      },
+      signInWithGoogle: () => {
+        if (window.authManager && typeof window.authManager.signInWithGoogle === 'function') {
+          return window.authManager.signInWithGoogle();
+        }
+      },
+      signIn: (email, password, rememberMe = false) => {
+        if (window.authManager && typeof window.authManager.signIn === 'function') {
+          return window.authManager.signIn(email, password, rememberMe);
+        }
+      },
+      signUp: (email, password, displayName) => {
+        if (window.authManager && typeof window.authManager.signUp === 'function') {
+          return window.authManager.signUp(email, password, displayName);
+        }
+      },
+      signOut: () => {
+        if (window.authManager && typeof window.authManager.signOut === 'function') {
+          return window.authManager.signOut();
+        }
+      }
+    };
+  }
 });
 
 // Export for use in other modules
