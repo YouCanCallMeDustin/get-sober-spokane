@@ -98,6 +98,23 @@ class AuthManager {
         this.onUserSignedOut();
       } else if (event === 'TOKEN_REFRESHED' && session) {
         this.currentUser = session.user;
+      } else if (event === 'PASSWORD_RECOVERY') {
+        try {
+          const newPassword = prompt('Enter a new password:');
+          if (newPassword && newPassword.length >= (window.APP_CONFIG?.AUTH?.PASSWORD_MIN_LENGTH || 8)) {
+            const { data, error } = await this.supabase.auth.updateUser({ password: newPassword });
+            if (error) throw error;
+            this.showSuccess('Password updated successfully. Please sign in again.');
+            setTimeout(() => {
+              window.location.href = '/auth/login.html?success=reset';
+            }, 1500);
+          } else {
+            this.showError('Password not updated. Please ensure it meets the minimum length.');
+          }
+        } catch (err) {
+          console.error('Error updating password after recovery:', err);
+          this.showError('Failed to update password. Please try the reset link again.');
+        }
       }
     });
   }
@@ -281,7 +298,7 @@ class AuthManager {
 
     try {
       const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset?token=`
+        redirectTo: `${window.location.origin}/auth/reset.html?token=`
       });
 
       if (error) throw error;

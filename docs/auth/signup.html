@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Get Sober Spokane - Sign Up</title>
-        <meta name="description" content="Join the recovery community with Get Sober Spokane" />
+        <title>Get Sober Spokane</title>
+        <meta name="description" content="Recovery support community in Spokane, WA" />
         <!-- Bootstrap Icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Google fonts-->
@@ -13,15 +13,14 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="/css/styles.css" rel="stylesheet" />
         <style>
-            /* Enhanced Navigation Styling */
+            /* Fix navigation text visibility */
             .navbar.navbar-light .navbar-nav .nav-link {
                 color: #333 !important;
                 font-weight: 500;
-                transition: color 0.2s ease;
             }
 
             .navbar.navbar-light .navbar-nav .nav-link:hover {
-                color: #2c5aa0 !important;
+                color: #007bff !important;
             }
 
             .navbar.navbar-light .navbar-brand {
@@ -30,27 +29,27 @@
             }
 
             .navbar.navbar-light .navbar-brand:hover {
-                color: #2c5aa0 !important;
+                color: #007bff !important;
             }
 
+            /* Ensure navbar has proper background */
             .navbar.navbar-light {
-                background-color: rgba(255, 255, 255, 0.98) !important;
-                backdrop-filter: blur(15px);
-                box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+                background-color: rgba(255, 255, 255, 0.95) !important;
+                backdrop-filter: blur(10px);
             }
 
-            /* Enhanced Dropdown Styling */
+            /* Dropdown styling */
             .dropdown-menu {
                 border: none;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-                border-radius: 12px;
-                padding: 0.75rem 0;
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                border-radius: 8px;
+                padding: 0.5rem 0;
                 margin-top: 0.5rem;
-                min-width: 220px;
+                min-width: 200px;
             }
 
             .dropdown-item {
-                padding: 0.875rem 1.5rem;
+                padding: 0.75rem 1.5rem;
                 font-weight: 500;
                 color: #333;
                 transition: all 0.2s ease;
@@ -58,16 +57,16 @@
 
             .dropdown-item:hover {
                 background-color: #f8f9fa;
-                color: #2c5aa0;
+                color: #007bff;
                 transform: translateX(3px);
             }
 
             .dropdown-divider {
-                margin: 0.5rem 0;
+                margin: 0.25rem 0;
                 border-color: #e9ecef;
             }
 
-            /* Navbar Layout */
+            /* Navbar centering */
             .navbar-nav {
                 justify-content: center;
                 flex: 1;
@@ -81,360 +80,6 @@
             @media (max-width: 991.98px) {
                 .navbar-nav {
                     justify-content: flex-start;
-                }
-            }
-
-            /* Enhanced Auth Container */
-            .auth-container {
-                min-height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-                padding: 2rem 1rem;
-                position: relative;
-                overflow: hidden;
-            }
-
-            .auth-container::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="%23ffffff" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="%23ffffff" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-                opacity: 0.3;
-                pointer-events: none;
-            }
-
-            /* Enhanced Auth Card */
-            .auth-card {
-                background: white;
-                border-radius: 20px;
-                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.08);
-                overflow: hidden;
-                width: 100%;
-                max-width: 520px;
-                animation: slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-                position: relative;
-                z-index: 1;
-            }
-
-            @keyframes slideUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(40px) scale(0.95);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0) scale(1);
-                }
-            }
-
-            /* Enhanced Auth Header */
-            .auth-header {
-                background: linear-gradient(135deg, #2c5aa0 0%, #4a90e2 100%);
-                color: white;
-                text-align: center;
-                padding: 3rem 2rem 2rem;
-                position: relative;
-                overflow: hidden;
-            }
-
-            .auth-header::before {
-                content: '';
-                position: absolute;
-                top: -50%;
-                left: -50%;
-                width: 200%;
-                height: 200%;
-                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-                animation: float 6s ease-in-out infinite;
-            }
-
-            @keyframes float {
-                0%, 100% { transform: translateY(0px) rotate(0deg); }
-                50% { transform: translateY(-20px) rotate(180deg); }
-            }
-
-            .auth-header .auth-logo {
-                width: 90px;
-                height: 90px;
-                margin-bottom: 1.5rem;
-                border-radius: 50%;
-                background: white;
-                padding: 0.75rem;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-                position: relative;
-                z-index: 1;
-            }
-
-            .auth-header .auth-title {
-                font-size: 2rem;
-                font-weight: 700;
-                margin-bottom: 0.75rem;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                position: relative;
-                z-index: 1;
-            }
-
-            .auth-header .auth-subtitle {
-                font-size: 1.1rem;
-                opacity: 0.95;
-                margin: 0;
-                font-weight: 400;
-                position: relative;
-                z-index: 1;
-            }
-
-            /* Enhanced Auth Form */
-            .auth-form {
-                padding: 2.5rem 2rem;
-                background: white;
-            }
-
-            .auth-form .form-group {
-                margin-bottom: 1.5rem;
-            }
-
-            .auth-form .form-label {
-                display: block;
-                margin-bottom: 0.75rem;
-                font-weight: 600;
-                color: #2c3e50;
-                font-size: 0.95rem;
-                letter-spacing: 0.025em;
-            }
-
-            .auth-form .form-control {
-                width: 100%;
-                padding: 1rem 1.25rem;
-                border: 2px solid #e9ecef;
-                border-radius: 12px;
-                font-size: 1rem;
-                transition: all 0.3s ease;
-                background: #fafbfc;
-                color: #2c3e50;
-            }
-
-            .auth-form .form-control:focus {
-                outline: none;
-                border-color: #2c5aa0;
-                background: white;
-                box-shadow: 0 0 0 4px rgba(44, 90, 160, 0.1);
-                transform: translateY(-1px);
-            }
-
-            .auth-form .form-control::placeholder {
-                color: #a0aec0;
-                font-weight: 400;
-            }
-
-            /* Enhanced Checkbox */
-            .auth-form .form-check {
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                margin-bottom: 2rem;
-            }
-
-            .auth-form .form-check .form-check-input {
-                margin: 0;
-                width: 1.25rem;
-                height: 1.25rem;
-                border-radius: 6px;
-                border: 2px solid #cbd5e0;
-                transition: all 0.2s ease;
-            }
-
-            .auth-form .form-check .form-check-input:checked {
-                background-color: #2c5aa0;
-                border-color: #2c5aa0;
-            }
-
-            .auth-form .form-check .form-check-label {
-                margin: 0;
-                font-size: 0.95rem;
-                color: #4a5568;
-                font-weight: 500;
-                cursor: pointer;
-            }
-
-            /* Enhanced Primary Button */
-            .btn-primary {
-                width: 100%;
-                padding: 1rem 1.5rem;
-                font-size: 1.1rem;
-                font-weight: 600;
-                border-radius: 12px;
-                transition: all 0.3s ease;
-                background: linear-gradient(135deg, #2c5aa0 0%, #4a90e2 100%);
-                border: none;
-                color: white;
-                text-transform: none;
-                letter-spacing: 0.025em;
-            }
-
-            .btn-primary:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(44, 90, 160, 0.3);
-                background: linear-gradient(135deg, #1e3f7a 0%, #2c5aa0 100%);
-            }
-
-            .btn-primary:active {
-                transform: translateY(0);
-            }
-
-            /* Enhanced Google Button */
-            .btn-google {
-                width: 100%;
-                background: white;
-                color: #4a5568;
-                border: 2px solid #e2e8f0;
-                border-radius: 12px;
-                padding: 1rem 1.5rem;
-                font-weight: 600;
-                font-size: 1rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.875rem;
-                transition: all 0.3s ease;
-                margin-bottom: 2rem;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            }
-
-            .btn-google:hover {
-                background: #f7fafc;
-                border-color: #cbd5e0;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-                transform: translateY(-1px);
-            }
-
-            .btn-google:active {
-                transform: translateY(0);
-            }
-
-            .btn-google img {
-                width: 20px;
-                height: 20px;
-            }
-
-            /* Enhanced Divider */
-            .auth-divider {
-                text-align: center;
-                margin: 2rem 0;
-                position: relative;
-            }
-
-            .auth-divider::before {
-                content: "";
-                position: absolute;
-                top: 50%;
-                left: 0;
-                right: 0;
-                height: 1px;
-                background: linear-gradient(90deg, transparent 0%, #e2e8f0 50%, transparent 100%);
-            }
-
-            .auth-divider span {
-                background: white;
-                padding: 0 1.5rem;
-                color: #718096;
-                font-size: 0.9rem;
-                font-weight: 500;
-                letter-spacing: 0.05em;
-            }
-
-            /* Enhanced Auth Links */
-            .auth-links {
-                margin-top: 2rem;
-                text-align: center;
-                display: flex;
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .auth-links a {
-                color: #2c5aa0;
-                text-decoration: none;
-                font-size: 0.95rem;
-                font-weight: 500;
-                transition: all 0.2s ease;
-                padding: 0.5rem;
-                border-radius: 8px;
-            }
-
-            .auth-links a:hover {
-                color: #1e3f7a;
-                background: rgba(44, 90, 160, 0.05);
-                text-decoration: none;
-            }
-
-            /* Enhanced Alert */
-            .auth-alert {
-                margin-top: 1.5rem;
-                border-radius: 12px;
-                border: none;
-                padding: 1rem 1.25rem;
-                font-size: 0.95rem;
-                font-weight: 500;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            }
-
-            .auth-alert.alert-danger {
-                background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
-                color: #742a2a;
-                border-left: 4px solid #e53e3e;
-            }
-
-            .auth-alert.alert-success {
-                background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
-                color: #22543d;
-                border-left: 4px solid #38a169;
-            }
-
-            /* Responsive Design */
-            @media (max-width: 768px) {
-                .auth-container {
-                    padding: 1rem;
-                }
-                
-                .auth-card {
-                    margin: 0.5rem;
-                    border-radius: 16px;
-                }
-                
-                .auth-header {
-                    padding: 2rem 1.5rem 1.5rem;
-                }
-                
-                .auth-header .auth-logo {
-                    width: 70px;
-                    height: 70px;
-                }
-                
-                .auth-header .auth-title {
-                    font-size: 1.75rem;
-                }
-                
-                .auth-form {
-                    padding: 2rem 1.5rem;
-                }
-            }
-
-            @media (max-width: 480px) {
-                .auth-header {
-                    padding: 1.5rem 1rem 1rem;
-                }
-                
-                .auth-form {
-                    padding: 1.5rem 1rem;
-                }
-                
-                .auth-header .auth-title {
-                    font-size: 1.5rem;
                 }
             }
         </style>
@@ -528,72 +173,47 @@
                 </div>
             </div>
         </nav>
-
-        <!-- Enhanced Auth Container -->
         <div class="auth-container">
             <div class="auth-card">
                 <div class="auth-header">
                     <img class="auth-logo" src="/assets/img/logo.png" alt="Sober Spokane" />
-                    <h1 class="auth-title">Join Our Community</h1>
-                    <p class="auth-subtitle">Start your recovery journey with us today</p>
-                </div>
-                
-                <div class="auth-form">
-                    <form id="signupForm">
-                        <div class="form-group">
-                            <label class="form-label" for="displayName">Full Name</label>
-                            <input class="form-control" id="displayName" type="text" name="displayName" placeholder="Enter your full name" required />
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="email">Email Address</label>
-                            <input class="form-control" id="email" type="email" name="email" placeholder="Enter your email" required />
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="password">Password</label>
-                            <input class="form-control" id="password" type="password" name="password" placeholder="Create a strong password" required />
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="confirmPassword">Confirm Password</label>
-                            <input class="form-control" id="confirmPassword" type="password" name="confirmPassword" placeholder="Confirm your password" required />
-                        </div>
-                        
-                        <div class="form-group form-check">
-                            <input class="form-check-input" id="agreeTerms" type="checkbox" name="agreeTerms" required />
-                            <label class="form-check-label" for="agreeTerms">
-                                I agree to the <a href="/terms-of-service.html" target="_blank">Terms of Service</a> and <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>
-                            </label>
-                        </div>
-                        
-                        <button class="btn btn-primary" id="signupBtn" type="submit">
-                            <i class="bi bi-person-plus me-2"></i>
-                            Create Account
-                        </button>
-                        
-                        <div class="auth-divider">
-                            <span>or continue with</span>
-                        </div>
-                        
-                        <button class="btn btn-google" id="googleSignIn" type="button">
-                            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" />
-                            <span>Sign up with Google</span>
-                        </button>
-                        
-                        <div class="auth-links">
-                            <a href="/auth/login.html">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>
-                                Already have an account? Sign in
-                            </a>
-                        </div>
-                    </form>
+                    <h1 class="auth-title">Create Account</h1>
+                    <p class="auth-subtitle">Start your recovery journey with us</p>
                 </div>
             </div>
-            
+            <div class="auth-form">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="displayName">Display Name</label>
+                        <input class="form-control" id="displayName" type="text" name="displayName" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input class="form-control" id="email" type="email" name="email" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input class="form-control" id="password" type="password" name="password" required minlength="8" />
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input class="form-control" id="confirmPassword" type="password" name="confirmPassword" required minlength="8" />
+                    </div>
+                    <div class="form-group form-check">
+                        <input class="form-check-input" id="agreeTerms" type="checkbox" name="agreeTerms" required />
+                        <label class="form-check-label" for="agreeTerms">I agree to the Terms of Service and Privacy Policy</label>
+                    </div>
+                    <button class="btn btn-primary btn-block" id="signupBtn" type="submit">Create Account</button>
+                    <div class="auth-divider"><span>or</span></div>
+                    <button class="btn btn-google" id="googleSignUp" type="button">
+                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" />
+                        <Sign>up with Google</Sign>
+                    </button>
+                    <div class="auth-links"><a href="/auth/login.html">Already have an account? Sign in</a></div>
+                </form>
+            </div>
             <div class="auth-alert" id="authAlert" style="display: none"></div>
         </div>
-
         <!-- Footer-->
         <footer class="bg-light py-5">
             <div class="container px-4 px-lg-5">
@@ -607,10 +227,9 @@
                 </div>
             </div>
         </footer>
-
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        
+        <!-- Core theme JS-->
         <!-- Initialize Bootstrap dropdowns for navigation-->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -635,16 +254,14 @@
                 }
             });
         </script>
-        
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="/js/config.js"></script>
         <script src="/js/auth.js"></script>
-        
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const signupForm = document.getElementById('signupForm');
                 const signupBtn = document.getElementById('signupBtn');
-                const googleSignIn = document.getElementById('googleSignIn');
+                const googleSignUp = document.getElementById('googleSignUp');
                 const authAlert = document.getElementById('authAlert');
 
                 // Signup form submission
@@ -659,24 +276,26 @@
 
                     // Validation
                     if (password !== confirmPassword) {
-                        showAlert('Passwords do not match. Please try again.', 'danger');
+                        showAlert('Passwords do not match', 'danger');
                         return;
                     }
 
                     if (!agreeTerms) {
-                        showAlert('Please agree to the Terms of Service and Privacy Policy.', 'danger');
+                        showAlert('Please agree to the terms and conditions', 'warning');
                         return;
                     }
 
                     signupBtn.disabled = true;
-                    signupBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-2"></i>Creating Account...';
+                    signupBtn.textContent = 'Creating Account...';
 
                     try {
                         if (window.authManager) {
                             const result = await window.authManager.signUp(email, password, displayName);
                             if (result.success) {
-                                showAlert('Account created successfully! Please check your email to verify your account.', 'success');
-                                signupForm.reset();
+                                showAlert('Account created successfully! Please check your email for verification.', 'success');
+                                setTimeout(() => {
+                                    window.location.href = '/auth/login.html';
+                                }, 3000);
                             }
                         } else {
                             showAlert('Authentication system not ready. Please refresh the page.', 'danger');
@@ -685,12 +304,12 @@
                         showAlert('Signup failed: ' + error.message, 'danger');
                     } finally {
                         signupBtn.disabled = false;
-                        signupBtn.innerHTML = '<i class="bi bi-person-plus me-2"></i>Create Account';
+                        signupBtn.textContent = 'Create Account';
                     }
                 });
 
-                // Google sign in
-                googleSignIn.addEventListener('click', async function () {
+                // Google sign up
+                googleSignUp.addEventListener('click', async function () {
                     try {
                         if (window.authManager) {
                             await window.authManager.signInWithGoogle();
@@ -698,16 +317,13 @@
                             showAlert('Authentication system not ready. Please refresh the page.', 'danger');
                         }
                     } catch (error) {
-                        showAlert('Google sign-in failed: ' + error.message, 'danger');
+                        showAlert('Google sign-up failed: ' + error.message, 'danger');
                     }
                 });
 
                 function showAlert(message, type) {
                     authAlert.className = `auth-alert alert alert-${type}`;
-                    authAlert.innerHTML = `
-                        <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
-                        ${message}
-                    `;
+                    authAlert.textContent = message;
                     authAlert.style.display = 'block';
 
                     setTimeout(() => {
