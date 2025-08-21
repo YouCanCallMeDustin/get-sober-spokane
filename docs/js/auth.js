@@ -109,10 +109,8 @@ class AuthManager {
     this.updateUIForAuthenticatedUser(user);
     
     // Redirect to dashboard if on auth pages
-    if (window.location.pathname === '/auth/login.html' || 
-        window.location.pathname === '/auth/signup.html' || 
-        window.location.pathname === '/auth/reset.html') {
-      window.location.href = '/dashboard.html';
+    if (['/auth/login.html','/auth/signup.html','/auth/reset.html','/login','/signup','/reset'].includes(window.location.pathname)) {
+      window.location.href = '/dashboard';
     }
   }
 
@@ -123,8 +121,8 @@ class AuthManager {
     this.updateUIForUnauthenticatedUser();
     
     // Redirect to login if on protected pages
-    if (window.location.pathname === '/dashboard.html') {
-      window.location.href = '/auth/login.html';
+    if (['/dashboard','/dashboard.html'].includes(window.location.pathname)) {
+      window.location.href = '/login?logout=true';
     }
   }
 
