@@ -170,7 +170,7 @@
                         <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
                         <!-- Auth navigation-->
-                        <li class="nav-item" data-auth="guest"><a class="nav-link" id="navbarLogin" href="/login">Sign In</a></li>
+                        <li class="nav-item" data-auth="guest"><a class="nav-link" id="navbarLogin" href="/auth/login.html">Sign In</a></li>
                         <li class="nav-item" data-auth="required" style="display: none"><a class="nav-link" id="navbarLogout" href="#">Sign Out</a></li>
                     </ul>
                 </div>
@@ -212,7 +212,7 @@
                         <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" />
                         <Sign>up with Google</Sign>
                     </button>
-                    <div class="auth-links"><a href="/login">Already have an account? Sign in</a></div>
+                    <div class="auth-links"><a href="/auth/login.html">Already have an account? Sign in</a></div>
                 </form>
             </div>
             <div class="auth-alert" id="authAlert" style="display: none"></div>
@@ -233,8 +233,8 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <!-- Supabase and Auth Scripts-->
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <!-- Supabase and Auth Scripts (UMD build for window.supabase)-->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
         <script src="/js/config.js"></script>
         <script src="/js/auth.js"></script>
         <!-- Initialize Bootstrap dropdowns for navigation-->
@@ -276,7 +276,7 @@
                                 console.warn('Server session logout failed or not available', err);
                             }
                         } finally {
-                            window.location.href = '/login?logout=true';
+                            window.location.href = '/auth/login.html?logout=true';
                         }
                     });
                 }

@@ -179,7 +179,7 @@ block scripts
         
         // Redirect to login page and clear server session
         try { await fetch('/api/auth/logout', { method: 'POST' }); } catch (e) {}
-        window.location.href = '/login?logout=true';
+        window.location.href = '/auth/login.html?logout=true';
       } catch (error) {
         console.error('Logout failed:', error);
         showMessage('Logout failed. Please try again.', 'danger');
