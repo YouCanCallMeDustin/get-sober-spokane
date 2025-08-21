@@ -1,0 +1,5 @@
+[dotenv@17.2.0] injecting env (5) from .env (tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] })
+Starting server...
+Server running on port 3001
+Environment: development
+Supabase URL: https://iquczuhmkemjytrqnbxg.supabase.co
