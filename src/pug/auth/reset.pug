@@ -17,15 +17,12 @@ block content
         button.btn.btn-primary.btn-block#resetBtn(type="submit") Send Reset Link
         
         .auth-links
-          a(href="/auth/login.html") Back to Sign In
-          a(href="/auth/signup.html") Don't have an account? Sign up
+          a(href="/login") Back to Sign In
+          a(href="/signup") Don't have an account? Sign up
     
     .auth-alert#authAlert(style="display: none;")
 
 block scripts
-  script(src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2")
-  script(src="/js/config.js")
-  script(src="/js/auth.js")
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const resetForm = document.getElementById('resetForm');

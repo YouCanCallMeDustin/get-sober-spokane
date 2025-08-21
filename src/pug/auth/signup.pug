@@ -40,14 +40,11 @@ block content
           Sign up with Google
         
         .auth-links
-          a(href="/auth/login.html") Already have an account? Sign in
+          a(href="/login") Already have an account? Sign in
     
     .auth-alert#authAlert(style="display: none;")
 
 block scripts
-  script(src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2")
-  script(src="/js/config.js")
-  script(src="/js/auth.js")
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const signupForm = document.getElementById('signupForm');
@@ -85,7 +82,7 @@ block scripts
             if (result.success) {
               showAlert('Account created successfully! Please check your email for verification.', 'success');
               setTimeout(() => {
-                window.location.href = '/auth/login.html';
+                window.location.href = '/login';
               }, 3000);
             }
           } else {
