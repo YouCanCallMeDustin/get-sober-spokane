@@ -7,7 +7,7 @@ const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -41,6 +41,16 @@ app.use(session({
 // Set Pug as templating engine
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'src/pug'));
+
+// Expose client-safe environment variables for frontend initialization
+app.get('/env.js', (req, res) => {
+  const clientEnv = {
+    SUPABASE_URL: process.env.SUPABASE_URL || '',
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY || ''
+  };
+  res.type('application/javascript');
+  res.send(`window.__ENV = Object.assign({}, window.__ENV || {}, ${JSON.stringify(clientEnv)});`);
+});
 
 // Authentication middleware
 const requireAuth = (req, res, next) => {
@@ -96,8 +106,9 @@ app.get('/reset', (req, res) => {
   }
 });
 
-app.get('/dashboard', requireAuth, (req, res) => {
-  res.render('dashboard', { 
+// Support both /dashboard (SSR) and /dashboard.html (static) paths
+app.get(['/dashboard', '/dashboard.html'], requireAuth, (req, res) => {
+  res.render('dashboard', {
     title: 'Dashboard - Sober Spokane',
     user: req.session.user
   });
@@ -160,6 +171,27 @@ app.post('/api/auth/login', async (req, res) => {
     res.json({ success: true, user: req.session.user });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Sync server session with client-side Supabase user (used after Google OAuth)
+app.post('/api/auth/sync-session', (req, res) => {
+  try {
+    const { id, email, displayName } = req.body || {};
+
+    if (!id || !email) {
+      return res.status(400).json({ error: 'Missing user information' });
+    }
+
+    req.session.user = {
+      id,
+      email,
+      displayName: displayName || 'User'
+    };
+
+    return res.json({ success: true, user: req.session.user });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 

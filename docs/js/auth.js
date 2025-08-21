@@ -116,9 +116,22 @@ class AuthManager {
     // Update UI for authenticated user
     this.updateUIForAuthenticatedUser(user);
     
+    // Attempt to sync server session (useful after Google OAuth client-side return)
+    try {
+      fetch('/api/auth/sync-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: user.id,
+          email: user.email,
+          displayName: user.user_metadata?.full_name || user.user_metadata?.display_name || 'User'
+        })
+      }).catch(() => {});
+    } catch (e) {}
+    
     // Redirect to dashboard if on auth pages
     if (['/auth/login.html','/auth/signup.html','/auth/reset.html','/login','/signup','/reset'].includes(window.location.pathname)) {
-      window.location.href = '/dashboard';
+      window.location.href = '/dashboard.html';
     }
   }
 
@@ -181,7 +194,8 @@ class AuthManager {
       const { data, error } = await this.supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/google/callback`,
+          // Send users back to the static login page; the server route can also handle /auth/google/callback
+          redirectTo: `${window.location.origin}/auth/login.html`,
           queryParams: { access_type: 'offline', prompt: 'consent' }
         }
       });

@@ -101,18 +101,18 @@
     }
 
     @include media-breakpoint-up(lg) {
-        // Base styling for the navbar - screen sizes greater than the large breakpoint
-        box-shadow: none;
-        background-color: transparent;
+        // Keep a consistent solid navbar on large screens as well
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        background-color: $white;
         padding: 1.5rem 0;
 
         .navbar-brand {
-            color: $white;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            color: $primary-blue;
+            text-shadow: none;
 
             &:hover {
-                color: $white;
-                transform: translateY(-1px);
+                color: $primary-blue;
+                transform: none;
             }
         }
 
@@ -122,15 +122,15 @@
             
             .nav-item {
                 .nav-link {
-                    color: fade-out($white, 0.15);
+                    color: $dark-navy;
                     padding: 0.75rem 1.25rem;
                     margin: 0 0.25rem;
                     border-radius: 6px;
 
                     &:hover {
-                        color: $white;
-                        background-color: fade-out($white, 0.9);
-                        transform: translateY(-1px);
+                        color: $primary-blue;
+                        background-color: fade-out($primary-blue, 0.95);
+                        transform: none;
                     }
                 }
                 
@@ -159,48 +159,7 @@
             }
         }
 
-        // Navbar styling applied when the page is scrolled
-        &.navbar-shrink {
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            background-color: $white;
-            padding: 0.75rem 0;
-
-            .navbar-brand {
-                color: $primary-blue;
-
-                &:hover {
-                    color: $primary-blue;
-                }
-            }
-
-            .navbar-nav {
-                .nav-item {
-                    .nav-link {
-                        color: $dark-navy;
-
-                        &:hover {
-                            color: $primary-blue;
-                            background-color: fade-out($primary-blue, 0.95);
-                        }
-                    }
-                    
-                    &.dropdown {
-                        .dropdown-menu {
-                            background-color: $white;
-                            
-                            .dropdown-item {
-                                color: $dark-navy;
-                                
-                                &:hover {
-                                    background-color: fade-out($primary-blue, 0.95);
-                                    color: $primary-blue;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        // Remove special shrink styling; navbar remains consistent on scroll
     }
 }
 
