@@ -1385,8 +1385,8 @@
         <!-- Supabase and Auth Scripts-->
         <script src="/env.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
-        <script src="/js/config.js"></script>
-        <script src="/js/auth.js"></script>
+        <script src="./js/config.js"></script>
+        <script src="./js/auth.js"></script>
         <!-- Navbar logout handler for homepage-->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -1399,12 +1399,12 @@
                                 await window.authManager.signOut();
                             }
                             try {
-                                await fetch('/api/auth/logout', { method: 'POST' });
+                                await fetch(basePath + '/api/auth/logout', { method: 'POST' });
                             } catch (err) {
                                 console.warn('Server session logout failed or not available', err);
                             }
                         } finally {
-                            window.location.href = '/auth/login.html?logout=true';
+                            window.location.href = basePath + '/auth/login.html?logout=true';
                         }
                     });
                 }

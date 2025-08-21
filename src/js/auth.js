@@ -118,7 +118,7 @@ class AuthManager {
     
     // Attempt to sync server session (useful after Google OAuth client-side return)
     try {
-      fetch('/api/auth/sync-session', {
+      fetch(`${(window.basePath || '.')}/api/auth/sync-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -130,8 +130,16 @@ class AuthManager {
     } catch (e) {}
     
     // Redirect to dashboard if on auth pages
-    if (['/auth/login.html','/auth/signup.html','/auth/reset.html','/login','/signup','/reset'].includes(window.location.pathname)) {
-      window.location.href = '/dashboard.html';
+    const path = window.location.pathname || '';
+    if (
+      path.endsWith('/auth/login.html') ||
+      path.endsWith('/auth/signup.html') ||
+      path.endsWith('/auth/reset.html') ||
+      path === '/login' ||
+      path === '/signup' ||
+      path === '/reset'
+    ) {
+      window.location.href = `${(window.basePath || '.')}/dashboard.html`;
     }
   }
 
@@ -142,8 +150,9 @@ class AuthManager {
     this.updateUIForUnauthenticatedUser();
     
     // Redirect to login if on protected pages
-    if (['/dashboard','/dashboard.html'].includes(window.location.pathname)) {
-      window.location.href = '/login?logout=true';
+    const path = window.location.pathname || '';
+    if (path.endsWith('/dashboard') || path.endsWith('/dashboard.html')) {
+      window.location.href = `${(window.basePath || '.')}/auth/login.html?logout=true`;
     }
   }
 
@@ -195,7 +204,7 @@ class AuthManager {
         provider: 'google',
         options: {
           // Send users back to the static login page; the server route can also handle /auth/google/callback
-          redirectTo: `${window.location.origin}/auth/login.html`,
+          redirectTo: new URL(`${(window.basePath || '.')}/auth/login.html`, window.location.href).href,
           queryParams: { access_type: 'offline', prompt: 'consent' }
         }
       });
@@ -218,7 +227,7 @@ class AuthManager {
         // If no URL, the OAuth might have completed automatically
         this.showSuccess('Google sign-in completed successfully!');
         setTimeout(() => {
-          window.location.href = '/dashboard.html';
+          window.location.href = `${(window.basePath || '.')}/dashboard.html`;
         }, 1500);
       }
       
@@ -298,7 +307,7 @@ class AuthManager {
 
     try {
       const { error } = await this.supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset?token=`
+        redirectTo: new URL(`${(window.basePath || '.')}/auth/reset.html?token=`, window.location.href).href
       });
 
       if (error) throw error;
