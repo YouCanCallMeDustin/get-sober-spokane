@@ -32,21 +32,34 @@ block content
           Sign in with Google
         
         .auth-links
-          a(href="/auth/signup.html") Don't have an account? Sign up
-          a(href="/auth/reset.html") Forgot your password?
+          a(href="/signup") Don't have an account? Sign up
+          a(href="/reset") Forgot your password?
     
     .auth-alert#authAlert(style="display: none;")
 
 block scripts
-  script(src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2")
-  script(src="/js/config.js")
-  script(src="/js/auth.js")
   script.
     document.addEventListener('DOMContentLoaded', function() {
       const loginForm = document.getElementById('loginForm');
       const loginBtn = document.getElementById('loginBtn');
       const googleSignIn = document.getElementById('googleSignIn');
       const authAlert = document.getElementById('authAlert');
+      
+      // Handle logout redirect param and clear residual auth keys
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('logout')) {
+        try {
+          sessionStorage.removeItem('googleOAuth');
+          localStorage.removeItem('rememberMe');
+          Object.keys(localStorage).forEach(key => {
+            if (key.includes('supabase') || key.includes('auth')) localStorage.removeItem(key);
+          });
+          Object.keys(sessionStorage).forEach(key => {
+            if (key.includes('supabase') || key.includes('auth')) sessionStorage.removeItem(key);
+          });
+        } catch (e) {}
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
       
       // Login form submission
       loginForm.addEventListener('submit', async function(e) {
@@ -61,9 +74,19 @@ block scripts
         
         try {
           if (window.authManager) {
+            // Also set server session
+            try {
+              await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password, rememberMe })
+              });
+            } catch (e) {
+              console.warn('Server session login failed or not available', e);
+            }
             const result = await window.authManager.signIn(email, password, rememberMe);
             if (result.success) {
-              window.location.href = '/dashboard.html';
+              window.location.href = '/dashboard';
             }
           } else {
             showAlert('Authentication system not ready. Please refresh the page.', 'danger');
