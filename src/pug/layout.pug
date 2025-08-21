@@ -154,7 +154,7 @@ html(lang="en")
               a.nav-link(href="/#contact") Contact
             // Auth navigation
             li.nav-item(data-auth="guest")
-              a.nav-link#navbarLogin(href="/login") Sign In
+              a.nav-link#navbarLogin(href="/auth/login.html") Sign In
             li.nav-item(data-auth="required" style="display:none;")
               a.nav-link#navbarLogout(href="#") Sign Out
 
@@ -219,7 +219,7 @@ html(lang="en")
                 console.warn('Server session logout failed or not available', err);
               }
             } finally {
-              window.location.href = '/login?logout=true';
+              window.location.href = '/auth/login.html?logout=true';
             }
           });
         }

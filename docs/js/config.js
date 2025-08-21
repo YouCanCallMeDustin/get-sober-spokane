@@ -41,7 +41,9 @@ window.APP_CONFIG = {
 if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
   // Development environment
   window.APP_CONFIG.ENVIRONMENT = 'development';
-  window.APP_CONFIG.API.BASE_URL = 'http://localhost:3001';
+  // Support either 3000 or 3001; default to current origin
+  const devPort = window.location.port || '3000';
+  window.APP_CONFIG.API.BASE_URL = `${window.location.protocol}//${window.location.hostname}:${devPort}`;
   
   // For development, you can set default Supabase credentials here
   // Make sure to replace these with your actual credentials

@@ -110,7 +110,7 @@ class AuthManager {
     
     // Redirect to dashboard if on auth pages
     if (['/auth/login.html','/auth/signup.html','/auth/reset.html','/login','/signup','/reset'].includes(window.location.pathname)) {
-      window.location.href = '/dashboard';
+      window.location.href = '/dashboard.html';
     }
   }
 
@@ -122,7 +122,7 @@ class AuthManager {
     
     // Redirect to login if on protected pages
     if (['/dashboard','/dashboard.html'].includes(window.location.pathname)) {
-      window.location.href = '/login?logout=true';
+      window.location.href = '/auth/login.html?logout=true';
     }
   }
 
