@@ -1320,9 +1320,11 @@ html(lang='en')
                             a.nav-link(href='dashboard.html') Dashboard
                         li.nav-item
                             a.nav-link(href='index.html#contact') Contact
-                        // Sign In button
-                        li.nav-item
-                            a.btn.btn-primary.btn-sm.ms-lg-2(href='auth/login.html' role='button') Sign In
+                        // Auth navigation
+                        li.nav-item(data-auth="guest")
+                            a.nav-link#navbarLogin(href='auth/login.html') Sign In
+                        li.nav-item(data-auth="required" style="display:none;")
+                            a.nav-link#navbarLogout(href='#') Sign Out
 
 
         // Masthead
@@ -1509,5 +1511,34 @@ html(lang='en')
 
         // Core theme JS
         script(src='js/scripts.js')
+
+        // Supabase and Auth Scripts
+        script(src='env.js')
+        script(src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js')
+        script(src='js/config.js')
+        script(src='js/auth.js')
+
+        // Navbar logout handler for homepage
+        script.
+            document.addEventListener('DOMContentLoaded', function() {
+              const navbarLogout = document.getElementById('navbarLogout');
+              if (navbarLogout) {
+                navbarLogout.addEventListener('click', async function(e) {
+                  e.preventDefault();
+                  try {
+                    if (window.authManager && typeof window.authManager.signOut === 'function') {
+                      await window.authManager.signOut();
+                    }
+                    try {
+                      await fetch('/api/auth/logout', { method: 'POST' });
+                    } catch (err) {
+                      console.warn('Server session logout failed or not available', err);
+                    }
+                  } finally {
+                    window.location.href = '/auth/login.html?logout=true';
+                  }
+                });
+              }
+            });
 
 

@@ -168,7 +168,6 @@
                             <h1 class="dashboard-title">Welcome, User!</h1>
                             <p class="dashboard-subtitle">Manage your recovery journey and access resources</p>
                         </div>
-                        <div class="col-md-6 text-md-end"><button class="btn btn-outline-danger" id="logoutBtn" type="button">Sign Out</button></div>
                     </div>
                 </div>
             </div>
@@ -227,7 +226,7 @@
                             <div class="dashboard-card">
                                 <h3 class="card-title">Quick Actions</h3>
                                 <div class="quick-actions">
-                                    <a class="btn btn-primary btn-block" href="/emergency-help.html">
+                                    <a class="btn btn-primary btn-block" href="/resource-directory.html#emergency-help">
                                         <i class="bi bi-exclamation-triangle"></i>
                                         <Emergency>Help</Emergency>
                                     </a>
@@ -372,7 +371,7 @@
                     }
 
                     // Create Supabase client
-                    supabase = supabase.createClient(supabaseUrl, supabaseKey);
+                    supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
                     console.log('Supabase client initialized');
 
                     // Check authentication state
@@ -406,9 +405,6 @@
             }
 
             function setupEventListeners() {
-                // Logout functionality
-                document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-
                 // Update sobriety date
                 document.getElementById('updateSobrietyDate').addEventListener('click', handleUpdateSobrietyDate);
 
@@ -417,24 +413,6 @@
 
                 // Update profile
                 document.getElementById('updateProfile').addEventListener('click', handleUpdateProfile);
-            }
-
-            async function handleLogout() {
-                try {
-                    if (supabase) {
-                        const { error } = await supabase.auth.signOut();
-                        if (error) throw error;
-                    }
-
-                    // Redirect to login page and clear server session
-                    try {
-                        await fetch('/api/auth/logout', { method: 'POST' });
-                    } catch (e) {}
-                    window.location.href = '/auth/login.html?logout=true';
-                } catch (error) {
-                    console.error('Logout failed:', error);
-                    showMessage('Logout failed. Please try again.', 'danger');
-                }
             }
 
             async function handleUpdateSobrietyDate() {
@@ -480,6 +458,10 @@
                         document.getElementById('profileDisplayName').value = data.display_name || '';
                         document.getElementById('profileBio').value = data.bio || '';
                         document.getElementById('profilePrivacyLevel').value = data.privacy_level || 'standard';
+                        // Update header with profile display name when available
+                        if (data.display_name) {
+                            document.querySelector('.dashboard-title').textContent = `Welcome, ${data.display_name}!`;
+                        }
 
                         // Set sobriety date if available
                         if (data.sobriety_date) {
@@ -663,7 +645,10 @@
 
             function updateUserDisplay() {
                 if (currentUser) {
-                    const displayName = currentUser.user_metadata?.display_name || currentUser.email || 'User';
+                    const profileInput = document.getElementById('profileDisplayName');
+                    const profileName = profileInput && profileInput.value ? profileInput.value.trim() : null;
+                    const metaName = currentUser.user_metadata?.full_name || currentUser.user_metadata?.display_name || currentUser.user_metadata?.name || currentUser.user_metadata?.user_name || 'User';
+                    const displayName = profileName || metaName;
                     document.querySelector('.dashboard-title').textContent = `Welcome, ${displayName}!`;
                 }
             }

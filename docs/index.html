@@ -1147,8 +1147,9 @@
                         <li class="nav-item"><a class="nav-link" href="donations.html">Donate</a></li>
                         <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
-                        <!-- Sign In button-->
-                        <li class="nav-item"><a class="btn btn-primary btn-sm ms-lg-2" href="auth/login.html" role="button">Sign In</a></li>
+                        <!-- Auth navigation-->
+                        <li class="nav-item" data-auth="guest"><a class="nav-link" id="navbarLogin" href="auth/login.html">Sign In</a></li>
+                        <li class="nav-item" data-auth="required" style="display: none"><a class="nav-link" id="navbarLogout" href="#">Sign Out</a></li>
                     </ul>
                 </div>
             </div>
@@ -1348,5 +1349,33 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        <!-- Supabase and Auth Scripts-->
+        <script src="env.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+        <script src="js/config.js"></script>
+        <script src="js/auth.js"></script>
+        <!-- Navbar logout handler for homepage-->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const navbarLogout = document.getElementById('navbarLogout');
+                if (navbarLogout) {
+                    navbarLogout.addEventListener('click', async function (e) {
+                        e.preventDefault();
+                        try {
+                            if (window.authManager && typeof window.authManager.signOut === 'function') {
+                                await window.authManager.signOut();
+                            }
+                            try {
+                                await fetch('/api/auth/logout', { method: 'POST' });
+                            } catch (err) {
+                                console.warn('Server session logout failed or not available', err);
+                            }
+                        } finally {
+                            window.location.href = '/auth/login.html?logout=true';
+                        }
+                    });
+                }
+            });
+        </script>
     </body>
 </html>
