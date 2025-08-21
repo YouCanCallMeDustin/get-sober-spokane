@@ -101,9 +101,6 @@ block content
                 button.btn.btn-primary.btn-block#updateProfile Update Profile
 
 block scripts
-  script(src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2")
-  script(src="/js/config.js")
-  script(src="/js/auth.js")
   script.
     // Dashboard functionality with Supabase integration
     let supabase;
@@ -180,8 +177,9 @@ block scripts
           if (error) throw error;
         }
         
-        // Redirect to login page
-        window.location.href = '/auth/login.html';
+        // Redirect to login page and clear server session
+        try { await fetch('/api/auth/logout', { method: 'POST' }); } catch (e) {}
+        window.location.href = '/login?logout=true';
       } catch (error) {
         console.error('Logout failed:', error);
         showMessage('Logout failed. Please try again.', 'danger');
