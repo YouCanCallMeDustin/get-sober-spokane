@@ -1,10 +1,12 @@
 extends ../layout
+block vars
+  - var basePath = '..'
 
 block content
   .auth-container
     .auth-card
       .auth-header
-        img.auth-logo(src="/assets/img/logo.png" alt="Sober Spokane")
+        img.auth-logo(src= basePath + "/assets/img/logo.png" alt="Sober Spokane")
         h1.auth-title Sign In
         p.auth-subtitle Welcome back to your recovery journey
       .auth-body
@@ -32,8 +34,8 @@ block content
           span Sign in with Google
         
         .auth-links
-          a.auth-link(href="/auth/signup.html") Don't have an account? Sign up
-          a.auth-link(href="/auth/reset.html") Forgot your password?
+          a.auth-link(href= basePath + "/auth/signup.html") Don't have an account? Sign up
+          a.auth-link(href= basePath + "/auth/reset.html") Forgot your password?
         
         .auth-alert#authAlert(style="display: none;")
 
@@ -76,7 +78,7 @@ block scripts
           if (window.authManager) {
             // Also set server session
             try {
-              await fetch('/api/auth/login', {
+              await fetch(basePath + '/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, rememberMe })
@@ -86,7 +88,7 @@ block scripts
             }
             const result = await window.authManager.signIn(email, password, rememberMe);
             if (result.success) {
-              window.location.href = '/dashboard';
+              window.location.href = basePath + '/dashboard.html';
             }
           } else {
             showAlert('Authentication system not ready. Please refresh the page.', 'danger');

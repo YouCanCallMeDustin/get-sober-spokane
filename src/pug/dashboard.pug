@@ -1,4 +1,6 @@
 extends layout
+block vars
+  - var basePath = '.'
 
 block content
   // Add top margin to account for fixed navigation
@@ -45,39 +47,39 @@ block content
                   i.bi.bi-people
                   h6 Support Groups
                   p Find local AA/NA meetings and support groups
-                  a.btn.btn-outline-primary.btn-sm(href="/community-engagement-sober-activities.html") Explore
+                  a.btn.btn-outline-primary.btn-sm(href= basePath + "/community-engagement-sober-activities.html") Explore
                 
                 .resource-item
                   i.bi.bi-heart-pulse
                   h6 Treatment Centers
                   p Access addiction treatment and mental health resources
-                  a.btn.btn-outline-primary.btn-sm(href="/addiction-treatments-support.html") Explore
+                  a.btn.btn-outline-primary.btn-sm(href= basePath + "/addiction-treatments-support.html") Explore
                 
                 .resource-item
                   i.bi.bi-house
                   h6 Housing Support
                   p Find sober housing and shelter options
-                  a.btn.btn-outline-primary.btn-sm(href="/shelter-housing.html") Explore
+                  a.btn.btn-outline-primary.btn-sm(href= basePath + "/shelter-housing.html") Explore
           
           .col-lg-4
             .dashboard-card
               h3.card-title Quick Actions
               .quick-actions
-                a.btn.btn-primary.btn-block(href="/resource-directory.html#emergency-help")
+                a.btn.btn-primary.btn-block(href= basePath + "/resource-directory.html#emergency-help")
                   i.bi.bi-exclamation-triangle
-                  Emergency Help
+                  span Emergency Help
                 
-                a.btn.btn-outline-primary.btn-block(href="/resource-directory.html")
+                a.btn.btn-outline-primary.btn-block(href= basePath + "/resource-directory.html")
                   i.bi.bi-search
-                  Resource Directory
+                  span Resource Directory
                 
-                a.btn.btn-outline-primary.btn-block(href="/community-engagement-sober-activities.html")
+                a.btn.btn-outline-primary.btn-block(href= basePath + "/community-engagement-sober-activities.html")
                   i.bi.bi-people
-                  Community Forum
+                  span Community Forum
                 
-                a.btn.btn-outline-primary.btn-block(href="/donations.html")
+                a.btn.btn-outline-primary.btn-block(href= basePath + "/donations.html")
                   i.bi.bi-heart
-                  Support Our Mission
+                  span Support Our Mission
             
             .dashboard-card
               h3.card-title Profile Settings
