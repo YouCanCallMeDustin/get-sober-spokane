@@ -173,11 +173,8 @@ class AuthManager {
       const { data, error } = await this.supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard.html`,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent'
-          }
+          redirectTo: `${window.location.origin}/auth/google/callback`,
+          queryParams: { access_type: 'offline', prompt: 'consent' }
         }
       });
 
