@@ -183,34 +183,36 @@
                     <h1 class="auth-title">Sign In</h1>
                     <p class="auth-subtitle">Welcome back to your recovery journey</p>
                 </div>
-            </div>
-            <div class="auth-form">
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input class="form-control" id="email" type="email" name="email" required />
+                <div class="auth-body">
+                    <div class="auth-form">
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email</label>
+                                <input class="form-control" id="email" type="email" name="email" required placeholder="you@example.com" autocomplete="email" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="password">Password</label>
+                                <input class="form-control" id="password" type="password" name="password" required placeholder="Enter your password" autocomplete="current-password" />
+                            </div>
+                            <div class="form-group form-check">
+                                <input class="form-check-input" id="rememberMe" type="checkbox" name="rememberMe" />
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            <button class="btn btn-primary btn-block" id="loginBtn" type="submit">Sign In</button>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input class="form-control" id="password" type="password" name="password" required />
-                    </div>
-                    <div class="form-group form-check">
-                        <input class="form-check-input" id="rememberMe" type="checkbox" name="rememberMe" />
-                        <label class="form-check-label" for="rememberMe">Remember me</label>
-                    </div>
-                    <button class="btn btn-primary btn-block" id="loginBtn" type="submit">Sign In</button>
                     <div class="auth-divider"><span>or</span></div>
                     <button class="btn btn-google" id="googleSignIn" type="button">
-                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" />
-                        <Sign>in with Google</Sign>
+                        <img class="google-icon" src="https://developers.google.com/identity/images/g-logo.png" alt="Google" />
+                        <span>Sign in with Google</span>
                     </button>
                     <div class="auth-links">
-                        <a href="/auth/signup.html">Don't have an account? Sign up</a>
-                        <a href="/auth/reset.html">Forgot your password?</a>
+                        <a class="auth-link" href="/auth/signup.html">Don't have an account? Sign up</a>
+                        <a class="auth-link" href="/auth/reset.html">Forgot your password?</a>
                     </div>
-                </form>
+                    <div class="auth-alert" id="authAlert" style="display: none"></div>
+                </div>
             </div>
-            <div class="auth-alert" id="authAlert" style="display: none"></div>
         </div>
         <!-- Footer-->
         <footer class="bg-light py-5">
@@ -238,6 +240,15 @@
                 // Initialize all dropdowns
                 const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
                 const dropdownList = [...dropdownElementList].map((dropdownToggleEl) => new bootstrap.Dropdown(dropdownToggleEl));
+
+                // Hide Sign In link on auth pages only
+                const hideLoginOnPages = /\/(auth\/(login|signup|reset)\.html)$/.test(window.location.pathname);
+                if (hideLoginOnPages) {
+                    const loginNavItem = document.getElementById('navbarLogin');
+                    if (loginNavItem && loginNavItem.parentElement) {
+                        loginNavItem.parentElement.style.display = 'none';
+                    }
+                }
 
                 // Ensure dropdowns work on mobile
                 const navbarToggler = document.querySelector('.navbar-toggler');
@@ -325,7 +336,7 @@
                             }
                             const result = await window.authManager.signIn(email, password, rememberMe);
                             if (result.success) {
-                                window.location.href = '/dashboard.html';
+                                window.location.href = '/dashboard';
                             }
                         } else {
                             showAlert('Authentication system not ready. Please refresh the page.', 'danger');

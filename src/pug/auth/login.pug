@@ -7,35 +7,35 @@ block content
         img.auth-logo(src="/assets/img/logo.png" alt="Sober Spokane")
         h1.auth-title Sign In
         p.auth-subtitle Welcome back to your recovery journey
-    
-    .auth-form
-      form#loginForm
-        .form-group
-          label(for="email") Email
-          input.form-control#email(type="email" name="email" required)
-        
-        .form-group
-          label(for="password") Password
-          input.form-control#password(type="password" name="password" required)
-        
-        .form-group.form-check
-          input.form-check-input#rememberMe(type="checkbox" name="rememberMe")
-          label.form-check-label(for="rememberMe") Remember me
-        
-        button.btn.btn-primary.btn-block#loginBtn(type="submit") Sign In
+      .auth-body
+        .auth-form
+          form#loginForm
+            .form-group
+              label.form-label(for="email") Email
+              input.form-control#email(type="email" name="email" required placeholder="you@example.com" autocomplete="email")
+            
+            .form-group
+              label.form-label(for="password") Password
+              input.form-control#password(type="password" name="password" required placeholder="Enter your password" autocomplete="current-password")
+            
+            .form-group.form-check
+              input.form-check-input#rememberMe(type="checkbox" name="rememberMe")
+              label.form-check-label(for="rememberMe") Remember me
+            
+            button.btn.btn-primary.btn-block#loginBtn(type="submit") Sign In
         
         .auth-divider
           span or
         
         button.btn.btn-google#googleSignIn(type="button")
-          img(src="https://developers.google.com/identity/images/g-logo.png" alt="Google")
-          Sign in with Google
+          img.google-icon(src="https://developers.google.com/identity/images/g-logo.png" alt="Google")
+          span Sign in with Google
         
         .auth-links
-          a(href="/auth/signup.html") Don't have an account? Sign up
-          a(href="/auth/reset.html") Forgot your password?
-    
-    .auth-alert#authAlert(style="display: none;")
+          a.auth-link(href="/auth/signup.html") Don't have an account? Sign up
+          a.auth-link(href="/auth/reset.html") Forgot your password?
+        
+        .auth-alert#authAlert(style="display: none;")
 
 block scripts
   script.
@@ -86,7 +86,7 @@ block scripts
             }
             const result = await window.authManager.signIn(email, password, rememberMe);
             if (result.success) {
-              window.location.href = '/dashboard.html';
+              window.location.href = '/dashboard';
             }
           } else {
             showAlert('Authentication system not ready. Please refresh the page.', 'danger');

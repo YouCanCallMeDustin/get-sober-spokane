@@ -4,11 +4,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem 1rem;
+  background: linear-gradient(135deg, $primary-blue 0%, $secondary-teal 100%);
+  padding: 6rem 1rem 2rem; // extra top to clear fixed navbar
   
   @media (max-width: 768px) {
-    padding: 1rem;
+    padding: 5rem 1rem 1rem;
   }
 }
 
@@ -34,7 +34,7 @@
 }
 
 .auth-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, $primary-blue 0%, $dark-navy 100%);
   color: white;
   text-align: center;
   padding: 2rem 2rem 1.5rem;
@@ -154,8 +154,8 @@
     
     &:focus {
       outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      border-color: $primary-blue;
+      box-shadow: 0 0 0 3px rgba($primary-blue, 0.15);
     }
     
     &::placeholder {
@@ -186,7 +186,7 @@
       color: #6c757d;
       
       a {
-        color: #667eea;
+        color: $primary-blue;
         text-decoration: none;
         
         &:hover {
@@ -221,14 +221,14 @@
   
   .auth-link {
     display: block;
-    color: #667eea;
+    color: $primary-blue;
     text-decoration: none;
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
     
     &:hover {
       text-decoration: underline;
-      color: #5a6fd8;
+      color: darken($primary-blue, 7%);
     }
     
     &:last-child {
@@ -271,7 +271,7 @@
 }
 
 .dashboard-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, $primary-blue 0%, $secondary-teal 100%);
   color: white;
   padding: 2rem 0;
   margin-top: -80px; // Compensate for container padding
@@ -351,7 +351,7 @@
   .counter-number {
     font-size: 3rem;
     font-weight: 700;
-    color: #667eea;
+    color: $primary-blue;
     display: block;
   }
   
@@ -447,7 +447,7 @@
     
     i {
       font-size: 2rem;
-      color: #667eea;
+      color: $primary-blue;
       margin-bottom: 1rem;
     }
     
@@ -507,8 +507,8 @@
       
       &:focus {
         outline: none;
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        border-color: $primary-blue;
+        box-shadow: 0 0 0 3px rgba($primary-blue, 0.15);
       }
     }
     

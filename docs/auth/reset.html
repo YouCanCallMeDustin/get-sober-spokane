@@ -183,21 +183,23 @@
                     <h1 class="auth-title">Reset Password</h1>
                     <p class="auth-subtitle">Enter your email to receive a password reset link</p>
                 </div>
-            </div>
-            <div class="auth-form">
-                <form id="resetForm">
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input class="form-control" id="email" type="email" name="email" required placeholder="Enter your email address" />
+                <div class="auth-body">
+                    <div class="auth-form">
+                        <form id="resetForm">
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email Address</label>
+                                <input class="form-control" id="email" type="email" name="email" required placeholder="you@example.com" autocomplete="email" />
+                            </div>
+                            <button class="btn btn-primary btn-block" id="resetBtn" type="submit">Send Reset Link</button>
+                        </form>
                     </div>
-                    <button class="btn btn-primary btn-block" id="resetBtn" type="submit">Send Reset Link</button>
                     <div class="auth-links">
-                        <a href="/auth/login.html">Back to Sign In</a>
-                        <a href="/auth/signup.html">Don't have an account? Sign up</a>
+                        <a class="auth-link" href="/auth/login.html">Back to Sign In</a>
+                        <a class="auth-link" href="/auth/signup.html">Don't have an account? Sign up</a>
                     </div>
-                </form>
+                    <div class="auth-alert" id="authAlert" style="display: none"></div>
+                </div>
             </div>
-            <div class="auth-alert" id="authAlert" style="display: none"></div>
         </div>
         <!-- Footer-->
         <footer class="bg-light py-5">
@@ -225,6 +227,15 @@
                 // Initialize all dropdowns
                 const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
                 const dropdownList = [...dropdownElementList].map((dropdownToggleEl) => new bootstrap.Dropdown(dropdownToggleEl));
+
+                // Hide Sign In link on auth pages only
+                const hideLoginOnPages = /\/(auth\/(login|signup|reset)\.html)$/.test(window.location.pathname);
+                if (hideLoginOnPages) {
+                    const loginNavItem = document.getElementById('navbarLogin');
+                    if (loginNavItem && loginNavItem.parentElement) {
+                        loginNavItem.parentElement.style.display = 'none';
+                    }
+                }
 
                 // Ensure dropdowns work on mobile
                 const navbarToggler = document.querySelector('.navbar-toggler');

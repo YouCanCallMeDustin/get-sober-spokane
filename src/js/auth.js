@@ -8,8 +8,14 @@ class AuthManager {
 
   async init() {
     // Initialize Supabase client
-    await this.initializeSupabase();
+    const initialized = await this.initializeSupabase();
     
+    // If Supabase failed to initialize, default to guest UI
+    if (!initialized) {
+      this.updateUIForUnauthenticatedUser();
+      return;
+    }
+
     // Check authentication state
     this.checkAuthState();
     
@@ -31,13 +37,13 @@ class AuthManager {
       if (!supabaseUrl || !supabaseKey) {
         console.error('❌ Supabase credentials not found');
         console.error('   Please check your config.js file or environment variables');
-        return;
+        return false;
       }
 
       if (supabaseUrl === 'https://your-project-id.supabase.co' || supabaseKey === 'your_anon_key_here') {
         console.error('❌ Supabase credentials are still using placeholder values');
         console.error('   Please update your actual Supabase credentials');
-        return;
+        return false;
       }
 
       // Wait for Supabase to load
@@ -57,13 +63,15 @@ class AuthManager {
         console.error('❌ Supabase not available globally after waiting');
         console.error('   Please check if the Supabase CDN script loaded properly');
         console.error('   You may need to refresh the page or check your internet connection');
-        return;
+        return false;
       }
       
       console.log('✅ Supabase client initialized successfully');
+      return true;
     } catch (error) {
       console.error('❌ Failed to initialize Supabase:', error);
       console.error('   This might be due to network issues or CDN problems');
+      return false;
     }
   }
 
@@ -110,7 +118,7 @@ class AuthManager {
     
     // Redirect to dashboard if on auth pages
     if (['/auth/login.html','/auth/signup.html','/auth/reset.html','/login','/signup','/reset'].includes(window.location.pathname)) {
-      window.location.href = '/dashboard.html';
+      window.location.href = '/dashboard';
     }
   }
 
@@ -122,7 +130,7 @@ class AuthManager {
     
     // Redirect to login if on protected pages
     if (['/dashboard','/dashboard.html'].includes(window.location.pathname)) {
-      window.location.href = '/auth/login.html?logout=true';
+      window.location.href = '/login?logout=true';
     }
   }
 

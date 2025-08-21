@@ -1,8 +1,8 @@
 // Application Configuration
 window.APP_CONFIG = {
   // Supabase Configuration
-  SUPABASE_URL: process.env.SUPABASE_URL || '',
-  SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY || '',
+  SUPABASE_URL: (typeof process !== 'undefined' && process.env && process.env.SUPABASE_URL) || (window.__ENV && window.__ENV.SUPABASE_URL) || '',
+  SUPABASE_ANON_KEY: (typeof process !== 'undefined' && process.env && process.env.SUPABASE_ANON_KEY) || (window.__ENV && window.__ENV.SUPABASE_ANON_KEY) || '',
   
   // App Settings
   APP_NAME: 'Sober Spokane',
@@ -45,13 +45,12 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
   const devPort = window.location.port || '3000';
   window.APP_CONFIG.API.BASE_URL = `${window.location.protocol}//${window.location.hostname}:${devPort}`;
   
-  // For development, you can set default Supabase credentials here
-  // Make sure to replace these with your actual credentials
+  // For development, allow optional defaults via localStorage to avoid hardcoding keys
   if (!window.APP_CONFIG.SUPABASE_URL) {
-    window.APP_CONFIG.SUPABASE_URL = 'https://your-project-id.supabase.co';
+    window.APP_CONFIG.SUPABASE_URL = localStorage.getItem('SUPABASE_URL') || '';
   }
   if (!window.APP_CONFIG.SUPABASE_ANON_KEY) {
-    window.APP_CONFIG.SUPABASE_ANON_KEY = 'your_anon_key_here';
+    window.APP_CONFIG.SUPABASE_ANON_KEY = localStorage.getItem('SUPABASE_ANON_KEY') || '';
   }
 } else {
   // Production environment

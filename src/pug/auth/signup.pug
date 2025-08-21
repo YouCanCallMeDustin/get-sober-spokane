@@ -7,42 +7,43 @@ block content
         img.auth-logo(src="/assets/img/logo.png" alt="Sober Spokane")
         h1.auth-title Create Account
         p.auth-subtitle Start your recovery journey with us
-    
-    .auth-form
-      form#signupForm
-        .form-group
-          label(for="displayName") Display Name
-          input.form-control#displayName(type="text" name="displayName" required)
-        
-        .form-group
-          label(for="email") Email
-          input.form-control#email(type="email" name="email" required)
-        
-        .form-group
-          label(for="password") Password
-          input.form-control#password(type="password" name="password" required minlength="8")
-        
-        .form-group
-          label(for="confirmPassword") Confirm Password
-          input.form-control#confirmPassword(type="password" name="confirmPassword" required minlength="8")
-        
-        .form-group.form-check
-          input.form-check-input#agreeTerms(type="checkbox" name="agreeTerms" required)
-          label.form-check-label(for="agreeTerms") I agree to the Terms of Service and Privacy Policy
-        
-        button.btn.btn-primary.btn-block#signupBtn(type="submit") Create Account
+      .auth-body
+        .auth-form
+          form#signupForm
+            .form-group
+              label.form-label(for="displayName") Display Name
+              input.form-control#displayName(type="text" name="displayName" required placeholder="Your name" autocomplete="name")
+            
+            .form-group
+              label.form-label(for="email") Email
+              input.form-control#email(type="email" name="email" required placeholder="you@example.com" autocomplete="email")
+            
+            .form-group
+              label.form-label(for="password") Password
+              input.form-control#password(type="password" name="password" required minlength="8" placeholder="Create a password" autocomplete="new-password")
+              small.form-text Password must be at least 8 characters
+            
+            .form-group
+              label.form-label(for="confirmPassword") Confirm Password
+              input.form-control#confirmPassword(type="password" name="confirmPassword" required minlength="8" placeholder="Re-enter your password" autocomplete="new-password")
+            
+            .form-group.form-check
+              input.form-check-input#agreeTerms(type="checkbox" name="agreeTerms" required)
+              label.form-check-label(for="agreeTerms") I agree to the #[a(href="/terms-of-service.html" target="_blank") Terms of Service] and #[a(href="/privacy-policy.html" target="_blank") Privacy Policy]
+            
+            button.btn.btn-primary.btn-block#signupBtn(type="submit") Create Account
         
         .auth-divider
           span or
         
         button.btn.btn-google#googleSignUp(type="button")
-          img(src="https://developers.google.com/identity/images/g-logo.png" alt="Google")
-          Sign up with Google
+          img.google-icon(src="https://developers.google.com/identity/images/g-logo.png" alt="Google")
+          span Sign up with Google
         
         .auth-links
-          a(href="/auth/login.html") Already have an account? Sign in
-    
-    .auth-alert#authAlert(style="display: none;")
+          a.auth-link(href="/auth/login.html") Already have an account? Sign in
+        
+        .auth-alert#authAlert(style="display: none;")
 
 block scripts
   script.

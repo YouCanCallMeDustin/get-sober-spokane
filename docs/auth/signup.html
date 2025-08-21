@@ -183,39 +183,47 @@
                     <h1 class="auth-title">Create Account</h1>
                     <p class="auth-subtitle">Start your recovery journey with us</p>
                 </div>
-            </div>
-            <div class="auth-form">
-                <form id="signupForm">
-                    <div class="form-group">
-                        <label for="displayName">Display Name</label>
-                        <input class="form-control" id="displayName" type="text" name="displayName" required />
+                <div class="auth-body">
+                    <div class="auth-form">
+                        <form id="signupForm">
+                            <div class="form-group">
+                                <label class="form-label" for="displayName">Display Name</label>
+                                <input class="form-control" id="displayName" type="text" name="displayName" required placeholder="Your name" autocomplete="name" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email</label>
+                                <input class="form-control" id="email" type="email" name="email" required placeholder="you@example.com" autocomplete="email" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="password">Password</label>
+                                <input class="form-control" id="password" type="password" name="password" required minlength="8" placeholder="Create a password" autocomplete="new-password" />
+                                <small class="form-text">Password must be at least 8 characters</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="confirmPassword">Confirm Password</label>
+                                <input class="form-control" id="confirmPassword" type="password" name="confirmPassword" required minlength="8" placeholder="Re-enter your password" autocomplete="new-password" />
+                            </div>
+                            <div class="form-group form-check">
+                                <input class="form-check-input" id="agreeTerms" type="checkbox" name="agreeTerms" required />
+                                <label class="form-check-label" for="agreeTerms">
+                                    I agree to the
+                                    <a href="/terms-of-service.html" target="_blank">Terms of Service</a>
+                                    and
+                                    <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>
+                                </label>
+                            </div>
+                            <button class="btn btn-primary btn-block" id="signupBtn" type="submit">Create Account</button>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input class="form-control" id="email" type="email" name="email" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input class="form-control" id="password" type="password" name="password" required minlength="8" />
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <input class="form-control" id="confirmPassword" type="password" name="confirmPassword" required minlength="8" />
-                    </div>
-                    <div class="form-group form-check">
-                        <input class="form-check-input" id="agreeTerms" type="checkbox" name="agreeTerms" required />
-                        <label class="form-check-label" for="agreeTerms">I agree to the Terms of Service and Privacy Policy</label>
-                    </div>
-                    <button class="btn btn-primary btn-block" id="signupBtn" type="submit">Create Account</button>
                     <div class="auth-divider"><span>or</span></div>
                     <button class="btn btn-google" id="googleSignUp" type="button">
-                        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google" />
-                        <Sign>up with Google</Sign>
+                        <img class="google-icon" src="https://developers.google.com/identity/images/g-logo.png" alt="Google" />
+                        <span>Sign up with Google</span>
                     </button>
-                    <div class="auth-links"><a href="/auth/login.html">Already have an account? Sign in</a></div>
-                </form>
+                    <div class="auth-links"><a class="auth-link" href="/auth/login.html">Already have an account? Sign in</a></div>
+                    <div class="auth-alert" id="authAlert" style="display: none"></div>
+                </div>
             </div>
-            <div class="auth-alert" id="authAlert" style="display: none"></div>
         </div>
         <!-- Footer-->
         <footer class="bg-light py-5">
@@ -243,6 +251,15 @@
                 // Initialize all dropdowns
                 const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
                 const dropdownList = [...dropdownElementList].map((dropdownToggleEl) => new bootstrap.Dropdown(dropdownToggleEl));
+
+                // Hide Sign In link on auth pages only
+                const hideLoginOnPages = /\/(auth\/(login|signup|reset)\.html)$/.test(window.location.pathname);
+                if (hideLoginOnPages) {
+                    const loginNavItem = document.getElementById('navbarLogin');
+                    if (loginNavItem && loginNavItem.parentElement) {
+                        loginNavItem.parentElement.style.display = 'none';
+                    }
+                }
 
                 // Ensure dropdowns work on mobile
                 const navbarToggler = document.querySelector('.navbar-toggler');

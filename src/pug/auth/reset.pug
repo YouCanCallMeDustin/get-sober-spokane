@@ -7,20 +7,20 @@ block content
         img.auth-logo(src="/assets/img/logo.png" alt="Sober Spokane")
         h1.auth-title Reset Password
         p.auth-subtitle Enter your email to receive a password reset link
-    
-    .auth-form
-      form#resetForm
-        .form-group
-          label(for="email") Email Address
-          input.form-control#email(type="email" name="email" required placeholder="Enter your email address")
-        
-        button.btn.btn-primary.btn-block#resetBtn(type="submit") Send Reset Link
+      .auth-body
+        .auth-form
+          form#resetForm
+            .form-group
+              label.form-label(for="email") Email Address
+              input.form-control#email(type="email" name="email" required placeholder="you@example.com" autocomplete="email")
+            
+            button.btn.btn-primary.btn-block#resetBtn(type="submit") Send Reset Link
         
         .auth-links
-          a(href="/auth/login.html") Back to Sign In
-          a(href="/auth/signup.html") Don't have an account? Sign up
-    
-    .auth-alert#authAlert(style="display: none;")
+          a.auth-link(href="/auth/login.html") Back to Sign In
+          a.auth-link(href="/auth/signup.html") Don't have an account? Sign up
+        
+        .auth-alert#authAlert(style="display: none;")
 
 block scripts
   script.
