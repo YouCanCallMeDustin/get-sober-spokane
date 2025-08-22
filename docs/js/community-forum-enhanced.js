@@ -614,6 +614,9 @@ class CommunityForum {
             // Reload post details
             this.viewPost(postId);
             
+            // Also refresh the list to update the background card count
+            this.loadPosts();
+            
             // Clear form
             e.target.reset();
             
