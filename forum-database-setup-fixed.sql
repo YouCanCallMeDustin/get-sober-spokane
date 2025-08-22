@@ -44,6 +44,13 @@ ALTER TABLE forum_posts ADD COLUMN IF NOT EXISTS is_featured BOOLEAN DEFAULT FAL
 -- Ensure tags column exists on forum_posts (for legacy tables)
 ALTER TABLE forum_posts ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT '{}';
 
+-- Ensure vote counters exist on forum_posts (for legacy tables)
+ALTER TABLE forum_posts ADD COLUMN IF NOT EXISTS upvotes INTEGER DEFAULT 0;
+ALTER TABLE forum_posts ADD COLUMN IF NOT EXISTS downvotes INTEGER DEFAULT 0;
+
+-- Ensure is_anonymous column exists on forum_posts (for legacy tables)
+ALTER TABLE forum_posts ADD COLUMN IF NOT EXISTS is_anonymous BOOLEAN DEFAULT FALSE;
+
 -- Create forum_comments table
 CREATE TABLE IF NOT EXISTS forum_comments (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -640,3 +647,60 @@ INSERT INTO forum_posts (title, content, category, tags, user_id, is_anonymous, 
 ('Tips for Staying Sober During Holidays', 'The holiday season can be challenging for those in recovery. Here are some strategies that have helped me: 1) Plan ahead, 2) Have sober activities ready, 3) Stay connected with support network.', 'Recovery Support', ARRAY['holidays', 'tips', 'sobriety'], '00000000-0000-0000-0000-000000000002', false, 12, 1),
 ('Local AA Meeting Recommendations', 'Looking for recommendations for AA meetings in the Spokane area. I''ve tried a few but would love to hear about others'' experiences.', 'Treatment & Resources', ARRAY['AA', 'meetings', 'Spokane', 'recommendations'], '00000000-0000-0000-0000-000000000003', false, 8, 0);
 */
+
+-- Votes table to enforce one vote per user per post
+CREATE TABLE IF NOT EXISTS forum_post_votes (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    post_id UUID NOT NULL REFERENCES forum_posts(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    vote SMALLINT NOT NULL CHECK (vote IN (-1, 1)), -- -1 = downvote, 1 = upvote
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(post_id, user_id)
+);
+
+ALTER TABLE forum_post_votes ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE schemaname='public' AND tablename='forum_post_votes' AND policyname='Votes select'
+    ) THEN
+        EXECUTE 'CREATE POLICY "Votes select" ON forum_post_votes FOR SELECT USING (true)';
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE schemaname='public' AND tablename='forum_post_votes' AND policyname='Votes insert'
+    ) THEN
+        EXECUTE 'CREATE POLICY "Votes insert" ON forum_post_votes FOR INSERT WITH CHECK (auth.uid() = user_id)';
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE schemaname='public' AND tablename='forum_post_votes' AND policyname='Votes update'
+    ) THEN
+        EXECUTE 'CREATE POLICY "Votes update" ON forum_post_votes FOR UPDATE USING (auth.uid() = user_id)';
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies WHERE schemaname='public' AND tablename='forum_post_votes' AND policyname='Votes delete'
+    ) THEN
+        EXECUTE 'CREATE POLICY "Votes delete" ON forum_post_votes FOR DELETE USING (auth.uid() = user_id)';
+    END IF;
+END $$;
+
+-- Helper view (optional) to compute scores quickly
+CREATE OR REPLACE VIEW forum_post_vote_totals AS
+SELECT post_id,
+       SUM(CASE WHEN vote = 1 THEN 1 ELSE 0 END) AS upvotes,
+       SUM(CASE WHEN vote = -1 THEN 1 ELSE 0 END) AS downvotes
+FROM forum_post_votes
+GROUP BY post_id;

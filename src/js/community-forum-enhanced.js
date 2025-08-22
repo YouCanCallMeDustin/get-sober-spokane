@@ -820,25 +820,7 @@ class CommunityForum {
         }
     }
 
-    // Public methods for global access
-    upvotePost(postId) {
-        const post = this.forumData.posts.find(p => p.id === postId);
-        if (post) {
-            post.upvotes = (post.upvotes || 0) + 1;
-            this.loadPosts();
-            this.updatePostVotes(postId, post.upvotes, post.downvotes);
-        }
-    }
-
-    downvotePost(postId) {
-        const post = this.forumData.posts.find(p => p.id === postId);
-        if (post) {
-            post.downvotes = (post.downvotes || 0) + 1;
-            this.loadPosts();
-            this.updatePostVotes(postId, post.upvotes, post.downvotes);
-        }
-    }
-
+    // Update post votes
     async updatePostVotes(postId, upvotes, downvotes) {
         try {
             if (this.supabase) {
@@ -850,6 +832,76 @@ class CommunityForum {
         } catch (error) {
             console.error('Failed to update post votes:', error);
         }
+    }
+
+    // Vote handling using forum_post_votes (one vote per user per post)
+    async castVote(postId, value) {
+        if (!this.currentUser) {
+            this.showNotification('Please sign in to vote', 'warning');
+            return;
+        }
+        try {
+            // Check existing vote
+            const { data: existing, error: fetchErr } = await this.supabase
+                .from('forum_post_votes')
+                .select('*')
+                .eq('post_id', postId)
+                .eq('user_id', this.currentUser.id)
+                .maybeSingle();
+            if (fetchErr && fetchErr.code !== 'PGRST116') throw fetchErr;
+
+            if (!existing) {
+                // Insert new vote
+                const { error: insertErr } = await this.supabase
+                    .from('forum_post_votes')
+                    .insert({ post_id: postId, user_id: this.currentUser.id, vote: value });
+                if (insertErr) throw insertErr;
+            } else if (existing.vote === value) {
+                // Same vote -> remove (toggle off)
+                const { error: delErr } = await this.supabase
+                    .from('forum_post_votes')
+                    .delete()
+                    .eq('post_id', postId)
+                    .eq('user_id', this.currentUser.id);
+                if (delErr) throw delErr;
+            } else {
+                // Switch vote
+                const { error: updErr } = await this.supabase
+                    .from('forum_post_votes')
+                    .update({ vote: value })
+                    .eq('post_id', postId)
+                    .eq('user_id', this.currentUser.id);
+                if (updErr) throw updErr;
+            }
+
+            // Recompute totals for this post from votes view
+            const { data: totals, error: totalsErr } = await this.supabase
+                .from('forum_post_vote_totals')
+                .select('upvotes, downvotes')
+                .eq('post_id', postId)
+                .maybeSingle();
+            if (totalsErr && totalsErr.code !== 'PGRST116') throw totalsErr;
+
+            // Update local and backend counts for convenience
+            const post = this.forumData.posts.find(p => p.id === postId);
+            if (post) {
+                post.upvotes = totals?.upvotes || 0;
+                post.downvotes = totals?.downvotes || 0;
+                await this.updatePostVotes(postId, post.upvotes, post.downvotes);
+            }
+            this.loadPosts();
+        } catch (error) {
+            console.error('Failed to vote:', error);
+            this.showNotification('Failed to record vote: ' + (error?.message || 'Unknown error'), 'error');
+        }
+    }
+
+    upvotePost(postId) {
+        this.castVote(postId, 1);
+    }
+
+    downvotePost(postId) {
+        this.castVote(postId, -1);
     }
 
     reportPost(postId) {
