@@ -707,3 +707,9 @@ SELECT post_id,
        SUM(CASE WHEN vote = -1 THEN 1 ELSE 0 END) AS downvotes
 FROM forum_post_votes
 GROUP BY post_id;
+
+-- View for per-post comment totals
+CREATE OR REPLACE VIEW forum_post_comment_totals AS
+SELECT post_id, COUNT(*)::int AS comments_count
+FROM forum_comments
+GROUP BY post_id;

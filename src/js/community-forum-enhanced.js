@@ -105,11 +105,25 @@ class CommunityForum {
                 this.forumData.comments = comments || [];
             }
             
-            // Build comment counts per post for list display
-            const postIdToCount = {};
-            (this.forumData.comments || []).forEach(c => {
-                postIdToCount[c.post_id] = (postIdToCount[c.post_id] || 0) + 1;
-            });
+            // Build comment counts per post for list display using backend view when available
+            let postIdToCount = {};
+            try {
+                const { data: counts, error: countsErr } = await this.supabase
+                    .from('forum_post_comment_totals')
+                    .select('post_id, comments_count');
+                if (!countsErr && counts) {
+                    counts.forEach(r => { postIdToCount[r.post_id] = r.comments_count; });
+                } else {
+                    // Fallback to client aggregation
+                    (this.forumData.comments || []).forEach(c => {
+                        postIdToCount[c.post_id] = (postIdToCount[c.post_id] || 0) + 1;
+                    });
+                }
+            } catch (e) {
+                (this.forumData.comments || []).forEach(c => {
+                    postIdToCount[c.post_id] = (postIdToCount[c.post_id] || 0) + 1;
+                });
+            }
             this.forumData.posts = (this.forumData.posts || []).map(p => ({
                 ...p,
                 comments_count: postIdToCount[p.id] || 0
