@@ -277,6 +277,7 @@ class CommunityForum {
         const profile = this.forumData.usersById[post.user_id];
         const userName = post.is_anonymous ? 'Anonymous User' : 
             (profile?.display_name || 'Unknown User');
+        const nameHtml = post.is_anonymous ? userName : `<a href="/get-sober-spokane/user-profile.html?id=${post.user_id}" class="text-decoration-none">${userName}</a>`;
         
         const sobrietyInfo = profile?.sobriety_date ? 
             `<small class="text-muted d-block">
@@ -304,7 +305,7 @@ class CommunityForum {
                                 <a href="#" onclick="forum.viewPost('${post.id}')" class="text-decoration-none">${post.title}</a>
                             </h5>
                             <div class="text-muted small">
-                                <i class="bi bi-person me-1"></i>${userName}
+                                <i class="bi bi-person me-1"></i>${nameHtml}
                                 <i class="bi bi-clock me-2 ms-2"></i>${timeAgo}
                                 <i class="bi bi-tag me-2 ms-2"></i>${post.category}
                             </div>
@@ -501,13 +502,14 @@ class CommunityForum {
         const profile = this.forumData.usersById[post.user_id];
         const userName = post.is_anonymous ? 'Anonymous User' : 
             (profile?.display_name || 'Unknown User');
+        const nameHtml = post.is_anonymous ? userName : `<a href="/get-sober-spokane/user-profile.html?id=${post.user_id}" class="text-decoration-none">${userName}</a>`;
         
         content.innerHTML = `
             <div class="post-detail mb-4">
                 <div class="d-flex justify-content-between align-items-start">
                     <div class="post-meta mb-3">
                         <small class="text-muted">
-                            <i class="bi bi-person me-1"></i>${userName}
+                            <i class="bi bi-person me-1"></i>${nameHtml}
                             <i class="bi bi-clock me-2 ms-2"></i>${this.formatTimeAgo(post.created_at)}
                             <i class="bi bi-tag me-2 ms-2"></i>${post.category}
                         </small>
@@ -582,6 +584,7 @@ class CommunityForum {
         return comments.map(comment => {
             const profile = this.forumData.usersById[comment.user_id];
             const userName = profile?.display_name || 'Unknown User';
+            const nameHtml = `<a href="/get-sober-spokane/user-profile.html?id=${comment.user_id}" class="text-decoration-none">${userName}</a>`;
             const timeAgo = this.formatTimeAgo(comment.created_at);
             const canEdit = this.currentUser && this.currentUser.id === comment.user_id;
             
@@ -589,7 +592,7 @@ class CommunityForum {
                 <div class="comment-item border-start border-2 ps-3 mb-3">
                     <div class="d-flex justify-content-between">
                         <div class="comment-meta mb-1">
-                            <strong>${userName}</strong>
+                            <strong>${nameHtml}</strong>
                             <small class="text-muted ms-2">${timeAgo}</small>
                         </div>
                         ${canEdit ? `
