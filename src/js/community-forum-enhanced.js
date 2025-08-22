@@ -284,6 +284,15 @@ class CommunityForum {
                 ${this.calculateSobrietyDays(profile.sobriety_date)} days sober
             </small>` : '';
         
+        const ownerActions = (this.currentUser && this.currentUser.id === post.user_id) ? `
+            <li><a class="dropdown-item" href="#" onclick="forum.promptEditPost('${post.id}')">
+                <i class="bi bi-pencil"></i> Edit
+            </a></li>
+            <li><a class="dropdown-item text-danger" href="#" onclick="forum.confirmDeletePost('${post.id}')">
+                <i class="bi bi-trash"></i> Delete
+            </a></li>
+        ` : '';
+        
         return `
             <div class="card mb-3 post-card" data-post-id="${post.id}">
                 <div class="card-body">
@@ -307,14 +316,7 @@ class CommunityForum {
                                 <li><a class="dropdown-item" href="#" onclick="forum.reportPost('${post.id}')">
                                     <i class="bi bi-flag"></i> Report
                                 </a></li>
-                                ${this.currentUser && this.currentUser.id === post.user_id ? `
-                                    <li><a class="dropdown-item" href="#" onclick="forum.editPost('${post.id}')">
-                                        <i class="bi bi-pencil"></i> Edit
-                                    </a></li>
-                                    <li><a class="dropdown-item text-danger" href="#" onclick="forum.deletePost('${post.id}')">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </a></li>
-                                ` : ''}
+                                ${ownerActions}
                             </ul>
                         </div>
                     </div>
@@ -571,12 +573,20 @@ class CommunityForum {
             const profile = this.forumData.usersById[comment.user_id];
             const userName = profile?.display_name || 'Unknown User';
             const timeAgo = this.formatTimeAgo(comment.created_at);
+            const canEdit = this.currentUser && this.currentUser.id === comment.user_id;
             
             return `
                 <div class="comment-item border-start border-2 ps-3 mb-3">
-                    <div class="comment-meta mb-1">
-                        <strong>${userName}</strong>
-                        <small class="text-muted ms-2">${timeAgo}</small>
+                    <div class="d-flex justify-content-between">
+                        <div class="comment-meta mb-1">
+                            <strong>${userName}</strong>
+                            <small class="text-muted ms-2">${timeAgo}</small>
+                        </div>
+                        ${canEdit ? `
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-link p-0 me-2" onclick="forum.promptEditComment('${comment.id}')"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-link text-danger p-0" onclick="forum.confirmDeleteComment('${comment.id}')"><i class="bi bi-trash"></i></button>
+                        </div>` : ''}
                     </div>
                     <div class="comment-content">
                         ${comment.content.replace(/\n/g, '<br>')}
@@ -989,6 +999,128 @@ class CommunityForum {
         const modal = new bootstrap.Modal(document.getElementById('newPostModal'));
         modal.show();
     }
+
+    // Post edit/delete handlers
+    async promptEditPost(postId) {
+        try {
+            const post = this.forumData.posts.find(p => p.id === postId);
+            if (!post) return;
+            if (!this.currentUser || this.currentUser.id !== post.user_id) {
+                this.showNotification('You can only edit your own posts', 'warning');
+                return;
+            }
+            const newTitle = prompt('Edit title:', post.title);
+            if (newTitle === null) return;
+            const newContent = prompt('Edit content:', post.content);
+            if (newContent === null) return;
+            const { error } = await this.supabase
+                .from('forum_posts')
+                .update({ title: newTitle.trim(), content: newContent.trim(), updated_at: new Date().toISOString() })
+                .eq('id', postId)
+                .eq('user_id', this.currentUser.id);
+            if (error) throw error;
+            await this.loadForumData();
+            this.loadPosts();
+            this.showNotification('Post updated', 'success');
+        } catch (e) {
+            console.error('Failed to edit post', e);
+            this.showNotification('Failed to edit post', 'error');
+        }
+    }
+    async confirmDeletePost(postId) {
+        try {
+            const post = this.forumData.posts.find(p => p.id === postId);
+            if (!post) return;
+            if (!this.currentUser || this.currentUser.id !== post.user_id) {
+                this.showNotification('You can only delete your own posts', 'warning');
+                return;
+            }
+            if (!confirm('Delete this post? This cannot be undone.')) return;
+            const { error } = await this.supabase
+                .from('forum_posts')
+                .delete()
+                .eq('id', postId)
+                .eq('user_id', this.currentUser.id);
+            if (error) throw error;
+            await this.loadForumData();
+            this.loadPosts();
+            this.showNotification('Post deleted', 'success');
+        } catch (e) {
+            console.error('Failed to delete post', e);
+            this.showNotification('Failed to delete post', 'error');
+        }
+    }
+
+    async promptEditComment(commentId) {
+        try {
+            const { data, error } = await this.supabase
+                .from('forum_comments')
+                .select('*')
+                .eq('id', commentId)
+                .maybeSingle();
+            if (error) throw error;
+            if (!data) return;
+            if (!this.currentUser || this.currentUser.id !== data.user_id) {
+                this.showNotification('You can only edit your own comments', 'warning');
+                return;
+            }
+            const newContent = prompt('Edit comment:', data.content);
+            if (newContent === null) return;
+            const { error: updErr } = await this.supabase
+                .from('forum_comments')
+                .update({ content: newContent.trim(), updated_at: new Date().toISOString() })
+                .eq('id', commentId)
+                .eq('user_id', this.currentUser.id);
+            if (updErr) throw updErr;
+            await this.loadForumData();
+            // Reload current post modal if open
+            const post = this.forumData.posts.find(p => p.id === data.post_id);
+            if (post) {
+                const comments = await this.loadPostComments(post.id);
+                this.showPostDetailModal(post, comments);
+            }
+            this.loadPosts();
+            this.showNotification('Comment updated', 'success');
+        } catch (e) {
+            console.error('Failed to edit comment', e);
+            this.showNotification('Failed to edit comment', 'error');
+        }
+    }
+
+    async confirmDeleteComment(commentId) {
+        try {
+            const { data, error } = await this.supabase
+                .from('forum_comments')
+                .select('id, post_id, user_id')
+                .eq('id', commentId)
+                .maybeSingle();
+            if (error) throw error;
+            if (!data) return;
+            if (!this.currentUser || this.currentUser.id !== data.user_id) {
+                this.showNotification('You can only delete your own comments', 'warning');
+                return;
+            }
+            if (!confirm('Delete this comment?')) return;
+            const { error: delErr } = await this.supabase
+                .from('forum_comments')
+                .delete()
+                .eq('id', commentId)
+                .eq('user_id', this.currentUser.id);
+            if (delErr) throw delErr;
+            await this.loadForumData();
+            const post = this.forumData.posts.find(p => p.id === data.post_id);
+            if (post) {
+                const comments = await this.loadPostComments(post.id);
+                this.showPostDetailModal(post, comments);
+            }
+            this.loadPosts();
+            this.showNotification('Comment deleted', 'success');
+        } catch (e) {
+            console.error('Failed to delete comment', e);
+            this.showNotification('Failed to delete comment', 'error');
+        }
+    }
+
 }
 
 // Initialize forum when DOM is loaded
