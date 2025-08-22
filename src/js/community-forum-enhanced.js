@@ -285,12 +285,14 @@ class CommunityForum {
             </small>` : '';
         
         const ownerActions = (this.currentUser && this.currentUser.id === post.user_id) ? `
-            <li><a class="dropdown-item" href="#" onclick="forum.promptEditPost('${post.id}')">
-                <i class="bi bi-pencil"></i> Edit
-            </a></li>
-            <li><a class="dropdown-item text-danger" href="#" onclick="forum.confirmDeletePost('${post.id}')">
-                <i class="bi bi-trash"></i> Delete
-            </a></li>
+            <div class="d-flex gap-2 align-items-center">
+                <button class="btn btn-sm btn-outline-secondary" onclick="forum.promptEditPost('${post.id}')">
+                    <i class="bi bi-pencil me-1"></i>Edit
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="forum.confirmDeletePost('${post.id}')">
+                    <i class="bi bi-trash me-1"></i>Delete
+                </button>
+            </div>
         ` : '';
         
         return `
@@ -316,12 +318,13 @@ class CommunityForum {
                                 <li><a class="dropdown-item" href="#" onclick="forum.reportPost('${post.id}')">
                                     <i class="bi bi-flag"></i> Report
                                 </a></li>
-                                ${ownerActions}
                             </ul>
                         </div>
                     </div>
                     
-                    <p class="card-text">${this.truncateText(post.content, 200)}</p>
+                    ${ownerActions}
+                    
+                    <p class="card-text mt-2">${this.truncateText(post.content, 200)}</p>
                     
                     <div class="mb-2">
                         ${tagsHTML}
@@ -584,8 +587,8 @@ class CommunityForum {
                         </div>
                         ${canEdit ? `
                         <div class="btn-group btn-group-sm">
-                            <button class="btn btn-link p-0 me-2" onclick="forum.promptEditComment('${comment.id}')"><i class="bi bi-pencil"></i></button>
-                            <button class="btn btn-link text-danger p-0" onclick="forum.confirmDeleteComment('${comment.id}')"><i class="bi bi-trash"></i></button>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="forum.promptEditComment('${comment.id}')"><i class="bi bi-pencil me-1"></i>Edit</button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="forum.confirmDeleteComment('${comment.id}')"><i class="bi bi-trash me-1"></i>Delete</button>
                         </div>` : ''}
                     </div>
                     <div class="comment-content">
