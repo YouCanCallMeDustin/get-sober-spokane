@@ -495,10 +495,10 @@ class CommunityForum {
                 
                 <div class="post-actions">
                     <button class="btn btn-outline-primary btn-sm me-2" onclick="forum.upvotePost('${post.id}')">
-                        <i class="bi bi-arrow-up"></i> ${post.upvotes || 0}
+                        <i class="bi bi-arrow-up"></i> <span id="modalUpvotes-${post.id}">${post.upvotes || 0}</span>
                     </button>
                     <button class="btn btn-outline-secondary btn-sm me-2" onclick="forum.downvotePost('${post.id}')">
-                        <i class="bi bi-arrow-down"></i> ${post.downvotes || 0}
+                        <i class="bi bi-arrow-down"></i> <span id="modalDownvotes-${post.id}">${post.downvotes || 0}</span>
                     </button>
                 </div>
             </div>
@@ -893,6 +893,13 @@ class CommunityForum {
                 post.downvotes = totals?.downvotes || 0;
                 await this.updatePostVotes(postId, post.upvotes, post.downvotes);
             }
+            // Update modal counts if open
+            const upEl = document.getElementById(`modalUpvotes-${postId}`);
+            const downEl = document.getElementById(`modalDownvotes-${postId}`);
+            if (upEl) upEl.textContent = post?.upvotes ?? (totals?.upvotes || 0);
+            if (downEl) downEl.textContent = post?.downvotes ?? (totals?.downvotes || 0);
+
+            // Refresh list
             this.loadPosts();
         } catch (error) {
             console.error('Failed to vote:', error);
