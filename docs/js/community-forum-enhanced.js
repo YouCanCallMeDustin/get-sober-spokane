@@ -94,9 +94,9 @@ class CommunityForum {
             // Load comments (no joins)
             const { data: comments, error: commentsError } = await this.supabase
                 .from('forum_comments')
-                .select('*')
+                .select('id, post_id, user_id, content, created_at')
                 .order('created_at', { ascending: false })
-                .limit(200);
+                .limit(2000);
             
             if (commentsError) {
                 console.warn('Comments load warning:', commentsError);
@@ -104,6 +104,16 @@ class CommunityForum {
             } else {
                 this.forumData.comments = comments || [];
             }
+            
+            // Build comment counts per post for list display
+            const postIdToCount = {};
+            (this.forumData.comments || []).forEach(c => {
+                postIdToCount[c.post_id] = (postIdToCount[c.post_id] || 0) + 1;
+            });
+            this.forumData.posts = (this.forumData.posts || []).map(p => ({
+                ...p,
+                comments_count: postIdToCount[p.id] || 0
+            }));
             
             // Load user profiles from our forum_user_profiles table
             const { data: users, error: usersError } = await this.supabase
@@ -310,7 +320,7 @@ class CommunityForum {
                                 <i class="bi bi-arrow-down"></i> ${post.downvotes || 0}
                             </button>
                             <button class="btn btn-outline-info" onclick="forum.viewPost('${post.id}')">
-                                <i class="bi bi-chat"></i> ${post.comments?.length || 0} Comments
+                                <i class="bi bi-chat"></i> ${post.comments_count || 0} Comments
                             </button>
                         </div>
                     </div>
@@ -594,6 +604,12 @@ class CommunityForum {
             
             // Add to local data
             this.forumData.comments.push(newComment);
+            
+            // Recompute comments count for the list card
+            const post = this.forumData.posts.find(p => p.id === postId);
+            if (post) {
+                post.comments_count = (post.comments_count || 0) + 1;
+            }
             
             // Reload post details
             this.viewPost(postId);
