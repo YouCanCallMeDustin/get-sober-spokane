@@ -9,6 +9,7 @@ class CommunityForum {
             posts: [],
             comments: [],
             users: [],
+            usersById: {},
             categories: [
                 'General Discussion',
                 'Recovery Support',
@@ -80,14 +81,10 @@ class CommunityForum {
     // Load forum data from Supabase
     async loadForumData() {
         try {
-            // Load posts
+            // Load posts (no joins; we'll enrich from profiles map)
             const { data: posts, error: postsError } = await this.supabase
                 .from('forum_posts')
-                .select(`
-                    *,
-                    profiles:user_id(display_name, avatar_url, sobriety_date),
-                    comments:forum_comments(count)
-                `)
+                .select('*')
                 .order('created_at', { ascending: false })
                 .limit(100);
             
@@ -97,24 +94,23 @@ class CommunityForum {
             // Load comments
             const { data: comments, error: commentsError } = await this.supabase
                 .from('forum_comments')
-                .select(`
-                    *,
-                    profiles:user_id(display_name, avatar_url)
-                `)
+                .select('*')
                 .order('created_at', { ascending: false })
                 .limit(200);
             
             if (commentsError) throw commentsError;
             this.forumData.comments = comments || [];
             
-            // Load users
+            // Load user profiles from our forum_user_profiles table
             const { data: users, error: usersError } = await this.supabase
-                .from('profiles')
-                .select('*')
-                .limit(50);
+                .from('forum_user_profiles')
+                .select('user_id, display_name, avatar_url, sobriety_date')
+                .limit(1000);
             
             if (usersError) throw usersError;
             this.forumData.users = users || [];
+            this.forumData.usersById = {};
+            (users || []).forEach(u => { this.forumData.usersById[u.user_id] = u; });
             
             console.log('Forum data loaded:', {
                 posts: this.forumData.posts.length,
@@ -246,13 +242,14 @@ class CommunityForum {
             `<span class="badge bg-light text-dark me-1">${tag}</span>`
         ).join('');
         
+        const profile = this.forumData.usersById[post.user_id];
         const userName = post.is_anonymous ? 'Anonymous User' : 
-            (post.profiles?.display_name || 'Unknown User');
+            (profile?.display_name || 'Unknown User');
         
-        const sobrietyInfo = post.profiles?.sobriety_date ? 
+        const sobrietyInfo = profile?.sobriety_date ? 
             `<small class="text-muted d-block">
                 <i class="bi bi-calendar-event me-1"></i>
-                ${this.calculateSobrietyDays(post.profiles.sobriety_date)} days sober
+                ${this.calculateSobrietyDays(profile.sobriety_date)} days sober
             </small>` : '';
         
         return `
@@ -467,8 +464,9 @@ class CommunityForum {
         
         title.textContent = post.title;
         
+        const profile = this.forumData.usersById[post.user_id];
         const userName = post.is_anonymous ? 'Anonymous User' : 
-            (post.profiles?.display_name || 'Unknown User');
+            (profile?.display_name || 'Unknown User');
         
         content.innerHTML = `
             <div class="post-detail mb-4">
@@ -541,7 +539,8 @@ class CommunityForum {
         }
         
         return comments.map(comment => {
-            const userName = comment.profiles?.display_name || 'Unknown User';
+            const profile = this.forumData.usersById[comment.user_id];
+            const userName = profile?.display_name || 'Unknown User';
             const timeAgo = this.formatTimeAgo(comment.created_at);
             
             return `
