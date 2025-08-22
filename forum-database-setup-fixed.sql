@@ -51,6 +51,9 @@ ALTER TABLE forum_posts ADD COLUMN IF NOT EXISTS downvotes INTEGER DEFAULT 0;
 -- Ensure is_anonymous column exists on forum_posts (for legacy tables)
 ALTER TABLE forum_posts ADD COLUMN IF NOT EXISTS is_anonymous BOOLEAN DEFAULT FALSE;
 
+-- Ensure comments_count column exists on forum_posts (compatibility)
+ALTER TABLE forum_posts ADD COLUMN IF NOT EXISTS comments_count INTEGER DEFAULT 0;
+
 -- Create forum_comments table
 CREATE TABLE IF NOT EXISTS forum_comments (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,

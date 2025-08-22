@@ -91,15 +91,19 @@ class CommunityForum {
             if (postsError) throw postsError;
             this.forumData.posts = posts || [];
             
-            // Load comments
+            // Load comments (no joins)
             const { data: comments, error: commentsError } = await this.supabase
                 .from('forum_comments')
                 .select('*')
                 .order('created_at', { ascending: false })
                 .limit(200);
             
-            if (commentsError) throw commentsError;
-            this.forumData.comments = comments || [];
+            if (commentsError) {
+                console.warn('Comments load warning:', commentsError);
+                this.forumData.comments = [];
+            } else {
+                this.forumData.comments = comments || [];
+            }
             
             // Load user profiles from our forum_user_profiles table
             const { data: users, error: usersError } = await this.supabase
@@ -107,10 +111,15 @@ class CommunityForum {
                 .select('user_id, display_name, avatar_url, sobriety_date')
                 .limit(1000);
             
-            if (usersError) throw usersError;
-            this.forumData.users = users || [];
-            this.forumData.usersById = {};
-            (users || []).forEach(u => { this.forumData.usersById[u.user_id] = u; });
+            if (usersError) {
+                console.warn('Profiles load warning:', usersError);
+                this.forumData.users = [];
+                this.forumData.usersById = {};
+            } else {
+                this.forumData.users = users || [];
+                this.forumData.usersById = {};
+                (users || []).forEach(u => { this.forumData.usersById[u.user_id] = u; });
+            }
             
             console.log('Forum data loaded:', {
                 posts: this.forumData.posts.length,
@@ -120,8 +129,7 @@ class CommunityForum {
             
         } catch (error) {
             console.error('Failed to load forum data:', error);
-            // Fallback to sample data if Supabase fails
-            this.createSampleData();
+            // Do not fall back to sample data; show what we have
         }
     }
 
@@ -434,10 +442,7 @@ class CommunityForum {
             if (this.supabase) {
                 const { data, error } = await this.supabase
                     .from('forum_comments')
-                    .select(`
-                        *,
-                        profiles:user_id(display_name, avatar_url)
-                    `)
+                    .select('*')
                     .eq('post_id', postId)
                     .order('created_at', { ascending: true });
                 
