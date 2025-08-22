@@ -502,10 +502,10 @@ class CommunityForum {
         const profile = this.forumData.usersById[post.user_id];
         const userName = post.is_anonymous ? 'Anonymous User' : 
             (profile?.display_name || 'Unknown User');
-        const nameHtml = post.is_anonymous ? userName : `<a href="/get-sober-spokane/user-profile.html?id=${post.user_id}" class="text-decoration-none">${userName}</a>`;
+        const nameHtml = post.is_anonymous ? userName : `<a href="/get-sober-spokane/user-profile.html?id=${post.user_id}" class="text-decoration-none" style="pointer-events:auto;">${userName}</a>`;
         
         content.innerHTML = `
-            <div class="post-detail mb-4">
+            <div class="post-detail mb-4" data-post-id="${post.id}">
                 <div class="d-flex justify-content-between align-items-start">
                     <div class="post-meta mb-3">
                         <small class="text-muted">
@@ -515,15 +515,30 @@ class CommunityForum {
                         </small>
                     </div>
                     ${this.currentUser && this.currentUser.id === post.user_id ? `
-                    <div class="btn-group btn-group-sm">
-                        <button class="btn btn-outline-secondary" onclick="forum.promptEditPost('${post.id}')"><i class="bi bi-pencil me-1"></i>Edit</button>
+                    <div class="btn-group btn-group-sm" id="modalPostActions">
+                        <button class="btn btn-outline-secondary" id="modalEditBtn"><i class="bi bi-pencil me-1"></i>Edit</button>
                         <button class="btn btn-outline-danger" onclick="forum.confirmDeletePost('${post.id}')"><i class="bi bi-trash me-1"></i>Delete</button>
                     </div>` : ''}
                 </div>
                 
-                <div class="post-content mb-4" style="white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;">
-                    ${post.content.replace(/\n/g, '<br>')}
+                <div id="modalViewArea">
+                    <h5 id="modalPostTitle" class="mb-2" style="word-break:break-word;">${post.title}</h5>
+                    <div class="post-content mb-4" id="modalPostContent" style="white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;">
+                        ${post.content.replace(/\n/g, '<br>')}
+                    </div>
                 </div>
+                <form id="modalEditForm" style="display:none;">
+                    <div class="mb-2">
+                        <input class="form-control" id="editTitleInput" value="${post.title.replace(/"/g,'&quot;')}" maxlength="200" />
+                    </div>
+                    <div class="mb-2">
+                        <textarea class="form-control" id="editContentInput" rows="6">${post.content.replace(/</g,'&lt;')}</textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="cancelEditBtn">Cancel</button>
+                    </div>
+                </form>
                 
                 <div class="post-tags mb-3">
                     ${(post.tags || []).map(tag => 
@@ -564,6 +579,48 @@ class CommunityForum {
                 `}
             </div>
         `;
+        
+        // Setup inline edit handlers when owner
+        const editBtn = document.getElementById('modalEditBtn');
+        const editForm = document.getElementById('modalEditForm');
+        const viewArea = document.getElementById('modalViewArea');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        if (editBtn && editForm && viewArea) {
+            editBtn.addEventListener('click', () => {
+                viewArea.style.display = 'none';
+                editForm.style.display = 'block';
+            });
+            cancelEditBtn?.addEventListener('click', () => {
+                editForm.style.display = 'none';
+                viewArea.style.display = 'block';
+            });
+            editForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                try {
+                    const newTitle = document.getElementById('editTitleInput').value.trim();
+                    const newContent = document.getElementById('editContentInput').value.trim();
+                    if (!newTitle || !newContent) {
+                        forum.showNotification('Title and content are required', 'warning');
+                        return;
+                    }
+                    const { error } = await this.supabase
+                        .from('forum_posts')
+                        .update({ title: newTitle, content: newContent, updated_at: new Date().toISOString() })
+                        .eq('id', post.id)
+                        .eq('user_id', this.currentUser.id);
+                    if (error) throw error;
+                    await this.loadForumData();
+                    const updated = this.forumData.posts.find(p => p.id === post.id);
+                    const updatedComments = await this.loadPostComments(post.id);
+                    this.showPostDetailModal(updated || post, updatedComments);
+                    this.loadPosts();
+                    this.showNotification('Post updated', 'success');
+                } catch (err) {
+                    console.error('Inline edit failed', err);
+                    this.showNotification('Failed to update post', 'error');
+                }
+            });
+        }
         
         // Setup comment form
         const commentForm = document.getElementById('addCommentForm');
