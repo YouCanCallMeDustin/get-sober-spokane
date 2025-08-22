@@ -12216,6 +12216,11 @@ hr.divider-light {
   transition: all 0.3s ease;
   margin-bottom: 1.5rem;
 }
+.post-card .card-text {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
 .post-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
@@ -12374,6 +12379,9 @@ hr.divider-light {
   font-size: 1rem;
   line-height: 1.7;
   color: #495057;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 #postDetailModal .post-detail .post-tags .badge {
   font-size: 0.8rem;

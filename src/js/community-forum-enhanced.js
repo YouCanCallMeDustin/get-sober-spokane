@@ -504,15 +504,22 @@ class CommunityForum {
         
         content.innerHTML = `
             <div class="post-detail mb-4">
-                <div class="post-meta mb-3">
-                    <small class="text-muted">
-                        <i class="bi bi-person me-1"></i>${userName}
-                        <i class="bi bi-clock me-2 ms-2"></i>${this.formatTimeAgo(post.created_at)}
-                        <i class="bi bi-tag me-2 ms-2"></i>${post.category}
-                    </small>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="post-meta mb-3">
+                        <small class="text-muted">
+                            <i class="bi bi-person me-1"></i>${userName}
+                            <i class="bi bi-clock me-2 ms-2"></i>${this.formatTimeAgo(post.created_at)}
+                            <i class="bi bi-tag me-2 ms-2"></i>${post.category}
+                        </small>
+                    </div>
+                    ${this.currentUser && this.currentUser.id === post.user_id ? `
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-secondary" onclick="forum.promptEditPost('${post.id}')"><i class="bi bi-pencil me-1"></i>Edit</button>
+                        <button class="btn btn-outline-danger" onclick="forum.confirmDeletePost('${post.id}')"><i class="bi bi-trash me-1"></i>Delete</button>
+                    </div>` : ''}
                 </div>
                 
-                <div class="post-content mb-4">
+                <div class="post-content mb-4" style="white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;">
                     ${post.content.replace(/\n/g, '<br>')}
                 </div>
                 
