@@ -159,111 +159,75 @@
                 </div>
             </div>
         </nav>
-        <!-- Add top margin to account for fixed navigation-->
-        <div class="dashboard-container" style="margin-top: 80px">
-            <div class="dashboard-header">
+        <!-- Dashboard Container with proper spacing for fixed navigation-->
+        <div class="dashboard-container">
+            <!-- Hero Banner Section-->
+            <div class="dashboard-hero">
                 <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <h1 class="dashboard-title">Welcome, User!</h1>
-                            <p class="dashboard-subtitle">Manage your recovery journey and access resources</p>
+                    <div class="row justify-content-center text-center">
+                        <div class="col-lg-8">
+                            <h1 class="dashboard-hero-title">Welcome, Get Sober Spokane!</h1>
+                            <p class="dashboard-hero-subtitle">Manage your recovery journey and access resources</p>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Main Dashboard Content-->
             <div class="dashboard-content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-8">
-                            <div class="dashboard-card">
+                        <!-- Left Column - Recovery Progress-->
+                        <div class="col-lg-8 mb-4">
+                            <div class="dashboard-card recovery-card">
                                 <h3 class="card-title">Recovery Progress</h3>
-                                <div class="progress-section">
-                                    <div class="progress-item">
-                                        <h5>Sobriety Counter</h5>
-                                        <div class="sobriety-counter">
+                                <!-- Sobriety Counter Section-->
+                                <div class="sobriety-section">
+                                    <h5 class="section-label">Sobriety Counter</h5>
+                                    <div class="sobriety-counter">
+                                        <div class="counter-display">
                                             <span class="counter-number" id="sobrietyDays">0</span>
                                             <span class="counter-label">days</span>
                                         </div>
                                         <p class="counter-subtitle">Since your last drink or drug use</p>
-                                        <div class="sobriety-date-picker">
-                                            <label for="sobrietyDate">Update Sobriety Date:</label>
+                                    </div>
+                                    <!-- Sobriety Date Update-->
+                                    <div class="sobriety-date-update">
+                                        <label for="sobrietyDate">Update Sobriety Date:</label>
+                                        <div class="date-input-group">
                                             <input class="form-control" id="sobrietyDate" type="date" name="sobrietyDate" />
-                                            <button class="btn btn-primary btn-sm" id="updateSobrietyDate">Update</button>
+                                            <button class="btn btn-primary" id="updateSobrietyDate">Update</button>
                                         </div>
                                     </div>
-                                    <div class="progress-item">
-                                        <h5>Recovery Milestones</h5>
-                                        <div class="milestones-list" id="milestonesList"><!-- Milestones will be loaded dynamically--></div>
-                                        <div class="add-milestone"><button class="btn btn-success" id="addMilestoneBtn" type="button">+ Add Milestone</button></div>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="dashboard-card">
-                                <h3 class="card-title">Community Resources</h3>
-                                <div class="resources-grid">
-                                    <div class="resource-item">
-                                        <i class="bi bi-people"></i>
-                                        <h6>Support Groups</h6>
-                                        <p>Find local AA/NA meetings and support groups</p>
-                                        <a class="btn btn-outline-primary btn-sm" href="/community-engagement-sober-activities.html">Explore</a>
-                                    </div>
-                                    <div class="resource-item">
-                                        <i class="bi bi-heart-pulse"></i>
-                                        <h6>Treatment Centers</h6>
-                                        <p>Access addiction treatment and mental health resources</p>
-                                        <a class="btn btn-outline-primary btn-sm" href="/addiction-treatments-support.html">Explore</a>
-                                    </div>
-                                    <div class="resource-item">
-                                        <i class="bi bi-house"></i>
-                                        <h6>Housing Support</h6>
-                                        <p>Find sober housing and shelter options</p>
-                                        <a class="btn btn-outline-primary btn-sm" href="/shelter-housing.html">Explore</a>
-                                    </div>
+                                <!-- Recovery Milestones Section-->
+                                <div class="milestones-section">
+                                    <h5 class="section-label">Recovery Milestones</h5>
+                                    <div class="milestones-list" id="milestonesList"><!-- Milestones will be loaded dynamically--></div>
+                                    <div class="add-milestone"><button class="btn btn-success" id="addMilestoneBtn" type="button">+ Add Milestone</button></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="dashboard-card">
+                        <!-- Right Column - Quick Actions-->
+                        <div class="col-lg-4 mb-4">
+                            <div class="dashboard-card quick-actions-card">
                                 <h3 class="card-title">Quick Actions</h3>
-                                <div class="quick-actions">
-                                    <a class="btn btn-primary btn-block" href="/resource-directory.html#emergency-help">
-                                        <i class="bi bi-exclamation-triangle"></i>
-                                        <Emergency>Help</Emergency>
+                                <div class="quick-actions-list">
+                                    <a class="quick-action-btn emergency-btn" href="/resource-directory.html#emergency-help">
+                                        <div class="action-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                                        <div class="action-text">Emergency Help</div>
                                     </a>
-                                    <a class="btn btn-outline-primary btn-block" href="/resource-directory.html">
-                                        <i class="bi bi-search"></i>
-                                        <Resource>Directory</Resource>
+                                    <a class="quick-action-btn" href="/resource-directory.html">
+                                        <div class="action-icon"><i class="bi bi-search"></i></div>
+                                        <div class="action-text">Resource Directory</div>
                                     </a>
-                                    <a class="btn btn-outline-primary btn-block" href="/community-engagement-sober-activities.html">
-                                        <i class="bi bi-people"></i>
-                                        <Community>Forum</Community>
+                                    <a class="quick-action-btn" href="/community-engagement-sober-activities.html">
+                                        <div class="action-icon"><i class="bi bi-people"></i></div>
+                                        <div class="action-text">Community Forum</div>
                                     </a>
-                                    <a class="btn btn-outline-primary btn-block" href="/donations.html">
-                                        <i class="bi bi-heart"></i>
-                                        <Support>Our Mission</Support>
+                                    <a class="quick-action-btn" href="/donations.html">
+                                        <div class="action-icon"><i class="bi bi-heart"></i></div>
+                                        <div class="action-text">Support Our Mission</div>
                                     </a>
-                                </div>
-                            </div>
-                            <div class="dashboard-card">
-                                <h3 class="card-title">Profile Settings</h3>
-                                <div class="profile-settings">
-                                    <div class="form-group">
-                                        <label for="profileDisplayName">Display Name</label>
-                                        <input class="form-control" id="profileDisplayName" type="text" value="" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="profileBio">Bio</label>
-                                        <textarea class="form-control" id="profileBio" rows="3" placeholder="Tell us about yourself..."></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="profilePrivacyLevel">Privacy Level</label>
-                                        <select class="form-control" id="profilePrivacyLevel">
-                                            <option value="public">Public</option>
-                                            <option value="standard">Standard</option>
-                                            <option value="high">High</option>
-                                        </select>
-                                    </div>
-                                    <button class="btn btn-primary btn-block" id="updateProfile">Update Profile</button>
                                 </div>
                             </div>
                         </div>
@@ -410,9 +374,6 @@
 
                 // Add milestone
                 document.getElementById('addMilestoneBtn').addEventListener('click', showAddMilestoneModal);
-
-                // Update profile
-                document.getElementById('updateProfile').addEventListener('click', handleUpdateProfile);
             }
 
             async function handleUpdateSobrietyDate() {
@@ -454,13 +415,9 @@
                     if (error && error.code !== 'PGRST116') throw error;
 
                     if (data) {
-                        // Populate profile fields
-                        document.getElementById('profileDisplayName').value = data.display_name || '';
-                        document.getElementById('profileBio').value = data.bio || '';
-                        document.getElementById('profilePrivacyLevel').value = data.privacy_level || 'standard';
                         // Update header with profile display name when available
                         if (data.display_name) {
-                            document.querySelector('.dashboard-title').textContent = `Welcome, ${data.display_name}!`;
+                            document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${data.display_name}!`;
                         }
 
                         // Set sobriety date if available
@@ -600,34 +557,6 @@
                 }
             }
 
-            async function handleUpdateProfile() {
-                try {
-                    if (!supabase || !currentUser) {
-                        showMessage('Please log in to update your profile', 'warning');
-                        return;
-                    }
-
-                    const displayName = document.getElementById('profileDisplayName').value;
-                    const bio = document.getElementById('profileBio').value;
-                    const privacyLevel = document.getElementById('profilePrivacyLevel').value;
-
-                    const { error } = await supabase.from('profiles').upsert({
-                        user_id: currentUser.id,
-                        display_name: displayName,
-                        bio: bio,
-                        privacy_level: privacyLevel,
-                        updated_at: new Date().toISOString(),
-                    });
-
-                    if (error) throw error;
-
-                    showMessage('Profile updated successfully!', 'success');
-                } catch (error) {
-                    console.error('Failed to update profile:', error);
-                    showMessage('Failed to update profile', 'danger');
-                }
-            }
-
             function calculateSobrietyDays() {
                 const sobrietyDate = document.getElementById('sobrietyDate').value;
                 if (!sobrietyDate) {
@@ -645,11 +574,9 @@
 
             function updateUserDisplay() {
                 if (currentUser) {
-                    const profileInput = document.getElementById('profileDisplayName');
-                    const profileName = profileInput && profileInput.value ? profileInput.value.trim() : null;
-                    const metaName = currentUser.user_metadata?.full_name || currentUser.user_metadata?.display_name || currentUser.user_metadata?.name || currentUser.user_metadata?.user_name || 'User';
-                    const displayName = profileName || metaName;
-                    document.querySelector('.dashboard-title').textContent = `Welcome, ${displayName}!`;
+                    const metaName = currentUser.user_metadata?.full_name || currentUser.user_metadata?.display_name || currentUser.user_metadata?.name || currentUser.user_metadata?.user_name || 'Get Sober Spokane';
+                    const displayName = metaName;
+                    document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${displayName}!`;
                 }
             }
 

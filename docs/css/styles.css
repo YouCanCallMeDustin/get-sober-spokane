@@ -11616,6 +11616,343 @@ hr.divider-light {
     justify-content: center;
   }
 }
+.dashboard-container {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding-top: 80px;
+}
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding-top: 70px;
+  }
+}
+
+.dashboard-hero {
+  background: linear-gradient(135deg, #2c5aa0 0%, #4a90a4 100%);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.dashboard-hero .dashboard-hero-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 768px) {
+  .dashboard-hero .dashboard-hero-title {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 576px) {
+  .dashboard-hero .dashboard-hero-title {
+    font-size: 1.75rem;
+  }
+}
+.dashboard-hero .dashboard-hero-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+@media (max-width: 576px) {
+  .dashboard-hero .dashboard-hero-subtitle {
+    font-size: 1rem;
+  }
+}
+
+.dashboard-content {
+  padding: 0 0 3rem 0;
+}
+.dashboard-content .container {
+  max-width: 1200px;
+}
+
+.dashboard-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+.dashboard-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+.dashboard-card .card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #495057;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f8f9fa;
+}
+@media (max-width: 768px) {
+  .dashboard-card {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .dashboard-card .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+.recovery-card .section-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.sobriety-section {
+  margin-bottom: 2rem;
+}
+.sobriety-section .sobriety-counter {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.sobriety-section .sobriety-counter .counter-display {
+  margin-bottom: 0.5rem;
+}
+.sobriety-section .sobriety-counter .counter-number {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #2c5aa0;
+  display: block;
+  line-height: 1;
+}
+@media (max-width: 768px) {
+  .sobriety-section .sobriety-counter .counter-number {
+    font-size: 3rem;
+  }
+}
+@media (max-width: 576px) {
+  .sobriety-section .sobriety-counter .counter-number {
+    font-size: 2.5rem;
+  }
+}
+.sobriety-section .sobriety-counter .counter-label {
+  font-size: 1.25rem;
+  color: #6c757d;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+.sobriety-section .sobriety-counter .counter-subtitle {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+}
+.sobriety-section .sobriety-date-update label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+.sobriety-section .sobriety-date-update .date-input-group {
+  display: flex;
+  gap: 0.75rem;
+  align-items: end;
+}
+@media (max-width: 576px) {
+  .sobriety-section .sobriety-date-update .date-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+.sobriety-section .sobriety-date-update .date-input-group input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.75rem;
+  border: 2px solid #e9ecef;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+.sobriety-section .sobriety-date-update .date-input-group input:focus {
+  outline: none;
+  border-color: #2c5aa0;
+  box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.15);
+}
+.sobriety-section .sobriety-date-update .date-input-group button {
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.milestones-section .milestones-list {
+  margin-bottom: 1rem;
+}
+.milestones-section .milestones-list .milestone-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+.milestones-section .milestones-list .milestone-item:hover {
+  background: #e9ecef;
+}
+.milestones-section .milestones-list .milestone-item .milestone-content {
+  flex: 1;
+}
+.milestones-section .milestones-list .milestone-item .milestone-content h6, .milestones-section .milestones-list .milestone-item .milestone-content .h6 {
+  margin: 0 0 0.25rem 0;
+  font-weight: 600;
+  color: #495057;
+}
+.milestones-section .milestones-list .milestone-item .milestone-content p {
+  margin: 0 0 0.25rem 0;
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+.milestones-section .milestones-list .milestone-item .milestone-content small, .milestones-section .milestones-list .milestone-item .milestone-content .small {
+  font-size: 0.8rem;
+}
+.milestones-section .milestones-list .milestone-item .milestone-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+@media (max-width: 576px) {
+  .milestones-section .milestones-list .milestone-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .milestones-section .milestones-list .milestone-item .milestone-actions {
+    justify-content: center;
+  }
+}
+.milestones-section .add-milestone {
+  margin-top: 1rem;
+}
+.milestones-section .add-milestone button {
+  width: 100%;
+  padding: 0.75rem;
+  font-weight: 500;
+}
+
+.quick-actions-card .quick-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.quick-actions-card .quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: #495057;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.quick-actions-card .quick-action-btn:hover {
+  background: white;
+  border-color: #2c5aa0;
+  color: #2c5aa0;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.quick-actions-card .quick-action-btn.emergency-btn {
+  background: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+.quick-actions-card .quick-action-btn.emergency-btn:hover {
+  background: #c82333;
+  border-color: #c82333;
+  color: white;
+}
+.quick-actions-card .quick-action-btn .action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: rgba(44, 90, 160, 0.1);
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+}
+.quick-actions-card .quick-action-btn .action-icon i {
+  font-size: 1.25rem;
+  color: #2c5aa0;
+}
+.quick-actions-card .quick-action-btn.emergency-btn .action-icon {
+  background: rgba(255, 255, 255, 0.2);
+}
+.quick-actions-card .quick-action-btn.emergency-btn .action-icon i {
+  color: white;
+}
+.quick-actions-card .quick-action-btn .action-text {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding-top: 70px;
+  }
+  .dashboard-hero {
+    padding: 2rem 0;
+    margin-bottom: 1.5rem;
+  }
+  .dashboard-content {
+    padding: 0 0 2rem 0;
+  }
+  .dashboard-card {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .sobriety-date-update .date-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .sobriety-date-update .date-input-group input {
+    min-width: auto;
+  }
+}
+@media (max-width: 576px) {
+  .dashboard-hero {
+    padding: 1.5rem 0;
+  }
+  .dashboard-hero .dashboard-hero-title {
+    font-size: 1.75rem;
+  }
+  .dashboard-hero .dashboard-hero-subtitle {
+    font-size: 1rem;
+  }
+  .dashboard-card {
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+  }
+  .sobriety-counter .counter-number {
+    font-size: 2.5rem;
+  }
+  .quick-action-btn {
+    padding: 0.875rem;
+  }
+  .quick-action-btn .action-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  .quick-action-btn .action-icon i {
+    font-size: 1.1rem;
+  }
+  .quick-action-btn .action-text {
+    font-size: 0.9rem;
+  }
+}
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);

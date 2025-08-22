@@ -1,0 +1,394 @@
+// Dashboard Styles - Modern and Responsive
+.dashboard-container {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding-top: 80px; // Account for fixed navigation
+  
+  @media (max-width: 768px) {
+    padding-top: 70px;
+  }
+}
+
+// Hero Banner Section
+.dashboard-hero {
+  background: linear-gradient(135deg, $primary-blue 0%, $secondary-teal 100%);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+  .dashboard-hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+    
+    @media (max-width: 576px) {
+      font-size: 1.75rem;
+    }
+  }
+  
+  .dashboard-hero-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
+    
+    @media (max-width: 576px) {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Main Content Area
+.dashboard-content {
+  padding: 0 0 3rem 0;
+  
+  .container {
+    max-width: 1200px;
+  }
+}
+
+// Dashboard Cards
+.dashboard-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #495057;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f8f9fa;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+  }
+}
+
+// Recovery Progress Card
+.recovery-card {
+  .section-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 1rem;
+  }
+}
+
+// Sobriety Counter Section
+.sobriety-section {
+  margin-bottom: 2rem;
+  
+  .sobriety-counter {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    
+    .counter-display {
+      margin-bottom: 0.5rem;
+    }
+    
+    .counter-number {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: $primary-blue;
+      display: block;
+      line-height: 1;
+      
+      @media (max-width: 768px) {
+        font-size: 3rem;
+      }
+      
+      @media (max-width: 576px) {
+        font-size: 2.5rem;
+      }
+    }
+    
+    .counter-label {
+      font-size: 1.25rem;
+      color: #6c757d;
+      font-weight: 500;
+      margin-left: 0.5rem;
+    }
+    
+    .counter-subtitle {
+      color: #6c757d;
+      font-size: 0.9rem;
+      margin: 0.5rem 0 0;
+    }
+  }
+  
+  .sobriety-date-update {
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #495057;
+      margin-bottom: 0.5rem;
+    }
+    
+    .date-input-group {
+      display: flex;
+      gap: 0.75rem;
+      align-items: end;
+      
+      @media (max-width: 576px) {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      input {
+        flex: 1;
+        min-width: 200px;
+        padding: 0.75rem;
+        border: 2px solid #e9ecef;
+        border-radius: 0.5rem;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        
+        &:focus {
+          outline: none;
+          border-color: $primary-blue;
+          box-shadow: 0 0 0 3px rgba($primary-blue, 0.15);
+        }
+      }
+      
+      button {
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+// Milestones Section
+.milestones-section {
+  .milestones-list {
+    margin-bottom: 1rem;
+    
+    .milestone-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: #e9ecef;
+      }
+      
+      .milestone-content {
+        flex: 1;
+        
+        h6 {
+          margin: 0 0 0.25rem 0;
+          font-weight: 600;
+          color: #495057;
+        }
+        
+        p {
+          margin: 0 0 0.25rem 0;
+          color: #6c757d;
+          font-size: 0.9rem;
+        }
+        
+        small {
+          font-size: 0.8rem;
+        }
+      }
+      
+      .milestone-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+      
+      @media (max-width: 576px) {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        
+        .milestone-actions {
+          justify-content: center;
+        }
+      }
+    }
+  }
+  
+  .add-milestone {
+    margin-top: 1rem;
+    
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      font-weight: 500;
+    }
+  }
+}
+
+// Quick Actions Card
+.quick-actions-card {
+  .quick-actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .quick-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    color: #495057;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: white;
+      border-color: $primary-blue;
+      color: $primary-blue;
+      text-decoration: none;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    &.emergency-btn {
+      background: #dc3545;
+      border-color: #dc3545;
+      color: white;
+      
+      &:hover {
+        background: #c82333;
+        border-color: #c82333;
+        color: white;
+      }
+    }
+    
+    .action-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      background: rgba($primary-blue, 0.1);
+      border-radius: 0.5rem;
+      flex-shrink: 0;
+      
+      i {
+        font-size: 1.25rem;
+        color: $primary-blue;
+      }
+    }
+    
+    &.emergency-btn .action-icon {
+      background: rgba(255, 255, 255, 0.2);
+      
+      i {
+        color: white;
+      }
+    }
+    
+    .action-text {
+      flex: 1;
+      font-size: 0.95rem;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding-top: 70px;
+  }
+  
+  .dashboard-hero {
+    padding: 2rem 0;
+    margin-bottom: 1.5rem;
+  }
+  
+  .dashboard-content {
+    padding: 0 0 2rem 0;
+  }
+  
+  .dashboard-card {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .sobriety-date-update .date-input-group {
+    flex-direction: column;
+    align-items: stretch;
+    
+    input {
+      min-width: auto;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-hero {
+    padding: 1.5rem 0;
+    
+    .dashboard-hero-title {
+      font-size: 1.75rem;
+    }
+    
+    .dashboard-hero-subtitle {
+      font-size: 1rem;
+    }
+  }
+  
+  .dashboard-card {
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+  }
+  
+  .sobriety-counter .counter-number {
+    font-size: 2.5rem;
+  }
+  
+  .quick-action-btn {
+    padding: 0.875rem;
+    
+    .action-icon {
+      width: 2.25rem;
+      height: 2.25rem;
+      
+      i {
+        font-size: 1.1rem;
+      }
+    }
+    
+    .action-text {
+      font-size: 0.9rem;
+    }
+  }
+}

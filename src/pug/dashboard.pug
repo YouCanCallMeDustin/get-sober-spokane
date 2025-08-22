@@ -1,103 +1,73 @@
 extends layout
 
 block content
-  // Add top margin to account for fixed navigation
-  .dashboard-container(style="margin-top: 80px;")
-    .dashboard-header
+  // Dashboard Container with proper spacing for fixed navigation
+  .dashboard-container
+    // Hero Banner Section
+    .dashboard-hero
       .container
-        .row.align-items-center
-          .col-md-6
-            h1.dashboard-title Welcome, #{user ? user.displayName : 'User'}!
-            p.dashboard-subtitle Manage your recovery journey and access resources
-          
+        .row.justify-content-center.text-center
+          .col-lg-8
+            h1.dashboard-hero-title Welcome, #{user ? user.displayName : 'Get Sober Spokane'}!
+            p.dashboard-hero-subtitle Manage your recovery journey and access resources
     
+    // Main Dashboard Content
     .dashboard-content
       .container
         .row
-          .col-lg-8
-            .dashboard-card
+          // Left Column - Recovery Progress
+          .col-lg-8.mb-4
+            .dashboard-card.recovery-card
               h3.card-title Recovery Progress
-              .progress-section
-                .progress-item
-                  h5 Sobriety Counter
-                  .sobriety-counter
+              
+              // Sobriety Counter Section
+              .sobriety-section
+                h5.section-label Sobriety Counter
+                .sobriety-counter
+                  .counter-display
                     span.counter-number#sobrietyDays 0
                     span.counter-label days
                   p.counter-subtitle Since your last drink or drug use
-                  
-                  .sobriety-date-picker
-                    label(for="sobrietyDate") Update Sobriety Date:
+                
+                // Sobriety Date Update
+                .sobriety-date-update
+                  label(for="sobrietyDate") Update Sobriety Date:
+                  .date-input-group
                     input.form-control#sobrietyDate(type="date" name="sobrietyDate")
-                    button.btn.btn-primary.btn-sm#updateSobrietyDate Update
-                
-                .progress-item
-                  h5 Recovery Milestones
-                  .milestones-list#milestonesList
-                    // Milestones will be loaded dynamically
-                  
-                  .add-milestone
-                    button.btn.btn-success#addMilestoneBtn(type="button") + Add Milestone
-            
-            .dashboard-card
-              h3.card-title Community Resources
-              .resources-grid
-                .resource-item
-                  i.bi.bi-people
-                  h6 Support Groups
-                  p Find local AA/NA meetings and support groups
-                  a.btn.btn-outline-primary.btn-sm(href="/community-engagement-sober-activities.html") Explore
-                
-                .resource-item
-                  i.bi.bi-heart-pulse
-                  h6 Treatment Centers
-                  p Access addiction treatment and mental health resources
-                  a.btn.btn-outline-primary.btn-sm(href="/addiction-treatments-support.html") Explore
-                
-                .resource-item
-                  i.bi.bi-house
-                  h6 Housing Support
-                  p Find sober housing and shelter options
-                  a.btn.btn-outline-primary.btn-sm(href="/shelter-housing.html") Explore
+                    button.btn.btn-primary#updateSobrietyDate Update
+              
+              // Recovery Milestones Section
+              .milestones-section
+                h5.section-label Recovery Milestones
+                .milestones-list#milestonesList
+                  // Milestones will be loaded dynamically
+                .add-milestone
+                  button.btn.btn-success#addMilestoneBtn(type="button") + Add Milestone
           
-          .col-lg-4
-            .dashboard-card
+          // Right Column - Quick Actions
+          .col-lg-4.mb-4
+            .dashboard-card.quick-actions-card
               h3.card-title Quick Actions
-              .quick-actions
-                a.btn.btn-primary.btn-block(href="/resource-directory.html#emergency-help")
-                  i.bi.bi-exclamation-triangle
-                  Emergency Help
+              .quick-actions-list
+                a.quick-action-btn.emergency-btn(href="/resource-directory.html#emergency-help")
+                  .action-icon
+                    i.bi.bi-exclamation-triangle
+                  .action-text Emergency Help
                 
-                a.btn.btn-outline-primary.btn-block(href="/resource-directory.html")
-                  i.bi.bi-search
-                  Resource Directory
+                a.quick-action-btn(href="/resource-directory.html")
+                  .action-icon
+                    i.bi.bi-search
+                  .action-text Resource Directory
                 
-                a.btn.btn-outline-primary.btn-block(href="/community-engagement-sober-activities.html")
-                  i.bi.bi-people
-                  Community Forum
+                a.quick-action-btn(href="/community-engagement-sober-activities.html")
+                  .action-icon
+                    i.bi.bi-people
+                  .action-text Community Forum
                 
-                a.btn.btn-outline-primary.btn-block(href="/donations.html")
-                  i.bi.bi-heart
-                  Support Our Mission
-            
-            .dashboard-card
-              h3.card-title Profile Settings
-              .profile-settings
-                .form-group
-                  label(for="profileDisplayName") Display Name
-                  input.form-control#profileDisplayName(type="text" value=user ? user.displayName : "")
-                
-                .form-group
-                  label(for="profileBio") Bio
-                  textarea.form-control#profileBio(rows="3" placeholder="Tell us about yourself...")
-                
-                .form-group
-                  label(for="profilePrivacyLevel") Privacy Level
-                  select.form-control#profilePrivacyLevel
-                    option(value="public") Public
-                    option(value="standard") Standard
-                    option(value="high") High
-                
-                button.btn.btn-primary.btn-block#updateProfile Update Profile
+                a.quick-action-btn(href="/donations.html")
+                  .action-icon
+                    i.bi.bi-heart
+                  .action-text Support Our Mission
 
 block scripts
   script.
@@ -161,9 +131,6 @@ block scripts
       
       // Add milestone
       document.getElementById('addMilestoneBtn').addEventListener('click', showAddMilestoneModal);
-      
-      // Update profile
-      document.getElementById('updateProfile').addEventListener('click', handleUpdateProfile);
     }
     
     async function handleUpdateSobrietyDate() {
@@ -211,13 +178,9 @@ block scripts
         if (error && error.code !== 'PGRST116') throw error;
         
         if (data) {
-          // Populate profile fields
-          document.getElementById('profileDisplayName').value = data.display_name || '';
-          document.getElementById('profileBio').value = data.bio || '';
-          document.getElementById('profilePrivacyLevel').value = data.privacy_level || 'standard';
           // Update header with profile display name when available
           if (data.display_name) {
-            document.querySelector('.dashboard-title').textContent = `Welcome, ${data.display_name}!`;
+            document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${data.display_name}!`;
           }
           
           // Set sobriety date if available
@@ -372,35 +335,7 @@ block scripts
       }
     }
     
-    async function handleUpdateProfile() {
-      try {
-        if (!supabase || !currentUser) {
-          showMessage('Please log in to update your profile', 'warning');
-          return;
-        }
-        
-        const displayName = document.getElementById('profileDisplayName').value;
-        const bio = document.getElementById('profileBio').value;
-        const privacyLevel = document.getElementById('profilePrivacyLevel').value;
-        
-        const { error } = await supabase
-          .from('profiles')
-          .upsert({
-            user_id: currentUser.id,
-            display_name: displayName,
-            bio: bio,
-            privacy_level: privacyLevel,
-            updated_at: new Date().toISOString()
-          });
-        
-        if (error) throw error;
-        
-        showMessage('Profile updated successfully!', 'success');
-      } catch (error) {
-        console.error('Failed to update profile:', error);
-        showMessage('Failed to update profile', 'danger');
-      }
-    }
+
     
     function calculateSobrietyDays() {
       const sobrietyDate = document.getElementById('sobrietyDate').value;
@@ -419,16 +354,14 @@ block scripts
     
     function updateUserDisplay() {
       if (currentUser) {
-        const profileInput = document.getElementById('profileDisplayName');
-        const profileName = profileInput && profileInput.value ? profileInput.value.trim() : null;
         const metaName =
           currentUser.user_metadata?.full_name ||
           currentUser.user_metadata?.display_name ||
           currentUser.user_metadata?.name ||
           currentUser.user_metadata?.user_name ||
-          'User';
-        const displayName = profileName || metaName;
-        document.querySelector('.dashboard-title').textContent = `Welcome, ${displayName}!`;
+          'Get Sober Spokane';
+        const displayName = metaName;
+        document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${displayName}!`;
       }
     }
     
