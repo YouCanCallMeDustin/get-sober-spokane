@@ -287,7 +287,7 @@ class CommunityForum {
         
         const ownerActions = (this.currentUser && this.currentUser.id === post.user_id) ? `
             <div class="d-flex gap-2 align-items-center">
-                <button class="btn btn-sm btn-outline-secondary" onclick="forum.promptEditPost('${post.id}')">
+                <button class="btn btn-sm btn-outline-secondary" onclick="forum.openEditPostModal('${post.id}')">
                     <i class="bi bi-pencil me-1"></i>Edit
                 </button>
                 <button class="btn btn-sm btn-outline-danger" onclick="forum.confirmDeletePost('${post.id}')">
@@ -1139,6 +1139,21 @@ class CommunityForum {
     }
 
     // Post edit/delete handlers
+    async openEditPostModal(postId) {
+        try {
+            const post = this.forumData.posts.find(p => p.id === postId);
+            if (!post) return;
+            const comments = await this.loadPostComments(postId);
+            this.showPostDetailModal(post, comments);
+            // Enter edit mode automatically after modal is shown
+            setTimeout(() => {
+                const btn = document.getElementById('modalEditBtn');
+                if (btn) btn.click();
+            }, 200);
+        } catch (e) {
+            console.error('Failed to open edit modal', e);
+        }
+    }
     async promptEditPost(postId) {
         try {
             const post = this.forumData.posts.find(p => p.id === postId);
