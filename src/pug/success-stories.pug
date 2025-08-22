@@ -1,0 +1,251 @@
+extends layout
+
+block head
+  title Success Stories - Get Sober Spokane Community
+  meta(name="description" content="Celebrate recovery milestones and share your success story with the Sober Spokane community. Find inspiration and hope from others' journeys.")
+  meta(name="keywords" content="success stories, recovery milestones, sobriety achievements, addiction recovery, hope and inspiration")
+
+block content
+  .success-stories-container
+    // Hero Banner Section
+    .stories-hero
+      .container
+        .row.justify-content-center.text-center
+          .col-lg-8
+            h1.stories-hero-title Success Stories
+            p.stories-hero-subtitle Celebrate your recovery milestones and inspire others on their journey
+    
+    // Main Content
+    .stories-content
+      .container
+        // Success Story Statistics
+        .stories-stats.mb-4
+          .row.text-center
+            .col-md-4.mb-3
+              .stat-card
+                .stat-number#totalStories 0
+                .stat-label Success Stories
+            .col-md-4.mb-3
+              .stat-card
+                .stat-number#totalMilestones 0
+                .stat-label Milestones Celebrated
+            .col-md-4.mb-3
+              .stat-card
+                .stat-number#totalInspiration 0
+                .stat-label Lives Touched
+        
+        // Featured Success Story
+        .featured-story.mb-4
+          h3.section-title
+            i.bi.bi-star-fill.text-warning.me-2
+            | Featured Story of the Week
+          .featured-story-card#featuredStoryCard
+            .text-center.py-5
+              .spinner-border.text-primary(role="status")
+                span.visually-hidden Loading featured story...
+        
+        // Story Categories
+        .story-categories.mb-4
+          h3.section-title
+            i.bi.bi-collection.me-2
+            | Browse by Category
+          .category-grid
+            .row
+              .col-md-3.col-6.mb-3
+                .category-card(data-category="early-recovery")
+                  .category-icon
+                    i.bi.bi-1-circle-fill
+                  h5 Early Recovery
+                  p 0-90 days
+                  .story-count 0 stories
+              
+              .col-md-3.col-6.mb-3
+                .category-card(data-category="first-year")
+                  .category-icon
+                    i.bi.bi-2-circle-fill
+                  h5 First Year
+                  p 3-12 months
+                  .story-count 0 stories
+              
+              .col-md-3.col-6.mb-3
+                .category-card(data-category="long-term")
+                  .category-icon
+                    i.bi.bi-3-circle-fill
+                  h5 Long Term
+                  p 1-5 years
+                  .story-count 0 stories
+              
+              .col-md-3.col-6.mb-3
+                .category-card(data-category="lifetime")
+                  .category-icon
+                    i.bi.bi-award-fill
+                  h5 Lifetime
+                  p 5+ years
+                  .story-count 0 stories
+        
+        // Share Your Story Section
+        .share-story-section.mb-4
+          .share-story-card
+            .row.align-items-center
+              .col-lg-8
+                h4 Share Your Success Story
+                p.text-muted Inspire others by sharing your recovery journey, milestones, and achievements. Your story could be the hope someone needs today.
+              .col-lg-4.text-lg-end
+                button.btn.btn-primary.btn-lg#shareStoryBtn(type="button")
+                  i.bi.bi-pencil-square.me-2
+                  | Share My Story
+        
+        // Success Stories List
+        .stories-list-section
+          h3.section-title
+            i.bi.bi-book-open.me-2
+            | Recent Success Stories
+          
+          // Filter and Sort Controls
+          .stories-controls.mb-3
+            .row.align-items-center
+              .col-lg-6
+                .d-flex.gap-2.align-items-center
+                  label.me-2(for="story-category-filter") Category:
+                  select.form-select#story-category-filter(style="min-width: 150px;")
+                    <option value="">All Categories</option>
+                    <option value="early-recovery">Early Recovery</option>
+                    <option value="first-year">First Year</option>
+                    <option value="long-term">Long Term</option>
+                    <option value="lifetime">Lifetime</option>
+              
+              .col-lg-6.text-lg-end
+                .d-flex.gap-2.align-items-center
+                  label.me-2(for="story-sort") Sort by:
+                  select.form-select#story-sort(style="min-width: 150px;")
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="most-liked">Most Liked</option>
+                    <option value="most-commented">Most Commented</option>
+          
+          // Stories Container
+          #storiesContainer
+            .text-center.py-5
+              .spinner-border.text-primary(role="status")
+                span.visually-hidden Loading stories...
+          
+          // Load More Button
+          .text-center.mt-4
+            button.btn.btn-outline-primary#loadMoreStoriesBtn(type="button" style="display: none;")
+              i.bi.bi-arrow-down.me-2
+              | Load More Stories
+
+    // Share Story Modal
+    #shareStoryModal.modal.fade(tabindex="-1")
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            h5.modal-title
+              i.bi.bi-pencil-square.me-2
+              | Share Your Success Story
+            button.btn-close(type="button" data-bs-dismiss="modal")
+          .modal-body
+            form#shareStoryForm
+              .row
+                .col-md-8
+                  .mb-3
+                    label.form-label(for="story-title") Story Title *
+                    input.form-control#story-title(type="text" required maxlength="200" placeholder="What milestone are you celebrating?")
+                
+                .col-md-4
+                  .mb-3
+                    label.form-label(for="story-category") Recovery Stage *
+                    select.form-select#story-category(required)
+                      <option value="">Select Stage</option>
+                      <option value="early-recovery">Early Recovery (0-90 days)</option>
+                      <option value="first-year">First Year (3-12 months)</option>
+                      <option value="long-term">Long Term (1-5 years)</option>
+                      <option value="lifetime">Lifetime (5+ years)</option>
+              
+              .mb-3
+                label.form-label(for="story-milestone") What milestone are you celebrating? *
+                input.form-control#story-milestone(type="text" required maxlength="200" placeholder="e.g., 30 days sober, 1 year anniversary, new job, etc.")
+              
+              .mb-3
+                label.form-label(for="story-content") Your Story *
+                textarea.form-control#story-content(rows="10" required placeholder="Share your journey, challenges overcome, and what helped you succeed. Your story could inspire others...")
+                .form-text Minimum 100 characters. Be honest, inspiring, and supportive.
+              
+              .mb-3
+                label.form-label(for="story-tags") Tags (optional)
+                input.form-control#story-tags(type="text" placeholder="recovery, milestone, inspiration, hope, spokane")
+                .form-text Separate tags with commas
+              
+              .mb-3
+                .form-check
+                  input.form-check-input#story-anonymous(type="checkbox")
+                  label.form-check-label(for="story-anonymous") Share anonymously
+                
+                .form-check
+                  input.form-check-input#story-featured(type="checkbox")
+                  label.form-check-label(for="story-featured") Allow this story to be featured
+              
+              .alert.alert-info
+                i.bi.bi-info-circle.me-2
+                strong Story Guidelines:
+                |  Be honest and authentic. Focus on hope and recovery. Avoid specific medical advice. All stories are moderated for community safety.
+          
+          .modal-footer
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+            button.btn.btn-primary#submitStoryBtn(type="submit") Share Story
+
+    // Story Detail Modal
+    #storyDetailModal.modal.fade(tabindex="-1")
+      .modal-dialog.modal-xl
+        .modal-content
+          .modal-header
+            h5.modal-title#storyDetailTitle
+            button.btn-close(type="button" data-bs-dismiss="modal")
+          .modal-body
+            #storyDetailContent
+              // Story content and comments will be loaded here
+          .modal-footer
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Close
+
+block scripts
+  script(src="/get-sober-spokane/js/community-forum.js")
+  script(src="/get-sober-spokane/js/success-stories.js")
+  script.
+    // Initialize success stories when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is authenticated
+      if (window.authManager && window.authManager.isAuthenticated()) {
+        // User is logged in, enable story sharing
+        initializeAuthenticatedStories();
+      } else {
+        // User is not logged in, show limited view
+        initializeGuestStories();
+      }
+    });
+    
+    function initializeAuthenticatedStories() {
+      console.log('Initializing authenticated success stories...');
+      // Enable story sharing
+      document.getElementById('shareStoryBtn').addEventListener('click', function() {
+        const modal = new bootstrap.Modal(document.getElementById('shareStoryModal'));
+        modal.show();
+      });
+      
+      // Initialize stories with full features
+      if (window.successStories && typeof window.successStories.initializeStories === 'function') {
+        window.successStories.initializeStories();
+      }
+    }
+    
+    function initializeGuestStories() {
+      console.log('Initializing guest success stories...');
+      // Disable story sharing for guests
+      const shareBtn = document.getElementById('shareStoryBtn');
+      shareBtn.disabled = true;
+      shareBtn.title = 'Please sign in to share your story';
+      
+      // Show limited stories view
+      if (window.successStories && typeof window.successStories.initializeStories === 'function') {
+        window.successStories.initializeStories();
+      }
+    }

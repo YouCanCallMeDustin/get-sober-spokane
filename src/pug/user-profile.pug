@@ -1,0 +1,285 @@
+extends layout
+
+block head
+  title User Profile - Get Sober Spokane Community
+  meta(name="description" content="View user profiles, sobriety milestones, and community contributions in the Sober Spokane recovery community.")
+  meta(name="keywords" content="user profile, sobriety milestones, recovery achievements, community member")
+
+block content
+  .profile-container
+    // Profile Hero Section
+    .profile-hero
+      .container
+        .row.align-items-center
+          .col-lg-8
+            .profile-info
+              .profile-avatar
+                img#userAvatar(src="/get-sober-spokane/assets/img/default-avatar.png" alt="User Avatar")
+              .profile-details
+                h1#userDisplayName User Profile
+                p#userBio.text-muted No bio available
+                .profile-stats
+                  .stat-item
+                    span.stat-number#userPosts 0
+                    span.stat-label Posts
+                  .stat-item
+                    span.stat-number#userComments 0
+                    span.stat-label Comments
+                  .stat-item
+                    span.stat-number#userUpvotes 0
+                    span.stat-label Upvotes
+          
+          .col-lg-4.text-lg-end
+            .profile-actions
+              button.btn.btn-outline-primary#editProfileBtn(type="button" style="display: none;")
+                i.bi.bi-pencil.me-2
+                | Edit Profile
+              button.btn.btn-primary#followUserBtn(type="button" style="display: none;")
+                i.bi.bi-person-plus.me-2
+                | Follow
+    
+    // Profile Content
+    .profile-content
+      .container
+        .row
+          // Left Column - Profile Details
+          .col-lg-4.mb-4
+            .profile-card
+              h3.card-title
+                i.bi.bi-person-circle.me-2
+                | Profile Information
+              
+              .profile-section
+                h5.section-label
+                  i.bi.bi-calendar-event.me-2
+                  | Sobriety Journey
+                .sobriety-info
+                  .sobriety-counter
+                    span.counter-number#sobrietyDays 0
+                    span.counter-label days
+                  p.counter-subtitle Since last drink or drug use
+                  
+                  .sobriety-date
+                    label Sobriety Date:
+                    p#sobrietyDate.text-muted Not set
+              
+              .profile-section
+                h5.section-label
+                  i.bi.bi-trophy.me-2
+                  | Recovery Milestones
+                .milestones-list#userMilestones
+                  p.text-muted No milestones yet
+              
+              .profile-section
+                h5.section-label
+                  i.bi.bi-geo-alt.me-2
+                  | Location
+                p#userLocation.text-muted Spokane, WA
+              
+              .profile-section
+                h5.section-label
+                  i.bi.bi-calendar.me-2
+                  | Member Since
+                p#memberSince.text-muted Loading...
+          
+          // Right Column - User Activity
+          .col-lg-8.mb-4
+            .profile-card
+              h3.card-title
+                i.bi.bi-activity.me-2
+                | Recent Activity
+              
+              // Activity Tabs
+              ul.nav.nav-tabs#activityTabs(role="tablist")
+                li.nav-item(role="presentation")
+                  button.nav-link.active#posts-tab(data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab")
+                    i.bi.bi-chat-dots.me-2
+                    | Posts
+                li.nav-item(role="presentation")
+                  button.nav-link#comments-tab(data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab")
+                    i.bi.bi-chat.me-2
+                    | Comments
+                li.nav-item(role="presentation")
+                  button.nav-link#achievements-tab(data-bs-toggle="tab" data-bs-target="#achievements" type="button" role="tab")
+                    i.bi.bi-award.me-2
+                    | Achievements
+              
+              .tab-content#activityTabContent
+                // Posts Tab
+                .tab-pane.fade.show.active#posts(role="tabpanel")
+                  .activity-list#userPostsList
+                    .text-center.py-4
+                      .spinner-border.text-primary(role="status")
+                        span.visually-hidden Loading...
+                
+                // Comments Tab
+                .tab-pane.fade#comments(role="tabpanel")
+                  .activity-list#userCommentsList
+                    .text-center.py-4
+                      .spinner-border.text-primary(role="status")
+                        span.visually-hidden Loading...
+                
+                // Achievements Tab
+                .tab-pane.fade#achievements(role="tabpanel")
+                  .activity-list#userAchievementsList
+                    .text-center.py-4
+                      .spinner-border.text-primary(role="status")
+                        span.visually-hidden Loading...
+
+    // Edit Profile Modal
+    #editProfileModal.modal.fade(tabindex="-1")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h5.modal-title
+              i.bi.bi-pencil.me-2
+              | Edit Profile
+            button.btn-close(type="button" data-bs-dismiss="modal")
+          .modal-body
+            form#editProfileForm
+              .mb-3
+                label.form-label(for="edit-display-name") Display Name
+                input.form-control#edit-display-name(type="text" maxlength="50")
+              
+              .mb-3
+                label.form-label(for="edit-bio") Bio
+                textarea.form-control#edit-bio(rows="3" maxlength="500" placeholder="Tell us about yourself...")
+              
+              .mb-3
+                label.form-label(for="edit-location") Location
+                input.form-control#edit-location(type="text" maxlength="100" placeholder="City, State")
+              
+              .mb-3
+                label.form-label(for="edit-sobriety-date") Sobriety Date
+                input.form-control#edit-sobriety-date(type="date")
+              
+              .mb-3
+                label.form-label(for="edit-privacy") Privacy Settings
+                select.form-select#edit-privacy
+                  option(value="public") Public Profile
+                  option(value="community") Community Only
+                  option(value="private") Private
+          
+          .modal-footer
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+            button.btn.btn-primary#saveProfileBtn(type="submit") Save Changes
+
+block scripts
+  script(src="/get-sober-spokane/js/community-forum.js")
+  script(src="/get-sober-spokane/js/user-profile.js")
+  script.
+    // Initialize profile when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get user ID from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('id') || urlParams.get('user');
+      
+      if (userId) {
+        loadUserProfile(userId);
+      } else {
+        // No user ID provided, show current user's profile
+        if (window.authManager && window.authManager.isAuthenticated()) {
+          loadCurrentUserProfile();
+        } else {
+          showError('Please sign in to view your profile');
+        }
+      }
+    });
+    
+    async function loadUserProfile(userId) {
+      try {
+        // Show loading state
+        showLoading();
+        
+        // Load user profile data
+        if (window.forum && typeof window.forum.loadUserProfile === 'function') {
+          await window.forum.loadUserProfile(userId);
+        }
+        
+        // Check if this is the current user's profile
+        if (window.authManager && window.authManager.isAuthenticated()) {
+          const currentUser = window.authManager.getCurrentUser();
+          if (currentUser && currentUser.id === userId) {
+            showEditProfileButton();
+          } else {
+            showFollowButton();
+          }
+        }
+        
+        hideLoading();
+      } catch (error) {
+        console.error('Failed to load user profile:', error);
+        showError('Failed to load user profile');
+      }
+    }
+    
+    async function loadCurrentUserProfile() {
+      try {
+        // Show loading state
+        showLoading();
+        
+        // Load current user's profile
+        if (window.forum && typeof window.forum.loadCurrentUserProfile === 'function') {
+          await window.forum.loadCurrentUserProfile();
+        }
+        
+        showEditProfileButton();
+        hideLoading();
+      } catch (error) {
+        console.error('Failed to load current user profile:', error);
+        showError('Failed to load profile');
+      }
+    }
+    
+    function showEditProfileButton() {
+      const editBtn = document.getElementById('editProfileBtn');
+      if (editBtn) {
+        editBtn.style.display = 'inline-block';
+        editBtn.addEventListener('click', showEditProfileModal);
+      }
+    }
+    
+    function showFollowButton() {
+      const followBtn = document.getElementById('followUserBtn');
+      if (followBtn) {
+        followBtn.style.display = 'inline-block';
+        followBtn.addEventListener('click', followUser);
+      }
+    }
+    
+    function showEditProfileModal() {
+      const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+      modal.show();
+    }
+    
+    async function followUser() {
+      // Implement follow functionality
+      const followBtn = document.getElementById('followUserBtn');
+      if (followBtn) {
+        followBtn.textContent = 'Following';
+        followBtn.classList.remove('btn-primary');
+        followBtn.classList.add('btn-outline-primary');
+        followBtn.disabled = true;
+      }
+    }
+    
+    function showLoading() {
+      // Show loading spinners
+      const spinners = document.querySelectorAll('.spinner-border');
+      spinners.forEach(spinner => spinner.style.display = 'inline-block');
+    }
+    
+    function hideLoading() {
+      // Hide loading spinners
+      const spinners = document.querySelectorAll('.spinner-border');
+      spinners.forEach(spinner => spinner.style.display = 'none');
+    }
+    
+    function showError(message) {
+      // Show error message
+      const container = document.querySelector('.profile-content .container');
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'alert alert-danger';
+      errorDiv.textContent = message;
+      container.insertBefore(errorDiv, container.firstChild);
+    }
