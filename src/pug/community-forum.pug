@@ -170,10 +170,23 @@ block content
             button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Close
 
 block scripts
-  script(src="/get-sober-spokane/js/community-forum.js")
+  script(src="/get-sober-spokane/js/community-forum-enhanced.js")
   script.
     // Initialize forum when page loads
     document.addEventListener('DOMContentLoaded', function() {
+      // Wire Create Post button to submit the form (button is outside the form)
+      const submitBtn = document.getElementById('submitPostBtn');
+      const form = document.getElementById('newPostForm');
+      if (submitBtn && form) {
+        submitBtn.addEventListener('click', function() {
+          if (typeof form.requestSubmit === 'function') {
+            form.requestSubmit();
+          } else {
+            form.submit();
+          }
+        });
+      }
+
       // Check if user is authenticated
       if (window.authManager && window.authManager.isAuthenticated()) {
         // User is logged in, enable full forum features
