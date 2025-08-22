@@ -11953,6 +11953,63 @@ hr.divider-light {
     font-size: 0.9rem;
   }
 }
+.auth-card {
+  max-width: 500px;
+  margin: 0 auto;
+}
+.auth-card .card-title {
+  color: #2c5aa0;
+  margin-bottom: 1rem;
+}
+.auth-card .form-label {
+  font-weight: 500;
+  color: #333;
+}
+.auth-card .form-control {
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 0.75rem;
+  transition: border-color 0.2s ease;
+}
+.auth-card .form-control:focus {
+  border-color: #2c5aa0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.auth-card .btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.auth-card .btn.btn-primary {
+  background: #2c5aa0;
+  border-color: #2c5aa0;
+}
+.auth-card .btn.btn-primary:hover {
+  background: #214478;
+  border-color: #214478;
+  transform: translateY(-1px);
+}
+.auth-card .btn.btn-outline-secondary {
+  border-color: #6c757d;
+  color: #6c757d;
+}
+.auth-card .btn.btn-outline-secondary:hover {
+  background: #6c757d;
+  border-color: #6c757d;
+  color: white;
+}
+.auth-card .auth-links {
+  margin-top: 1rem;
+}
+.auth-card .auth-links a {
+  color: #2c5aa0;
+  text-decoration: none;
+}
+.auth-card .auth-links a:hover {
+  text-decoration: underline;
+}
+
 header.masthead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 4.5rem);

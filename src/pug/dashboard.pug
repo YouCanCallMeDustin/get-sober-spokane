@@ -14,60 +14,83 @@ block content
     // Main Dashboard Content
     .dashboard-content
       .container
-        .row
-          // Left Column - Recovery Progress
-          .col-lg-8.mb-4
-            .dashboard-card.recovery-card
-              h3.card-title Recovery Progress
+        // Sign In Form (shown when not authenticated)
+        #signInForm.dashboard-card.auth-card(style="display: none;")
+          .row.justify-content-center
+            .col-lg-6
+              h3.card-title.text-center Sign In to Your Dashboard
+              p.text-center.text-muted Access your recovery progress and manage your journey
               
-              // Sobriety Counter Section
-              .sobriety-section
-                h5.section-label Sobriety Counter
-                .sobriety-counter
-                  .counter-display
-                    span.counter-number#sobrietyDays 0
-                    span.counter-label days
-                  p.counter-subtitle Since your last drink or drug use
+              form#loginForm
+                .mb-3
+                  label.form-label(for="email") Email Address
+                  input.form-control#email(type="email" name="email" required)
+                .mb-3
+                  label.form-label(for="password") Password
+                  input.form-control#password(type="password" name="password" required)
+                .mb-3
+                  button.btn.btn-primary.w-100#signInBtn(type="submit") Sign In
+                  button.btn.btn-outline-secondary.w-100.mt-2#signUpBtn(type="button") Create Account
                 
-                // Sobriety Date Update
-                .sobriety-date-update
-                  label(for="sobrietyDate") Update Sobriety Date:
-                  .date-input-group
-                    input.form-control#sobrietyDate(type="date" name="sobrietyDate")
-                    button.btn.btn-primary#updateSobrietyDate Update
-              
-              // Recovery Milestones Section
-              .milestones-section
-                h5.section-label Recovery Milestones
-                .milestones-list#milestonesList
-                  // Milestones will be loaded dynamically
-                .add-milestone
-                  button.btn.btn-success#addMilestoneBtn(type="button") + Add Milestone
-          
-          // Right Column - Quick Actions
-          .col-lg-4.mb-4
-            .dashboard-card.quick-actions-card
-              h3.card-title Quick Actions
-              .quick-actions-list
-                a.quick-action-btn.emergency-btn(href="/get-sober-spokane/resource-directory.html#emergency-help")
-                  .action-icon
-                    i.bi.bi-exclamation-triangle
-                  .action-text Emergency Help
+                .text-center.mt-3
+                  a.text-muted(href="#" id="forgotPassword") Forgot your password?
+        
+        // Dashboard Content (shown when authenticated)
+        #dashboardContent(style="display: none;")
+          .row
+            // Left Column - Recovery Progress
+            .col-lg-8.mb-4
+              .dashboard-card.recovery-card
+                h3.card-title Recovery Progress
                 
-                a.quick-action-btn(href="/get-sober-spokane/resource-directory.html")
-                  .action-icon
-                    i.bi.bi-search
-                  .action-text Resource Directory
+                // Sobriety Counter Section
+                .sobriety-section
+                  h5.section-label Sobriety Counter
+                  .sobriety-counter
+                    .counter-display
+                      span.counter-number#sobrietyDays 0
+                      span.counter-label days
+                    p.counter-subtitle Since your last drink or drug use
+                  
+                  // Sobriety Date Update
+                  .sobriety-date-update
+                    label(for="sobrietyDate") Update Sobriety Date:
+                    .date-input-group
+                      input.form-control#sobrietyDate(type="date" name="sobrietyDate")
+                      button.btn.btn-primary#updateSobrietyDate Update
                 
-                a.quick-action-btn(href="/get-sober-spokane/community-engagement-sober-activities.html")
-                  .action-icon
-                    i.bi.bi-people
-                  .action-text Community Forum
-                
-                a.quick-action-btn(href="/get-sober-spokane/donations.html")
-                  .action-icon
-                    i.bi.bi-heart
-                  .action-text Support Our Mission
+                // Recovery Milestones Section
+                .milestones-section
+                  h5.section-label Recovery Milestones
+                  .milestones-list#milestonesList
+                    // Milestones will be loaded dynamically
+                  .add-milestone
+                    button.btn.btn-success#addMilestoneBtn(type="button") + Add Milestone
+            
+            // Right Column - Quick Actions
+            .col-lg-4.mb-4
+              .dashboard-card.quick-actions-card
+                h3.card-title Quick Actions
+                .quick-actions-list
+                  a.quick-action-btn.emergency-btn(href="/get-sober-spokane/resource-directory.html#emergency-help")
+                    .action-icon
+                      i.bi.bi-exclamation-triangle
+                    .action-text Emergency Help
+                  
+                  a.quick-action-btn(href="/get-sober-spokane/resource-directory.html")
+                    .action-icon
+                      i.bi.bi-search
+                    .action-text Resource Directory
+                  
+                  a.quick-action-btn(href="/get-sober-spokane/community-engagement-sober-activities.html")
+                    .action-icon
+                      i.bi.bi-people
+                    .action-text Community Forum
+                  
+                  a.quick-action-btn(href="/get-sober-spokane/donations.html")
+                    .action-icon
+                      i.bi.bi-heart
+                    .action-text Support Our Mission
 
 block scripts
   script.
@@ -112,16 +135,27 @@ block scripts
       try {
         if (!supabase) return;
         
-        // Load user profile data
-        await loadProfile();
-        
-        // Load milestones
-        await loadMilestones();
-        
-        // Calculate sobriety days
-        calculateSobrietyDays();
+        // Check if user is authenticated
+        if (currentUser) {
+          // User is authenticated, show dashboard
+          showDashboardContent();
+          
+          // Load user profile data
+          await loadProfile();
+          
+          // Load milestones
+          await loadMilestones();
+          
+          // Calculate sobriety days
+          calculateSobrietyDays();
+        } else {
+          // User is not authenticated, show sign-in form
+          showSignInForm();
+        }
       } catch (error) {
         console.error('Failed to initialize dashboard:', error);
+        // Show sign-in form on error
+        showSignInForm();
       }
     }
     
@@ -131,6 +165,11 @@ block scripts
       
       // Add milestone
       document.getElementById('addMilestoneBtn').addEventListener('click', showAddMilestoneModal);
+      
+      // Sign-in form
+      document.getElementById('loginForm').addEventListener('submit', handleSignIn);
+      document.getElementById('signUpBtn').addEventListener('click', handleSignUp);
+      document.getElementById('forgotPassword').addEventListener('click', handleForgotPassword);
     }
     
     async function handleUpdateSobrietyDate() {
@@ -377,6 +416,123 @@ block scripts
       if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
       if (diffDays < 365) return `${Math.floor(diffDays / 7)} months ago`;
       return date.toLocaleDateString();
+    }
+    
+    // Authentication UI functions
+    function showSignInForm() {
+      document.getElementById('signInForm').style.display = 'block';
+      document.getElementById('dashboardContent').style.display = 'none';
+    }
+    
+    function showDashboardContent() {
+      document.getElementById('signInForm').style.display = 'none';
+      document.getElementById('dashboardContent').style.display = 'block';
+    }
+    
+    // Sign-in handler
+    async function handleSignIn(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+        
+        if (error) throw error;
+        
+        currentUser = data.user;
+        showMessage('Successfully signed in!', 'success');
+        showDashboardContent();
+        
+        // Initialize dashboard for authenticated user
+        await loadProfile();
+        await loadMilestones();
+        calculateSobrietyDays();
+        
+        // Update navigation
+        updateNavigation();
+        
+      } catch (error) {
+        console.error('Sign-in error:', error);
+        showMessage('Sign-in failed: ' + error.message, 'danger');
+      }
+    }
+    
+    // Sign-up handler
+    async function handleSignUp(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      if (password.length < 6) {
+        showMessage('Password must be at least 6 characters', 'warning');
+        return;
+      }
+      
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email: email,
+          password: password
+        });
+        
+        if (error) throw error;
+        
+        showMessage('Account created! Please check your email to verify your account.', 'success');
+        
+      } catch (error) {
+        console.error('Sign-up error:', error);
+        showMessage('Sign-up failed: ' + error.message, 'danger');
+      }
+    }
+    
+    // Forgot password handler
+    async function handleForgotPassword(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      if (!email) {
+        showMessage('Please enter your email address', 'warning');
+        return;
+      }
+      
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(email);
+        
+        if (error) throw error;
+        
+        showMessage('Password reset email sent! Please check your inbox.', 'success');
+        
+      } catch (error) {
+        console.error('Password reset error:', error);
+        showMessage('Password reset failed: ' + error.message, 'danger');
+      }
+    }
+    
+    // Update navigation based on auth state
+    function updateNavigation() {
+      const loginNavItem = document.getElementById('navbarLogin');
+      const logoutNavItem = document.getElementById('navbarLogout');
+      
+      if (currentUser) {
+        if (loginNavItem && loginNavItem.parentElement) {
+          loginNavItem.parentElement.style.display = 'none';
+        }
+        if (logoutNavItem && logoutNavItem.parentElement) {
+          logoutNavItem.parentElement.style.display = 'block';
+        }
+      } else {
+        if (loginNavItem && loginNavItem.parentElement) {
+          loginNavItem.parentElement.style.display = 'block';
+        }
+        if (logoutNavItem && logoutNavItem.parentElement) {
+          logoutNavItem.parentElement.style.display = 'none';
+        }
+      }
     }
     
     function showMessage(message, type) {

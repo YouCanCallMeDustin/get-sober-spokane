@@ -392,3 +392,73 @@
     }
   }
 }
+
+// Authentication Card
+.auth-card {
+  max-width: 500px;
+  margin: 0 auto;
+  
+  .card-title {
+    color: $primary-blue;
+    margin-bottom: 1rem;
+  }
+  
+  .form-label {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: border-color 0.2s ease;
+    
+    &:focus {
+      border-color: $primary-blue;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+  }
+  
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    
+    &.btn-primary {
+      background: $primary-blue;
+      border-color: $primary-blue;
+      
+      &:hover {
+        background: darken($primary-blue, 10%);
+        border-color: darken($primary-blue, 10%);
+        transform: translateY(-1px);
+      }
+    }
+    
+    &.btn-outline-secondary {
+      border-color: #6c757d;
+      color: #6c757d;
+      
+      &:hover {
+        background: #6c757d;
+        border-color: #6c757d;
+        color: white;
+      }
+    }
+  }
+  
+  .auth-links {
+    margin-top: 1rem;
+    
+    a {
+      color: $primary-blue;
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

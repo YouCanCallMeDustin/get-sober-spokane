@@ -154,7 +154,7 @@
                         <li class="nav-item"><a class="nav-link" href="/get-sober-spokane/dashboard.html">Dashboard</a></li>
                         <li class="nav-item"><a class="nav-link" href="/get-sober-spokane/#contact">Contact</a></li>
                         <!-- Auth navigation-->
-                        <li class="nav-item" data-auth="guest"><a class="nav-link" id="navbarLogin" href="/get-sober-spokane/auth/login.html">Sign In</a></li>
+                        <li class="nav-item" data-auth="guest"><a class="nav-link" id="navbarLogin" href="/get-sober-spokane/dashboard.html">Sign In</a></li>
                         <li class="nav-item" data-auth="required" style="display: none"><a class="nav-link" id="navbarLogout" href="#">Sign Out</a></li>
                     </ul>
                 </div>
@@ -176,59 +176,86 @@
             <!-- Main Dashboard Content-->
             <div class="dashboard-content">
                 <div class="container">
-                    <div class="row">
-                        <!-- Left Column - Recovery Progress-->
-                        <div class="col-lg-8 mb-4">
-                            <div class="dashboard-card recovery-card">
-                                <h3 class="card-title">Recovery Progress</h3>
-                                <!-- Sobriety Counter Section-->
-                                <div class="sobriety-section">
-                                    <h5 class="section-label">Sobriety Counter</h5>
-                                    <div class="sobriety-counter">
-                                        <div class="counter-display">
-                                            <span class="counter-number" id="sobrietyDays">0</span>
-                                            <span class="counter-label">days</span>
-                                        </div>
-                                        <p class="counter-subtitle">Since your last drink or drug use</p>
+                    <!-- Sign In Form (shown when not authenticated)-->
+                    <div class="dashboard-card auth-card" id="signInForm" style="display: none">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6">
+                                <h3 class="card-title text-center">Sign In to Your Dashboard</h3>
+                                <p class="text-center text-muted">Access your recovery progress and manage your journey</p>
+                                <form id="loginForm">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="email">Email Address</label>
+                                        <input class="form-control" id="email" type="email" name="email" required />
                                     </div>
-                                    <!-- Sobriety Date Update-->
-                                    <div class="sobriety-date-update">
-                                        <label for="sobrietyDate">Update Sobriety Date:</label>
-                                        <div class="date-input-group">
-                                            <input class="form-control" id="sobrietyDate" type="date" name="sobrietyDate" />
-                                            <button class="btn btn-primary" id="updateSobrietyDate">Update</button>
-                                        </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="password">Password</label>
+                                        <input class="form-control" id="password" type="password" name="password" required />
                                     </div>
-                                </div>
-                                <!-- Recovery Milestones Section-->
-                                <div class="milestones-section">
-                                    <h5 class="section-label">Recovery Milestones</h5>
-                                    <div class="milestones-list" id="milestonesList"><!-- Milestones will be loaded dynamically--></div>
-                                    <div class="add-milestone"><button class="btn btn-success" id="addMilestoneBtn" type="button">+ Add Milestone</button></div>
-                                </div>
+                                    <div class="mb-3">
+                                        <button class="btn btn-primary w-100" id="signInBtn" type="submit">Sign In</button>
+                                        <button class="btn btn-outline-secondary w-100 mt-2" id="signUpBtn" type="button">Create Account</button>
+                                    </div>
+                                    <div class="text-center mt-3"><a class="text-muted" href="#" id="forgotPassword">Forgot your password?</a></div>
+                                </form>
                             </div>
                         </div>
-                        <!-- Right Column - Quick Actions-->
-                        <div class="col-lg-4 mb-4">
-                            <div class="dashboard-card quick-actions-card">
-                                <h3 class="card-title">Quick Actions</h3>
-                                <div class="quick-actions-list">
-                                    <a class="quick-action-btn emergency-btn" href="/get-sober-spokane/resource-directory.html#emergency-help">
-                                        <div class="action-icon"><i class="bi bi-exclamation-triangle"></i></div>
-                                        <div class="action-text">Emergency Help</div>
-                                    </a>
-                                    <a class="quick-action-btn" href="/get-sober-spokane/resource-directory.html">
-                                        <div class="action-icon"><i class="bi bi-search"></i></div>
-                                        <div class="action-text">Resource Directory</div>
-                                    </a>
-                                    <a class="quick-action-btn" href="/get-sober-spokane/community-engagement-sober-activities.html">
-                                        <div class="action-icon"><i class="bi bi-people"></i></div>
-                                        <div class="action-text">Community Forum</div>
-                                    </a>
-                                    <a class="quick-action-btn" href="/get-sober-spokane/donations.html">
-                                        <div class="action-icon"><i class="bi bi-heart"></i></div>
-                                        <div class="action-text">Support Our Mission</div>
-                                    </a>
+                    </div>
+                    <!-- Dashboard Content (shown when authenticated)-->
+                    <div id="dashboardContent" style="display: none">
+                        <div class="row">
+                            <!-- Left Column - Recovery Progress-->
+                            <div class="col-lg-8 mb-4">
+                                <div class="dashboard-card recovery-card">
+                                    <h3 class="card-title">Recovery Progress</h3>
+                                    <!-- Sobriety Counter Section-->
+                                    <div class="sobriety-section">
+                                        <h5 class="section-label">Sobriety Counter</h5>
+                                        <div class="sobriety-counter">
+                                            <div class="counter-display">
+                                                <span class="counter-number" id="sobrietyDays">0</span>
+                                                <span class="counter-label">days</span>
+                                            </div>
+                                            <p class="counter-subtitle">Since your last drink or drug use</p>
+                                        </div>
+                                        <!-- Sobriety Date Update-->
+                                        <div class="sobriety-date-update">
+                                            <label for="sobrietyDate">Update Sobriety Date:</label>
+                                            <div class="date-input-group">
+                                                <input class="form-control" id="sobrietyDate" type="date" name="sobrietyDate" />
+                                                <button class="btn btn-primary" id="updateSobrietyDate">Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Recovery Milestones Section-->
+                                    <div class="milestones-section">
+                                        <h5 class="section-label">Recovery Milestones</h5>
+                                        <div class="milestones-list" id="milestonesList"><!-- Milestones will be loaded dynamically--></div>
+                                        <div class="add-milestone"><button class="btn btn-success" id="addMilestoneBtn" type="button">+ Add Milestone</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Right Column - Quick Actions-->
+                            <div class="col-lg-4 mb-4">
+                                <div class="dashboard-card quick-actions-card">
+                                    <h3 class="card-title">Quick Actions</h3>
+                                    <div class="quick-actions-list">
+                                        <a class="quick-action-btn emergency-btn" href="/get-sober-spokane/resource-directory.html#emergency-help">
+                                            <div class="action-icon"><i class="bi bi-exclamation-triangle"></i></div>
+                                            <div class="action-text">Emergency Help</div>
+                                        </a>
+                                        <a class="quick-action-btn" href="/get-sober-spokane/resource-directory.html">
+                                            <div class="action-icon"><i class="bi bi-search"></i></div>
+                                            <div class="action-text">Resource Directory</div>
+                                        </a>
+                                        <a class="quick-action-btn" href="/get-sober-spokane/community-engagement-sober-activities.html">
+                                            <div class="action-icon"><i class="bi bi-people"></i></div>
+                                            <div class="action-text">Community Forum</div>
+                                        </a>
+                                        <a class="quick-action-btn" href="/get-sober-spokane/donations.html">
+                                            <div class="action-icon"><i class="bi bi-heart"></i></div>
+                                            <div class="action-text">Support Our Mission</div>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -356,16 +383,27 @@
                 try {
                     if (!supabase) return;
 
-                    // Load user profile data
-                    await loadProfile();
+                    // Check if user is authenticated
+                    if (currentUser) {
+                        // User is authenticated, show dashboard
+                        showDashboardContent();
 
-                    // Load milestones
-                    await loadMilestones();
+                        // Load user profile data
+                        await loadProfile();
 
-                    // Calculate sobriety days
-                    calculateSobrietyDays();
+                        // Load milestones
+                        await loadMilestones();
+
+                        // Calculate sobriety days
+                        calculateSobrietyDays();
+                    } else {
+                        // User is not authenticated, show sign-in form
+                        showSignInForm();
+                    }
                 } catch (error) {
                     console.error('Failed to initialize dashboard:', error);
+                    // Show sign-in form on error
+                    showSignInForm();
                 }
             }
 
@@ -375,6 +413,11 @@
 
                 // Add milestone
                 document.getElementById('addMilestoneBtn').addEventListener('click', showAddMilestoneModal);
+
+                // Sign-in form
+                document.getElementById('loginForm').addEventListener('submit', handleSignIn);
+                document.getElementById('signUpBtn').addEventListener('click', handleSignUp);
+                document.getElementById('forgotPassword').addEventListener('click', handleForgotPassword);
             }
 
             async function handleUpdateSobrietyDate() {
@@ -593,6 +636,120 @@
                 if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
                 if (diffDays < 365) return `${Math.floor(diffDays / 7)} months ago`;
                 return date.toLocaleDateString();
+            }
+
+            // Authentication UI functions
+            function showSignInForm() {
+                document.getElementById('signInForm').style.display = 'block';
+                document.getElementById('dashboardContent').style.display = 'none';
+            }
+
+            function showDashboardContent() {
+                document.getElementById('signInForm').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+            }
+
+            // Sign-in handler
+            async function handleSignIn(e) {
+                e.preventDefault();
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password,
+                    });
+
+                    if (error) throw error;
+
+                    currentUser = data.user;
+                    showMessage('Successfully signed in!', 'success');
+                    showDashboardContent();
+
+                    // Initialize dashboard for authenticated user
+                    await loadProfile();
+                    await loadMilestones();
+                    calculateSobrietyDays();
+
+                    // Update navigation
+                    updateNavigation();
+                } catch (error) {
+                    console.error('Sign-in error:', error);
+                    showMessage('Sign-in failed: ' + error.message, 'danger');
+                }
+            }
+
+            // Sign-up handler
+            async function handleSignUp(e) {
+                e.preventDefault();
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                if (password.length < 6) {
+                    showMessage('Password must be at least 6 characters', 'warning');
+                    return;
+                }
+
+                try {
+                    const { data, error } = await supabase.auth.signUp({
+                        email: email,
+                        password: password,
+                    });
+
+                    if (error) throw error;
+
+                    showMessage('Account created! Please check your email to verify your account.', 'success');
+                } catch (error) {
+                    console.error('Sign-up error:', error);
+                    showMessage('Sign-up failed: ' + error.message, 'danger');
+                }
+            }
+
+            // Forgot password handler
+            async function handleForgotPassword(e) {
+                e.preventDefault();
+
+                const email = document.getElementById('email').value;
+                if (!email) {
+                    showMessage('Please enter your email address', 'warning');
+                    return;
+                }
+
+                try {
+                    const { error } = await supabase.auth.resetPasswordForEmail(email);
+
+                    if (error) throw error;
+
+                    showMessage('Password reset email sent! Please check your inbox.', 'success');
+                } catch (error) {
+                    console.error('Password reset error:', error);
+                    showMessage('Password reset failed: ' + error.message, 'danger');
+                }
+            }
+
+            // Update navigation based on auth state
+            function updateNavigation() {
+                const loginNavItem = document.getElementById('navbarLogin');
+                const logoutNavItem = document.getElementById('navbarLogout');
+
+                if (currentUser) {
+                    if (loginNavItem && loginNavItem.parentElement) {
+                        loginNavItem.parentElement.style.display = 'none';
+                    }
+                    if (logoutNavItem && logoutNavItem.parentElement) {
+                        logoutNavItem.parentElement.style.display = 'block';
+                    }
+                } else {
+                    if (loginNavItem && loginNavItem.parentElement) {
+                        loginNavItem.parentElement.style.display = 'block';
+                    }
+                    if (logoutNavItem && logoutNavItem.parentElement) {
+                        logoutNavItem.parentElement.style.display = 'none';
+                    }
+                }
             }
 
             function showMessage(message, type) {
