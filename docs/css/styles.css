@@ -11999,6 +11999,19 @@ hr.divider-light {
   border-color: #6c757d;
   color: white;
 }
+.auth-card .btn.btn-outline-dark {
+  border-color: #343a40;
+  color: #343a40;
+}
+.auth-card .btn.btn-outline-dark:hover {
+  background: #343a40;
+  border-color: #343a40;
+  color: white;
+  transform: translateY(-1px);
+}
+.auth-card .btn.btn-outline-dark i {
+  color: #4285f4;
+}
 .auth-card .auth-links {
   margin-top: 1rem;
 }

@@ -21,6 +21,15 @@ block content
               h3.card-title.text-center Sign In to Your Dashboard
               p.text-center.text-muted Access your recovery progress and manage your journey
               
+              // Google Sign In Button
+              .mb-3
+                button.btn.btn-outline-dark.w-100#googleSignInBtn(type="button")
+                  i.bi.bi-google.me-2
+                  | Sign in with Google
+              
+              .text-center.mb-3
+                span.text-muted OR
+              
               form#loginForm
                 .mb-3
                   label.form-label(for="email") Email Address
@@ -170,6 +179,7 @@ block scripts
       document.getElementById('loginForm').addEventListener('submit', handleSignIn);
       document.getElementById('signUpBtn').addEventListener('click', handleSignUp);
       document.getElementById('forgotPassword').addEventListener('click', handleForgotPassword);
+      document.getElementById('googleSignInBtn').addEventListener('click', handleGoogleSignIn);
     }
     
     async function handleUpdateSobrietyDate() {
@@ -459,6 +469,29 @@ block scripts
       } catch (error) {
         console.error('Sign-in error:', error);
         showMessage('Sign-in failed: ' + error.message, 'danger');
+      }
+    }
+    
+    // Google Sign-in handler
+    async function handleGoogleSignIn(e) {
+      e.preventDefault();
+      
+      try {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: window.location.origin + window.location.pathname
+          }
+        });
+        
+        if (error) throw error;
+        
+        // The redirect will happen automatically
+        showMessage('Redirecting to Google...', 'info');
+        
+      } catch (error) {
+        console.error('Google sign-in error:', error);
+        showMessage('Google sign-in failed: ' + error.message, 'danger');
       }
     }
     

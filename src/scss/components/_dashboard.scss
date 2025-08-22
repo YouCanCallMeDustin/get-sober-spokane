@@ -447,6 +447,22 @@
         color: white;
       }
     }
+    
+    &.btn-outline-dark {
+      border-color: #343a40;
+      color: #343a40;
+      
+      &:hover {
+        background: #343a40;
+        border-color: #343a40;
+        color: white;
+        transform: translateY(-1px);
+      }
+      
+      i {
+        color: #4285f4; // Google blue
+      }
+    }
   }
   
   .auth-links {
