@@ -614,7 +614,8 @@ class CommunityForum {
             // Reload post details
             this.viewPost(postId);
             
-            // Also refresh the list to update the background card count
+            // Refresh data and list to update background card count
+            await this.loadForumData();
             this.loadPosts();
             
             // Clear form
@@ -918,7 +919,8 @@ class CommunityForum {
             if (upEl) upEl.textContent = post?.upvotes ?? (totals?.upvotes || 0);
             if (downEl) downEl.textContent = post?.downvotes ?? (totals?.downvotes || 0);
 
-            // Refresh list
+            // Refresh data and list to ensure background reflects changes
+            await this.loadForumData();
             this.loadPosts();
         } catch (error) {
             console.error('Failed to vote:', error);
