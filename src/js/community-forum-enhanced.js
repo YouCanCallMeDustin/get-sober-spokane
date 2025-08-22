@@ -646,24 +646,92 @@ class CommunityForum {
             const canEdit = this.currentUser && this.currentUser.id === comment.user_id;
             
             return `
-                <div class="comment-item border-start border-2 ps-3 mb-3">
+                <div class="comment-item border-start border-2 ps-3 mb-3" data-comment-id="${comment.id}">
                     <div class="d-flex justify-content-between">
                         <div class="comment-meta mb-1">
                             <strong>${nameHtml}</strong>
                             <small class="text-muted ms-2">${timeAgo}</small>
                         </div>
                         ${canEdit ? `
-                        <div class="btn-group btn-group-sm">
-                            <button class="btn btn-outline-secondary btn-sm" onclick="forum.promptEditComment('${comment.id}')"><i class="bi bi-pencil me-1"></i>Edit</button>
+                        <div class="btn-group btn-group-sm" id="commentActions-${comment.id}">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="forum.enterEditComment('${comment.id}')"><i class="bi bi-pencil me-1"></i>Edit</button>
                             <button class="btn btn-outline-danger btn-sm" onclick="forum.confirmDeleteComment('${comment.id}')"><i class="bi bi-trash me-1"></i>Delete</button>
                         </div>` : ''}
                     </div>
-                    <div class="comment-content">
-                        ${comment.content.replace(/\n/g, '<br>')}
+                    <div id="commentView-${comment.id}">
+                        <div class="comment-content" style="white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;">
+                            ${comment.content.replace(/\n/g, '<br>')}
+                        </div>
                     </div>
+                    ${canEdit ? `
+                    <form id="commentEditForm-${comment.id}" style="display:none;">
+                        <div class="mb-2">
+                            <textarea class="form-control" id="editCommentInput-${comment.id}" rows="3">${comment.content.replace(/</g,'&lt;')}</textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="forum.saveEditComment('${comment.id}')">Save</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="forum.cancelEditComment('${comment.id}')">Cancel</button>
+                        </div>
+                    </form>` : ''}
                 </div>
             `;
         }).join('');
+    }
+
+    // Inline comment edit controls
+    enterEditComment(commentId) {
+        const view = document.getElementById(`commentView-${commentId}`);
+        const form = document.getElementById(`commentEditForm-${commentId}`);
+        if (view && form) {
+            view.style.display = 'none';
+            form.style.display = 'block';
+        }
+    }
+
+    async saveEditComment(commentId) {
+        try {
+            const input = document.getElementById(`editCommentInput-${commentId}`);
+            if (!input) return;
+            const newContent = input.value.trim();
+            if (!newContent) {
+                this.showNotification('Comment cannot be empty', 'warning');
+                return;
+            }
+            const { data, error } = await this.supabase
+                .from('forum_comments')
+                .select('post_id, user_id')
+                .eq('id', commentId)
+                .maybeSingle();
+            if (error) throw error;
+            if (!data || !this.currentUser || this.currentUser.id !== data.user_id) {
+                this.showNotification('You can only edit your own comments', 'warning');
+                return;
+            }
+            const { error: updErr } = await this.supabase
+                .from('forum_comments')
+                .update({ content: newContent, updated_at: new Date().toISOString() })
+                .eq('id', commentId)
+                .eq('user_id', this.currentUser.id);
+            if (updErr) throw updErr;
+            await this.loadForumData();
+            const post = this.forumData.posts.find(p => p.id === data.post_id);
+            const comments = await this.loadPostComments(data.post_id);
+            this.showPostDetailModal(post, comments);
+            this.loadPosts();
+            this.showNotification('Comment updated', 'success');
+        } catch (e) {
+            console.error('Failed to save comment', e);
+            this.showNotification('Failed to update comment', 'error');
+        }
+    }
+
+    cancelEditComment(commentId) {
+        const view = document.getElementById(`commentView-${commentId}`);
+        const form = document.getElementById(`commentEditForm-${commentId}`);
+        if (view && form) {
+            form.style.display = 'none';
+            view.style.display = 'block';
+        }
     }
 
     // Handle new comment
