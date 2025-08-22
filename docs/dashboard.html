@@ -259,6 +259,10 @@
                                             <div class="action-icon"><i class="bi bi-people"></i></div>
                                             <div class="action-text">Community Forum</div>
                                         </a>
+                                        <a class="quick-action-btn" id="viewProfileLink" href="#" style="display: none">
+                                            <div class="action-icon"><i class="bi bi-person"></i></div>
+                                            <div class="action-text">View Profile</div>
+                                        </a>
                                         <a class="quick-action-btn" href="/get-sober-spokane/donations.html">
                                             <div class="action-icon"><i class="bi bi-heart"></i></div>
                                             <div class="action-text">Support Our Mission</div>
@@ -381,6 +385,12 @@
                     if (session) {
                         currentUser = session.user;
                         updateUserDisplay();
+                        // Update profile link
+                        const profileLink = document.getElementById('viewProfileLink');
+                        if (profileLink) {
+                            profileLink.href = `/get-sober-spokane/user-profile.html?id=${currentUser.id}`;
+                            profileLink.style.display = 'flex';
+                        }
                     }
                 } catch (error) {
                     console.error('Failed to initialize Supabase:', error);
@@ -395,6 +405,13 @@
                     if (currentUser) {
                         // User is authenticated, show dashboard
                         showDashboardContent();
+
+                        // Show profile link
+                        const profileLink = document.getElementById('viewProfileLink');
+                        if (profileLink) {
+                            profileLink.href = `/get-sober-spokane/user-profile.html?id=${currentUser.id}`;
+                            profileLink.style.display = 'flex';
+                        }
 
                         // Load user profile data
                         await loadProfile();
@@ -773,6 +790,11 @@
                     if (logoutNavItem && logoutNavItem.parentElement) {
                         logoutNavItem.parentElement.style.display = 'block';
                     }
+                    const profileLink = document.getElementById('viewProfileLink');
+                    if (profileLink) {
+                        profileLink.href = `/get-sober-spokane/user-profile.html?id=${currentUser.id}`;
+                        profileLink.style.display = 'flex';
+                    }
                 } else {
                     if (loginNavItem && loginNavItem.parentElement) {
                         loginNavItem.parentElement.style.display = 'block';
@@ -780,6 +802,8 @@
                     if (logoutNavItem && logoutNavItem.parentElement) {
                         logoutNavItem.parentElement.style.display = 'none';
                     }
+                    const profileLink = document.getElementById('viewProfileLink');
+                    if (profileLink) profileLink.style.display = 'none';
                 }
             }
 

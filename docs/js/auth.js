@@ -128,10 +128,32 @@ class AuthManager {
         })
       }).catch(() => {});
     } catch (e) {}
-    
+
+    // Sync profile to forum_user_profiles
+    this.syncForumProfile(user).catch(err => console.warn('Profile sync failed', err));
+
     // Redirect to dashboard if on auth pages
     if (['/auth/login.html','/auth/signup.html','/auth/reset.html','/login','/signup','/reset'].includes(window.location.pathname)) {
       window.location.href = '/dashboard.html';
+    }
+  }
+
+  async syncForumProfile(user) {
+    try {
+      if (!this.supabase) return;
+      const displayName = user.user_metadata?.full_name || user.user_metadata?.display_name || user.user_metadata?.name || user.email;
+      const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
+      const { error } = await this.supabase
+        .from('forum_user_profiles')
+        .upsert({
+          user_id: user.id,
+          display_name: displayName,
+          avatar_url: avatarUrl,
+          updated_at: new Date().toISOString()
+        });
+      if (error) throw error;
+    } catch (e) {
+      console.warn('syncForumProfile error', e);
     }
   }
 
