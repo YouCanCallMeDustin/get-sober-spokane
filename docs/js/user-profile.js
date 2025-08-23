@@ -33,7 +33,12 @@
       if (nameEl && profile?.display_name) nameEl.textContent = profile.display_name;
 
       const avatarImg = document.querySelector('#userAvatar');
-      if (avatarImg && profile?.avatar_url) avatarImg.src = profile.avatar_url;
+      const googlePic = currentUser?.user_metadata?.picture || currentUser?.user_metadata?.avatar_url || null;
+      if (avatarImg){
+        const src = profile?.avatar_url || googlePic || '/get-sober-spokane/assets/img/default-avatar.png';
+        if (avatarImg.src !== src) avatarImg.src = src;
+        avatarImg.alt = 'Avatar';
+      }
 
       const bioEl = document.querySelector('#userBio');
       if (bioEl) bioEl.textContent = profile?.bio || 'No bio available';
@@ -48,16 +53,45 @@
       const upvotesEl = document.querySelector('#userUpvotes');
       if (upvotesEl && typeof upvotesCount?.count === 'number') upvotesEl.textContent = upvotesCount.count;
 
-      if (profile?.sobriety_date){
+      // Prefer Supabase profile date, else fall back to dashboard localStorage
+      const savedDashboard = (()=>{ try { return JSON.parse(localStorage.getItem('dashboardData')||'{}'); } catch(e){ return {}; }})();
+      const localSobriety = savedDashboard?.profile?.sobrietyDate || savedDashboard?.sobrietyDate || null;
+      const sobrietyDate = profile?.sobriety_date || localSobriety || null;
+
+      if (sobrietyDate){
         const daysEl = document.querySelector('#sobrietyDays');
         if (daysEl){
-          const start = new Date(profile.sobriety_date);
+          const start = new Date(sobrietyDate);
           const now = new Date();
           const diff = Math.max(0, Math.ceil((now - start)/(1000*3600*24)));
           daysEl.textContent = diff;
         }
         const dateEl = document.querySelector('#sobrietyDate');
-        if (dateEl) dateEl.textContent = profile.sobriety_date;
+        if (dateEl) dateEl.textContent = sobrietyDate;
+      } else {
+        const daysEl = document.querySelector('#sobrietyDays');
+        if (daysEl) daysEl.textContent = '0';
+        const dateEl = document.querySelector('#sobrietyDate');
+        if (dateEl) dateEl.textContent = 'Not set';
+      }
+
+      // If this is the signed-in user's own profile and we have better local/Google data,
+      // sync it back to Supabase so it persists across devices
+      try {
+        const isOwnProfile = !!currentUser && currentUser.id === userId;
+        const needsAvatarSync = isOwnProfile && googlePic && !profile?.avatar_url;
+        const needsSobrietySync = isOwnProfile && !profile?.sobriety_date && !!localSobriety;
+        if (isOwnProfile && (needsAvatarSync || needsSobrietySync)){
+          const updates = {
+            user_id: userId,
+            updated_at: new Date().toISOString()
+          };
+          if (needsAvatarSync) updates.avatar_url = googlePic;
+          if (needsSobrietySync) updates.sobriety_date = localSobriety;
+          await supabaseClient.from('forum_user_profiles').upsert(updates, { onConflict: 'user_id' });
+        }
+      } catch(syncErr){
+        console.warn('Non-blocking: failed to backfill profile from local/Google', syncErr);
       }
 
       const editBtn = document.getElementById('editProfileBtn');
@@ -148,7 +182,9 @@
           };
           if (avatarDataUrl) updates.avatar_url = avatarDataUrl;
 
-          const { error } = await supabaseClient.from('forum_user_profiles').upsert(updates);
+          const { error } = await supabaseClient
+            .from('forum_user_profiles')
+            .upsert(updates, { onConflict: 'user_id' });
           if (error) throw error;
 
           await renderProfile(viewingUserId);
@@ -156,7 +192,8 @@
           modalInstance.hide();
         } catch (err) {
           console.error('Failed to save profile', err);
-          alert('Failed to save profile');
+          const message = err?.message || (typeof err === 'string' ? err : 'Unknown error');
+          alert('Failed to save profile: ' + message);
         }
       };
     }

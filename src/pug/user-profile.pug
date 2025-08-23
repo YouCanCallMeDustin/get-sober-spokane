@@ -1,12 +1,26 @@
 extends layout
 
 block head
-  title User Profile - Get Sober Spokane Community
+  title= title || 'User Profile - Get Sober Spokane Community'
   meta(name="description" content="View user profiles, sobriety milestones, and community contributions in the Sober Spokane recovery community.")
   meta(name="keywords" content="user profile, sobriety milestones, recovery achievements, community member")
 
 block content
   .profile-container
+    // Error Display
+    if error
+      .container.mt-5
+        .alert.alert-danger.text-center
+          i.bi.bi-exclamation-triangle.me-2
+          = error
+    
+    // Success Message Display
+    if success
+      .container.mt-5
+        .alert.alert-success.text-center
+          i.bi.bi-check-circle.me-2
+          = success
+    
     // Profile Hero Section
     .profile-hero
       .container
@@ -14,29 +28,35 @@ block content
           .col-lg-8
             .profile-info
               .profile-avatar
-                img#userAvatar(src="/get-sober-spokane/assets/img/default-avatar.png" alt="User Avatar")
+                if user && user.avatar
+                  img#userAvatar(src=user.avatar alt=`${user.name}'s Avatar`)
+                else
+                  img#userAvatar(src="/get-sober-spokane/assets/img/default-avatar.png" alt="Default Avatar")
               .profile-details
-                h1#userDisplayName User Profile
-                p#userBio.text-muted No bio available
+                h1#userDisplayName= user ? user.name : 'User Profile'
+                p#userBio.text-muted= user && user.bio ? user.bio : 'No bio available'
                 .profile-stats
                   .stat-item
-                    span.stat-number#userPosts 0
+                    span.stat-number#userPosts= user ? user.posts : 0
                     span.stat-label Posts
                   .stat-item
-                    span.stat-number#userComments 0
+                    span.stat-number#userComments= user ? user.comments : 0
                     span.stat-label Comments
                   .stat-item
-                    span.stat-number#userUpvotes 0
+                    span.stat-number#userUpvotes= user ? user.upvotes : 0
                     span.stat-label Upvotes
           
           .col-lg-4.text-lg-end
             .profile-actions
-              button.btn.btn-outline-primary#editProfileBtn(type="button" style="display: none;")
+              // Temporarily show edit button for demonstration
+              a.btn.btn-outline-primary#editProfileBtn(href=`/user/${user.id}/edit`)
                 i.bi.bi-pencil.me-2
-                | Edit Profile
-              button.btn.btn-primary#followUserBtn(type="button" style="display: none;")
-                i.bi.bi-person-plus.me-2
-                | Follow
+                | Edit Profile (Demo)
+              
+              if currentUser && !isOwnProfile
+                button.btn.btn-primary#followUserBtn(type="button")
+                  i.bi.bi-person-plus.me-2
+                  | Follow
     
     // Profile Content
     .profile-content
@@ -55,32 +75,39 @@ block content
                   | Sobriety Journey
                 .sobriety-info
                   .sobriety-counter
-                    span.counter-number#sobrietyDays 0
+                    span.counter-number#sobrietyDays= user ? user.sobrietyDays : 0
                     span.counter-label days
                   p.counter-subtitle Since last drink or drug use
                   
                   .sobriety-date
                     label Sobriety Date:
-                    p#sobrietyDate.text-muted Not set
+                    p#sobrietyDate.text-muted= user && user.sobrietyDate ? new Date(user.sobrietyDate).toLocaleDateString() : 'Not set'
               
               .profile-section
                 h5.section-label
                   i.bi.bi-trophy.me-2
                   | Recovery Milestones
                 .milestones-list#userMilestones
-                  p.text-muted No milestones yet
+                  if user && user.milestones && user.milestones.length > 0
+                    each milestone in user.milestones
+                      .milestone-item
+                        span.milestone-icon= milestone.icon
+                        span.milestone-name= milestone.name
+                        span.milestone-days (#{milestone.days} days)
+                  else
+                    p.text-muted No milestones yet
               
               .profile-section
                 h5.section-label
                   i.bi.bi-geo-alt.me-2
                   | Location
-                p#userLocation.text-muted Spokane, WA
+                p#userLocation.text-muted= user && user.location ? user.location : 'Spokane, WA'
               
               .profile-section
                 h5.section-label
                   i.bi.bi-calendar.me-2
                   | Member Since
-                p#memberSince.text-muted Loading...
+                p#memberSince.text-muted= user && user.memberSince ? new Date(user.memberSince).toLocaleDateString() : 'Loading...'
           
           // Right Column - User Activity
           .col-lg-8.mb-4
@@ -108,23 +135,44 @@ block content
                 // Posts Tab
                 .tab-pane.fade.show.active#posts(role="tabpanel")
                   .activity-list#userPostsList
-                    .text-center.py-4
-                      .spinner-border.text-primary(role="status")
-                        span.visually-hidden Loading...
+                    if user && user.recentPosts && user.recentPosts.length > 0
+                      each post in user.recentPosts
+                        .activity-item
+                          .activity-header
+                            h6.activity-title= post.title
+                            small.text-muted= new Date(post.created_at).toLocaleDateString()
+                          .activity-content= post.content.substring(0, 150) + (post.content.length > 150 ? '...' : '')
+                          .activity-footer
+                            span.badge.bg-primary.me-2 #{post.upvotes || 0} upvotes
+                    else
+                      .text-center.py-4
+                        p.text-muted No posts yet
                 
                 // Comments Tab
                 .tab-pane.fade#comments(role="tabpanel")
                   .activity-list#userCommentsList
-                    .text-center.py-4
-                      .spinner-border.text-primary(role="status")
-                        span.visually-hidden Loading...
+                    if user && user.recentComments && user.recentComments.length > 0
+                      each comment in user.recentComments
+                        .activity-item
+                          .activity-content= comment.content.substring(0, 150) + (comment.content.length > 150 ? '...' : '')
+                          .activity-footer
+                            small.text-muted= new Date(comment.created_at).toLocaleDateString()
+                    else
+                      .text-center.py-4
+                        p.text-muted No comments yet
                 
                 // Achievements Tab
                 .tab-pane.fade#achievements(role="tabpanel")
                   .activity-list#userAchievementsList
-                    .text-center.py-4
-                      .spinner-border.text-primary(role="status")
-                        span.visually-hidden Loading...
+                    if user && user.achievements && user.achievements.length > 0
+                      each achievement in user.achievements
+                        .achievement-item
+                          span.achievement-icon= achievement.icon
+                          span.achievement-name= achievement.name
+                          span.achievement-type.badge.bg-secondary= achievement.type
+                    else
+                      .text-center.py-4
+                        p.text-muted No achievements yet
 
     // Edit Profile Modal
     #editProfileModal.modal.fade(tabindex="-1")
@@ -136,29 +184,31 @@ block content
               | Edit Profile
             button.btn-close(type="button" data-bs-dismiss="modal")
           .modal-body
-            form#editProfileForm
+            form#editProfileForm(action=`/user/${user.id}/edit` method="POST")
               .mb-3
                 label.form-label(for="edit-display-name") Display Name
-                input.form-control#edit-display-name(type="text" maxlength="50")
+                input.form-control#edit-display-name(type="text" maxlength="50" value=user ? user.name : '' readonly)
+                small.text-muted Display name is managed by Google Auth
               
               .mb-3
                 label.form-label(for="edit-bio") Bio
-                textarea.form-control#edit-bio(rows="3" maxlength="500" placeholder="Tell us about yourself...")
+                textarea.form-control#edit-bio(name="bio" rows="3" maxlength="500" placeholder="Tell us about yourself...")= user && user.bio ? user.bio : ''
               
               .mb-3
                 label.form-label(for="edit-location") Location
-                input.form-control#edit-location(type="text" maxlength="100" placeholder="City, State")
+                input.form-control#edit-location(name="location" type="text" maxlength="100" placeholder="City, State" value=user && user.location ? user.location : '')
               
               .mb-3
                 label.form-label(for="edit-sobriety-date") Sobriety Date
-                input.form-control#edit-sobriety-date(type="date")
+                input.form-control#edit-sobriety-date(name="sobriety_date" type="date" required value=user && user.sobrietyDate ? user.sobrietyDate : '')
+                small.text-muted This is the date you last used alcohol or drugs
               
               .mb-3
                 label.form-label(for="edit-privacy") Privacy Settings
-                select.form-select#edit-privacy
-                  option(value="public") Public Profile
-                  option(value="community") Community Only
-                  option(value="private") Private
+                select.form-select#edit-privacy(name="privacy_settings")
+                  option(value="public" selected=user && user.privacy_settings === 'public') Public Profile
+                  option(value="community" selected=user && user.privacy_settings === 'community') Community Only
+                  option(value="private" selected=user && user.privacy_settings === 'private') Private
           
           .modal-footer
             button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
@@ -170,82 +220,24 @@ block scripts
   script.
     // Initialize profile when page loads
     document.addEventListener('DOMContentLoaded', function() {
-      // Get user ID from URL parameters
-      const urlParams = new URLSearchParams(window.location.search);
-      const userId = urlParams.get('id') || urlParams.get('user');
-      
-      if (userId) {
-        loadUserProfile(userId);
-      } else {
-        // No user ID provided, show current user's profile
-        if (window.authManager && window.authManager.isAuthenticated()) {
-          loadCurrentUserProfile();
-        } else {
-          showError('Please sign in to view your profile');
-        }
-      }
-    });
-    
-    async function loadUserProfile(userId) {
-      try {
-        // Show loading state
-        showLoading();
-        
-        // Load user profile data
-        if (window.forum && typeof window.forum.loadUserProfile === 'function') {
-          await window.forum.loadUserProfile(userId);
-        }
-        
-        // Check if this is the current user's profile
-        if (window.authManager && window.authManager.isAuthenticated()) {
-          const currentUser = window.authManager.getCurrentUser();
-          if (currentUser && currentUser.id === userId) {
-            showEditProfileButton();
-          } else {
-            showFollowButton();
-          }
-        }
-        
-        hideLoading();
-      } catch (error) {
-        console.error('Failed to load user profile:', error);
-        showError('Failed to load user profile');
-      }
-    }
-    
-    async function loadCurrentUserProfile() {
-      try {
-        // Show loading state
-        showLoading();
-        
-        // Load current user's profile
-        if (window.forum && typeof window.forum.loadCurrentUserProfile === 'function') {
-          await window.forum.loadCurrentUserProfile();
-        }
-        
-        showEditProfileButton();
-        hideLoading();
-      } catch (error) {
-        console.error('Failed to load current user profile:', error);
-        showError('Failed to load profile');
-      }
-    }
-    
-    function showEditProfileButton() {
-      const editBtn = document.getElementById('editProfileBtn');
-      if (editBtn) {
-        editBtn.style.display = 'inline-block';
-        editBtn.addEventListener('click', showEditProfileModal);
-      }
-    }
-    
-    function showFollowButton() {
+      // Handle follow button functionality
       const followBtn = document.getElementById('followUserBtn');
       if (followBtn) {
-        followBtn.style.display = 'inline-block';
         followBtn.addEventListener('click', followUser);
       }
-    }
+      
+      // Handle edit profile modal
+      const editProfileBtn = document.getElementById('editProfileBtn');
+      if (editProfileBtn) {
+        editProfileBtn.addEventListener('click', showEditProfileModal);
+      }
+      
+      // Handle form submission
+      const editProfileForm = document.getElementById('editProfileForm');
+      if (editProfileForm) {
+        editProfileForm.addEventListener('submit', handleProfileUpdate);
+      }
+    });
     
     function showEditProfileModal() {
       const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
@@ -263,16 +255,29 @@ block scripts
       }
     }
     
-    function showLoading() {
-      // Show loading spinners
-      const spinners = document.querySelectorAll('.spinner-border');
-      spinners.forEach(spinner => spinner.style.display = 'inline-block');
-    }
-    
-    function hideLoading() {
-      // Hide loading spinners
-      const spinners = document.querySelectorAll('.spinner-border');
-      spinners.forEach(spinner => spinner.style.display = 'none');
+    async function handleProfileUpdate(event) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const formData = new FormData(form);
+      
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (response.ok) {
+          // Redirect to profile page with success message
+          window.location.href = response.url;
+        } else {
+          const errorData = await response.json();
+          showError(errorData.error || 'Failed to update profile');
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        showError('An error occurred while updating your profile');
+      }
     }
     
     function showError(message) {
@@ -282,4 +287,11 @@ block scripts
       errorDiv.className = 'alert alert-danger';
       errorDiv.textContent = message;
       container.insertBefore(errorDiv, container.firstChild);
+      
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        if (errorDiv.parentNode) {
+          errorDiv.parentNode.removeChild(errorDiv);
+        }
+      }, 5000);
     }

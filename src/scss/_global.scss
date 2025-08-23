@@ -18,6 +18,8 @@ body {
     height: 100%;
     line-height: 1.6;
     color: #333;
+    // Ensure content clears fixed navbar on all pages
+    padding-top: $navbar-height;
 }
 
 //- Page section styling

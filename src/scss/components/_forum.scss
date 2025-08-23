@@ -1,6 +1,450 @@
 // Community Forum Styles
 // src/scss/components/_forum.scss
 
+// User Profile Styles
+.profile-container {
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding-top: 80px; // Account for fixed navigation
+  
+  @media (max-width: 768px) {
+    padding-top: 70px;
+  }
+}
+
+.profile-hero {
+  background: linear-gradient(135deg, $primary-blue 0%, $secondary-teal 100%);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+  .profile-info {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+    }
+    
+    .profile-avatar {
+      img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        object-fit: cover;
+        
+        @media (max-width: 768px) {
+          width: 100px;
+          height: 100px;
+        }
+      }
+    }
+    
+    .profile-details {
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        
+        @media (max-width: 768px) {
+          font-size: 2rem;
+        }
+      }
+      
+      p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-bottom: 1.5rem;
+      }
+      
+      .profile-stats {
+        display: flex;
+        gap: 2rem;
+        
+        @media (max-width: 576px) {
+          gap: 1rem;
+        }
+        
+        .stat-item {
+          text-align: center;
+          
+          .stat-number {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+          }
+          
+          .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+        }
+      }
+    }
+  }
+  
+  .profile-actions {
+    .btn {
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+
+.profile-content {
+  padding: 0 0 3rem 0;
+  
+  .container {
+    max-width: 1200px;
+  }
+}
+
+.profile-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
+  height: 100%;
+  
+  .card-title {
+    color: $primary-blue;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e9ecef;
+  }
+  
+  .profile-section {
+    margin-bottom: 2rem;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .section-label {
+      color: $secondary-teal;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .sobriety-info {
+      text-align: center;
+      
+      .sobriety-counter {
+        margin-bottom: 1rem;
+        
+        .counter-number {
+          font-size: 3rem;
+          font-weight: 700;
+          color: $primary-blue;
+          display: block;
+        }
+        
+        .counter-label {
+          font-size: 1.1rem;
+          color: $secondary-teal;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+      }
+      
+      .counter-subtitle {
+        color: #6c757d;
+        margin-bottom: 1.5rem;
+      }
+      
+      .sobriety-date {
+        label {
+          font-weight: 600;
+          color: $secondary-teal;
+          display: block;
+          margin-bottom: 0.5rem;
+        }
+        
+        p {
+          margin: 0;
+          font-size: 1.1rem;
+        }
+      }
+    }
+    
+    .milestones-list {
+      .milestone-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 0.5rem;
+        margin-bottom: 0.75rem;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+        
+        .milestone-icon {
+          font-size: 1.5rem;
+        }
+        
+        .milestone-name {
+          font-weight: 600;
+          color: $primary-blue;
+          flex: 1;
+        }
+        
+        .milestone-days {
+          color: #6c757d;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+// Activity Tabs
+.nav-tabs {
+  border-bottom: 2px solid #e9ecef;
+  margin-bottom: 1.5rem;
+  
+  .nav-link {
+    border: none;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      color: $primary-blue;
+      background: rgba($primary-blue, 0.05);
+    }
+    
+    &.active {
+      color: $primary-blue;
+      background: white;
+      border-bottom: 2px solid $primary-blue;
+    }
+  }
+}
+
+// Activity Items
+.activity-list {
+  .activity-item {
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid $primary-blue;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .activity-header {
+      margin-bottom: 0.75rem;
+      
+      .activity-title {
+        color: $primary-blue;
+        margin: 0;
+        font-weight: 600;
+      }
+      
+      small {
+        color: #6c757d;
+      }
+    }
+    
+    .activity-content {
+      color: #495057;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    
+    .activity-footer {
+      .badge {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+      }
+    }
+  }
+}
+
+// Achievement Items
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid $secondary-teal;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  .achievement-icon {
+    font-size: 2rem;
+  }
+  
+  .achievement-name {
+    font-weight: 600;
+    color: $secondary-teal;
+    flex: 1;
+  }
+  
+  .achievement-type {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+// Edit Profile Modal
+#editProfileModal {
+  .modal-content {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    
+    .modal-header {
+      background: $primary-blue;
+      color: white;
+      border-radius: 1rem 1rem 0 0;
+      border-bottom: none;
+      
+      .modal-title {
+        font-weight: 600;
+      }
+      
+      .btn-close {
+        filter: invert(1);
+      }
+    }
+    
+    .modal-body {
+      padding: 2rem;
+      
+      .form-label {
+        font-weight: 600;
+        color: $primary-blue;
+      }
+      
+      .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 0.5rem;
+        transition: all 0.2s ease;
+        
+        &:focus {
+          border-color: $primary-blue;
+          box-shadow: 0 0 0 3px rgba($primary-blue, 0.15);
+        }
+        
+        &[readonly] {
+          background: #f8f9fa;
+          color: #6c757d;
+        }
+      }
+      
+      .form-check-input:checked {
+        background-color: $primary-blue;
+        border-color: $primary-blue;
+      }
+    }
+    
+    .modal-footer {
+      border-top: none;
+      padding: 1.5rem 2rem;
+      
+      .btn {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border-radius: 0.5rem;
+      }
+    }
+  }
+}
+
+// Edit Profile Page
+.user-profile-edit {
+  .card {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    
+    .card-header {
+      border-radius: 1rem 1rem 0 0;
+      border-bottom: none;
+      
+      h3 {
+        font-weight: 600;
+      }
+    }
+    
+    .card-body {
+      padding: 2rem;
+      
+      .form-label {
+        font-weight: 600;
+        color: $primary-blue;
+      }
+      
+      .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 0.5rem;
+        transition: all 0.2s ease;
+        
+        &:focus {
+          border-color: $primary-blue;
+          box-shadow: 0 0 0 3px rgba($primary-blue, 0.15);
+        }
+        
+        &[readonly] {
+          background: #f8f9fa;
+          color: #6c757d;
+        }
+      }
+      
+      .form-check-input:checked {
+        background-color: $primary-blue;
+        border-color: $primary-blue;
+      }
+      
+      .btn {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+      }
+    }
+  }
+}
+
 // Forum Container
 .forum-container {
   min-height: 100vh;

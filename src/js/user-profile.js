@@ -33,7 +33,12 @@
       if (nameEl && profile?.display_name) nameEl.textContent = profile.display_name;
 
       const avatarImg = document.querySelector('#userAvatar');
-      if (avatarImg && profile?.avatar_url) avatarImg.src = profile.avatar_url;
+      if (avatarImg){
+        const googlePic = currentUser?.user_metadata?.picture || currentUser?.user_metadata?.avatar_url || null;
+        const src = profile?.avatar_url || googlePic || '/get-sober-spokane/assets/img/default-avatar.png';
+        if (avatarImg.src !== src) avatarImg.src = src;
+        avatarImg.alt = 'Avatar';
+      }
 
       const bioEl = document.querySelector('#userBio');
       if (bioEl) bioEl.textContent = profile?.bio || 'No bio available';
@@ -58,6 +63,11 @@
         }
         const dateEl = document.querySelector('#sobrietyDate');
         if (dateEl) dateEl.textContent = profile.sobriety_date;
+      } else {
+        const daysEl = document.querySelector('#sobrietyDays');
+        if (daysEl) daysEl.textContent = '0';
+        const dateEl = document.querySelector('#sobrietyDate');
+        if (dateEl) dateEl.textContent = 'Not set';
       }
 
       const editBtn = document.getElementById('editProfileBtn');

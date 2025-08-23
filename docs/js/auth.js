@@ -150,7 +150,7 @@ class AuthManager {
           display_name: displayName,
           avatar_url: avatarUrl,
           updated_at: new Date().toISOString()
-        });
+        }, { onConflict: 'user_id' });
       if (error) throw error;
     } catch (e) {
       console.warn('syncForumProfile error', e);

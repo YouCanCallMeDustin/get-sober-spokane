@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  .container.mt-5
+    .row.justify-content-center
+      .col-md-8.col-lg-6
+        .card.shadow
+          .card-body.text-center.py-5
+            .mb-4
+              i.bi.bi-exclamation-triangle.text-warning(style="font-size: 4rem;")
+            
+            h2.card-title.text-danger.mb-3= title || 'Error'
+            
+            if error
+              p.card-text.text-muted.mb-4= error
+            else
+              p.card-text.text-muted.mb-4 An unexpected error occurred.
+            
+            .d-grid.gap-2.d-md-block
+              a.btn.btn-primary.me-md-2(href="/") Go Home
+              if currentUser
+                a.btn.btn-outline-secondary(href=`/user/${currentUser.id}`) My Profile
+              else
+                a.btn.btn-outline-secondary(href="/login") Sign In

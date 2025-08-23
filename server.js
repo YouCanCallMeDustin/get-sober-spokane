@@ -5,6 +5,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
+const morgan = require('morgan');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,7 +25,16 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Logging middleware
+app.use(morgan('combined'));
+
 app.use(express.static(path.join(__dirname, 'docs')));
+
+// Serve CSS files
+app.use('/css', express.static(path.join(__dirname, 'src/scss')));
+app.use('/assets', express.static(path.join(__dirname, 'src/assets')));
+app.use('/js', express.static(path.join(__dirname, 'src/js')));
 
 // Session middleware
 app.use(session({
@@ -253,6 +263,14 @@ app.get('/auth/google/callback', async (req, res) => {
     res.redirect('/login?error=' + encodeURIComponent('Authentication failed'));
   }
 });
+
+// User routes
+const userRoutes = require('./routes/user');
+app.use('/user', userRoutes);
+
+// Error handling middleware (must be last)
+const errorHandler = require('./middleware/errorHandler');
+app.use(errorHandler);
 
 // Existing routes
 app.post('/api/contact', (req, res) => {

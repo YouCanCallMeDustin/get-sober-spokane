@@ -1,0 +1,153 @@
+extends layout
+
+block head
+  title= title || 'Edit Profile - Get Sober Spokane Community'
+  meta(name="description" content="Edit your profile, update sobriety date, and manage your recovery journey settings.")
+  meta(name="keywords" content="edit profile, sobriety date, recovery settings, profile management")
+
+block content
+  .container.mt-5
+    .row.justify-content-center
+      .col-lg-8
+        .card.shadow
+          .card-header.bg-primary.text-white
+            h3.mb-0
+              i.bi.bi-pencil.me-2
+              | Edit Profile
+          
+          .card-body
+            // Error Display
+            if error
+              .alert.alert-danger
+                i.bi.bi-exclamation-triangle.me-2
+                = error
+            
+            form#editProfileForm(action=`/user/${user.id}/edit` method="POST")
+              .row
+                .col-md-6
+                  .mb-3
+                    label.form-label(for="edit-display-name") Display Name
+                    input.form-control#edit-display-name(
+                      type="text" 
+                      maxlength="50" 
+                      value=user ? user.name : '' 
+                      readonly
+                    )
+                    small.text-muted Display name is managed by Google Auth
+                  
+                  .mb-3
+                    label.form-label(for="edit-email") Email
+                    input.form-control#edit-email(
+                      type="email" 
+                      value=user ? user.email : '' 
+                      readonly
+                    )
+                    small.text-muted Email is managed by Google Auth
+                
+                .col-md-6
+                  .mb-3
+                    label.form-label(for="edit-location") Location
+                    input.form-control#edit-location(
+                      name="location" 
+                      type="text" 
+                      maxlength="100" 
+                      placeholder="City, State" 
+                      value=user && user.location ? user.location : ''
+                    )
+                    small.text-muted Your city and state for community connections
+              
+              .mb-3
+                label.form-label(for="edit-bio") Bio
+                textarea.form-control#edit-bio(
+                  name="bio" 
+                  rows="4" 
+                  maxlength="500" 
+                  placeholder="Tell us about yourself, your recovery journey, or what brings you to the community..."
+                )= user && user.bio ? user.bio : ''
+                small.text-muted Share your story, goals, or what you're looking for in the community
+              
+              .row
+                .col-md-6
+                  .mb-3
+                    label.form-label(for="edit-sobriety-date") Sobriety Date *
+                    input.form-control#edit-sobriety-date(
+                      name="sobriety_date" 
+                      type="date" 
+                      required 
+                      value=user && user.sobrietyDate ? user.sobrietyDate : ''
+                    )
+                    small.text-muted This is the date you last used alcohol or drugs
+                
+                .col-md-6
+                  .mb-3
+                    label.form-label(for="edit-privacy") Privacy Settings
+                    select.form-select#edit-privacy(name="privacy_settings")
+                      option(value="public" selected=user && user.privacy_settings === 'public') Public Profile
+                      option(value="community" selected=user && user.privacy_settings === 'community') Community Only
+                      option(value="private" selected=user && user.privacy_settings === 'private') Private
+                    small.text-muted Control who can see your profile information
+              
+              .mb-3
+                .form-check
+                  input.form-check-input#edit-notifications(
+                    type="checkbox" 
+                    name="notifications" 
+                    checked=user && user.notifications !== false
+                  )
+                  label.form-check-label(for="edit-notifications")
+                    | Receive email notifications about community updates and milestones
+              
+              .d-flex.justify-content-between.align-items-center
+                a.btn.btn-outline-secondary(href=`/user/${user.id}`)
+                  i.bi.bi-arrow-left.me-2
+                  | Back to Profile
+                
+                button.btn.btn-primary(type="submit")
+                  i.bi.bi-check-circle.me-2
+                  | Save Changes
+
+block scripts
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('editProfileForm');
+      const sobrietyDateInput = document.getElementById('edit-sobriety-date');
+      
+      // Set max date to today
+      const today = new Date().toISOString().split('T')[0];
+      sobrietyDateInput.max = today;
+      
+      // Form validation
+      form.addEventListener('submit', function(event) {
+        const sobrietyDate = sobrietyDateInput.value;
+        
+        if (!sobrietyDate) {
+          event.preventDefault();
+          alert('Please select your sobriety date');
+          sobrietyDateInput.focus();
+          return;
+        }
+        
+        // Check if sobriety date is not in the future
+        if (new Date(sobrietyDate) > new Date()) {
+          event.preventDefault();
+          alert('Sobriety date cannot be in the future');
+          sobrietyDateInput.focus();
+          return;
+        }
+      });
+      
+      // Character counter for bio
+      const bioTextarea = document.getElementById('edit-bio');
+      const bioCounter = document.createElement('small');
+      bioCounter.className = 'text-muted float-end';
+      bioTextarea.parentNode.appendChild(bioCounter);
+      
+      function updateBioCounter() {
+        const remaining = 500 - bioTextarea.value.length;
+        bioCounter.textContent = `${remaining} characters remaining`;
+        bioCounter.className = remaining < 50 ? 'text-danger float-end' : 'text-muted float-end';
+      }
+      
+      bioTextarea.addEventListener('input', updateBioCounter);
+      updateBioCounter();
+    });
