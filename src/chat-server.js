@@ -88,7 +88,9 @@ class ChatServer {
                 username: 'Anonymous',
                 room: null,
                 online: true,
-                connectedAt: new Date().toISOString()
+                connectedAt: new Date().toISOString(),
+                userProfile: null, // Store user profile information
+                isAuthenticated: false
             });
 
             // Handle user joining a room
@@ -139,11 +141,16 @@ class ChatServer {
             socket.on('update_status', (data) => {
                 this.handleStatusUpdate(socket, data);
             });
+
+            // Handle user profile updates
+            socket.on('update_profile', (data) => {
+                this.handleProfileUpdate(socket, data);
+            });
         });
     }
 
     handleJoinRoom(socket, data) {
-        const { room, username } = data;
+        const { room, username, userProfile } = data;
         const userId = socket.id;
         const user = this.users.get(userId);
 
@@ -160,6 +167,13 @@ class ChatServer {
         user.room = room;
         user.username = username || user.username;
         user.lastActivity = new Date().toISOString();
+        
+        // Update user profile information if provided
+        if (userProfile) {
+            user.userProfile = userProfile;
+            user.isAuthenticated = userProfile.isAuthenticated || false;
+            console.log(`User ${username} joined with profile:`, userProfile);
+        }
 
         // Initialize room if it doesn't exist
         if (!this.rooms.has(room)) {
@@ -204,11 +218,17 @@ class ChatServer {
     }
 
     handleMessage(socket, data) {
-        const { text, room, username, type = 'text' } = data;
+        const { text, room, username, type = 'text', userProfile } = data;
         const userId = socket.id;
         const user = this.users.get(userId);
 
         if (!user || !room || !text) return;
+
+        // Update user profile if provided in message
+        if (userProfile && !user.userProfile) {
+            user.userProfile = userProfile;
+            user.isAuthenticated = userProfile.isAuthenticated || false;
+        }
 
         // Validate message
         if (text.length > 500) {
@@ -230,7 +250,8 @@ class ChatServer {
             userId: userId,
             type: type,
             timestamp: new Date().toISOString(),
-            reactions: []
+            reactions: [],
+            userProfile: user.userProfile || null // Include user profile in message
         };
 
         // Store message in history
@@ -476,6 +497,31 @@ class ChatServer {
                 username: user.username,
                 status: user.status,
                 customStatus: user.customStatus
+            });
+        }
+    }
+
+    handleProfileUpdate(socket, data) {
+        const { userProfile } = data;
+        const userId = socket.id;
+        const user = this.users.get(userId);
+
+        if (!user || !userProfile) return;
+
+        // Update user profile information
+        user.userProfile = userProfile;
+        user.isAuthenticated = userProfile.isAuthenticated || false;
+        user.username = userProfile.displayName || user.username;
+        user.lastActivity = new Date().toISOString();
+
+        console.log(`User profile updated for ${user.username}:`, userProfile);
+
+        // Notify other users in the room about the profile update
+        if (user.room) {
+            socket.to(user.room).emit('user_profile_updated', {
+                username: user.username,
+                userProfile: userProfile,
+                timestamp: new Date().toISOString()
             });
         }
     }

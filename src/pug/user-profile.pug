@@ -36,7 +36,10 @@ block content
                     small Avatar
               .profile-details
                 h1#userDisplayName= user ? user.name : 'User Profile'
-                p#userBio.text-muted= user && user.bio ? user.bio : 'No bio available'
+                .d-flex.align-items-center.mb-2
+                  p#userBio.profile-bio.mb-0= user && user.bio ? user.bio : 'No bio available'
+                  button.btn.btn-sm.btn-outline-light.ms-3#editBioBtn(type="button" title="Edit Bio")
+                    i.bi.bi-pencil
                 .profile-stats
                   .stat-item
                     span.stat-number#userPosts= user ? user.posts : 0

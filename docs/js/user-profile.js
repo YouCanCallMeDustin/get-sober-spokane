@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2025 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2025-08-31T09:14:32.495Z
+* Built: 2025-08-31T17:36:12.490Z
 */
 // Populate user profile page from Supabase
 // Version: 2025-01-31-v2 (with activity loading)
@@ -11,8 +11,26 @@
   let currentUser = null;
   let viewingUserId = null;
 
+  // Wait for both DOM and window to be fully ready
+  function waitForReady() {
+    return new Promise((resolve) => {
+      if (document.readyState === 'complete' && window.supabase) {
+        resolve();
+      } else {
+        window.addEventListener('load', () => {
+          // Additional delay to ensure everything is loaded
+          setTimeout(resolve, 500);
+        });
+      }
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOMContentLoaded - Starting profile initialization');
+    
+    // Wait for everything to be fully ready
+    await waitForReady();
+    console.log('Page fully loaded, proceeding with initialization');
     
     const supabaseUrl = window.APP_CONFIG?.SUPABASE_URL || '';
     const supabaseKey = window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
@@ -45,6 +63,7 @@
       console.log('Setting up UI components...');
       setupEditProfileModal();
       setupActivityTabs();
+      setupInlineBioEdit();
       
       console.log('Profile initialization complete');
     } catch (error) {
@@ -241,14 +260,13 @@
       saveBtn.onclick = async (e) => {
         e.preventDefault();
         try {
-          const updates = {
-            user_id: viewingUserId,
-            display_name: displayNameInput?.value.trim() || null,
-            bio: bioInput?.value.trim() || null,
-            location: locationInput?.value.trim() || null,
-            sobriety_date: sobrietyDateInput?.value || null,
-            updated_at: new Date().toISOString()
-          };
+                     const updates = {
+             user_id: viewingUserId,
+             display_name: displayNameInput?.value.trim() || null,
+             bio: bioInput?.value.trim() || null,
+             location: locationInput?.value.trim() || null,
+             sobriety_date: sobrietyDateInput?.value || null
+           };
           if (avatarDataUrl) updates.avatar_url = avatarDataUrl;
 
           const { error } = await supabaseClient.from('forum_user_profiles').upsert(updates);
@@ -485,5 +503,104 @@
     // Show the modal
     const modalInstance = new bootstrap.Modal(modal);
     modalInstance.show();
+  }
+
+  // Setup inline bio editing
+  function setupInlineBioEdit() {
+    console.log('setupInlineBioEdit - Starting setup');
+    
+    // Wait a bit for DOM to be fully ready
+    setTimeout(() => {
+      const editBioBtn = document.getElementById('editBioBtn');
+      console.log('setupInlineBioEdit - Edit button found:', editBioBtn);
+      
+      if (!editBioBtn) {
+        console.log('setupInlineBioEdit - Edit button not found, retrying...');
+        // Retry once more after a longer delay
+        setTimeout(() => {
+          const retryBtn = document.getElementById('editBioBtn');
+          if (retryBtn) {
+            console.log('setupInlineBioEdit - Edit button found on retry');
+            setupEditButtonListeners(retryBtn);
+          } else {
+            console.error('setupInlineBioEdit - Edit button still not found after retry');
+          }
+        }, 1000);
+        return;
+      }
+      
+      setupEditButtonListeners(editBioBtn);
+    }, 100);
+  }
+  
+  function setupEditButtonListeners(editBioBtn) {
+    console.log('setupEditButtonListeners - Setting up click handler');
+    
+    // Remove any existing listeners to prevent duplicates
+    editBioBtn.removeEventListener('click', handleEditBioClick);
+    editBioBtn.addEventListener('click', handleEditBioClick);
+    
+    console.log('setupEditButtonListeners - Click handler set up successfully');
+  }
+  
+  function handleEditBioClick() {
+    console.log('handleEditBioClick - Edit button clicked');
+    
+    const bioEl = document.getElementById('userBio');
+    if (!bioEl) {
+      console.error('handleEditBioClick - Bio element not found');
+      return;
+    }
+    
+        const currentBio = bioEl.textContent;
+    console.log('handleEditBioClick - Current bio:', currentBio);
+      
+      // Create inline edit form
+      const editForm = document.createElement('div');
+      editForm.className = 'd-flex align-items-center mb-2';
+      editForm.innerHTML = `
+        <textarea class="form-control me-2" id="inlineBioInput" rows="2" maxlength="500" placeholder="Tell us about yourself...">${currentBio === 'No bio available' ? '' : currentBio}</textarea>
+        <button class="btn btn-success btn-sm me-2" id="saveBioBtn" type="button">
+          <i class="bi bi-check"></i>
+        </button>
+        <button class="btn btn-secondary btn-sm" id="cancelBioBtn" type="button">
+          <i class="bi bi-x"></i>
+        </button>
+      `;
+      
+      // Replace the bio element with the edit form
+      bioEl.parentNode.replaceChild(editForm, bioEl);
+      
+      // Focus on input
+      const textarea = document.getElementById('inlineBioInput');
+      textarea.focus();
+      
+      // Setup save button
+      document.getElementById('saveBioBtn').addEventListener('click', async function() {
+        const newBio = textarea.value.trim();
+                 try {
+           const { error } = await supabaseClient.from('forum_user_profiles').upsert({
+             user_id: viewingUserId,
+             bio: newBio || null
+           });
+          
+          if (error) throw error;
+          
+          // Update bio display and restore the original bio element
+          bioEl.textContent = newBio || 'No bio available';
+          editForm.parentNode.replaceChild(bioEl, editForm);
+          
+        } catch (err) {
+          console.error('Failed to save bio:', err);
+          alert('Failed to save bio');
+        }
+      });
+      
+      // Setup cancel button
+      document.getElementById('cancelBioBtn').addEventListener('click', function() {
+        // Restore the original bio element
+        editForm.parentNode.replaceChild(bioEl, editForm);
+      });
+    });
   }
 })();

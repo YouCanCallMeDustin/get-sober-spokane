@@ -893,3 +893,16 @@
     }
   }
 }
+
+// Ensure bio text is clearly visible
+#userBio.profile-bio {
+  color: #ffffff !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
+  
+  &:empty::before {
+    content: 'No bio available';
+    color: #ffffff;
+    opacity: 0.9;
+  }
+}
