@@ -16,7 +16,7 @@
         <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="/css/styles.css" rel="stylesheet" />
+        <link href="/css/styles.css?v=20250831" rel="stylesheet" />
         <style>
             /* Fix navigation text visibility */
             .navbar.navbar-light .navbar-nav .nav-link {
@@ -463,15 +463,18 @@
                         return;
                     }
 
+                    console.log('Updating sobriety date for user:', currentUser.id);
+                    console.log('New sobriety date:', sobrietyDate);
+
                     // Update profile in Supabase
-                    const { error } = await supabase.from('profiles').upsert({
+                    const { error } = await supabase.from('forum_user_profiles').upsert({
                         user_id: currentUser.id,
                         sobriety_date: sobrietyDate,
-                        updated_at: new Date().toISOString(),
                     });
 
                     if (error) throw error;
 
+                    console.log('Sobriety date updated successfully');
                     showMessage('Sobriety date updated successfully!', 'success');
                     calculateSobrietyDays();
                 } catch (error) {
@@ -484,9 +487,14 @@
                 try {
                     if (!supabase || !currentUser) return;
 
-                    const { data, error } = await supabase.from('profiles').select('*').eq('user_id', currentUser.id).single();
+                    console.log('Loading profile for user:', currentUser.id);
+
+                    const { data, error } = await supabase.from('forum_user_profiles').select('*').eq('user_id', currentUser.id).single();
 
                     if (error && error.code !== 'PGRST116') throw error;
+
+                    console.log('Profile data loaded:', data);
+                    console.log('All available fields:', Object.keys(data || {}));
 
                     if (data) {
                         // Update header with profile display name when available
@@ -494,10 +502,28 @@
                             document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${data.display_name}!`;
                         }
 
-                        // Set sobriety date if available
+                        // Set sobriety date if available - check multiple possible field names
                         if (data.sobriety_date) {
+                            console.log('Setting sobriety date from sobriety_date field:', data.sobriety_date);
                             document.getElementById('sobrietyDate').value = data.sobriety_date;
+                        } else if (data.sobriety_start_date) {
+                            console.log('Setting sobriety date from sobriety_start_date field:', data.sobriety_start_date);
+                            document.getElementById('sobrietyDate').value = data.sobriety_start_date;
+                        } else if (data.recovery_date) {
+                            console.log('Setting sobriety date from recovery_date field:', data.recovery_date);
+                            document.getElementById('sobrietyDate').value = data.recovery_date;
+                        } else {
+                            console.log('No sobriety date found in profile data');
+                            console.log('Available date fields:', {
+                                sobriety_date: data.sobriety_date,
+                                sobriety_start_date: data.sobriety_start_date,
+                                recovery_date: data.recovery_date,
+                                created_at: data.created_at,
+                                updated_at: data.updated_at,
+                            });
                         }
+                    } else {
+                        console.log('No profile data found for user');
                     }
                 } catch (error) {
                     console.error('Failed to load profile:', error);

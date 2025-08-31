@@ -367,7 +367,8 @@ class CommunityForum {
             `<span class="badge bg-light text-dark me-1">${tag}</span>`
         ).join('');
         
-        const profile = this.forumData.usersById[post.user_id];
+        // For anonymous posts, user_id is null, so we can't look up a profile
+        const profile = post.is_anonymous ? null : this.forumData.usersById[post.user_id];
         
         console.log('createPostHTML: Processing post', {
             postId: post.id,

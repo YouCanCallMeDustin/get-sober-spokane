@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2025 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2025-08-31T08:09:19.279Z
+* Built: 2025-08-31T08:48:27.230Z
 */
 // Populate user profile page from Supabase
 // Version: 2025-01-31-v2 (with activity loading)
@@ -56,17 +56,19 @@
     try {
       console.log('renderProfile - Starting for user:', userId);
       
-      const [{ data: profile }, postsCount, commentsCount, upvotesCount] = await Promise.all([
+      const [{ data: profile }, postsCount, commentsCount, upvotesCount, { data: milestones }] = await Promise.all([
         supabaseClient.from('forum_user_profiles').select('*').eq('user_id', userId).maybeSingle(),
         supabaseClient.from('forum_posts').select('id', { count: 'exact', head: true }).eq('user_id', userId),
         supabaseClient.from('forum_comments').select('id', { count: 'exact', head: true }).eq('user_id', userId),
-        supabaseClient.from('forum_post_votes').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('vote', 1)
+        supabaseClient.from('forum_post_votes').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('vote', 1),
+        supabaseClient.from('recovery_milestones').select('*').eq('user_id', userId).order('created_at', { ascending: false })
       ]);
 
       console.log('renderProfile - Profile data:', profile);
       console.log('renderProfile - Posts count:', postsCount?.count);
       console.log('renderProfile - Comments count:', commentsCount?.count);
       console.log('renderProfile - Upvotes count:', upvotesCount?.count);
+      console.log('renderProfile - Milestones:', milestones);
 
       const nameEl = document.querySelector('#userDisplayName') || document.querySelector('h1, .profile-title, .stories-hero-title');
       if (nameEl && profile?.display_name) nameEl.textContent = profile.display_name;
@@ -82,10 +84,24 @@
       const bioEl = document.querySelector('#userBio');
       if (bioEl) bioEl.textContent = profile?.bio || 'No bio available';
 
-      const locationEl = document.querySelector('#userLocation');
-      if (locationEl) locationEl.textContent = profile?.location || 'Not set';
+             const locationEl = document.querySelector('#userLocation');
+       if (locationEl) locationEl.textContent = profile?.location || 'Not set';
 
-      const postsEl = document.querySelector('#userPosts');
+       // Load member since date
+       const memberSinceEl = document.querySelector('#memberSince');
+       if (memberSinceEl) {
+         if (profile?.join_date) {
+           const joinDate = new Date(profile.join_date);
+           memberSinceEl.textContent = joinDate.toLocaleDateString();
+         } else if (profile?.created_at) {
+           const createdDate = new Date(profile.created_at);
+           memberSinceEl.textContent = createdDate.toLocaleDateString();
+         } else {
+           memberSinceEl.textContent = 'Unknown';
+         }
+       }
+
+       const postsEl = document.querySelector('#userPosts');
       if (postsEl && typeof postsCount?.count === 'number') postsEl.textContent = postsCount.count;
       const commentsEl = document.querySelector('#userComments');
       if (commentsEl && typeof commentsCount?.count === 'number') commentsEl.textContent = commentsCount.count;
@@ -112,6 +128,39 @@
         if (daysEl) daysEl.textContent = '0';
         const dateEl = document.querySelector('#sobrietyDate');
         if (dateEl) dateEl.textContent = 'Not set';
+      }
+
+      // Load and display milestones
+      const milestonesContainer = document.getElementById('userMilestones');
+      if (milestonesContainer) {
+        if (milestones && milestones.length > 0) {
+          const milestonesHTML = milestones.map(milestone => `
+            <div class="milestone-item d-flex align-items-center mb-2">
+              <div class="flex-grow-1">
+                <a href="#" class="milestone-link text-decoration-none" data-milestone-id="${milestone.id}">
+                  <h6 class="mb-1 text-primary">${milestone.title}</h6>
+                  <small class="text-muted">${formatTimeAgo(milestone.created_at)}</small>
+                </a>
+              </div>
+            </div>
+          `).join('');
+          milestonesContainer.innerHTML = milestonesHTML;
+          
+          // Add click event listeners to milestone links
+          const milestoneLinks = milestonesContainer.querySelectorAll('.milestone-link');
+          milestoneLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              const milestoneId = link.getAttribute('data-milestone-id');
+              const milestone = milestones.find(m => m.id === milestoneId);
+              if (milestone) {
+                showMilestoneModal(milestone);
+              }
+            });
+          });
+        } else {
+          milestonesContainer.innerHTML = '<p class="text-muted">No milestones yet</p>';
+        }
       }
 
       const editBtn = document.getElementById('editProfileBtn');
@@ -384,5 +433,57 @@
     if (!text) return '';
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
+  }
+
+  function showMilestoneModal(milestone) {
+    // Create modal HTML if it doesn't exist
+    let modal = document.getElementById('milestoneModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.className = 'modal fade';
+      modal.id = 'milestoneModal';
+      modal.setAttribute('tabindex', '-1');
+      modal.setAttribute('aria-labelledby', 'milestoneModalLabel');
+      modal.setAttribute('aria-hidden', 'true');
+      
+             modal.innerHTML = `
+         <div class="modal-dialog modal-dialog-centered">
+           <div class="modal-content">
+             <div class="modal-header bg-primary text-white">
+               <h5 class="modal-title text-white" id="milestoneModalLabel">
+                 <i class="bi bi-trophy me-2"></i>
+                 <span id="milestoneModalTitle" class="text-white"></span>
+               </h5>
+               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+             </div>
+            <div class="modal-body">
+              <div class="milestone-details">
+                <div class="milestone-date mb-3">
+                  <i class="bi bi-calendar-event me-2 text-muted"></i>
+                  <span id="milestoneModalDate" class="text-muted"></span>
+                </div>
+                <div class="milestone-description">
+                  <p id="milestoneModalDescription" class="mb-0"></p>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+    }
+    
+    // Update modal content
+    document.getElementById('milestoneModalTitle').textContent = milestone.title;
+    document.getElementById('milestoneModalDate').textContent = formatTimeAgo(milestone.created_at);
+    document.getElementById('milestoneModalDescription').textContent = milestone.description;
+    
+    // Show the modal
+    const modalInstance = new bootstrap.Modal(modal);
+    modalInstance.show();
   }
 })();

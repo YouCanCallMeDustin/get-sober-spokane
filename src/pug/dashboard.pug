@@ -200,65 +200,91 @@ block scripts
       document.getElementById('googleSignInBtn').addEventListener('click', handleGoogleSignIn);
     }
     
-    async function handleUpdateSobrietyDate() {
-      try {
-        const sobrietyDate = document.getElementById('sobrietyDate').value;
-        if (!sobrietyDate) {
-          showMessage('Please select a date', 'warning');
-          return;
-        }
-        
-        if (!supabase || !currentUser) {
-          showMessage('Please log in to update your sobriety date', 'warning');
-          return;
-        }
-        
-        // Update profile in Supabase
-        const { error } = await supabase
-          .from('profiles')
-          .upsert({
-            user_id: currentUser.id,
-            sobriety_date: sobrietyDate,
-            updated_at: new Date().toISOString()
-          });
-        
-        if (error) throw error;
-        
-        showMessage('Sobriety date updated successfully!', 'success');
-        calculateSobrietyDays();
-      } catch (error) {
-        console.error('Failed to update sobriety date:', error);
-        showMessage('Failed to update sobriety date', 'danger');
-      }
-    }
+         async function handleUpdateSobrietyDate() {
+       try {
+         const sobrietyDate = document.getElementById('sobrietyDate').value;
+         if (!sobrietyDate) {
+           showMessage('Please select a date', 'warning');
+           return;
+         }
+         
+         if (!supabase || !currentUser) {
+           showMessage('Please log in to update your sobriety date', 'warning');
+           return;
+         }
+         
+         console.log('Updating sobriety date for user:', currentUser.id);
+         console.log('New sobriety date:', sobrietyDate);
+         
+         // Update profile in Supabase
+         const { error } = await supabase
+           .from('forum_user_profiles')
+           .upsert({
+             user_id: currentUser.id,
+             sobriety_date: sobrietyDate
+           });
+         
+         if (error) throw error;
+         
+         console.log('Sobriety date updated successfully');
+         showMessage('Sobriety date updated successfully!', 'success');
+         calculateSobrietyDays();
+       } catch (error) {
+         console.error('Failed to update sobriety date:', error);
+         showMessage('Failed to update sobriety date', 'danger');
+       }
+     }
     
-    async function loadProfile() {
-      try {
-        if (!supabase || !currentUser) return;
-        
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('user_id', currentUser.id)
-          .single();
-        
-        if (error && error.code !== 'PGRST116') throw error;
-        
-        if (data) {
-          // Update header with profile display name when available
-          if (data.display_name) {
-            document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${data.display_name}!`;
-          }
-          
-          // Set sobriety date if available
-          if (data.sobriety_date) {
-            document.getElementById('sobrietyDate').value = data.sobriety_date;
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load profile:', error);
-      }
-    }
+         async function loadProfile() {
+       try {
+         if (!supabase || !currentUser) return;
+         
+         console.log('Loading profile for user:', currentUser.id);
+         
+         const { data, error } = await supabase
+           .from('forum_user_profiles')
+           .select('*')
+           .eq('user_id', currentUser.id)
+           .single();
+         
+         if (error && error.code !== 'PGRST116') throw error;
+         
+         console.log('Profile data loaded:', data);
+         console.log('All available fields:', Object.keys(data || {}));
+         
+         if (data) {
+           // Update header with profile display name when available
+           if (data.display_name) {
+             document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${data.display_name}!`;
+           }
+           
+           // Set sobriety date if available - check multiple possible field names
+           if (data.sobriety_date) {
+             console.log('Setting sobriety date from sobriety_date field:', data.sobriety_date);
+             document.getElementById('sobrietyDate').value = data.sobriety_date;
+           } else if (data.sobriety_start_date) {
+             console.log('Setting sobriety date from sobriety_start_date field:', data.sobriety_start_date);
+             document.getElementById('sobrietyDate').value = data.sobriety_start_date;
+           } else if (data.recovery_date) {
+             console.log('Setting sobriety date from recovery_date field:', data.recovery_date);
+             document.getElementById('sobrietyDate').value = data.recovery_date;
+           } else {
+             console.log('No sobriety date found in profile data');
+             console.log('Available date fields:', {
+               sobriety_date: data.sobriety_date,
+               sobriety_start_date: data.sobriety_start_date,
+               recovery_date: data.recovery_date,
+               created_at: data.created_at,
+               updated_at: data.updated_at
+             });
+           }
+         } else {
+           console.log('No profile data found for user');
+         }
+       } catch (error) {
+         console.error('Failed to load profile:', error);
+       }
+     }
     
     async function loadMilestones() {
       try {
