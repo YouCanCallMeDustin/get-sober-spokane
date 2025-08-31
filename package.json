@@ -16,6 +16,9 @@
         "start:debug": "npm run build:full && node scripts/start-debug.js",
         "start:prod": "node src/start-production.js",
         "start:cluster": "node src/start-production.js",
+        "start:chat": "node scripts/start-chat.js",
+        "start:all": "concurrently \"npm run start:server\" \"npm run start:chat\"",
+        "dev:refresh": "node scripts/dev-refresh.js",
         "seo:optimize": "node scripts/seo-optimizer.js"
     },
     "description": "Creative is a stylish one page HTML theme built with Bootstrap.",
@@ -56,6 +59,7 @@
         "nodemailer": "^7.0.5",
         "open": "^10.1.2",
         "sharp": "^0.32.6",
+        "socket.io": "^4.7.4",
         "uuid": "^9.0.1"
     },
     "devDependencies": {

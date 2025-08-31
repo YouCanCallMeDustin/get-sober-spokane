@@ -32,9 +32,15 @@ app.use(morgan('combined'));
 // Serve static files with proper MIME types
 app.use(express.static(path.join(__dirname, '..', 'docs')));
 
-// Serve CSS files with correct MIME type - try multiple locations
+// Serve CSS files with correct MIME type and cache busting
 app.use('/css', (req, res, next) => {
   res.type('text/css');
+  // Add cache control headers for development
+  if (process.env.NODE_ENV !== 'production') {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
   next();
 }, express.static(path.join(__dirname, '..', 'docs/css')));
 

@@ -1,0 +1,224 @@
+extends layout
+
+block head
+  title Live Chat Room - Get Sober Spokane
+  meta(name="description" content="Join our live recovery support chat room. Connect with the community in real-time, share your journey, and find immediate support.")
+  meta(name="keywords" content="recovery chat, sobriety support chat, live recovery support, Spokane recovery chat, sober community chat")
+  link(rel="stylesheet" href="/css/styles.css?v=" + timestamp)
+
+block content
+  // Chat Room Container with proper spacing for fixed navigation
+  .chat-container
+    // Hero Banner Section
+    .chat-hero
+      .container
+        .row.justify-content-center.text-center
+          .col-lg-8
+            h1.chat-hero-title Live Chat Room
+            p.chat-hero-subtitle Connect with the recovery community in real-time. Share your journey and find immediate support.
+            .chat-status
+              span.status-indicator#connectionStatus
+                i.bi.bi-circle-fill.me-2
+                | Connecting...
+    
+    // Main Chat Content
+    .chat-content
+      .container-fluid
+        .row
+          // Chat Sidebar
+          .col-lg-3.col-md-4.d-none.d-md-block
+            .chat-sidebar
+              // Online Users
+              .sidebar-section
+                h5.sidebar-title
+                  i.bi.bi-people-fill.me-2
+                  | Online Now
+                .online-users#onlineUsers
+                  .user-item
+                    .user-avatar
+                      i.bi.bi-person-circle
+                    .user-info
+                      .user-name Anonymous User
+                      .user-status Online
+                  .user-item
+                    .user-avatar
+                      i.bi.bi-person-circle
+                    .user-info
+                      .user-name Recovery Warrior
+                      .user-status Online
+              
+              // Chat Rooms
+              .sidebar-section
+                h5.sidebar-title
+                  i.bi.bi-hash.me-2
+                  | Chat Rooms
+                .chat-rooms
+                  .room-item.active#generalRoom
+                    i.bi.bi-hash.me-2
+                    | General Support
+                  .room-item#recoveryRoom
+                    i.bi.bi-hash.me-2
+                    | Recovery Journey
+                  .room-item#crisisRoom
+                    i.bi.bi-hash.me-2
+                    | Crisis Support
+                  .room-item#celebrationsRoom
+                    i.bi.bi-hash.me-2
+                    | Celebrations
+              
+              // Quick Actions
+              .sidebar-section
+                h5.sidebar-title
+                  i.bi.bi-lightning-fill.me-2
+                  | Quick Actions
+                .quick-actions
+                  button.btn.btn-outline-primary.btn-sm.w-100.mb-2#shareResourceBtn
+                    i.bi.bi-share.me-2
+                    | Share Resource
+                  button.btn.btn-outline-success.btn-sm.w-100.mb-2#requestSupportBtn
+                    i.bi.bi-heart.me-2
+                    | Request Support
+                  button.btn.btn-outline-warning.btn-sm.w-100#reportIssueBtn
+                    i.bi.bi-flag.me-2
+                    | Report Issue
+          
+          // Main Chat Area
+          .col-lg-9.col-md-8.col-12
+            .chat-main
+              // Chat Header
+              .chat-header
+                .chat-room-info
+                  h4#currentRoomName General Support
+                  p#roomDescription General recovery support and community discussion
+                .chat-controls
+                  button.btn.btn-outline-secondary.btn-sm#toggleSidebar
+                    i.bi.bi-list
+                  button.btn.btn-outline-primary.btn-sm#chatSettings
+                    i.bi.bi-gear
+                .room-status
+                  span.status-dot.active
+                  | Active
+              
+              // Messages Container
+              .messages-container#messagesContainer
+                .welcome-message
+                  .message-bubble.system
+                    .message-content
+                      h6 Welcome to the Recovery Support Chat!
+                      p This is a safe space for sharing, supporting, and connecting with others on their recovery journey.
+                      .message-time Just now
+                
+                // Messages will be loaded dynamically here
+              
+              // Message Input Area
+              .message-input-area
+                .input-container
+                  .input-group
+                    button.btn.btn-outline-secondary#emojiPicker(type="button")
+                      i.bi.bi-emoji-smile
+                    input.form-control#messageInput(type="text" placeholder="Type your message here..." maxlength="500")
+                    button.btn.btn-outline-secondary#attachFile(type="button")
+                      i.bi.bi-paperclip
+                    button.btn.btn-primary#sendMessage(type="button")
+                      i.bi.bi-send
+                  
+                  .input-actions
+                    .typing-indicator#typingIndicator(style="display: none;")
+                      i.bi.bi-three-dots
+                      span Someone is typing...
+                    .character-count
+                      span#charCount 0
+                      | /500
+                
+                // File Upload Progress
+                .file-upload-progress#fileUploadProgress(style="display: none;")
+                  .progress
+                    .progress-bar#uploadProgressBar(role="progressbar" style="width: 0%")
+                  .upload-info
+                    span#uploadFileName
+                    button.btn.btn-sm.btn-outline-danger#cancelUpload
+                      i.bi.bi-x
+
+    // Chat Settings Modal
+    .modal.fade#chatSettingsModal(tabindex="-1")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h5.modal-title Chat Settings
+            button.btn-close(type="button" data-bs-dismiss="modal")
+          .modal-body
+            .form-group.mb-3
+              <label for="usernameInput" class="form-label">Display Name</label>
+              <input type="text" class="form-control" id="usernameInput" placeholder="Enter your display name">
+            .form-group.mb-3
+              <label for="notificationToggle" class="form-label">Notifications</label>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="notificationToggle" checked>
+                <label class="form-check-label" for="notificationToggle">Enable sound notifications</label>
+              </div>
+            .form-group.mb-3
+              <label for="themeToggle" class="form-label">Theme</label>
+              <select class="form-select" id="themeToggle">
+                <option value="light">Light Theme</option>
+                <option value="dark">Dark Theme</option>
+                <option value="auto">Auto (System)</option>
+              </select>
+          .modal-footer
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="saveSettings">Save Settings</button>
+
+    // Emoji Picker Modal
+    .emoji-picker#emojiPickerModal(style="display: none;")
+      .emoji-picker-content
+        .emoji-picker-header
+          h6 Emoji Reactions
+          button.btn-close#closeEmojiPicker
+        .emoji-picker-body
+          .emoji-categories
+            button.emoji-category.active(data-category="smileys") 😊
+            button.emoji-category(data-category="animals") 🐾
+            button.emoji-category(data-category="food") 🍎
+            button.emoji-category(data-category="activities") ⚽
+            button.emoji-category(data-category="objects") 💡
+            button.emoji-category(data-category="symbols") ❤️
+          .emoji-grid#emojiGrid
+            // Emojis will be populated dynamically
+
+    // File Preview Modal
+    .modal.fade#filePreviewModal(tabindex="-1")
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            h5.modal-title#filePreviewTitle File Preview
+            button.btn-close(type="button" data-bs-dismiss="modal")
+          .modal-body
+            .file-preview-content#filePreviewContent
+              // File preview will be shown here
+          .modal-footer
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="downloadFile">Download</button>
+
+block scripts
+  script(src="/socket.io/socket.io.js")
+  script(src="/js/chat-room.js?v=" + timestamp)
+  
+  // Additional cache busting for development
+  script.
+    // Force refresh of CSS and JS files if they're cached
+    (function() {
+      const timestamp = '#{timestamp}';
+      const links = document.querySelectorAll('link[href*="styles.css"]');
+      const scripts = document.querySelectorAll('script[src*="chat-room.js"]');
+      
+      links.forEach(link => {
+        if (link.href.includes('styles.css')) {
+          link.href = link.href.split('?')[0] + '?v=' + timestamp;
+        }
+      });
+      
+      scripts.forEach(script => {
+        if (script.src.includes('chat-room.js')) {
+          script.src = script.src.split('?')[0] + '?v=' + timestamp;
+        }
+      });
+    })();
