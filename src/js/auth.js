@@ -149,7 +149,7 @@ class AuthManager {
           user_id: user.id,
           display_name: displayName,
           avatar_url: avatarUrl,
-          updated_at: new Date().toISOString()
+          last_active: new Date().toISOString()
         }, { onConflict: 'user_id' });
       if (error) throw error;
     } catch (e) {

@@ -1,0 +1,64 @@
+<script>
+    // Migration dashboard functionality
+    function testMigrationFeatures() {
+        console.log('Migration: Testing features...');
+
+        // Test notification system
+        if (window.showNotification) {
+            window.showNotification('Testing notification system', 'info', 3000);
+        }
+
+        // Test loading spinner
+        if (window.loadingSpinner) {
+            window.loadingSpinner.show();
+            setTimeout(() => window.loadingSpinner.hide(), 2000);
+        }
+
+        // Test migration helper
+        if (window.migrationHelper) {
+            console.log('Migration Helper Status:', window.migrationHelper.getMigrationStatus());
+        }
+
+        console.log('Migration: Feature test complete');
+    }
+
+    function resetMigrationConfig() {
+        if (confirm('Are you sure you want to reset the migration configuration? This will rollback to phase 1.')) {
+            localStorage.removeItem('migrationConfig');
+            location.reload();
+        }
+    }
+
+    // Update dashboard display
+    function updateMigrationDashboard() {
+        if (window.migrationConfig) {
+            const currentLayout = document.getElementById('currentLayout');
+            const enabledFeatures = document.getElementById('enabledFeatures');
+
+            if (currentLayout) {
+                currentLayout.textContent = window.migrationConfig.layouts.default;
+            }
+
+            if (enabledFeatures) {
+                const enabledCount = Object.keys(window.migrationConfig.features).filter((f) => window.migrationConfig.features[f]).length;
+                enabledFeatures.textContent = enabledCount;
+            }
+        }
+    }
+
+    // Update dashboard when configuration changes
+    document.addEventListener('migration:config-ready', updateMigrationDashboard);
+
+    // Auto-hide dashboard after 30 seconds (click to show again)
+    setTimeout(() => {
+        const dashboard = document.querySelector('.migration-dashboard');
+        if (dashboard) {
+            dashboard.style.opacity = '0.3';
+            dashboard.style.transition = 'opacity 0.3s ease';
+
+            dashboard.addEventListener('click', () => {
+                dashboard.style.opacity = '1';
+            });
+        }
+    }, 30000);
+</script>

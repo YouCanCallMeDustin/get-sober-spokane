@@ -1,0 +1,153 @@
+<div class="modal fade" id="milestoneModal" tabindex="-1" aria-labelledby="milestoneModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="milestoneModalLabel">
+                    <i class="bi bi-trophy me-2"></i>
+                    Add a Recovery Milestone
+                </h5>
+                <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="milestoneForm">
+                <div class="modal-body">
+                    <!-- Milestone Title-->
+                    <div class="mb-3">
+                        <label class="form-label" for="milestoneTitle">
+                            <i class="bi bi-pencil me-2"></i>
+                            Milestone Title *
+                        </label>
+                        <input class="form-control" id="milestoneTitle" type="text" placeholder="e.g., 30 Days Sober, First AA Meeting, Completed Treatment" required />
+                    </div>
+                    <!-- Milestone Description-->
+                    <div class="mb-3">
+                        <label class="form-label" for="milestoneDescription">
+                            <i class="bi bi-chat-text me-2"></i>
+                            Description
+                        </label>
+                        <textarea class="form-control" id="milestoneDescription" rows="3" placeholder="Describe what this milestone means to you and how you achieved it..."></textarea>
+                    </div>
+                    <!-- Milestone Category-->
+                    <div class="mb-3">
+                        <label class="form-label" for="milestoneCategory">
+                            <i class="bi bi-tags me-2"></i>
+                            Category
+                        </label>
+                        <select class="form-select" id="milestoneCategory">
+                            <option value="sobriety">🎯 Sobriety Milestone</option>
+                            <option value="mental-health">🧠 Mental Health</option>
+                            <option value="physical-health">💪 Physical Health</option>
+                            <option value="relationships">❤️ Relationships</option>
+                            <option value="career">💼 Career/Education</option>
+                            <option value="spiritual">🙏 Spiritual Growth</option>
+                            <option value="community">👥 Community Service</option>
+                            <option value="personal">🌟 Personal Achievement</option>
+                            <option value="other">✨ Other</option>
+                        </select>
+                    </div>
+                    <!-- Achievement Level-->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <i class="bi bi-star me-2"></i>
+                            Achievement Level
+                        </label>
+                        <div class="achievement-levels">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" id="levelBronze" type="radio" name="achievementLevel" value="bronze" checked />
+                                <label class="form-check-label" for="levelBronze">
+                                    <i class="bi bi-award text-bronze me-1"></i>
+                                    Bronze
+                                    <small class="d-block text-muted">30+ days</small>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" id="levelSilver" type="radio" name="achievementLevel" value="silver" />
+                                <label class="form-check-label" for="levelSilver">
+                                    <i class="bi bi-award text-silver me-1"></i>
+                                    Silver
+                                    <small class="d-block text-muted">90+ days</small>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" id="levelGold" type="radio" name="achievementLevel" value="gold" />
+                                <label class="form-check-label" for="levelGold">
+                                    <i class="bi bi-award text-gold me-1"></i>
+                                    Gold
+                                    <small class="d-block text-muted">180+ days</small>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" id="levelPlatinum" type="radio" name="achievementLevel" value="platinum" />
+                                <label class="form-check-label" for="levelPlatinum">
+                                    <i class="bi bi-award text-platinum me-1"></i>
+                                    Platinum
+                                    <small class="d-block text-muted">365+ days</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Date Achieved-->
+                    <div class="mb-3">
+                        <label class="form-label" for="milestoneDate">
+                            <i class="bi bi-calendar-event me-2"></i>
+                            Date Achieved
+                        </label>
+                        <input class="form-control" id="milestoneDate" type="date" />
+                    </div>
+                    <!-- Progress Indicator-->
+                    <div class="mb-3">
+                        <div class="progress-section">
+                            <label class="form-label">
+                                <i class="bi bi-graph-up me-2"></i>
+                                Recovery Progress
+                            </label>
+                            <div class="progress mb-2" style="height: 8px"><div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="recoveryProgress"></div></div>
+                            <small class="text-muted" id="progressText">Starting your journey...</small>
+                        </div>
+                    </div>
+                    <!-- Motivational Quote-->
+                    <div class="mb-3">
+                        <div class="motivational-quote bg-light p-3 rounded">
+                            <i class="bi bi-quote me-2 text-success"></i>
+                            <span id="motivationalQuote">"Every day is a new beginning. Take a deep breath and start again."</span>
+                            <div class="text-end mt-2">
+                                <small class="text-muted">
+                                    <i class="bi bi-arrow-clockwise me-1"></i>
+                                    <a href="#" id="refreshQuote">Refresh quote</a>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tags-->
+                    <div class="mb-3">
+                        <label class="form-label" for="milestoneTags">
+                            <i class="bi bi-hash me-2"></i>
+                            Tags (optional)
+                        </label>
+                        <input class="form-control" id="milestoneTags" type="text" placeholder="Add tags separated by commas (e.g., recovery, strength, family)" />
+                        <small class="form-text text-muted">Tags help you organize and find your milestones later</small>
+                    </div>
+                    <!-- Private/Public Toggle-->
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" id="milestonePrivate" type="checkbox" checked />
+                            <label class="form-check-label" for="milestonePrivate">
+                                <i class="bi bi-lock me-2"></i>
+                                Keep this milestone private (uncheck to share with community)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>
+                        Cancel
+                    </button>
+                    <button class="btn btn-success" id="saveMilestoneBtn" type="submit">
+                        <i class="bi bi-check-circle me-2"></i>
+                        Save Milestone
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

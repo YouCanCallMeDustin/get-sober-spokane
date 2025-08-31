@@ -54,6 +54,18 @@ router.get('/:id', profileViewLimiter, async (req, res) => {
     // Get the merged user profile data
     const userProfile = await userController.getUserProfile(id);
     
+    // Check if we got a valid profile
+    if (!userProfile) {
+      console.error('No user profile returned for ID:', id);
+      return res.status(404).render('user-profile', {
+        title: 'User Not Found',
+        user: null,
+        error: 'User profile not found or unavailable',
+        isOwnProfile: false,
+        currentUser: req.session.user || null
+      });
+    }
+    
     // Debug logging for authentication
     console.log('🔍 Debug - Session info:', {
       hasSession: !!req.session.user,
@@ -64,7 +76,7 @@ router.get('/:id', profileViewLimiter, async (req, res) => {
 
     // Render the user profile template with the data
     res.render('user-profile', {
-      title: `${userProfile.name} - User Profile`,
+      title: `${userProfile.name || 'Unknown User'} - User Profile`,
       user: userProfile,
       isOwnProfile: req.session.user && req.session.user.id === id,
       currentUser: req.session.user || null
@@ -104,6 +116,18 @@ router.get('/:id/edit', async (req, res) => {
     
     // Get current user profile data
     const userProfile = await userController.getUserProfile(id);
+    
+    // Check if we got a valid profile
+    if (!userProfile) {
+      console.error('No user profile returned for edit ID:', id);
+      return res.status(404).render('user-profile', {
+        title: 'User Not Found',
+        user: null,
+        error: 'User profile not found or unavailable',
+        isOwnProfile: false,
+        currentUser: req.session.user || null
+      });
+    }
     
     res.render('user-profile-edit', {
       title: 'Edit Profile',

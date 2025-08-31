@@ -1,0 +1,56 @@
+<script>
+    // Safe migration wrapper functions
+    window.migrationHelper = {
+        // Safely get meta data
+        getMeta: function (key, fallback = '') {
+            try {
+                return window.getMeta ? window.getMeta(key) : fallback;
+            } catch (e) {
+                console.warn('Migration: getMeta not available, using fallback:', key);
+                return fallback;
+            }
+        },
+
+        // Safely initialize components
+        safeInit: function (componentName, initFunction) {
+            try {
+                if (typeof initFunction === 'function') {
+                    initFunction();
+                    console.log('Migration: Successfully initialized', componentName);
+                }
+            } catch (e) {
+                console.warn('Migration: Failed to initialize', componentName, e);
+            }
+        },
+
+        // Feature detection
+        hasFeature: function (featureName) {
+            const features = {
+                notifications: typeof window.notificationManager !== 'undefined',
+                loadingSpinner: typeof window.loadingSpinner !== 'undefined',
+                chatWidget: document.querySelector('.chat-widget') !== null,
+                newLayout: document.querySelector('.skip-link') !== null,
+            };
+            return features[featureName] || false;
+        },
+
+        // Migration status
+        getMigrationStatus: function () {
+            return {
+                mode: 'hybrid',
+                useNewLayout: false,
+                features: {
+                    notifications: this.hasFeature('notifications'),
+                    loadingSpinner: this.hasFeature('loadingSpinner'),
+                    chatWidget: this.hasFeature('chatWidget'),
+                    newLayout: this.hasFeature('newLayout'),
+                },
+            };
+        },
+    };
+
+    // Log migration status in development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.log('Migration Status:', window.migrationHelper.getMigrationStatus());
+    }
+</script>

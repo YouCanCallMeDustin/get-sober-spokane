@@ -11,16 +11,30 @@ module.exports = function renderScripts() {
     
     sh.cp('-R', sourcePath, destPath)
 
-    const sourcePathScriptsJS = upath.resolve(upath.dirname(__filename), '../src/js/scripts.js');
-    const destPathScriptsJS = upath.resolve(upath.dirname(__filename), '../docs/js/scripts.js');
-    
+    // Add cache-busting timestamp to all JS files
+    const jsFiles = [
+        'scripts.js',
+        'user-profile.js',
+        'community-forum.js',
+        'auth.js',
+        'config.js'
+    ];
+
     const copyright = `/*!
 * Start Bootstrap - ${packageJSON.title} v${packageJSON.version} (${packageJSON.homepage})
 * Copyright 2013-${new Date().getFullYear()} ${packageJSON.author}
 * Licensed under ${packageJSON.license} (https://github.com/StartBootstrap/${packageJSON.name}/blob/master/LICENSE)
+* Built: ${new Date().toISOString()}
 */
 `
-    const scriptsJS = fs.readFileSync(sourcePathScriptsJS);
-    
-    fs.writeFileSync(destPathScriptsJS, copyright + scriptsJS);
+
+    jsFiles.forEach(filename => {
+        const sourcePathJS = upath.resolve(upath.dirname(__filename), `../src/js/${filename}`);
+        const destPathJS = upath.resolve(upath.dirname(__filename), `../docs/js/${filename}`);
+        
+        if (fs.existsSync(sourcePathJS)) {
+            const jsContent = fs.readFileSync(sourcePathJS);
+            fs.writeFileSync(destPathJS, copyright + jsContent);
+        }
+    });
 };

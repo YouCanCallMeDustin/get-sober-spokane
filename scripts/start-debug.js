@@ -4,10 +4,10 @@ const upath = require('upath');
 const browserSyncPath = upath.resolve(upath.dirname(__filename), '../node_modules/.bin/browser-sync');
 
 concurrently([
-    { command: 'node --inspect scripts/sb-watch.js', name: 'SB_WATCH', prefixColor: 'bgBlue.bold' },
+    { command: 'node --inspect src/server.js', name: 'EXPRESS_SERVER_DEBUG', prefixColor: 'bgBlue.bold' },
     { 
         command: `${browserSyncPath} docs -w --no-online`,
-        name: 'SB_BROWSER_SYNC', 
+        name: 'BROWSER_SYNC', 
         prefixColor: 'bgBlue.bold',
     }
 ], {

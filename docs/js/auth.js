@@ -1,3 +1,9 @@
+/*!
+* Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
+* Copyright 2013-2025 Start Bootstrap
+* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
+* Built: 2025-08-31T08:09:19.279Z
+*/
 // Authentication JavaScript
 class AuthManager {
   constructor() {
@@ -149,7 +155,7 @@ class AuthManager {
           user_id: user.id,
           display_name: displayName,
           avatar_url: avatarUrl,
-          updated_at: new Date().toISOString()
+          last_active: new Date().toISOString()
         }, { onConflict: 'user_id' });
       if (error) throw error;
     } catch (e) {

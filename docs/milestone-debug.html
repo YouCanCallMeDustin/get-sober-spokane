@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestone Debug - Sober Spokane</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .debug-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .log-output {
+            background: #000;
+            color: #00ff00;
+            font-family: monospace;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Milestone Debug Page</h1>
+        
+        <div class="debug-section">
+            <h3>Authentication Status</h3>
+            <div id="authStatus">Checking...</div>
+            <button class="btn btn-primary" onclick="checkAuth()">Check Auth</button>
+        </div>
+        
+        <div class="debug-section">
+            <h3>Database Connection Test</h3>
+            <div id="dbStatus">Not tested</div>
+            <button class="btn btn-info" onclick="testDatabase()">Test Database</button>
+        </div>
+        
+        <div class="debug-section">
+            <h3>Form Test</h3>
+            <form id="testForm">
+                <div class="mb-3">
+                    <label for="testTitle" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="testTitle" value="Test Milestone" required>
+                </div>
+                <div class="mb-3">
+                    <label for="testDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="testDescription" rows="3">This is a test milestone</textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Test Submit</button>
+            </form>
+        </div>
+        
+        <div class="debug-section">
+            <h3>Console Log</h3>
+            <div id="logOutput" class="log-output"></div>
+            <button class="btn btn-secondary" onclick="clearLog()">Clear Log</button>
+        </div>
+    </div>
+
+    <!-- Load Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    
+    <script>
+        let supabase;
+        let currentUser = null;
+        
+        // Override console.log to capture output
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        function log(message) {
+            const logOutput = document.getElementById('logOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            logOutput.innerHTML += `[${timestamp}] ${message}\n`;
+            logOutput.scrollTop = logOutput.scrollHeight;
+            originalLog(message);
+        }
+        
+        function logError(message) {
+            const logOutput = document.getElementById('logOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            logOutput.innerHTML += `[${timestamp}] ERROR: ${message}\n`;
+            logOutput.scrollTop = logOutput.scrollHeight;
+            originalError(message);
+        }
+        
+        console.log = log;
+        console.error = logError;
+        
+        function clearLog() {
+            document.getElementById('logOutput').innerHTML = '';
+        }
+        
+        async function initializeSupabase() {
+            try {
+                log('🔧 Initializing Supabase...');
+                
+                // Wait for config to be available
+                let attempts = 0;
+                const maxAttempts = 50;
+                
+                while (attempts < maxAttempts && (!window.APP_CONFIG || !window.getSupabaseClient)) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    attempts++;
+                }
+                
+                if (!window.APP_CONFIG || !window.getSupabaseClient) {
+                    logError('❌ Config or shared client not available');
+                    return;
+                }
+                
+                supabase = window.getSupabaseClient();
+                if (!supabase) {
+                    logError('❌ Failed to get shared Supabase client');
+                    return;
+                }
+                
+                log('✅ Supabase initialized successfully');
+                
+                // Check authentication state
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    currentUser = session.user;
+                    log('✅ User authenticated: ' + currentUser.email);
+                    updateAuthStatus();
+                } else {
+                    log('⚠️ No active session');
+                    updateAuthStatus();
+                }
+            } catch (error) {
+                logError('Failed to initialize Supabase: ' + error.message);
+            }
+        }
+        
+        function updateAuthStatus() {
+            const authStatus = document.getElementById('authStatus');
+            if (currentUser) {
+                authStatus.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>Authenticated</strong><br>
+                        Email: ${currentUser.email}<br>
+                        ID: ${currentUser.id}
+                    </div>
+                `;
+            } else {
+                authStatus.innerHTML = `
+                    <div class="alert alert-warning">
+                        <strong>Not Authenticated</strong><br>
+                        Please sign in to test milestone functionality
+                    </div>
+                `;
+            }
+        }
+        
+        async function checkAuth() {
+            log('🔍 Checking authentication...');
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    currentUser = session.user;
+                    log('✅ User authenticated: ' + currentUser.email);
+                } else {
+                    currentUser = null;
+                    log('⚠️ No active session');
+                }
+                updateAuthStatus();
+            } catch (error) {
+                logError('Auth check failed: ' + error.message);
+            }
+        }
+        
+        async function testDatabase() {
+            log('🔍 Testing database connection...');
+            try {
+                if (!supabase) {
+                    logError('❌ Supabase not initialized');
+                    return;
+                }
+                
+                const { data, error } = await supabase
+                    .from('recovery_milestones')
+                    .select('count')
+                    .limit(1);
+                
+                if (error) {
+                    logError('❌ Database test failed: ' + error.message);
+                    document.getElementById('dbStatus').innerHTML = `
+                        <div class="alert alert-danger">
+                            <strong>Database Error:</strong><br>
+                            ${error.message}
+                        </div>
+                    `;
+                } else {
+                    log('✅ Database connection successful');
+                    document.getElementById('dbStatus').innerHTML = `
+                        <div class="alert alert-success">
+                            <strong>Database Connected</strong><br>
+                            Table accessible
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                logError('Database test failed: ' + error.message);
+            }
+        }
+        
+        // Set up form test
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            log('🎯 Form submission test triggered');
+            
+            if (!currentUser) {
+                logError('❌ User not authenticated');
+                return;
+            }
+            
+            const formData = {
+                title: document.getElementById('testTitle').value.trim(),
+                description: document.getElementById('testDescription').value.trim(),
+                category: 'other',
+                achievementLevel: 'bronze',
+                dateAchieved: new Date().toISOString().split('T')[0],
+                tags: '',
+                isPrivate: true
+            };
+            
+            log('📝 Test form data: ' + JSON.stringify(formData, null, 2));
+            
+            try {
+                // Prepare milestone data with fallback for column names
+                const milestoneData = {
+                    user_id: currentUser.id,
+                    title: formData.title,
+                    description: formData.description,
+                    category: formData.category,
+                    achievement_level: formData.achievementLevel,
+                    tags: formData.tags,
+                    is_private: formData.isPrivate,
+                    created_at: new Date().toISOString()
+                };
+                
+                // Handle date column - try both possible column names
+                if (formData.dateAchieved) {
+                    milestoneData.date_achieved = formData.dateAchieved;
+                    // Also try the 'date' column as fallback
+                    milestoneData.date = formData.dateAchieved;
+                } else {
+                    // Set default date if none provided
+                    const today = new Date().toISOString().split('T')[0];
+                    milestoneData.date_achieved = today;
+                    milestoneData.date = today;
+                }
+                
+                log('📝 Inserting milestone data: ' + JSON.stringify(milestoneData, null, 2));
+                
+                const { error } = await supabase
+                    .from('recovery_milestones')
+                    .insert(milestoneData);
+                
+                if (error) {
+                    logError('❌ Insert failed: ' + error.message);
+                } else {
+                    log('✅ Test milestone inserted successfully!');
+                }
+            } catch (error) {
+                logError('Test failed: ' + error.message);
+            }
+        });
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 Debug page loaded');
+            initializeSupabase();
+        });
+    </script>
+</body>
+</html>

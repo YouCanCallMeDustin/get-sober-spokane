@@ -1,0 +1,35 @@
+<div class="loading-spinner" id="loadingSpinner" role="status" aria-label="Loading">
+    <div class="spinner" aria-hidden="true"></div>
+    <span class="sr-only">Loading...</span>
+</div>
+<script>
+    // Loading spinner functionality
+    window.loadingSpinner = {
+        show: function () {
+            const spinner = document.getElementById('loadingSpinner');
+            if (spinner) {
+                spinner.classList.add('show');
+            }
+        },
+        hide: function () {
+            const spinner = document.getElementById('loadingSpinner');
+            if (spinner) {
+                spinner.classList.remove('show');
+            }
+        },
+    };
+
+    // Show spinner on page load
+    window.addEventListener('load', function () {
+        setTimeout(() => {
+            window.loadingSpinner.hide();
+        }, 500);
+    });
+
+    // Show spinner on navigation
+    document.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A' && e.target.href && !e.target.href.startsWith('#')) {
+            window.loadingSpinner.show();
+        }
+    });
+</script>

@@ -1,0 +1,78 @@
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav" role="navigation" aria-label="Main navigation">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand d-flex align-items-center" href="/" aria-label="Get Sober Spokane Home">
+            <img class="logo" src="/assets/img/logo.png" alt="Get Sober Spokane Logo" width="40" height="40" />
+            <span class="ms-2">Get Sober Spokane</span>
+        </a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Resources</a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li role="none">
+                            <a class="dropdown-item" role="menuitem" href="/resource-directory">
+                                <i class="bi bi-list-ul me-2" aria-hidden="true"></i>
+                                Resource Directory
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a class="dropdown-item" role="menuitem" href="/addiction-treatments-support">
+                                <i class="bi bi-heart-pulse me-2" aria-hidden="true"></i>
+                                Treatment & Support
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a class="dropdown-item" role="menuitem" href="/medical-mental-health">
+                                <i class="bi bi-stethoscope me-2" aria-hidden="true"></i>
+                                Medical & Mental Health
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a class="dropdown-item" role="menuitem" href="/shelter-housing">
+                                <i class="bi bi-house me-2" aria-hidden="true"></i>
+                                Shelter & Housing
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a class="dropdown-item" role="menuitem" href="/food-basic-needs">
+                                <i class="bi bi-bag-heart me-2" aria-hidden="true"></i>
+                                Food & Basic Needs
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a class="dropdown-item" role="menuitem" href="/employment-skills">
+                                <i class="bi bi-briefcase me-2" aria-hidden="true"></i>
+                                Employment & Skills
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a class="dropdown-item" role="menuitem" href="/community-engagement-sober-activities">
+                                <i class="bi bi-people me-2" aria-hidden="true"></i>
+                                Sober Activities
+                            </a>
+                        </li>
+                        <li role="none">
+                            <a class="dropdown-item" role="menuitem" href="/map">
+                                <i class="bi bi-geo-alt me-2" aria-hidden="true"></i>
+                                Recovery Map
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="/donations">Donate</a></li>
+                <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
+                <li class="nav-item" data-auth="required" style="display: none">
+                    <a class="nav-link" id="notificationBell" href="#" title="Notifications" aria-label="View notifications" role="button">
+                        <i class="bi bi-bell" aria-hidden="true"></i>
+                        <span class="badge bg-danger badge-pill ms-1" id="notificationCount" style="display: none" aria-label="Unread notifications count">0</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-auth="guest"><a class="nav-link" id="navbarLogin" href="/dashboard">Sign In</a></li>
+                <li class="nav-item" data-auth="required" style="display: none"><a class="nav-link" id="navbarLogout" href="#" aria-label="Sign out">Sign Out</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

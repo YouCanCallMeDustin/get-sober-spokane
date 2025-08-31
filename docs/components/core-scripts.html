@@ -1,0 +1,88 @@
+<script src="/env.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js" defer></script>
+<script src="/js/config.js" defer></script>
+<script src="/js/auth.js?v=20250822c" defer></script>
+<script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize Bootstrap components
+        initializeBootstrap();
+
+        // Initialize authentication
+        initializeAuth();
+
+        // Initialize navigation
+        initializeNavigation();
+
+        // Initialize notifications
+        initializeNotifications();
+
+        // Performance monitoring
+        initializePerformanceMonitoring();
+    });
+
+    // Bootstrap initialization
+    function initializeBootstrap() {
+        const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
+        const dropdownList = [...dropdownElementList].map((dropdownToggleEl) => new bootstrap.Dropdown(dropdownToggleEl));
+    }
+
+    // Authentication initialization
+    function initializeAuth() {
+        // Hide Sign In link on auth pages
+        const hideLoginOnPages = /\/(auth\/(login|signup|reset)\.html)$/.test(window.location.pathname);
+        if (hideLoginOnPages) {
+            const loginNavItem = document.getElementById('navbarLogin');
+            if (loginNavItem && loginNavItem.parentElement) {
+                loginNavItem.parentElement.style.display = 'none';
+            }
+        }
+    }
+
+    // Navigation initialization
+    function initializeNavigation() {
+        // Navbar logout handler
+        const navbarLogout = document.getElementById('navbarLogout');
+        if (navbarLogout) {
+            navbarLogout.addEventListener('click', async function (e) {
+                e.preventDefault();
+                try {
+                    if (window.authManager && typeof window.authManager.signOut === 'function') {
+                        await window.authManager.signOut();
+                    }
+                    // Clear server session
+                    try {
+                        await fetch('/api/auth/logout', { method: 'POST' });
+                    } catch (err) {
+                        console.warn('Server session logout failed or not available', err);
+                    }
+                } finally {
+                    window.location.href = '/auth/login.html?logout=true';
+                }
+            });
+        }
+    }
+
+    // Notifications initialization
+    function initializeNotifications() {
+        // Initialize notification system if available
+        if (window.notificationManager) {
+            window.notificationManager.init();
+        }
+    }
+
+    // Performance monitoring
+    function initializePerformanceMonitoring() {
+        // Report Core Web Vitals
+        if ('PerformanceObserver' in window) {
+            const observer = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    if (entry.entryType === 'largest-contentful-paint') {
+                        console.log('LCP:', entry.startTime);
+                    }
+                }
+            });
+            observer.observe({ entryTypes: ['largest-contentful-paint'] });
+        }
+    }
+</script>

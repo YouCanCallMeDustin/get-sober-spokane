@@ -1,27 +1,61 @@
+/*!
+* Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
+* Copyright 2013-2025 Start Bootstrap
+* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
+* Built: 2025-08-31T08:09:19.279Z
+*/
 // Populate user profile page from Supabase
+// Version: 2025-01-31-v2 (with activity loading)
 (function(){
   let supabaseClient = null;
   let currentUser = null;
   let viewingUserId = null;
 
   document.addEventListener('DOMContentLoaded', async () => {
+    console.log('DOMContentLoaded - Starting profile initialization');
+    
     const supabaseUrl = window.APP_CONFIG?.SUPABASE_URL || '';
     const supabaseKey = window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
-    if (!supabaseUrl || !supabaseKey || typeof window.supabase === 'undefined') return;
+    if (!supabaseUrl || !supabaseKey || typeof window.supabase === 'undefined') {
+      console.error('Missing Supabase configuration');
+      return;
+    }
+    
     supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
     const { data: { session } } = await supabaseClient.auth.getSession();
     currentUser = session?.user || null;
+    console.log('Current user:', currentUser?.id);
 
     const params = new URLSearchParams(window.location.search);
     viewingUserId = params.get('id') || currentUser?.id || null;
-    if (!viewingUserId) return;
+    if (!viewingUserId) {
+      console.error('No viewing user ID found');
+      return;
+    }
+    console.log('Viewing user ID:', viewingUserId);
 
-    await renderProfile(viewingUserId);
-    setupEditProfileModal();
+    try {
+      // Load profile and activity in parallel
+      console.log('Loading profile and activity...');
+      await Promise.all([
+        renderProfile(viewingUserId),
+        loadUserActivity(viewingUserId)
+      ]);
+      
+      console.log('Setting up UI components...');
+      setupEditProfileModal();
+      setupActivityTabs();
+      
+      console.log('Profile initialization complete');
+    } catch (error) {
+      console.error('Error during profile initialization:', error);
+    }
   });
 
   async function renderProfile(userId){
     try {
+      console.log('renderProfile - Starting for user:', userId);
+      
       const [{ data: profile }, postsCount, commentsCount, upvotesCount] = await Promise.all([
         supabaseClient.from('forum_user_profiles').select('*').eq('user_id', userId).maybeSingle(),
         supabaseClient.from('forum_posts').select('id', { count: 'exact', head: true }).eq('user_id', userId),
@@ -29,13 +63,18 @@
         supabaseClient.from('forum_post_votes').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('vote', 1)
       ]);
 
+      console.log('renderProfile - Profile data:', profile);
+      console.log('renderProfile - Posts count:', postsCount?.count);
+      console.log('renderProfile - Comments count:', commentsCount?.count);
+      console.log('renderProfile - Upvotes count:', upvotesCount?.count);
+
       const nameEl = document.querySelector('#userDisplayName') || document.querySelector('h1, .profile-title, .stories-hero-title');
       if (nameEl && profile?.display_name) nameEl.textContent = profile.display_name;
 
       const avatarImg = document.querySelector('#userAvatar');
-      const googlePic = currentUser?.user_metadata?.picture || currentUser?.user_metadata?.avatar_url || null;
       if (avatarImg){
-        const src = profile?.avatar_url || googlePic || '/get-sober-spokane/assets/img/default-avatar.png';
+        const googlePic = currentUser?.user_metadata?.picture || currentUser?.user_metadata?.avatar_url || null;
+        const src = profile?.avatar_url || googlePic || '/assets/img/default-avatar.png';
         if (avatarImg.src !== src) avatarImg.src = src;
         avatarImg.alt = 'Avatar';
       }
@@ -53,45 +92,26 @@
       const upvotesEl = document.querySelector('#userUpvotes');
       if (upvotesEl && typeof upvotesCount?.count === 'number') upvotesEl.textContent = upvotesCount.count;
 
-      // Prefer Supabase profile date, else fall back to dashboard localStorage
-      const savedDashboard = (()=>{ try { return JSON.parse(localStorage.getItem('dashboardData')||'{}'); } catch(e){ return {}; }})();
-      const localSobriety = savedDashboard?.profile?.sobrietyDate || savedDashboard?.sobrietyDate || null;
-      const sobrietyDate = profile?.sobriety_date || localSobriety || null;
-
-      if (sobrietyDate){
+      if (profile?.sobriety_date){
+        console.log('renderProfile - Sobriety date found:', profile.sobriety_date);
         const daysEl = document.querySelector('#sobrietyDays');
         if (daysEl){
-          const start = new Date(sobrietyDate);
+          const start = new Date(profile.sobriety_date);
           const now = new Date();
           const diff = Math.max(0, Math.ceil((now - start)/(1000*3600*24)));
+          console.log('renderProfile - Calculating sobriety days:', diff);
           daysEl.textContent = diff;
+        } else {
+          console.log('renderProfile - Sobriety days element not found');
         }
         const dateEl = document.querySelector('#sobrietyDate');
-        if (dateEl) dateEl.textContent = sobrietyDate;
+        if (dateEl) dateEl.textContent = profile.sobriety_date;
       } else {
+        console.log('renderProfile - No sobriety date found');
         const daysEl = document.querySelector('#sobrietyDays');
         if (daysEl) daysEl.textContent = '0';
         const dateEl = document.querySelector('#sobrietyDate');
         if (dateEl) dateEl.textContent = 'Not set';
-      }
-
-      // If this is the signed-in user's own profile and we have better local/Google data,
-      // sync it back to Supabase so it persists across devices
-      try {
-        const isOwnProfile = !!currentUser && currentUser.id === userId;
-        const needsAvatarSync = isOwnProfile && googlePic && !profile?.avatar_url;
-        const needsSobrietySync = isOwnProfile && !profile?.sobriety_date && !!localSobriety;
-        if (isOwnProfile && (needsAvatarSync || needsSobrietySync)){
-          const updates = {
-            user_id: userId,
-            updated_at: new Date().toISOString()
-          };
-          if (needsAvatarSync) updates.avatar_url = googlePic;
-          if (needsSobrietySync) updates.sobriety_date = localSobriety;
-          await supabaseClient.from('forum_user_profiles').upsert(updates, { onConflict: 'user_id' });
-        }
-      } catch(syncErr){
-        console.warn('Non-blocking: failed to backfill profile from local/Google', syncErr);
       }
 
       const editBtn = document.getElementById('editProfileBtn');
@@ -138,7 +158,7 @@
     if (bioInput) bioInput.value = profile?.bio || '';
     if (locationInput) locationInput.value = profile?.location || '';
     if (sobrietyDateInput) sobrietyDateInput.value = profile?.sobriety_date || '';
-    if (avatarPrev) avatarPrev.src = profile?.avatar_url || '/get-sober-spokane/assets/img/default-avatar.png';
+          if (avatarPrev) avatarPrev.src = profile?.avatar_url || '/assets/img/default-avatar.png';
 
     // Simple client-side square center crop for avatar
     let avatarDataUrl = null;
@@ -182,9 +202,7 @@
           };
           if (avatarDataUrl) updates.avatar_url = avatarDataUrl;
 
-          const { error } = await supabaseClient
-            .from('forum_user_profiles')
-            .upsert(updates, { onConflict: 'user_id' });
+          const { error } = await supabaseClient.from('forum_user_profiles').upsert(updates);
           if (error) throw error;
 
           await renderProfile(viewingUserId);
@@ -192,13 +210,179 @@
           modalInstance.hide();
         } catch (err) {
           console.error('Failed to save profile', err);
-          const message = err?.message || (typeof err === 'string' ? err : 'Unknown error');
-          alert('Failed to save profile: ' + message);
+          alert('Failed to save profile');
         }
       };
     }
 
     const modalInstance = new bootstrap.Modal(modalEl);
     modalInstance.show();
+  }
+
+  async function loadUserActivity(userId) {
+    try {
+      console.log('loadUserActivity - Starting for user:', userId);
+      
+      // Fetch posts and comments for the user
+      const [postsResponse, commentsResponse] = await Promise.all([
+        supabaseClient.from('forum_posts')
+          .select('*')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(10),
+        supabaseClient.from('forum_comments')
+          .select('*, forum_posts(title)')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(10)
+      ]);
+
+      console.log('loadUserActivity - Posts response:', postsResponse);
+      console.log('loadUserActivity - Comments response:', commentsResponse);
+
+      const posts = postsResponse.data || [];
+      const comments = commentsResponse.data || [];
+      
+      console.log('loadUserActivity - Found posts:', posts.length);
+      console.log('loadUserActivity - Found comments:', comments.length);
+
+      // Store activity data for tab switching
+      window.userActivityData = {
+        posts: posts,
+        comments: comments,
+        achievements: [] // Placeholder for future achievements
+      };
+
+      console.log('loadUserActivity - Rendering posts tab');
+      // Show posts by default
+      renderActivityTab('posts');
+    } catch (error) {
+      console.error('Error loading user activity:', error);
+    }
+  }
+
+  function setupActivityTabs() {
+    const tabs = document.querySelectorAll('[data-activity-tab]');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Remove active class from all tabs
+        tabs.forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        
+        // Render the selected tab content
+        const tabType = tab.getAttribute('data-activity-tab');
+        renderActivityTab(tabType);
+      });
+    });
+  }
+
+  function renderActivityTab(tabType) {
+    const contentContainer = document.getElementById('activity-content');
+    if (!contentContainer) {
+      console.error('Activity content container not found');
+      return;
+    }
+
+    const activityData = window.userActivityData || { posts: [], comments: [], achievements: [] };
+    
+    let html = '';
+    
+    switch (tabType) {
+      case 'posts':
+        if (activityData.posts.length === 0) {
+          html = '<div class="text-center text-muted py-4">No posts yet</div>';
+        } else {
+          html = activityData.posts.map(post => createPostHTML(post)).join('');
+        }
+        break;
+        
+      case 'comments':
+        if (activityData.comments.length === 0) {
+          html = '<div class="text-center text-muted py-4">No comments yet</div>';
+        } else {
+          html = activityData.comments.map(comment => createCommentHTML(comment)).join('');
+        }
+        break;
+        
+      case 'achievements':
+        html = '<div class="text-center text-muted py-4">Achievements coming soon!</div>';
+        break;
+        
+      default:
+        html = '<div class="text-center text-muted py-4">No activity found</div>';
+    }
+    
+    contentContainer.innerHTML = html;
+  }
+
+  function createPostHTML(post) {
+    return `
+      <div class="activity-item border-bottom pb-3 mb-3">
+        <div class="d-flex align-items-start">
+          <div class="flex-grow-1">
+            <h6 class="mb-1">
+              <a href="/community-forum.html" class="text-decoration-none">${post.title || 'Untitled Post'}</a>
+            </h6>
+            <p class="text-muted small mb-2">${truncateText(post.content || '', 150)}</p>
+            <div class="d-flex align-items-center text-muted small">
+              <span class="me-3">
+                <i class="fas fa-thumbs-up me-1"></i>${post.upvotes || 0}
+              </span>
+              <span class="me-3">
+                <i class="fas fa-comment me-1"></i>${post.comment_count || 0}
+              </span>
+              <span>${formatTimeAgo(post.created_at)}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function createCommentHTML(comment) {
+    return `
+      <div class="activity-item border-bottom pb-3 mb-3">
+        <div class="d-flex align-items-start">
+          <div class="flex-grow-1">
+            <h6 class="mb-1">
+              <span class="text-muted">Comment on:</span>
+              <a href="/community-forum.html" class="text-decoration-none">${comment.forum_posts?.title || 'Unknown Post'}</a>
+            </h6>
+            <p class="text-muted small mb-2">${truncateText(comment.content || '', 150)}</p>
+            <div class="d-flex align-items-center text-muted small">
+              <span class="me-3">
+                <i class="fas fa-thumbs-up me-1"></i>${comment.upvotes || 0}
+              </span>
+              <span>${formatTimeAgo(comment.created_at)}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function formatTimeAgo(dateString) {
+    if (!dateString) return 'Unknown time';
+    
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    
+    return date.toLocaleDateString();
+  }
+
+  function truncateText(text, maxLength) {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
   }
 })();

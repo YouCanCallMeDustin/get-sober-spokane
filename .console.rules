@@ -1,0 +1,56 @@
+# Console Rules for Sober Spokane Development
+
+## File Structure Rules
+- ALWAYS work in `src/` folder for source files
+- NEVER edit files directly in `docs/` folder (these are compiled output)
+- Source files are in `src/` and get compiled to `docs/`
+
+## Template Rules
+- ALWAYS edit Pug files in `src/pug/` (e.g., `src/pug/user-profile.pug`)
+- NEVER edit HTML files in `docs/` (e.g., `docs/user-profile.html`)
+- HTML files are compiled from Pug templates
+
+## JavaScript Rules
+- ALWAYS edit JavaScript files in `src/js/` (e.g., `src/js/user-profile.js`)
+- NEVER edit JavaScript files in `docs/js/` (e.g., `docs/js/user-profile.js`)
+- JavaScript files in `docs/js/` are compiled from `src/js/`
+
+## Build Process Rules
+- After editing source files, ALWAYS run build commands:
+  - `npm run build:pug` - compiles Pug to HTML
+  - `npm run build:scripts` - compiles JavaScript
+  - `npm run build:scss` - compiles SCSS to CSS
+- Build commands copy files from `src/` to `docs/`
+
+## Database Rules
+- Database schema changes go in `database/sql-scripts/`
+- Run SQL scripts in Supabase SQL editor
+- Test database changes before deploying
+
+## Common Mistakes to Avoid
+- ❌ Editing `docs/user-profile.html` instead of `src/pug/user-profile.pug`
+- ❌ Editing `docs/js/user-profile.js` instead of `src/js/user-profile.js`
+- ❌ Forgetting to run build commands after source file changes
+- ❌ Working directly in compiled output folders
+
+## Workflow Checklist
+1. ✅ Identify the correct source file in `src/`
+2. ✅ Make changes to source file
+3. ✅ Run appropriate build command
+4. ✅ Test the compiled output in `docs/`
+5. ✅ Verify changes work as expected
+
+## File Locations Reference
+- Source Pug: `src/pug/`
+- Compiled HTML: `docs/`
+- Source JavaScript: `src/js/`
+- Compiled JavaScript: `docs/js/`
+- Source SCSS: `src/scss/`
+- Compiled CSS: `docs/css/`
+- Database scripts: `database/sql-scripts/`
+
+## Emergency Recovery
+If you accidentally edit a compiled file:
+1. Run the appropriate build command to restore it
+2. Make your changes to the source file instead
+3. Run build command again to apply your changes

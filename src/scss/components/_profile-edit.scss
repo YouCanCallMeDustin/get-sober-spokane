@@ -1,0 +1,398 @@
+// Profile Edit Component Styles
+// src/scss/components/_profile-edit.scss
+
+.user-profile-edit {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem 0;
+  
+  .container {
+    max-width: 800px;
+  }
+  
+  .card {
+    border-radius: 1.5rem;
+    border: none;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-header {
+      background: linear-gradient(135deg, $primary-blue 0%, $secondary-teal 100%);
+      color: white;
+      border-radius: 1.5rem 1.5rem 0 0;
+      border-bottom: none;
+      padding: 2rem;
+      
+      h3 {
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin: 0;
+        
+        i {
+          margin-right: 0.75rem;
+          font-size: 1.25rem;
+        }
+      }
+    }
+    
+    .card-body {
+      padding: 2.5rem;
+      
+      @media (max-width: 768px) {
+        padding: 2rem;
+      }
+      
+      .alert {
+        border-radius: 1rem;
+        border: none;
+        padding: 1rem 1.5rem;
+        margin-bottom: 2rem;
+        
+        &.alert-danger {
+          background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+          color: #721c24;
+          border-left: 4px solid #dc3545;
+        }
+        
+        &.alert-success {
+          background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+          color: #155724;
+          border-left: 4px solid #28a745;
+        }
+        
+        i {
+          margin-right: 0.5rem;
+        }
+      }
+      
+      .form-label {
+        font-weight: 600;
+        color: $primary-blue;
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        
+        &::before {
+          content: '';
+          width: 4px;
+          height: 16px;
+          background: linear-gradient(135deg, $primary-blue 0%, $secondary-teal 100%);
+          border-radius: 2px;
+        }
+      }
+      
+      .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 0.75rem;
+        padding: 0.875rem 1rem;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        background: white;
+        
+        &:focus {
+          border-color: $primary-blue;
+          box-shadow: 0 0 0 4px rgba($primary-blue, 0.15);
+          outline: none;
+          background: white;
+        }
+        
+        &[readonly] {
+          background: #f8f9fa;
+          color: #6c757d;
+          cursor: not-allowed;
+          border-color: #dee2e6;
+          
+          &:focus {
+            border-color: #dee2e6;
+            box-shadow: none;
+          }
+        }
+        
+        &::placeholder {
+          color: #adb5bd;
+          font-style: italic;
+        }
+      }
+      
+      textarea.form-control {
+        resize: vertical;
+        min-height: 120px;
+        line-height: 1.6;
+      }
+      
+      .form-check {
+        margin-top: 1.5rem;
+        
+        .form-check-input {
+          width: 1.25rem;
+          height: 1.25rem;
+          border: 2px solid #e9ecef;
+          border-radius: 0.375rem;
+          transition: all 0.3s ease;
+          
+          &:checked {
+            background-color: $primary-blue;
+            border-color: $primary-blue;
+            box-shadow: 0 0 0 3px rgba($primary-blue, 0.15);
+          }
+          
+          &:focus {
+            border-color: $primary-blue;
+            box-shadow: 0 0 0 3px rgba($primary-blue, 0.15);
+          }
+        }
+        
+        .form-check-label {
+          font-weight: 500;
+          color: #495057;
+          margin-left: 0.5rem;
+          cursor: pointer;
+        }
+      }
+      
+      small {
+        color: #6c757d;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        display: block;
+        font-style: italic;
+      }
+      
+      .btn {
+        padding: 0.875rem 2rem;
+        font-weight: 600;
+        border-radius: 0.75rem;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        border: none;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        &.btn-primary {
+          background: linear-gradient(135deg, $primary-blue 0%, $secondary-teal 100%);
+          color: white;
+          
+          &:hover {
+            background: linear-gradient(135deg, darken($primary-blue, 10%) 0%, darken($secondary-teal, 10%) 100%);
+          }
+        }
+        
+        &.btn-outline-secondary {
+          background: transparent;
+          border: 2px solid #6c757d;
+          color: #6c757d;
+          
+          &:hover {
+            background: #6c757d;
+            color: white;
+            border-color: #6c757d;
+          }
+        }
+        
+        i {
+          margin-right: 0.5rem;
+        }
+        
+        @media (max-width: 576px) {
+          padding: 0.75rem 1.5rem;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+  
+  // Form Sections
+  .form-section {
+    background: #f8f9fa;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-left: 4px solid $secondary-teal;
+    
+    .section-title {
+      font-weight: 600;
+      color: $secondary-teal;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+  }
+  
+  // Required Field Indicator
+  .required-field {
+    .form-label::after {
+      content: ' *';
+      color: #dc3545;
+      font-weight: 700;
+    }
+  }
+  
+  // Character Counter
+  .char-counter {
+    text-align: right;
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 0.25rem;
+    
+    &.near-limit {
+      color: #ffc107;
+    }
+    
+    &.at-limit {
+      color: #dc3545;
+    }
+  }
+  
+  // Privacy Settings Help
+  .privacy-help {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-left: 4px solid $primary-blue;
+    
+    .help-title {
+      font-weight: 600;
+      color: $primary-blue;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .help-text {
+      color: #495057;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+  }
+  
+  // Loading States
+  .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.5rem;
+    z-index: 10;
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e9ecef;
+      border-top: 4px solid $primary-blue;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Responsive Improvements
+@media (max-width: 992px) {
+  .user-profile-edit {
+    padding: 1.5rem 0;
+    
+    .card {
+      .card-header {
+        padding: 1.5rem;
+        
+        h3 {
+          font-size: 1.25rem;
+        }
+      }
+      
+      .card-body {
+        padding: 2rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .user-profile-edit {
+    padding: 1rem 0;
+    
+    .card {
+      .card-header {
+        padding: 1.25rem;
+        
+        h3 {
+          font-size: 1.1rem;
+          
+          i {
+            font-size: 1rem;
+          }
+        }
+      }
+      
+      .card-body {
+        padding: 1.5rem;
+        
+        .form-label {
+          font-size: 0.95rem;
+        }
+        
+        .form-control, .form-select {
+          font-size: 0.95rem;
+          padding: 0.75rem 0.875rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .user-profile-edit {
+    .card {
+      border-radius: 1rem;
+      
+      .card-header {
+        padding: 1rem;
+        border-radius: 1rem 1rem 0 0;
+        
+        h3 {
+          font-size: 1rem;
+          
+          i {
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+          }
+        }
+      }
+      
+      .card-body {
+        padding: 1.25rem;
+        
+        .btn {
+          width: 100%;
+          margin-bottom: 0.75rem;
+          
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

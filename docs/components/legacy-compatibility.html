@@ -1,0 +1,154 @@
+<script>
+    // Legacy compatibility layer
+    (function () {
+        'use strict';
+
+        console.log('Migration: Loading legacy compatibility layer...');
+
+        // Ensure old functions still exist
+        window.legacyCompatibility = {
+            // Preserve old getMeta function if it exists
+            preserveGetMeta: function () {
+                if (typeof window.getMeta === 'function' && !window.originalGetMeta) {
+                    window.originalGetMeta = window.getMeta;
+                    console.log('Migration: Preserved original getMeta function');
+                }
+            },
+
+            // Ensure old event handlers still work
+            preserveEventHandlers: function () {
+                // Preserve any existing event handlers
+                const existingHandlers = window.existingEventHandlers || {};
+                window.existingEventHandlers = existingHandlers;
+
+                // Re-attach old handlers if they were removed
+                if (existingHandlers.navbarLogout) {
+                    const navbarLogout = document.getElementById('navbarLogout');
+                    if (navbarLogout && !navbarLogout._legacyHandlerAttached) {
+                        navbarLogout.addEventListener('click', existingHandlers.navbarLogout);
+                        navbarLogout._legacyHandlerAttached = true;
+                        console.log('Migration: Re-attached legacy navbar logout handler');
+                    }
+                }
+            },
+
+            // Ensure old CSS classes still work
+            preserveCSSClasses: function () {
+                // Add any missing CSS classes that old pages might expect
+                const style = document.createElement('style');
+                style.textContent = `
+        /* Legacy CSS compatibility */
+        .sr-only {
+          position: absolute !important;
+          width: 1px !important;
+          height: 1px !important;
+          padding: 0 !important;
+          margin: -1px !important;
+          overflow: hidden !important;
+          clip: rect(0, 0, 0, 0) !important;
+          white-space: nowrap !important;
+          border: 0 !important;
+        }
+        
+        /* Ensure old navbar styles still work */
+        .navbar.navbar-light .navbar-nav .nav-link {
+          color: #333 !important;
+          font-weight: 500;
+        }
+        
+        .navbar.navbar-light .navbar-nav .nav-link:hover {
+          color: #007bff !important;
+        }
+        
+        .navbar.navbar-light .navbar-brand {
+          color: #333 !important;
+          font-weight: 600;
+        }
+        
+        .navbar.navbar-light .navbar-brand:hover {
+          color: #007bff !important;
+        }
+        
+        /* Ensure old dropdown styles still work */
+        .dropdown-menu {
+          border: none;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+          border-radius: 8px;
+          padding: 0.5rem 0;
+          margin-top: 0.5rem;
+          min-width: 200px;
+        }
+        
+        .dropdown-item {
+          padding: 0.75rem 1.5rem;
+          font-weight: 500;
+          color: #333;
+          transition: all 0.2s ease;
+        }
+        
+        .dropdown-item:hover {
+          background-color: #f8f9fa;
+          color: #007bff;
+        }
+      `;
+                document.head.appendChild(style);
+                console.log('Migration: Added legacy CSS compatibility');
+            },
+
+            // Ensure old JavaScript functions still work
+            preserveJavaScriptFunctions: function () {
+                // Preserve any global functions that might be expected
+                if (typeof window.showNotification === 'undefined') {
+                    window.showNotification = function (message, type = 'info', duration = 5000) {
+                        console.log('Migration: Legacy showNotification called:', message);
+                        // Try to use new notification system if available
+                        if (window.notificationManager && typeof window.notificationManager.show === 'function') {
+                            return window.notificationManager.show(message, type, duration);
+                        }
+                        // Fallback to console
+                        console.log(`[${type.toUpperCase()}] ${message}`);
+                    };
+                }
+
+                // Preserve old loading spinner functions
+                if (typeof window.showLoadingSpinner === 'undefined') {
+                    window.showLoadingSpinner = function () {
+                        if (window.loadingSpinner && typeof window.loadingSpinner.show === 'function') {
+                            window.loadingSpinner.show();
+                        }
+                    };
+                }
+
+                if (typeof window.hideLoadingSpinner === 'undefined') {
+                    window.hideLoadingSpinner = function () {
+                        if (window.loadingSpinner && typeof window.loadingSpinner.hide === 'function') {
+                            window.loadingSpinner.hide();
+                        }
+                    };
+                }
+            },
+
+            // Initialize all compatibility features
+            init: function () {
+                this.preserveGetMeta();
+                this.preserveEventHandlers();
+                this.preserveCSSClasses();
+                this.preserveJavaScriptFunctions();
+
+                console.log('Migration: Legacy compatibility layer initialized');
+
+                // Dispatch event that migration is complete
+                window.dispatchEvent(new CustomEvent('migration:legacy-compatibility-ready'));
+            },
+        };
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                window.legacyCompatibility.init();
+            });
+        } else {
+            window.legacyCompatibility.init();
+        }
+    })();
+</script>

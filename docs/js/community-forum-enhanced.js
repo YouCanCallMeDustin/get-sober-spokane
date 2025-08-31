@@ -31,6 +31,12 @@ class CommunityForum {
         try {
             await this.initializeSupabase();
             await this.loadForumData();
+            
+            // Ensure current user has a profile if they're authenticated
+            if (this.currentUser) {
+                await this.ensureUserProfile();
+            }
+            
             this.setupEventListeners();
             this.updateForumStats();
             this.loadFeaturedStories();
@@ -75,6 +81,90 @@ class CommunityForum {
         } catch (error) {
             console.error('Failed to initialize Supabase:', error);
             throw error;
+        }
+    }
+
+    // Ensure user profile exists in forum_user_profiles table
+    async ensureUserProfile() {
+        if (!this.currentUser || !this.supabase) {
+            console.log('ensureUserProfile: No currentUser or supabase client');
+            return;
+        }
+        
+        console.log('ensureUserProfile: Checking for user profile', {
+            userId: this.currentUser.id,
+            userMetadata: this.currentUser.user_metadata
+        });
+        
+        try {
+            // Check if profile already exists
+            const { data: existingProfile, error: checkError } = await this.supabase
+                .from('forum_user_profiles')
+                .select('user_id, display_name')
+                .eq('user_id', this.currentUser.id)
+                .single();
+            
+            if (checkError && checkError.code !== 'PGRST116') {
+                console.error('Error checking existing profile:', checkError);
+            }
+            
+            console.log('ensureUserProfile: Existing profile check result:', existingProfile);
+            
+            if (!existingProfile) {
+                // Create profile if it doesn't exist
+                const displayName = this.currentUser.user_metadata?.full_name || 
+                                  this.currentUser.user_metadata?.display_name || 
+                                  this.currentUser.user_metadata?.name || 
+                                  this.currentUser.email?.split('@')[0] || 
+                                  'Forum User';
+                const avatarUrl = this.currentUser.user_metadata?.avatar_url || 
+                                this.currentUser.user_metadata?.picture || null;
+                
+                console.log('ensureUserProfile: Creating new profile with displayName:', displayName);
+                
+                console.log('ensureUserProfile: Attempting to insert profile with data:', {
+                    user_id: this.currentUser.id,
+                    display_name: displayName,
+                    avatar_url: avatarUrl,
+                    join_date: new Date().toISOString(),
+                    last_active: new Date().toISOString()
+                });
+                
+                const { error } = await this.supabase
+                    .from('forum_user_profiles')
+                    .insert({
+                        user_id: this.currentUser.id,
+                        display_name: displayName,
+                        avatar_url: avatarUrl,
+                        join_date: new Date().toISOString(),
+                        last_active: new Date().toISOString()
+                    });
+                
+                if (error) {
+                    console.error('ensureUserProfile: Insert error details:', error);
+                    throw error;
+                }
+                
+                // Update local user data
+                const newProfile = {
+                    user_id: this.currentUser.id,
+                    display_name: displayName,
+                    avatar_url: avatarUrl
+                };
+                this.forumData.users.push(newProfile);
+                this.forumData.usersById[this.currentUser.id] = newProfile;
+                
+                console.log('ensureUserProfile: Successfully created user profile for:', displayName);
+                console.log('ensureUserProfile: Updated local data:', {
+                    usersCount: this.forumData.users.length,
+                    usersByIdKeys: Object.keys(this.forumData.usersById)
+                });
+            } else {
+                console.log('ensureUserProfile: Profile already exists:', existingProfile);
+            }
+        } catch (error) {
+            console.error('Failed to ensure user profile:', error);
+            // Don't throw error - we can still create the post
         }
     }
 
@@ -145,10 +235,13 @@ class CommunityForum {
                 (users || []).forEach(u => { this.forumData.usersById[u.user_id] = u; });
             }
             
-            console.log('Forum data loaded:', {
+            console.log('loadForumData: User profiles loaded:', {
                 posts: this.forumData.posts.length,
                 comments: this.forumData.comments.length,
-                users: this.forumData.users.length
+                users: this.forumData.users.length,
+                usersByIdKeys: Object.keys(this.forumData.usersById),
+                currentUserId: this.currentUser?.id,
+                hasCurrentUserProfile: this.currentUser ? !!this.forumData.usersById[this.currentUser.id] : false
             });
             
         } catch (error) {
@@ -275,9 +368,35 @@ class CommunityForum {
         ).join('');
         
         const profile = this.forumData.usersById[post.user_id];
-        const userName = post.is_anonymous ? 'Anonymous User' : 
-            (profile?.display_name || 'Unknown User');
-        const nameHtml = post.is_anonymous ? userName : `<a href="/get-sober-spokane/user-profile.html?id=${post.user_id}" class="text-decoration-none">${userName}</a>`;
+        
+        console.log('createPostHTML: Processing post', {
+            postId: post.id,
+            postUserId: post.user_id,
+            currentUserId: this.currentUser?.id,
+            profile: profile,
+            isAnonymous: post.is_anonymous,
+            usersByIdKeys: Object.keys(this.forumData.usersById),
+            usersCount: this.forumData.users.length
+        });
+        
+        let userName;
+        if (post.is_anonymous) {
+            userName = 'Anonymous User';
+        } else if (profile?.display_name) {
+            userName = profile.display_name;
+        } else if (this.currentUser && this.currentUser.id === post.user_id) {
+            // If this is the current user's post and no profile exists, use their email or a default
+            userName = this.currentUser.user_metadata?.full_name || 
+                      this.currentUser.user_metadata?.display_name || 
+                      this.currentUser.user_metadata?.name || 
+                      this.currentUser.email?.split('@')[0] || 
+                      'You';
+        } else {
+            userName = 'Forum User';
+        }
+        
+        console.log('createPostHTML: Final userName resolved:', userName);
+        const nameHtml = post.is_anonymous ? userName : `<a href="/user-profile.html?id=${post.user_id}" class="text-decoration-none">${userName}</a>`;
         
         const sobrietyInfo = profile?.sobriety_date ? 
             `<small class="text-muted d-block">
@@ -361,7 +480,7 @@ class CommunityForum {
                         <i class="bi bi-plus-circle me-2"></i>Create First Post
                     </button>
                 ` : `
-                    <a href="/get-sober-spokane/auth/login.html" class="btn btn-primary">
+                    <a href="/auth/login.html" class="btn btn-primary">
                         <i class="bi bi-box-arrow-in-right me-2"></i>Sign In to Post
                     </a>
                 `}
@@ -400,6 +519,9 @@ class CommunityForum {
         }
         
         try {
+            // Ensure user profile exists in forum_user_profiles table
+            await this.ensureUserProfile();
+            
             const newPost = {
                 title: postData.title,
                 content: postData.content,
@@ -502,7 +624,7 @@ class CommunityForum {
         const profile = this.forumData.usersById[post.user_id];
         const userName = post.is_anonymous ? 'Anonymous User' : 
             (profile?.display_name || 'Unknown User');
-        const nameHtml = post.is_anonymous ? userName : `<a href="/get-sober-spokane/user-profile.html?id=${post.user_id}" class="text-decoration-none" style="pointer-events:auto;">${userName}</a>`;
+        const nameHtml = post.is_anonymous ? userName : `<a href="/user-profile.html?id=${post.user_id}" class="text-decoration-none" style="pointer-events:auto;">${userName}</a>`;
         
         content.innerHTML = `
             <div class="post-detail mb-4" data-post-id="${post.id}">
@@ -572,7 +694,7 @@ class CommunityForum {
                     </div>
                 ` : `
                     <div class="text-center mt-3">
-                        <a href="/get-sober-spokane/auth/login.html" class="btn btn-outline-primary">
+                        <a href="/auth/login.html" class="btn btn-outline-primary">
                             Sign in to comment
                         </a>
                     </div>
@@ -640,8 +762,20 @@ class CommunityForum {
         
         return comments.map(comment => {
             const profile = this.forumData.usersById[comment.user_id];
-            const userName = profile?.display_name || 'Unknown User';
-            const nameHtml = `<a href="/get-sober-spokane/user-profile.html?id=${comment.user_id}" class="text-decoration-none">${userName}</a>`;
+            let userName;
+            if (profile?.display_name) {
+                userName = profile.display_name;
+            } else if (this.currentUser && this.currentUser.id === comment.user_id) {
+                // If this is the current user's comment and no profile exists, use their email or a default
+                userName = this.currentUser.user_metadata?.full_name || 
+                          this.currentUser.user_metadata?.display_name || 
+                          this.currentUser.user_metadata?.name || 
+                          this.currentUser.email?.split('@')[0] || 
+                          'You';
+            } else {
+                userName = 'Forum User';
+            }
+            const nameHtml = `<a href="/user-profile.html?id=${comment.user_id}" class="text-decoration-none">${userName}</a>`;
             const timeAgo = this.formatTimeAgo(comment.created_at);
             const canEdit = this.currentUser && this.currentUser.id === comment.user_id;
             

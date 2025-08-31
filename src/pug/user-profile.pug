@@ -28,10 +28,12 @@ block content
           .col-lg-8
             .profile-info
               .profile-avatar
-                if user && user.avatar
-                  img#userAvatar(src=user.avatar alt=`${user.name}'s Avatar`)
+                if user && user.avatar_url
+                  img#userAvatar(src=user.avatar_url alt=`${user.name}'s Avatar`)
                 else
-                  img#userAvatar(src="/get-sober-spokane/assets/img/default-avatar.png" alt="Default Avatar")
+                  img#userAvatar(src="/assets/img/logo.png" alt="Default Avatar")
+                  .avatar-placeholder.text-center.text-muted
+                    small Avatar
               .profile-details
                 h1#userDisplayName= user ? user.name : 'User Profile'
                 p#userBio.text-muted= user && user.bio ? user.bio : 'No bio available'
@@ -49,9 +51,10 @@ block content
           .col-lg-4.text-lg-end
             .profile-actions
               // Temporarily show edit button for demonstration
-              a.btn.btn-outline-primary#editProfileBtn(href=`/user/${user.id}/edit`)
-                i.bi.bi-pencil.me-2
-                | Edit Profile (Demo)
+              if user && user.id
+                a.btn.btn-outline-primary#editProfileBtn(href=`/user/${user.id}/edit`)
+                  i.bi.bi-pencil.me-2
+                  | Edit Profile (Demo)
               
               if currentUser && !isOwnProfile
                 button.btn.btn-primary#followUserBtn(type="button")
@@ -119,19 +122,20 @@ block content
               // Activity Tabs
               ul.nav.nav-tabs#activityTabs(role="tablist")
                 li.nav-item(role="presentation")
-                  button.nav-link.active#posts-tab(data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab")
+                  button.nav-link.active#posts-tab(data-activity-tab="posts" type="button" role="tab")
                     i.bi.bi-chat-dots.me-2
                     | Posts
                 li.nav-item(role="presentation")
-                  button.nav-link#comments-tab(data-bs-toggle="tab" data-bs-target="#comments" type="button" role="tab")
+                  button.nav-link#comments-tab(data-activity-tab="comments" type="button" role="tab")
                     i.bi.bi-chat.me-2
                     | Comments
                 li.nav-item(role="presentation")
-                  button.nav-link#achievements-tab(data-bs-toggle="tab" data-bs-target="#achievements" type="button" role="tab")
+                  button.nav-link#achievements-tab(data-activity-tab="achievements" type="button" role="tab")
                     i.bi.bi-award.me-2
                     | Achievements
               
-              .tab-content#activityTabContent
+              // Activity Content Container
+              #activity-content
                 // Posts Tab
                 .tab-pane.fade.show.active#posts(role="tabpanel")
                   .activity-list#userPostsList
@@ -184,7 +188,7 @@ block content
               | Edit Profile
             button.btn-close(type="button" data-bs-dismiss="modal")
           .modal-body
-            form#editProfileForm(action=`/user/${user.id}/edit` method="POST")
+            form#editProfileForm(action=`/user/${user ? user.id : 'profile'}/edit` method="POST")
               .mb-3
                 label.form-label(for="edit-display-name") Display Name
                 input.form-control#edit-display-name(type="text" maxlength="50" value=user ? user.name : '' readonly)
@@ -215,8 +219,8 @@ block content
             button.btn.btn-primary#saveProfileBtn(type="submit") Save Changes
 
 block scripts
-  script(src="/get-sober-spokane/js/community-forum.js")
-  script(src="/get-sober-spokane/js/user-profile.js")
+  script(src="/js/community-forum.js")
+  script(src="/js/user-profile.js?v=20250131")
   script.
     // Initialize profile when page loads
     document.addEventListener('DOMContentLoaded', function() {

@@ -1,0 +1,97 @@
+<div class="notification-container" id="notificationContainer" role="region" aria-label="Notifications"></div>
+<script>
+    // Notification system
+    window.notificationManager = {
+        container: null,
+
+        init: function () {
+            this.container = document.getElementById('notificationContainer');
+            if (!this.container) {
+                this.container = document.createElement('div');
+                this.container.id = 'notificationContainer';
+                this.container.className = 'notification-container';
+                this.container.setAttribute('role', 'region');
+                this.container.setAttribute('aria-label', 'Notifications');
+                document.body.appendChild(this.container);
+            }
+        },
+
+        show: function (message, type = 'info', duration = 5000) {
+            if (!this.container) this.init();
+
+            const notification = document.createElement('div');
+            notification.className = `in-app-notification notification-${type}`;
+            notification.setAttribute('role', 'alert');
+
+            const icon = this.getIcon(type);
+            const title = this.getTitle(type);
+
+            notification.innerHTML = `
+      <div class="notification-header">
+        <div class="notification-title">
+          <i class="bi ${icon}" aria-hidden="true"></i>
+          <span>${title}</span>
+        </div>
+        <button class="notification-close" aria-label="Close notification">
+          <i class="bi bi-x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="notification-body">
+        ${message}
+      </div>
+    `;
+
+            // Add close functionality
+            const closeBtn = notification.querySelector('.notification-close');
+            closeBtn.addEventListener('click', () => this.remove(notification));
+
+            // Auto-remove after duration
+            if (duration > 0) {
+                setTimeout(() => this.remove(notification), duration);
+            }
+
+            this.container.appendChild(notification);
+
+            // Trigger animation
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+
+            return notification;
+        },
+
+        remove: function (notification) {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        },
+
+        getIcon: function (type) {
+            const icons = {
+                success: 'bi-check-circle',
+                error: 'bi-exclamation-triangle',
+                warning: 'bi-exclamation-circle',
+                info: 'bi-info-circle',
+            };
+            return icons[type] || icons.info;
+        },
+
+        getTitle: function (type) {
+            const titles = {
+                success: 'Success',
+                error: 'Error',
+                warning: 'Warning',
+                info: 'Information',
+            };
+            return titles[type] || titles.info;
+        },
+    };
+
+    // Global notification shortcuts
+    window.showNotification = function (message, type, duration) {
+        return window.notificationManager.show(message, type, duration);
+    };
+</script>
