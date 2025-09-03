@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2025 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2025-09-03T01:15:21.349Z
+* Built: 2025-09-03T03:54:41.654Z
 */
 /*!
 * Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
@@ -131,7 +131,7 @@
         nameEl.textContent = profile.display_name;
       }
 
-      // Update avatar
+      // Update avatar with improved fallback logic
       const avatarImg = document.querySelector('#userAvatar');
       if (avatarImg) {
         // Priority: 1. Profile avatar_url, 2. Google picture, 3. Default logo

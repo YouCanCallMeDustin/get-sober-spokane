@@ -3,7 +3,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2025 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Generated: 2025-09-01T06:05:39.528Z
+* Generated: 2025-09-03T03:54:39.609Z
 */
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
@@ -14803,6 +14803,16 @@ body .sign-in-link:active,
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
+.profile-hero .profile-info .profile-avatar img[src*="logo.png"] {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.profile-hero .profile-info .profile-avatar img[src=""] {
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%), linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%), linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  animation: avatar-loading 1s linear infinite;
+}
 .profile-hero .profile-info .profile-avatar img:hover {
   transform: scale(1.05);
   border-color: rgba(255, 255, 255, 0.5);
@@ -15473,6 +15483,14 @@ body .sign-in-link:active,
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+@keyframes avatar-loading {
+  0% {
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  }
+  100% {
+    background-position: 20px 20px, 20px 30px, 30px 10px, 10px 20px;
   }
 }
 @media (max-width: 992px) {

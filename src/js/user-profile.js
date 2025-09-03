@@ -125,26 +125,50 @@
         nameEl.textContent = profile.display_name;
       }
 
-      // Update avatar
+      // Update avatar with improved fallback logic
       const avatarImg = document.querySelector('#userAvatar');
       if (avatarImg) {
         // Priority: 1. Profile avatar_url, 2. Google picture, 3. Default logo
         const googlePic = currentUser?.user_metadata?.picture || currentUser?.user_metadata?.avatar_url || null;
-        const src = profile?.avatar_url || googlePic || '/assets/img/logo.png';
+        const profileAvatar = profile?.avatar_url;
         
-        console.log('Avatar loading - Profile avatar_url:', profile?.avatar_url);
+        console.log('Avatar loading - Profile avatar_url:', profileAvatar);
         console.log('Avatar loading - Google picture:', googlePic);
-        console.log('Avatar loading - Final src:', src);
         
-        // Always update the src to ensure it loads
+        // Try profile avatar first, then Google picture, then default
+        let src = profileAvatar || googlePic || '/assets/img/logo.png';
+        
+        console.log('Avatar loading - Initial src:', src);
+        
+        // Set up error handling before setting src
+        avatarImg.onerror = function() {
+          console.error('Failed to load avatar image:', this.src);
+          
+          // If Google picture failed, try default logo
+          if (this.src === googlePic) {
+            console.log('Google picture failed, trying default logo');
+            this.src = '/assets/img/logo.png';
+          }
+          // If profile avatar failed, try Google picture
+          else if (this.src === profileAvatar && googlePic) {
+            console.log('Profile avatar failed, trying Google picture');
+            this.src = googlePic;
+          }
+          // If everything failed, use default
+          else {
+            console.log('All avatars failed, using default logo');
+            this.src = '/assets/img/logo.png';
+          }
+        };
+        
+        // Set up success handler
+        avatarImg.onload = function() {
+          console.log('Avatar loaded successfully:', this.src);
+        };
+        
+        // Set the initial src
         avatarImg.src = src;
         avatarImg.alt = 'Avatar';
-        
-        // Add error handling for failed image loads
-        avatarImg.onerror = function() {
-          console.error('Failed to load avatar image:', src);
-          this.src = '/assets/img/logo.png';
-        };
       }
 
       // Update bio

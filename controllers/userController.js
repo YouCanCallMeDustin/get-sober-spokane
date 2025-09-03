@@ -48,7 +48,7 @@ class UserController {
         // Google Auth data
         name: googleAuthData.status === 'fulfilled' ? googleAuthData.value.name : 'Unknown User',
         email: googleAuthData.status === 'fulfilled' ? googleAuthData.value.email : 'No email available',
-        avatar: googleAuthData.status === 'fulfilled' ? googleAuthData.value.avatar : null,
+        avatar_url: googleAuthData.status === 'fulfilled' ? googleAuthData.value.avatar : null,
         memberSince: googleAuthData.status === 'fulfilled' ? googleAuthData.value.created_at : null,
         
         // Sobriety data (prioritize user_profiles over Google Auth)
@@ -59,6 +59,11 @@ class UserController {
         sobrietyDays: sobrietyData.status === 'fulfilled' ? sobrietyData.value.days_sober : 0,
         milestones: sobrietyData.status === 'fulfilled' ? sobrietyData.value.milestones : [],
         location: sobrietyData.status === 'fulfilled' ? sobrietyData.value.location : 'Spokane, WA',
+        
+        // Avatar priority: 1. Profile avatar_url, 2. Google picture, 3. Default
+        avatar_url: (sobrietyData.status === 'fulfilled' && sobrietyData.value.avatar_url) ? 
+                     sobrietyData.value.avatar_url : 
+                     (googleAuthData.status === 'fulfilled' ? googleAuthData.value.avatar : null),
         
         // Forum stats
         posts: forumStats.status === 'fulfilled' ? forumStats.value.posts : 0,
@@ -131,7 +136,7 @@ class UserController {
       // Query the consolidated profiles table first
       let { data: sobrietyData, error } = await supabase
         .from('profiles_consolidated')
-        .select('sobriety_date, bio, location, privacy_settings')
+        .select('sobriety_date, bio, location, privacy_settings, avatar_url')
         .eq('user_id', userId)
         .single();
 
@@ -140,7 +145,7 @@ class UserController {
         console.log('Trying profiles view as fallback...');
         const fallbackResult = await supabase
           .from('profiles')
-          .select('sobriety_date, bio, location, privacy_settings')
+          .select('sobriety_date, bio, location, privacy_settings, avatar_url')
           .eq('user_id', userId)
           .single();
         
@@ -153,7 +158,7 @@ class UserController {
         console.log('Trying user_profiles table as last resort...');
         const lastResortResult = await supabase
           .from('user_profiles')
-          .select('sobriety_date, bio, location, privacy_settings')
+          .select('sobriety_date, bio, location, privacy_settings, avatar_url')
           .eq('user_id', userId)
           .single();
         
@@ -170,7 +175,8 @@ class UserController {
           bio: null,
           location: 'Spokane, WA',
           milestones: [],
-          privacy_settings: 'public'
+          privacy_settings: 'public',
+          avatar_url: null
         };
       }
 
@@ -181,7 +187,8 @@ class UserController {
           bio: null,
           location: 'Spokane, WA',
           milestones: [],
-          privacy_settings: 'public'
+          privacy_settings: 'public',
+          avatar_url: null
         };
       }
 
@@ -198,7 +205,8 @@ class UserController {
         bio: sobrietyData.bio,
         location: sobrietyData.location || 'Spokane, WA',
         milestones: milestones,
-        privacy_settings: sobrietyData.privacy_settings || 'public'
+        privacy_settings: sobrietyData.privacy_settings || 'public',
+        avatar_url: sobrietyData.avatar_url || null
       };
     } catch (error) {
       console.error('Error in getSobrietyData:', error);
@@ -209,7 +217,8 @@ class UserController {
         bio: null,
         location: 'Spokane, WA',
         milestones: [],
-        privacy_settings: 'public'
+        privacy_settings: 'public',
+        avatar_url: null
       };
     }
   }

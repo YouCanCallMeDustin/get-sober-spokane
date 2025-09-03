@@ -28,7 +28,7 @@ block content
           .col-lg-8
             .profile-info
               .profile-avatar
-                img#userAvatar(src="/assets/img/logo.png" alt="Default Avatar")
+                img#userAvatar(src=user && user.avatar_url ? user.avatar_url : "/assets/img/logo.png" alt="User Avatar")
               .profile-details
                 h1#userDisplayName= user ? user.name : 'User Profile'
                 .d-flex.align-items-center.mb-2
