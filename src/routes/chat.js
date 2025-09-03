@@ -79,7 +79,7 @@ router.get('/', async (req, res) => {
             console.log('⚠️  No user found, using Anonymous');
         }
 
-        res.render('chat-room', {
+        res.render('chat', {
             title: 'Live Chat Room - Get Sober Spokane',
             description: 'Join our live recovery support chat room. Connect with the community in real-time, share your journey, and find immediate support.',
             keywords: 'recovery chat, sobriety support chat, live recovery support, Spokane recovery chat, sober community chat',
@@ -89,7 +89,7 @@ router.get('/', async (req, res) => {
         });
     } catch (error) {
         console.error('Error in chat room route:', error);
-        res.render('chat-room', {
+        res.render('chat', {
             title: 'Live Chat Room - Get Sober Spokane',
             description: 'Join our live recovery support chat room. Connect with the community in real-time, share your journey, and find immediate support.',
             keywords: 'recovery chat, sobriety support chat, live recovery support, Spokane recovery chat, sober community chat',
@@ -164,7 +164,7 @@ router.get('/stats', async (req, res) => {
 router.get('/health', (req, res) => {
     res.json({
         status: 'healthy',
-        service: 'chat-room',
+        service: 'chat',
         timestamp: new Date().toISOString(),
         version: '1.0.0'
     });

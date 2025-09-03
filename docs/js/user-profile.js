@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2025 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2025-09-03T03:54:41.654Z
+* Built: 2025-09-03T04:14:18.959Z
 */
 /*!
 * Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
@@ -381,6 +381,12 @@
     if (saveBtn) {
       saveBtn.onclick = async (e) => {
         e.preventDefault();
+        
+        // Show loading state
+        const originalText = saveBtn.textContent;
+        saveBtn.textContent = 'Saving...';
+        saveBtn.disabled = true;
+        
         try {
           const updates = {
             user_id: viewingUserId,
@@ -397,12 +403,41 @@
           const { error } = await supabaseClient.from('forum_user_profiles').upsert(updates);
           if (error) throw error;
 
+          // Update the profile display
           await renderProfile(viewingUserId);
-          const modalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-          modalInstance.hide();
+          
+          // Properly close the modal and clean up
+          const modalInstance = bootstrap.Modal.getInstance(modalEl);
+          if (modalInstance) {
+            modalInstance.hide();
+            
+            // Ensure modal backdrop is removed
+            modalInstance._config.backdrop = true;
+            modalEl.addEventListener('hidden.bs.modal', function cleanup() {
+              // Remove any lingering backdrop
+              const backdrops = document.querySelectorAll('.modal-backdrop');
+              backdrops.forEach(backdrop => backdrop.remove());
+              
+              // Remove body class that might be causing the fade
+              document.body.classList.remove('modal-open');
+              document.body.style.overflow = '';
+              document.body.style.paddingRight = '';
+              
+              // Remove this event listener
+              modalEl.removeEventListener('hidden.bs.modal', cleanup);
+            }, { once: true });
+          }
+          
+          // Show success message
+          showSuccessMessage('Profile updated successfully!');
+          
         } catch (err) {
           console.error('Failed to save profile', err);
-          alert('Failed to save profile');
+          showErrorMessage('Failed to save profile. Please try again.');
+        } finally {
+          // Restore button state
+          saveBtn.textContent = originalText;
+          saveBtn.disabled = false;
         }
       };
     }
@@ -576,6 +611,48 @@
     if (!text) return '';
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
+  }
+
+  function showSuccessMessage(message) {
+    // Create a temporary success message
+    const successDiv = document.createElement('div');
+    successDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
+    successDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    successDiv.innerHTML = `
+      <i class="bi bi-check-circle me-2"></i>
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(successDiv);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      if (successDiv.parentNode) {
+        successDiv.remove();
+      }
+    }, 5000);
+  }
+
+  function showErrorMessage(message) {
+    // Create a temporary error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+    errorDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    errorDiv.innerHTML = `
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(errorDiv);
+    
+    // Auto-remove after 8 seconds
+    setTimeout(() => {
+      if (errorDiv.parentNode) {
+        errorDiv.remove();
+      }
+    }, 8000);
   }
 
   function showMilestoneModal(milestone) {
