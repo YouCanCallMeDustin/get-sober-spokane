@@ -1,6 +1,12 @@
+/*!
+* Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
+* Copyright 2013-2025 Start Bootstrap
+* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
+* Built: 2025-08-31T17:54:28.739Z
+*/
 // Populate user profile page from Supabase
-// Version: 2025-01-31-v2 (with activity loading)
-(function(){
+// Version: 2025-01-31-v3 (fixed and cleaned up)
+(function() {
   let supabaseClient = null;
   let currentUser = null;
   let viewingUserId = null;
@@ -22,31 +28,33 @@
   document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOMContentLoaded - Starting profile initialization');
     
-    // Wait for everything to be fully ready
-    await waitForReady();
-    console.log('Page fully loaded, proceeding with initialization');
-    
-    const supabaseUrl = window.APP_CONFIG?.SUPABASE_URL || '';
-    const supabaseKey = window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
-    if (!supabaseUrl || !supabaseKey || typeof window.supabase === 'undefined') {
-      console.error('Missing Supabase configuration');
-      return;
-    }
-    
-    supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    currentUser = session?.user || null;
-    console.log('Current user:', currentUser?.id);
-
-    const params = new URLSearchParams(window.location.search);
-    viewingUserId = params.get('id') || currentUser?.id || null;
-    if (!viewingUserId) {
-      console.error('No viewing user ID found');
-      return;
-    }
-    console.log('Viewing user ID:', viewingUserId);
-
     try {
+      // Wait for everything to be fully ready
+      await waitForReady();
+      console.log('Page fully loaded, proceeding with initialization');
+      
+      const supabaseUrl = window.APP_CONFIG?.SUPABASE_URL || '';
+      const supabaseKey = window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
+      
+      if (!supabaseUrl || !supabaseKey || typeof window.supabase === 'undefined') {
+        console.error('Missing Supabase configuration');
+        return;
+      }
+      
+      supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      currentUser = session?.user || null;
+      console.log('Current user:', currentUser?.id);
+
+      const params = new URLSearchParams(window.location.search);
+      viewingUserId = params.get('id') || currentUser?.id || null;
+      
+      if (!viewingUserId) {
+        console.error('No viewing user ID found');
+        return;
+      }
+      console.log('Viewing user ID:', viewingUserId);
+
       // Load profile and activity in parallel
       console.log('Loading profile and activity...');
       await Promise.all([
@@ -60,12 +68,40 @@
       setupInlineBioEdit();
       
       console.log('Profile initialization complete');
+      
+      // Test profile picture loading
+      testProfilePictureLoading();
     } catch (error) {
       console.error('Error during profile initialization:', error);
     }
   });
 
-  async function renderProfile(userId){
+  // Test function to help debug profile picture issues
+  function testProfilePictureLoading() {
+    console.log('=== Profile Picture Debug Test ===');
+    const avatarImg = document.querySelector('#userAvatar');
+    if (avatarImg) {
+      console.log('Avatar element found:', avatarImg);
+      console.log('Current src:', avatarImg.src);
+      console.log('Image loaded:', avatarImg.complete);
+      console.log('Image natural width:', avatarImg.naturalWidth);
+      console.log('Image natural height:', avatarImg.naturalHeight);
+      
+      // Test if the default logo loads
+      avatarImg.onload = function() {
+        console.log('Image loaded successfully:', this.src);
+      };
+      
+      avatarImg.onerror = function() {
+        console.error('Image failed to load:', this.src);
+      };
+    } else {
+      console.error('Avatar element not found!');
+    }
+    console.log('=== End Profile Picture Debug Test ===');
+  }
+
+  async function renderProfile(userId) {
     try {
       console.log('renderProfile - Starting for user:', userId);
       
@@ -83,64 +119,105 @@
       console.log('renderProfile - Upvotes count:', upvotesCount?.count);
       console.log('renderProfile - Milestones:', milestones);
 
+      // Update display name
       const nameEl = document.querySelector('#userDisplayName') || document.querySelector('h1, .profile-title, .stories-hero-title');
-      if (nameEl && profile?.display_name) nameEl.textContent = profile.display_name;
-
-      const avatarImg = document.querySelector('#userAvatar');
-      if (avatarImg){
-        const googlePic = currentUser?.user_metadata?.picture || currentUser?.user_metadata?.avatar_url || null;
-        const src = profile?.avatar_url || googlePic || '/assets/img/default-avatar.png';
-        if (avatarImg.src !== src) avatarImg.src = src;
-        avatarImg.alt = 'Avatar';
+      if (nameEl && profile?.display_name) {
+        nameEl.textContent = profile.display_name;
       }
 
+      // Update avatar
+      const avatarImg = document.querySelector('#userAvatar');
+      if (avatarImg) {
+        // Priority: 1. Profile avatar_url, 2. Google picture, 3. Default logo
+        const googlePic = currentUser?.user_metadata?.picture || currentUser?.user_metadata?.avatar_url || null;
+        const src = profile?.avatar_url || googlePic || '/assets/img/logo.png';
+        
+        console.log('Avatar loading - Profile avatar_url:', profile?.avatar_url);
+        console.log('Avatar loading - Google picture:', googlePic);
+        console.log('Avatar loading - Final src:', src);
+        
+        // Always update the src to ensure it loads
+        avatarImg.src = src;
+        avatarImg.alt = 'Avatar';
+        
+        // Add error handling for failed image loads
+        avatarImg.onerror = function() {
+          console.error('Failed to load avatar image:', src);
+          this.src = '/assets/img/logo.png';
+        };
+      }
+
+      // Update bio
       const bioEl = document.querySelector('#userBio');
-      if (bioEl) bioEl.textContent = profile?.bio || 'No bio available';
+      if (bioEl) {
+        bioEl.textContent = profile?.bio || 'No bio available';
+      }
 
-             const locationEl = document.querySelector('#userLocation');
-       if (locationEl) locationEl.textContent = profile?.location || 'Not set';
+      // Update location
+      const locationEl = document.querySelector('#userLocation');
+      if (locationEl) {
+        locationEl.textContent = profile?.location || 'Not set';
+      }
 
-       // Load member since date
-       const memberSinceEl = document.querySelector('#memberSince');
-       if (memberSinceEl) {
-         if (profile?.join_date) {
-           const joinDate = new Date(profile.join_date);
-           memberSinceEl.textContent = joinDate.toLocaleDateString();
-         } else if (profile?.created_at) {
-           const createdDate = new Date(profile.created_at);
-           memberSinceEl.textContent = createdDate.toLocaleDateString();
-         } else {
-           memberSinceEl.textContent = 'Unknown';
-         }
-       }
+      // Load member since date
+      const memberSinceEl = document.querySelector('#memberSince');
+      if (memberSinceEl) {
+        if (profile?.join_date) {
+          const joinDate = new Date(profile.join_date);
+          memberSinceEl.textContent = joinDate.toLocaleDateString();
+        } else if (profile?.created_at) {
+          const createdDate = new Date(profile.created_at);
+          memberSinceEl.textContent = createdDate.toLocaleDateString();
+        } else {
+          memberSinceEl.textContent = 'Unknown';
+        }
+      }
 
-       const postsEl = document.querySelector('#userPosts');
-      if (postsEl && typeof postsCount?.count === 'number') postsEl.textContent = postsCount.count;
+      // Update activity counts
+      const postsEl = document.querySelector('#userPosts');
+      if (postsEl && typeof postsCount?.count === 'number') {
+        postsEl.textContent = postsCount.count;
+      }
+      
       const commentsEl = document.querySelector('#userComments');
-      if (commentsEl && typeof commentsCount?.count === 'number') commentsEl.textContent = commentsCount.count;
+      if (commentsEl && typeof commentsCount?.count === 'number') {
+        commentsEl.textContent = commentsCount.count;
+      }
+      
       const upvotesEl = document.querySelector('#userUpvotes');
-      if (upvotesEl && typeof upvotesCount?.count === 'number') upvotesEl.textContent = upvotesCount.count;
+      if (upvotesEl && typeof upvotesCount?.count === 'number') {
+        upvotesEl.textContent = upvotesCount.count;
+      }
 
-      if (profile?.sobriety_date){
+      // Update sobriety information
+      if (profile?.sobriety_date) {
         console.log('renderProfile - Sobriety date found:', profile.sobriety_date);
         const daysEl = document.querySelector('#sobrietyDays');
-        if (daysEl){
+        if (daysEl) {
           const start = new Date(profile.sobriety_date);
           const now = new Date();
-          const diff = Math.max(0, Math.ceil((now - start)/(1000*3600*24)));
+          const diff = Math.max(0, Math.ceil((now - start) / (1000 * 3600 * 24)));
           console.log('renderProfile - Calculating sobriety days:', diff);
           daysEl.textContent = diff;
         } else {
           console.log('renderProfile - Sobriety days element not found');
         }
+        
         const dateEl = document.querySelector('#sobrietyDate');
-        if (dateEl) dateEl.textContent = profile.sobriety_date;
+        if (dateEl) {
+          dateEl.textContent = profile.sobriety_date;
+        }
       } else {
         console.log('renderProfile - No sobriety date found');
         const daysEl = document.querySelector('#sobrietyDays');
-        if (daysEl) daysEl.textContent = '0';
+        if (daysEl) {
+          daysEl.textContent = '0';
+        }
+        
         const dateEl = document.querySelector('#sobrietyDate');
-        if (dateEl) dateEl.textContent = 'Not set';
+        if (dateEl) {
+          dateEl.textContent = 'Not set';
+        }
       }
 
       // Load and display milestones
@@ -176,28 +253,36 @@
         }
       }
 
+      // Show/hide edit button based on user permissions
       const editBtn = document.getElementById('editProfileBtn');
-      if (editBtn) editBtn.style.display = (currentUser && currentUser.id === userId) ? 'inline-block' : 'none';
+      if (editBtn) {
+        editBtn.style.display = (currentUser && currentUser.id === userId) ? 'inline-block' : 'none';
+      }
     } catch (e) {
       console.error('Failed to render profile', e);
     }
   }
 
-  function setupEditProfileModal(){
+  function setupEditProfileModal() {
     const editBtn = document.getElementById('editProfileBtn');
-    if (!editBtn || !currentUser || currentUser.id !== viewingUserId) return;
+    if (!editBtn || !currentUser || currentUser.id !== viewingUserId) {
+      return;
+    }
+    
     editBtn.addEventListener('click', async () => {
       await openEditModal();
     });
   }
 
-  async function openEditModal(){
+  async function openEditModal() {
     const modalEl = document.getElementById('editProfileModal');
-    if (!modalEl) return;
+    if (!modalEl) {
+      return;
+    }
 
     // Ensure avatar controls exist; if not, inject them at the top of the form
     const formEl = modalEl.querySelector('#editProfileForm');
-    if (formEl && !formEl.querySelector('#avatarPreview')){
+    if (formEl && !formEl.querySelector('#avatarPreview')) {
       const wrapper = document.createElement('div');
       wrapper.className = 'mb-3 text-center';
       wrapper.innerHTML = `
@@ -216,32 +301,45 @@
     const sobrietyDateInput = document.getElementById('edit-sobriety-date');
     const avatarPrev = document.getElementById('avatarPreview');
 
-    if (displayNameInput) displayNameInput.value = profile?.display_name || '';
-    if (bioInput) bioInput.value = profile?.bio || '';
-    if (locationInput) locationInput.value = profile?.location || '';
-    if (sobrietyDateInput) sobrietyDateInput.value = profile?.sobriety_date || '';
-          if (avatarPrev) avatarPrev.src = profile?.avatar_url || '/assets/img/default-avatar.png';
+    if (displayNameInput) {
+      displayNameInput.value = profile?.display_name || '';
+    }
+    if (bioInput) {
+      bioInput.value = profile?.bio || '';
+    }
+    if (locationInput) {
+      locationInput.value = profile?.location || '';
+    }
+    if (sobrietyDateInput) {
+      sobrietyDateInput.value = profile?.sobriety_date || '';
+    }
+    if (avatarPrev) {
+      avatarPrev.src = profile?.avatar_url || '/assets/img/logo.png';
+    }
 
     // Simple client-side square center crop for avatar
     let avatarDataUrl = null;
     const avatarInput = document.getElementById('avatarInput');
-    if (avatarInput){
+    if (avatarInput) {
       avatarInput.onchange = (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
+        
         const reader = new FileReader();
         reader.onload = (ev) => {
           const img = new Image();
           img.onload = () => {
             const size = Math.min(img.width, img.height);
-            const sx = (img.width - size)/2;
-            const sy = (img.height - size)/2;
+            const sx = (img.width - size) / 2;
+            const sy = (img.height - size) / 2;
             const canvas = document.createElement('canvas');
             canvas.width = canvas.height = 256;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, sx, sy, size, size, 0, 0, 256, 256);
             avatarDataUrl = canvas.toDataURL('image/jpeg', 0.9);
-            if (avatarPrev) avatarPrev.src = avatarDataUrl;
+            if (avatarPrev) {
+              avatarPrev.src = avatarDataUrl;
+            }
           };
           img.src = ev.target.result;
         };
@@ -250,18 +348,21 @@
     }
 
     const saveBtn = document.getElementById('saveProfileBtn');
-    if (saveBtn){
+    if (saveBtn) {
       saveBtn.onclick = async (e) => {
         e.preventDefault();
         try {
-                     const updates = {
-             user_id: viewingUserId,
-             display_name: displayNameInput?.value.trim() || null,
-             bio: bioInput?.value.trim() || null,
-             location: locationInput?.value.trim() || null,
-             sobriety_date: sobrietyDateInput?.value || null
-           };
-          if (avatarDataUrl) updates.avatar_url = avatarDataUrl;
+          const updates = {
+            user_id: viewingUserId,
+            display_name: displayNameInput?.value.trim() || null,
+            bio: bioInput?.value.trim() || null,
+            location: locationInput?.value.trim() || null,
+            sobriety_date: sobrietyDateInput?.value || null
+          };
+          
+          if (avatarDataUrl) {
+            updates.avatar_url = avatarDataUrl;
+          }
 
           const { error } = await supabaseClient.from('forum_user_profiles').upsert(updates);
           if (error) throw error;
@@ -458,16 +559,16 @@
       modal.setAttribute('aria-labelledby', 'milestoneModalLabel');
       modal.setAttribute('aria-hidden', 'true');
       
-             modal.innerHTML = `
-         <div class="modal-dialog modal-dialog-centered">
-           <div class="modal-content">
-             <div class="modal-header bg-primary text-white">
-               <h5 class="modal-title text-white" id="milestoneModalLabel">
-                 <i class="bi bi-trophy me-2"></i>
-                 <span id="milestoneModalTitle" class="text-white"></span>
-               </h5>
-               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-             </div>
+      modal.innerHTML = `
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title text-white" id="milestoneModalLabel">
+                <i class="bi bi-trophy me-2"></i>
+                <span id="milestoneModalTitle" class="text-white"></span>
+              </h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <div class="modal-body">
               <div class="milestone-details">
                 <div class="milestone-date mb-3">
@@ -546,55 +647,54 @@
       return;
     }
     
-        const currentBio = bioEl.textContent;
+    const currentBio = bioEl.textContent;
     console.log('handleEditBioClick - Current bio:', currentBio);
       
-      // Create inline edit form
-      const editForm = document.createElement('div');
-      editForm.className = 'd-flex align-items-center mb-2';
-      editForm.innerHTML = `
-        <textarea class="form-control me-2" id="inlineBioInput" rows="2" maxlength="500" placeholder="Tell us about yourself...">${currentBio === 'No bio available' ? '' : currentBio}</textarea>
-        <button class="btn btn-success btn-sm me-2" id="saveBioBtn" type="button">
-          <i class="bi bi-check"></i>
-        </button>
-        <button class="btn btn-secondary btn-sm" id="cancelBioBtn" type="button">
-          <i class="bi bi-x"></i>
-        </button>
-      `;
-      
-      // Replace the bio element with the edit form
-      bioEl.parentNode.replaceChild(editForm, bioEl);
-      
-      // Focus on input
-      const textarea = document.getElementById('inlineBioInput');
-      textarea.focus();
-      
-      // Setup save button
-      document.getElementById('saveBioBtn').addEventListener('click', async function() {
-        const newBio = textarea.value.trim();
-                 try {
-           const { error } = await supabaseClient.from('forum_user_profiles').upsert({
-             user_id: viewingUserId,
-             bio: newBio || null
-           });
-          
-          if (error) throw error;
-          
-          // Update bio display and restore the original bio element
-          bioEl.textContent = newBio || 'No bio available';
-          editForm.parentNode.replaceChild(bioEl, editForm);
-          
-        } catch (err) {
-          console.error('Failed to save bio:', err);
-          alert('Failed to save bio');
-        }
-      });
-      
-      // Setup cancel button
-      document.getElementById('cancelBioBtn').addEventListener('click', function() {
-        // Restore the original bio element
+    // Create inline edit form
+    const editForm = document.createElement('div');
+    editForm.className = 'd-flex align-items-center mb-2';
+    editForm.innerHTML = `
+      <textarea class="form-control me-2" id="inlineBioInput" rows="2" maxlength="500" placeholder="Tell us about yourself...">${currentBio === 'No bio available' ? '' : currentBio}</textarea>
+      <button class="btn btn-success btn-sm me-2" id="saveBioBtn" type="button">
+        <i class="bi bi-check"></i>
+      </button>
+      <button class="btn btn-secondary btn-sm" id="cancelBioBtn" type="button">
+        <i class="bi bi-x"></i>
+      </button>
+    `;
+    
+    // Replace the bio element with the edit form
+    bioEl.parentNode.replaceChild(editForm, bioEl);
+    
+    // Focus on input
+    const textarea = document.getElementById('inlineBioInput');
+    textarea.focus();
+    
+    // Setup save button
+    document.getElementById('saveBioBtn').addEventListener('click', async function() {
+      const newBio = textarea.value.trim();
+      try {
+        const { error } = await supabaseClient.from('forum_user_profiles').upsert({
+          user_id: viewingUserId,
+          bio: newBio || null
+        });
+        
+        if (error) throw error;
+        
+        // Update bio display and restore the original bio element
+        bioEl.textContent = newBio || 'No bio available';
         editForm.parentNode.replaceChild(bioEl, editForm);
-      });
+        
+      } catch (err) {
+        console.error('Failed to save bio:', err);
+        alert('Failed to save bio');
+      }
+    });
+    
+    // Setup cancel button
+    document.getElementById('cancelBioBtn').addEventListener('click', function() {
+      // Restore the original bio element
+      editForm.parentNode.replaceChild(bioEl, editForm);
     });
   }
 })();

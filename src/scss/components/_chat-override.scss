@@ -1,0 +1,393 @@
+/* Chat Override Styles - Force new styling */
+/* This file ensures the new chat styles take precedence */
+
+// Force chat container styles
+html body .chat-container,
+body .chat-container,
+.chat-container {
+  min-height: 100vh !important;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  padding-top: 80px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+// Force chat hero styles with maximum specificity
+html body .chat-container .chat-hero,
+html body .chat-hero,
+body .chat-container .chat-hero,
+body .chat-hero,
+.chat-container .chat-hero,
+.chat-hero {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+  color: white !important;
+  padding: 3rem 0 !important;
+  margin-bottom: 2rem !important;
+  box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3) !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+html body .chat-container .chat-hero .container,
+html body .chat-hero .container,
+body .chat-container .chat-hero .container,
+body .chat-hero .container,
+.chat-container .chat-hero .container,
+.chat-hero .container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+html body .chat-container .chat-hero .row,
+html body .chat-hero .row,
+body .chat-container .chat-hero .row,
+body .chat-hero .row,
+.chat-container .chat-hero .row,
+.chat-hero .row {
+  width: 100% !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+html body .chat-container .chat-hero .col-lg-10,
+html body .chat-hero .col-lg-10,
+body .chat-container .chat-hero .col-lg-10,
+body .chat-hero .col-lg-10,
+.chat-container .chat-hero .col-lg-10,
+.chat-hero .col-lg-10 {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+html body .chat-container .chat-hero-title,
+html body .chat-hero-title,
+body .chat-container .chat-hero-title,
+body .chat-hero-title,
+.chat-container .chat-hero-title,
+.chat-hero-title {
+  font-family: "Merriweather", serif !important;
+  font-size: 3rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 1rem !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  color: white !important;
+}
+
+html body .chat-container .chat-hero-subtitle,
+html body .chat-hero-subtitle,
+body .chat-container .chat-hero-subtitle,
+body .chat-hero-subtitle,
+.chat-container .chat-hero-subtitle,
+.chat-hero-subtitle {
+  font-size: 1.2rem !important;
+  font-weight: 400 !important;
+  opacity: 0.9 !important;
+  margin-bottom: 1.5rem !important;
+  color: white !important;
+}
+
+// Force chat content centering
+html body .chat-content,
+body .chat-content,
+.chat-content {
+  flex: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  
+  .container {
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
+  }
+  
+  .row {
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+}
+
+// Force room item styles with maximum specificity
+html body .chat-sidebar .room-item,
+html body .chat-container .room-item,
+html body .room-item,
+body .chat-sidebar .room-item,
+body .chat-container .room-item,
+body .room-item,
+.chat-sidebar .room-item,
+.chat-container .room-item,
+.room-item {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0.875rem 1rem !important;
+  margin-bottom: 0.75rem !important;
+  background: white !important;
+  border-radius: 10px !important;
+  border: 2px solid rgba(0, 123, 255, 0.1) !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-weight: 500 !important;
+  font-size: 0.95rem !important;
+}
+
+html body .chat-sidebar .room-item:hover,
+html body .chat-container .room-item:hover,
+html body .room-item:hover,
+body .chat-sidebar .room-item:hover,
+body .chat-container .room-item:hover,
+body .room-item:hover,
+.chat-sidebar .room-item:hover,
+.chat-container .room-item:hover,
+.room-item:hover {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-color: rgba(0, 123, 255, 0.4) !important;
+  transform: translateX(3px) !important;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15) !important;
+}
+
+html body .chat-sidebar .room-item.active,
+html body .chat-container .room-item.active,
+html body .room-item.active,
+body .chat-sidebar .room-item.active,
+body .chat-container .room-item.active,
+body .room-item.active,
+.chat-sidebar .room-item.active,
+.chat-container .room-item.active,
+.room-item.active {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+  color: white !important;
+  border-color: #007bff !important;
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4) !important;
+  transform: translateX(3px) !important;
+}
+
+html body .chat-sidebar .room-item.active i,
+html body .chat-container .room-item.active i,
+html body .room-item.active i,
+body .chat-sidebar .room-item.active i,
+body .chat-container .room-item.active i,
+body .room-item.active i,
+.chat-sidebar .room-item.active i,
+.chat-container .room-item.active i,
+.room-item.active i {
+  color: white !important;
+}
+
+html body .chat-sidebar .room-item i,
+html body .chat-container .room-item i,
+html body .room-item i,
+body .chat-sidebar .room-item i,
+body .chat-container .room-item i,
+body .room-item i,
+.chat-sidebar .room-item i,
+.chat-container .room-item i,
+.room-item i {
+  color: #007bff !important;
+  margin-right: 0.75rem !important;
+  font-size: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+html body .chat-sidebar .room-item:hover i,
+html body .chat-container .room-item:hover i,
+html body .room-item:hover i,
+body .chat-sidebar .room-item:hover i,
+body .chat-container .room-item:hover i,
+body .room-item:hover i,
+.chat-sidebar .room-item:hover i,
+.chat-container .room-item:hover i,
+.room-item:hover i {
+  transform: scale(1.1) !important;
+}
+
+// Force message bubble styles with maximum specificity
+html body .messages-container .message-bubble,
+html body .chat-main .message-bubble,
+html body .message-bubble,
+body .messages-container .message-bubble,
+body .chat-main .message-bubble,
+body .message-bubble,
+.messages-container .message-bubble,
+.chat-main .message-bubble,
+.message-bubble {
+  background: white !important;
+  border-radius: 16px !important;
+  padding: 1.25rem !important;
+  margin-bottom: 1.25rem !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid rgba(0, 123, 255, 0.08) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  max-width: 85% !important;
+}
+
+html body .messages-container .message-bubble:hover,
+html body .chat-main .message-bubble:hover,
+html body .message-bubble:hover,
+body .messages-container .message-bubble:hover,
+body .chat-main .message-bubble:hover,
+body .message-bubble:hover,
+.messages-container .message-bubble:hover,
+.chat-main .message-bubble:hover,
+.message-bubble:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 30px rgba(0, 123, 255, 0.12) !important;
+  border-color: rgba(0, 123, 255, 0.2) !important;
+}
+
+html body .messages-container .message-bubble.own-message,
+html body .chat-main .message-bubble.own-message,
+html body .message-bubble.own-message,
+body .messages-container .message-bubble.own-message,
+body .chat-main .message-bubble.own-message,
+body .message-bubble.own-message,
+.messages-container .message-bubble.own-message,
+.chat-main .message-bubble.own-message,
+.message-bubble.own-message {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+  color: white !important;
+  margin-left: auto !important;
+  max-width: 75% !important;
+  box-shadow: 0 6px 25px rgba(0, 123, 255, 0.25) !important;
+}
+
+html body .messages-container .message-bubble.own-message:hover,
+html body .chat-main .message-bubble.own-message:hover,
+html body .message-bubble.own-message:hover,
+body .messages-container .message-bubble.own-message:hover,
+body .chat-main .message-bubble.own-message:hover,
+body .message-bubble.own-message:hover,
+.messages-container .message-bubble.own-message:hover,
+.chat-main .message-bubble.own-message:hover,
+.message-bubble.own-message:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 35px rgba(0, 123, 255, 0.3) !important;
+}
+
+html body .messages-container .message-bubble.system,
+html body .chat-main .message-bubble.system,
+html body .message-bubble.system,
+body .messages-container .message-bubble.system,
+body .chat-main .message-bubble.system,
+body .message-bubble.system,
+.messages-container .message-bubble.system,
+.chat-main .message-bubble.system,
+.message-bubble.system {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border-color: #6c757d !important;
+  text-align: center !important;
+  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.1) !important;
+  max-width: 90% !important;
+  margin: 0 auto 1.5rem auto !important;
+}
+
+html body .messages-container .message-bubble.system:hover,
+html body .chat-main .message-bubble.system:hover,
+html body .message-bubble.system:hover,
+body .messages-container .message-bubble.system:hover,
+body .chat-main .message-bubble.system:hover,
+body .message-bubble.system:hover,
+.messages-container .message-bubble.system:hover,
+.chat-main .message-bubble.system:hover,
+.message-bubble.system:hover {
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.15) !important;
+}
+
+// Force chat header styles with maximum specificity
+html body .chat-main .chat-header,
+html body .chat-container .chat-header,
+html body .chat-header,
+body .chat-main .chat-header,
+body .chat-container .chat-header,
+body .chat-header,
+.chat-main .chat-header,
+.chat-container .chat-header,
+.chat-header {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+  padding: 2rem 1.5rem !important;
+  border-radius: 12px 12px 0 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  position: relative !important;
+  overflow: hidden !important;
+  text-align: center !important;
+}
+
+html body .chat-main .chat-room-info h4,
+html body .chat-container .chat-room-info h4,
+html body .chat-room-info h4,
+body .chat-main .chat-room-info h4,
+body .chat-container .chat-room-info h4,
+body .chat-room-info h4,
+.chat-main .chat-room-info h4,
+.chat-container .chat-room-info h4,
+.chat-room-info h4 {
+  font-family: "Merriweather", serif !important;
+  font-weight: 700 !important;
+  color: white !important;
+  margin-bottom: 0.75rem !important;
+  font-size: 1.8rem !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  letter-spacing: -0.02em !important;
+  text-transform: capitalize !important;
+  text-align: center !important;
+}
+
+html body .chat-main .chat-room-info p,
+html body .chat-container .chat-room-info p,
+html body .chat-room-info p,
+body .chat-main .chat-room-info p,
+body .chat-container .chat-room-info p,
+body .chat-room-info p,
+.chat-main .chat-room-info p,
+.chat-container .chat-room-info p,
+.chat-room-info p {
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin-bottom: 0 !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  max-width: 500px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  font-style: italic !important;
+  text-align: center !important;
+}
+
+// Force sign-in link styles
+html body .sign-in-link,
+body .sign-in-link,
+.sign-in-link {
+  color: #ff6b6b !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 4px !important;
+  background: rgba(255, 107, 107, 0.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+html body .sign-in-link:hover,
+body .sign-in-link:hover,
+.sign-in-link:hover {
+  color: #ff5252 !important;
+  background: rgba(255, 107, 107, 0.2) !important;
+  text-decoration: none !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3) !important;
+}
+
+html body .sign-in-link:active,
+body .sign-in-link:active,
+.sign-in-link:active {
+  transform: translateY(0) !important;
+}

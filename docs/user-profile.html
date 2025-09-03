@@ -9,7 +9,7 @@
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
-        <meta name="timestamp" content="1756632980574" />
+        <meta name="timestamp" content="1756691267218" />
         <!-- Force GitHub Pages refresh - Updated paths for proper routing-->
         <!-- Bootstrap Icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
@@ -17,7 +17,7 @@
         <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="/css/styles.css?v=1756632980574" rel="stylesheet" />
+        <link href="/css/styles.css?v=1756691267218" rel="stylesheet" />
         <style>
             /* Fix navigation text visibility */
             .navbar.navbar-light .navbar-nav .nav-link {
@@ -179,14 +179,10 @@
                             <div class="profile-info">
                                 <div class="profile-avatar">
                                     <img id="userAvatar" src="/assets/img/logo.png" alt="Default Avatar" />
-                                    <div class="avatar-placeholder text-center text-muted"><small>Avatar</small></div>
                                 </div>
                                 <div class="profile-details">
                                     <h1 id="userDisplayName">User Profile</h1>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <p class="profile-bio mb-0" id="userBio">No bio available</p>
-                                        <button class="btn btn-sm btn-outline-light ms-3" id="editBioBtn" type="button" title="Edit Bio"><i class="bi bi-pencil"></i></button>
-                                    </div>
+                                    <div class="d-flex align-items-center mb-2"><p class="profile-bio mb-0" id="userBio">No bio available</p></div>
                                     <div class="profile-stats">
                                         <div class="stat-item">
                                             <span class="stat-number" id="userPosts">0</span>
@@ -205,7 +201,16 @@
                             </div>
                         </div>
                         <div class="col-lg-4 text-lg-end">
-                            <div class="profile-actions"><!-- Temporarily show edit button for demonstration--></div>
+                            <div class="profile-actions">
+                                <button class="btn btn-primary" id="editProfileBtn" type="button" style="display: none">
+                                    <i class="bi bi-pencil me-2"></i>
+                                    Edit Profile
+                                </button>
+                                <button class="btn btn-primary" id="followUserBtn" type="button" style="display: none">
+                                    <i class="bi bi-person-plus me-2"></i>
+                                    Follow
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -327,15 +332,26 @@
                             <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="editProfileForm" action="/user/profile/edit" method="POST">
+                            <form id="editProfileForm" action="/user/profile/edit" method="POST" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label class="form-label" for="edit-avatar">Profile Avatar</label>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <img class="me-3" id="currentAvatar" src="/assets/img/logo.png" alt="Current Avatar" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover" />
+                                        <div class="flex-grow-1">
+                                            <input class="form-control" id="edit-avatar" type="file" name="avatar" accept="image/*" />
+                                            <small class="text-muted">Upload a new profile picture (JPG, PNG, GIF up to 5MB)</small>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="edit-display-name">Display Name</label>
-                                    <input class="form-control" id="edit-display-name" type="text" maxlength="50" value="" readonly />
-                                    <small class="text-muted">Display name is managed by Google Auth</small>
+                                    <input class="form-control" id="edit-display-name" type="text" name="display_name" maxlength="50" value="" />
+                                    <small class="text-muted">Choose how you want to be known in the community</small>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="edit-bio">Bio</label>
                                     <textarea class="form-control" id="edit-bio" name="bio" rows="3" maxlength="500" placeholder="Tell us about yourself..."></textarea>
+                                    <small class="text-muted text-end" id="bioCharCount">500 characters remaining</small>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="edit-location">Location</label>
@@ -384,8 +400,8 @@
         <!-- Inject environment values for frontend consumption-->
         <script src="/env.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
-        <script src="/js/config.js?v=1756632980574"></script>
-        <script src="/js/auth.js?v=1756632980574"></script>
+        <script src="/js/config.js?v=1756691267218"></script>
+        <script src="/js/auth.js?v=1756691267218"></script>
         <!-- Initialize Bootstrap dropdowns for navigation-->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -445,6 +461,9 @@
         <script>
             // Initialize profile when page loads
             document.addEventListener('DOMContentLoaded', function () {
+                // Check authentication and show appropriate buttons
+                checkAuthAndShowButtons();
+
                 // Handle follow button functionality
                 const followBtn = document.getElementById('followUserBtn');
                 if (followBtn) {
@@ -462,11 +481,134 @@
                 if (editProfileForm) {
                     editProfileForm.addEventListener('submit', handleProfileUpdate);
                 }
+
+                // Setup bio character counter
+                setupBioCharCounter();
+
+                // Setup avatar preview
+                setupAvatarPreview();
             });
+
+            async function checkAuthAndShowButtons() {
+                try {
+                    // Check if user is authenticated
+                    const {
+                        data: { user },
+                    } = await supabase.auth.getUser();
+
+                    if (user) {
+                        // Show edit profile button for authenticated users
+                        const editBtn = document.getElementById('editProfileBtn');
+                        if (editBtn) {
+                            editBtn.style.display = 'inline-block';
+                        }
+
+                        // Show follow button for other users' profiles
+                        const followBtn = document.getElementById('followUserBtn');
+                        if (followBtn) {
+                            followBtn.style.display = 'inline-block';
+                        }
+
+                        // Populate form with current user data
+                        populateEditForm(user);
+                    }
+                } catch (error) {
+                    console.error('Error checking authentication:', error);
+                }
+            }
+
+            function populateEditForm(user) {
+                // Populate display name
+                const displayNameInput = document.getElementById('edit-display-name');
+                if (displayNameInput) {
+                    displayNameInput.value = user.user_metadata?.full_name || user.email || '';
+                }
+
+                // Populate bio if available
+                const bioInput = document.getElementById('edit-bio');
+                if (bioInput) {
+                    bioInput.value = user.user_metadata?.bio || '';
+                    updateBioCharCount(); // Update character counter
+                }
+
+                // Populate location if available
+                const locationInput = document.getElementById('edit-location');
+                if (locationInput) {
+                    locationInput.value = user.user_metadata?.location || '';
+                }
+
+                // Populate sobriety date if available
+                const sobrietyInput = document.getElementById('edit-sobriety-date');
+                if (sobrietyInput) {
+                    sobrietyInput.value = user.user_metadata?.sobriety_date || '';
+                }
+
+                // Populate privacy settings if available
+                const privacyInput = document.getElementById('edit-privacy');
+                if (privacyInput) {
+                    privacyInput.value = user.user_metadata?.privacy_settings || 'public';
+                }
+            }
 
             function showEditProfileModal() {
                 const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
                 modal.show();
+
+                // Update character counter when modal opens
+                updateBioCharCount();
+            }
+
+            function setupBioCharCounter() {
+                const bioTextarea = document.getElementById('edit-bio');
+                const charCounter = document.getElementById('bioCharCount');
+
+                if (bioTextarea && charCounter) {
+                    bioTextarea.addEventListener('input', updateBioCharCount);
+                }
+            }
+
+            function updateBioCharCount() {
+                const bioTextarea = document.getElementById('edit-bio');
+                const charCounter = document.getElementById('bioCharCount');
+
+                if (bioTextarea && charCounter) {
+                    const remaining = 500 - bioTextarea.value.length;
+                    charCounter.textContent = `${remaining} characters remaining`;
+                    charCounter.className = remaining < 50 ? 'text-danger text-end' : 'text-muted text-end';
+                }
+            }
+
+            function setupAvatarPreview() {
+                const avatarInput = document.getElementById('edit-avatar');
+                const currentAvatar = document.getElementById('currentAvatar');
+
+                if (avatarInput && currentAvatar) {
+                    avatarInput.addEventListener('change', function (event) {
+                        const file = event.target.files[0];
+                        if (file) {
+                            // Validate file size (5MB limit)
+                            if (file.size > 5 * 1024 * 1024) {
+                                alert('File size must be less than 5MB');
+                                event.target.value = '';
+                                return;
+                            }
+
+                            // Validate file type
+                            if (!file.type.startsWith('image/')) {
+                                alert('Please select an image file');
+                                event.target.value = '';
+                                return;
+                            }
+
+                            // Preview the image
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                currentAvatar.src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
             }
 
             async function followUser() {
@@ -486,6 +628,12 @@
                 const form = event.target;
                 const formData = new FormData(form);
 
+                // Show loading state
+                const saveBtn = document.getElementById('saveProfileBtn');
+                const originalText = saveBtn.textContent;
+                saveBtn.textContent = 'Saving...';
+                saveBtn.disabled = true;
+
                 try {
                     const response = await fetch(form.action, {
                         method: 'POST',
@@ -493,8 +641,22 @@
                     });
 
                     if (response.ok) {
-                        // Redirect to profile page with success message
-                        window.location.href = response.url;
+                        const result = await response.json();
+
+                        // Show success message
+                        showSuccess('Profile updated successfully!');
+
+                        // Update the profile display with new values
+                        updateProfileDisplay(formData);
+
+                        // Close the modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
+                        modal.hide();
+
+                        // Reload page after a short delay to show updated content
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
                     } else {
                         const errorData = await response.json();
                         showError(errorData.error || 'Failed to update profile');
@@ -502,7 +664,59 @@
                 } catch (error) {
                     console.error('Error updating profile:', error);
                     showError('An error occurred while updating your profile');
+                } finally {
+                    // Restore button state
+                    saveBtn.textContent = originalText;
+                    saveBtn.disabled = false;
                 }
+            }
+
+            function updateProfileDisplay(formData) {
+                // Update display name if changed
+                const displayName = formData.get('display_name');
+                if (displayName) {
+                    const displayNameEl = document.getElementById('userDisplayName');
+                    if (displayNameEl) {
+                        displayNameEl.textContent = displayName;
+                    }
+                }
+
+                // Update bio if changed
+                const bio = formData.get('bio');
+                if (bio !== null) {
+                    const bioEl = document.getElementById('userBio');
+                    if (bioEl) {
+                        bioEl.textContent = bio || 'No bio available';
+                    }
+                }
+
+                // Update avatar if changed
+                const avatarFile = formData.get('avatar');
+                if (avatarFile && avatarFile.size > 0) {
+                    const avatarEl = document.getElementById('userAvatar');
+                    if (avatarEl) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            avatarEl.src = e.target.result;
+                        };
+                        reader.readAsDataURL(avatarFile);
+                    }
+                }
+            }
+
+            function showSuccess(message) {
+                const container = document.querySelector('.profile-content .container');
+                const successDiv = document.createElement('div');
+                successDiv.className = 'alert alert-success';
+                successDiv.textContent = message;
+                container.insertBefore(successDiv, container.firstChild);
+
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (successDiv.parentNode) {
+                        successDiv.parentNode.removeChild(successDiv);
+                    }
+                }, 5000);
             }
 
             function showError(message) {

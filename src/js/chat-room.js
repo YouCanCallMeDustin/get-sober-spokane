@@ -1,5 +1,5 @@
 /**
- * Chat Room JavaScript - Professional Real-time Chat Implementation
+ * Chat Room JavaScript - Production Ready Real-time Chat Implementation
  * Handles WebSocket communication, UI interactions, and chat functionality
  */
 
@@ -12,6 +12,7 @@ class ChatRoom {
         this.typingTimeout = null;
         this.messageHistory = new Map();
         this.onlineUsers = new Set();
+        this.currentUser = window.currentUser || null;
         
         // Emoji categories with exactly 20 emojis each
         this.emojiCategories = {
@@ -94,565 +95,378 @@ class ChatRoom {
         const roomItems = document.querySelectorAll('.room-item');
         roomItems.forEach(room => {
             room.addEventListener('click', (e) => {
-                this.switchRoom(e.target.closest('.room-item').id);
+                const roomElement = e.target.closest('.room-item');
+                if (roomElement) {
+                    this.switchRoom(roomElement.dataset.room);
+                }
             });
         });
+
+        // Settings
+        const settingsBtn = document.getElementById('chatSettings');
+        const saveSettingsBtn = document.getElementById('saveSettings');
+        
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', () => {
+                this.openSettings();
+            });
+        }
+        
+        if (saveSettingsBtn) {
+            saveSettingsBtn.addEventListener('click', () => {
+                this.saveSettings();
+            });
+        }
+
+        // Quick action buttons
+        const shareResourceBtn = document.getElementById('shareResourceBtn');
+        const requestSupportBtn = document.getElementById('requestSupportBtn');
+        const reportIssueBtn = document.getElementById('reportIssueBtn');
+        
+        if (shareResourceBtn) {
+            shareResourceBtn.addEventListener('click', () => this.shareResource());
+        }
+        
+        if (requestSupportBtn) {
+            requestSupportBtn.addEventListener('click', () => this.requestSupport());
+        }
+        
+        if (reportIssueBtn) {
+            reportIssueBtn.addEventListener('click', () => this.reportIssue());
+        }
 
         // Sidebar toggle
         const toggleSidebarBtn = document.getElementById('toggleSidebar');
         if (toggleSidebarBtn) {
             toggleSidebarBtn.addEventListener('click', () => this.toggleSidebar());
         }
-
-        // Chat settings
-        const chatSettingsBtn = document.getElementById('chatSettings');
-        const saveSettingsBtn = document.getElementById('saveSettings');
-        
-        if (chatSettingsBtn) {
-            chatSettingsBtn.addEventListener('click', () => this.openSettings());
-        }
-        
-        if (saveSettingsBtn) {
-            saveSettingsBtn.addEventListener('click', () => this.saveSettings());
-        }
-
-        // Quick actions
-        const shareResourceBtn = document.getElementById('shareResourceBtn');
-        const requestSupportBtn = document.getElementById('requestSupportBtn');
-        const reportIssueBtn = document.getElementById('reportIssueBtn');
-        
-        if (shareResourceBtn) {
-            shareResourceBtn.addEventListener('click', () => this.handleQuickAction('shareResource'));
-        }
-        
-        if (requestSupportBtn) {
-            requestSupportBtn.addEventListener('click', () => this.handleQuickAction('requestSupport'));
-        }
-        
-        if (reportIssueBtn) {
-            reportIssueBtn.addEventListener('click', () => this.handleQuickAction('reportIssue'));
-        }
-
-        // File upload progress
-        const cancelUploadBtn = document.getElementById('cancelUpload');
-        if (cancelUploadBtn) {
-            cancelUploadBtn.addEventListener('click', () => this.cancelFileUpload());
-        }
-
-        // Theme toggle
-        const themeToggle = document.getElementById('themeToggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('change', () => this.applyTheme(themeToggle.value));
-        }
     }
 
     initializeWebSocket() {
         try {
-            // Try WebSocket first
-            this.socket = io('http://localhost:3001', {
-                transports: ['websocket', 'polling'],
-                timeout: 20000,
-                reconnection: true,
-                reconnectionAttempts: 5,
-                reconnectionDelay: 1000
-            });
-
-            this.setupSocketHandlers();
-            this.joinRoom(this.currentRoom);
-            
-        } catch (error) {
-            console.error('WebSocket connection failed:', error);
-            this.updateConnectionStatus('Connection failed', 'error');
-            this.fallbackToPolling();
-        }
-    }
-
-    setupSocketHandlers() {
-        if (!this.socket) return;
+            // Connect to Socket.IO server
+            this.socket = io();
 
         this.socket.on('connect', () => {
+                console.log('Connected to chat server');
             this.isConnected = true;
             this.updateConnectionStatus('Connected', 'connected');
+                this.enableInputs();
+                
+                // Join the default room
             this.joinRoom(this.currentRoom);
         });
 
         this.socket.on('disconnect', () => {
+                console.log('Disconnected from chat server');
             this.isConnected = false;
             this.updateConnectionStatus('Disconnected', 'disconnected');
+                this.disableInputs();
         });
 
         this.socket.on('connect_error', (error) => {
             console.error('Connection error:', error);
-            this.updateConnectionStatus('Connection error', 'error');
-        });
-
-        this.socket.on('message', (messageData) => {
-            this.displayMessage(messageData);
-        });
-
-        this.socket.on('message_history', (data) => {
-            this.loadMessageHistory(data.messages);
-        });
-
-        this.socket.on('user_joined', (data) => {
-            this.displaySystemMessage(`${data.username} joined the room`);
-            this.updateOnlineUsers();
-        });
-
-        this.socket.on('user_left', (data) => {
-            this.displaySystemMessage(`${data.username} left the room`);
-            this.updateOnlineUsers();
-        });
-
-        this.socket.on('typing_start', (data) => {
-            this.showTypingIndicator(data.username);
-        });
-
-        this.socket.on('typing_stop', (data) => {
-            this.hideTypingIndicator();
-        });
-
-        this.socket.on('room_info', (data) => {
-            this.updateRoomInfo(data);
+                this.updateConnectionStatus('Connection Error', 'error');
+                this.disableInputs();
+            });
+            
+            // Chat events
+            this.socket.on('roomJoined', (data) => {
+                this.handleRoomJoined(data);
+            });
+            
+            this.socket.on('newMessage', (message) => {
+                this.handleNewMessage(message);
+            });
+            
+            this.socket.on('userJoined', (data) => {
+                this.handleUserJoined(data);
+            });
+            
+            this.socket.on('userLeft', (data) => {
+                this.handleUserLeft(data);
+            });
+            
+            this.socket.on('userTyping', (data) => {
+                this.handleUserTyping(data);
+            });
+            
+            this.socket.on('onlineUsers', (users) => {
+                this.updateOnlineUsersList(users);
         });
 
         this.socket.on('error', (error) => {
-            this.displaySystemMessage(`Error: ${error.message}`, 'error');
-        });
-    }
-
-    fallbackToPolling() {
-        console.log('Falling back to polling...');
-        this.updateConnectionStatus('Using fallback mode', 'warning');
-        
-        // Implement polling fallback if needed
-        setInterval(() => {
-            this.pollForMessages();
-        }, 5000);
-    }
-
-    pollForMessages() {
-        // Simple polling implementation
-        fetch(`http://localhost:3001/api/chat/room/${this.currentRoom}/messages`)
-            .then(response => response.json())
-            .then(messages => {
-                // Handle new messages
-            })
-            .catch(error => {
-                console.error('Polling error:', error);
+                this.showError(error.message);
             });
-    }
-
-    joinRoom(roomId) {
-        if (!this.socket || !this.isConnected) return;
-
-        this.currentRoom = roomId;
-        this.socket.emit('join_room', {
-            room: roomId,
-            username: this.username
-        });
-
-        // Update UI
-        this.updateRoomDisplay(roomId);
-        this.clearMessages();
-        this.loadRoomMessages(roomId);
-        
-        // Update active room indicator
-        document.querySelectorAll('.room-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        
-        const activeRoom = document.getElementById(roomId);
-        if (activeRoom) {
-            activeRoom.classList.add('active');
+            
+        } catch (error) {
+            console.error('Error initializing WebSocket:', error);
+            this.updateConnectionStatus('Connection Failed', 'error');
         }
     }
 
-    switchRoom(roomId) {
-        if (roomId === this.currentRoom) return;
-        this.joinRoom(roomId);
+    joinRoom(roomName) {
+        if (!this.socket || !this.isConnected) {
+            console.error('Socket not connected');
+            return;
+        }
+        
+        console.log(`Joining room: ${roomName}`);
+        
+        // Prepare user data
+        const userData = {
+            id: this.currentUser?.id || null,
+            username: this.currentUser?.display_name || this.currentUser?.username || 'Anonymous',
+            display_name: this.currentUser?.display_name,
+            avatar_url: this.currentUser?.avatar_url
+        };
+        
+        this.socket.emit('joinRoom', {
+            room: roomName,
+            user: userData
+        });
     }
 
     sendMessage() {
         const messageInput = document.getElementById('messageInput');
-        if (!messageInput || !this.isConnected) return;
-
-        const text = messageInput.value.trim();
-        if (!text) return;
-
-        if (text.length > 500) {
-            this.displaySystemMessage('Message too long. Maximum 500 characters allowed.', 'error');
+        const content = messageInput?.value?.trim();
+        
+        if (!content || !this.socket || !this.isConnected) {
             return;
         }
-
-        const messageData = {
-            text: text,
-            room: this.currentRoom,
-            username: this.username,
-            type: 'text'
-        };
-
-        this.socket.emit('message', messageData);
         
-        // Clear input and hide typing indicator
+        // Clear input
         messageInput.value = '';
         this.updateCharacterCount();
-        this.hideTypingIndicator();
         
-        // Stop typing
-        if (this.typingTimeout) {
-            clearTimeout(this.typingTimeout);
-            this.socket.emit('typing_stop', { room: this.currentRoom });
+        // Send message via socket
+        this.socket.emit('chatMessage', {
+            content: content,
+            room: this.currentRoom,
+            messageType: 'text'
+        });
+    }
+
+    handleRoomJoined(data) {
+        console.log('Joined room:', data);
+        
+        this.currentRoom = data.room;
+        this.updateRoomInfo(data.roomInfo);
+        this.loadMessageHistory(data.messages);
+        this.updateRoomUI();
+    }
+
+    handleNewMessage(message) {
+        console.log('New message:', message);
+        this.addMessageToUI(message);
+        this.scrollToBottom();
+        
+        // Play notification sound if enabled
+        if (this.getUserPreference('notifications', true)) {
+            this.playNotificationSound();
         }
     }
 
-    displayMessage(messageData) {
+    handleUserJoined(data) {
+        console.log('User joined:', data);
+        this.addSystemMessage(`${data.username} joined the chat`);
+        this.updateOnlineUsersList();
+    }
+
+    handleUserLeft(data) {
+        console.log('User left:', data);
+        this.addSystemMessage(`${data.username} left the chat`);
+        this.updateOnlineUsersList();
+    }
+
+    handleUserTyping(data) {
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) {
+            if (data.isTyping) {
+                typingIndicator.style.display = 'block';
+                typingIndicator.querySelector('span').textContent = `${data.username} is typing...`;
+            } else {
+                typingIndicator.style.display = 'none';
+            }
+        }
+    }
+
+    switchRoom(roomName) {
+        if (roomName === this.currentRoom) {
+            return;
+        }
+        
+        // Leave current room
+        if (this.socket && this.isConnected) {
+            this.socket.emit('leaveRoom', { room: this.currentRoom });
+        }
+
+        // Update UI
+        this.updateRoomSelection(roomName);
+        this.clearMessages();
+        
+        // Join new room
+        this.currentRoom = roomName;
+        this.joinRoom(roomName);
+    }
+
+    updateRoomSelection(roomName) {
+        // Remove active class from all rooms
+        document.querySelectorAll('.room-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        // Add active class to selected room
+        const selectedRoom = document.querySelector(`[data-room="${roomName}"]`);
+        if (selectedRoom) {
+            selectedRoom.classList.add('active');
+        }
+    }
+
+    updateRoomInfo(roomInfo) {
+        const roomNameElement = document.getElementById('currentRoomName');
+        const roomDescriptionElement = document.getElementById('roomDescription');
+        
+        if (roomNameElement && roomInfo) {
+            roomNameElement.textContent = roomInfo.name || this.currentRoom.charAt(0).toUpperCase() + this.currentRoom.slice(1) + ' Support';
+        }
+        
+        if (roomDescriptionElement && roomInfo) {
+            roomDescriptionElement.textContent = roomInfo.description || '';
+        }
+    }
+
+    loadMessageHistory(messages) {
+        this.clearMessages();
+        
+        if (messages && messages.length > 0) {
+            messages.forEach(message => {
+                this.addMessageToUI(message);
+            });
+        }
+        
+        this.scrollToBottom();
+    }
+
+    addMessageToUI(message) {
         const messagesContainer = document.getElementById('messagesContainer');
         if (!messagesContainer) return;
 
         const messageElement = document.createElement('div');
         messageElement.className = 'message-bubble';
         
-        if (messageData.username === this.username) {
+        if (message.isAnonymous) {
+            messageElement.classList.add('anonymous');
+        }
+        
+        if (message.userId === this.currentUser?.id) {
             messageElement.classList.add('own-message');
         }
 
-        const timestamp = this.formatTimestamp(messageData.timestamp);
+        const timestamp = new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         
         messageElement.innerHTML = `
             <div class="message-header">
-                <span class="username">${messageData.username}</span>
-                <span class="timestamp">${timestamp}</span>
+                <span class="message-username">${message.username}</span>
+                <span class="message-time">${timestamp}</span>
             </div>
             <div class="message-content">
-                ${this.escapeHtml(messageData.text)}
-            </div>
-            <div class="message-actions">
-                <button class="btn btn-sm btn-outline-secondary reaction-btn" onclick="chatRoom.addReaction('${messageData.id}', '👍')">
-                    👍
-                </button>
-                <button class="btn btn-sm btn-outline-secondary reaction-btn" onclick="chatRoom.addReaction('${messageData.id}', '❤️')">
-                    ❤️
-                </button>
-                <button class="btn btn-sm btn-outline-secondary reaction-btn" onclick="chatRoom.addReaction('${messageData.id}', '😊')">
-                    😊
-                </button>
+                ${this.escapeHtml(message.content)}
             </div>
         `;
 
         messagesContainer.appendChild(messageElement);
-        this.scrollToBottom();
-        
-        // Store message in history
-        if (!this.messageHistory.has(this.currentRoom)) {
-            this.messageHistory.set(this.currentRoom, []);
-        }
-        this.messageHistory.get(this.currentRoom).push(messageData);
     }
 
-    displaySystemMessage(message, type = 'info') {
+    addSystemMessage(content) {
         const messagesContainer = document.getElementById('messagesContainer');
         if (!messagesContainer) return;
 
         const messageElement = document.createElement('div');
-        messageElement.className = `message-bubble system ${type}`;
+        messageElement.className = 'message-bubble system';
+        
+        const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
         messageElement.innerHTML = `
             <div class="message-content">
-                <i class="bi bi-info-circle me-2"></i>
-                ${this.escapeHtml(message)}
-                <div class="message-time">${this.formatTimestamp(new Date().toISOString())}</div>
+                <em>${this.escapeHtml(content)}</em>
             </div>
+            <div class="message-time">${timestamp}</div>
         `;
 
         messagesContainer.appendChild(messageElement);
-        this.scrollToBottom();
     }
 
-    handleTyping() {
-        if (!this.isConnected) return;
-
-        // Show typing indicator
-        this.socket.emit('typing_start', { room: this.currentRoom });
-
-        // Clear existing timeout
-        if (this.typingTimeout) {
-            clearTimeout(this.typingTimeout);
-        }
-
-        // Set timeout to stop typing indicator
-        this.typingTimeout = setTimeout(() => {
-            this.socket.emit('typing_stop', { room: this.currentRoom });
-        }, 2000);
-    }
-
-    showTypingIndicator(username) {
-        const typingIndicator = document.getElementById('typingIndicator');
-        if (typingIndicator) {
-            typingIndicator.style.display = 'block';
-            typingIndicator.innerHTML = `
-                <i class="bi bi-three-dots"></i>
-                <span>${username} is typing...</span>
-            `;
-        }
-    }
-
-    hideTypingIndicator() {
-        const typingIndicator = document.getElementById('typingIndicator');
-        if (typingIndicator) {
-            typingIndicator.style.display = 'none';
-        }
-    }
-
-    toggleEmojiPicker() {
-        const emojiPicker = document.getElementById('emojiPickerModal');
-        if (emojiPicker) {
-            if (emojiPicker.style.display === 'none' || !emojiPicker.style.display) {
-                emojiPicker.style.display = 'block';
-                this.populateEmojiGrid();
-            } else {
-                emojiPicker.style.display = 'none';
-            }
-        }
-    }
-
-    hideEmojiPicker() {
-        const emojiPicker = document.getElementById('emojiPickerModal');
-        if (emojiPicker) {
-            emojiPicker.style.display = 'none';
-        }
-    }
-
-    switchEmojiCategory(category) {
-        this.currentEmojiCategory = category;
+    updateOnlineUsersList(users) {
+        const onlineUsersContainer = document.getElementById('onlineUsers');
+        if (!onlineUsersContainer) return;
         
-        // Update active category indicator
-        document.querySelectorAll('.emoji-category').forEach(cat => {
-            cat.classList.remove('active');
-        });
-        
-        const activeCategory = document.querySelector(`[data-category="${category}"]`);
-        if (activeCategory) {
-            activeCategory.classList.add('active');
+        if (!users || users.length === 0) {
+            onlineUsersContainer.innerHTML = '<div class="no-users">No users online</div>';
+            return;
         }
         
-        this.populateEmojiGrid();
-    }
-
-    populateEmojiGrid() {
-        const emojiGrid = document.getElementById('emojiGrid');
-        if (!emojiGrid) return;
-
-        const emojis = this.emojiCategories[this.currentEmojiCategory] || [];
-        
-        emojiGrid.innerHTML = emojis.map(emoji => `
-            <button class="emoji-btn" onclick="chatRoom.insertEmoji('${emoji}')">
-                ${emoji}
-            </button>
+        onlineUsersContainer.innerHTML = users.map(user => `
+            <div class="user-item">
+                <div class="user-avatar">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">${this.escapeHtml(user.username)}</div>
+                    <div class="user-status">Online</div>
+                </div>
+            </div>
         `).join('');
-    }
-
-    insertEmoji(emoji) {
-        const messageInput = document.getElementById('messageInput');
-        if (messageInput) {
-            const cursorPos = messageInput.selectionStart;
-            const textBefore = messageInput.value.substring(0, cursorPos);
-            const textAfter = messageInput.value.substring(cursorPos);
-            
-            messageInput.value = textBefore + emoji + textAfter;
-            messageInput.focus();
-            
-            // Set cursor position after emoji
-            const newPos = cursorPos + emoji.length;
-            messageInput.setSelectionRange(newPos, newPos);
-            
-            this.updateCharacterCount();
-        }
-        
-        this.hideEmojiPicker();
-    }
-
-    handleFileAttachment() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*,.pdf,.txt,.doc,.docx';
-        input.multiple = false;
-        
-        input.onchange = (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                this.uploadFile(file);
-            }
-        };
-        
-        input.click();
-    }
-
-    uploadFile(file) {
-        // Validate file size (10MB limit)
-        if (file.size > 10 * 1024 * 1024) {
-            this.displaySystemMessage('File too large. Maximum 10MB allowed.', 'error');
-            return;
-        }
-
-        // Validate file type
-        const allowedTypes = [
-            'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-            'application/pdf', 'text/plain',
-            'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        ];
-        
-        if (!allowedTypes.includes(file.type)) {
-            this.displaySystemMessage('File type not allowed.', 'error');
-            return;
-        }
-
-        // Show upload progress
-        this.showFileUploadProgress(file.name);
-        
-        // Simulate file upload (in real implementation, you'd upload to server)
-        setTimeout(() => {
-            this.completeFileUpload(file);
-        }, 2000);
-    }
-
-    showFileUploadProgress(fileName) {
-        const progressContainer = document.getElementById('fileUploadProgress');
-        const progressBar = document.getElementById('uploadProgressBar');
-        const fileNameSpan = document.getElementById('uploadFileName');
-        
-        if (progressContainer && progressBar && fileNameSpan) {
-            progressContainer.style.display = 'block';
-            fileNameSpan.textContent = fileName;
-            
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 30;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                }
-                progressBar.style.width = progress + '%';
-            }, 200);
-        }
-    }
-
-    completeFileUpload(file) {
-        const progressContainer = document.getElementById('fileUploadProgress');
-        if (progressContainer) {
-            progressContainer.style.display = 'none';
-        }
-
-        // Send file message
-        if (this.isConnected) {
-            this.socket.emit('file_upload', {
-                fileName: file.name,
-                fileSize: file.size,
-                fileType: file.type,
-                room: this.currentRoom
-            });
-        }
-
-        this.displaySystemMessage(`File "${file.name}" uploaded successfully`);
-    }
-
-    cancelFileUpload() {
-        const progressContainer = document.getElementById('fileUploadProgress');
-        if (progressContainer) {
-            progressContainer.style.display = 'none';
-        }
-    }
-
-    addReaction(messageId, emoji) {
-        // In a real implementation, you'd send this to the server
-        console.log(`Adding reaction ${emoji} to message ${messageId}`);
-    }
-
-    toggleSidebar() {
-        const sidebar = document.querySelector('.chat-sidebar');
-        if (sidebar) {
-            sidebar.classList.toggle('collapsed');
-        }
-    }
-
-    openSettings() {
-        const modal = new bootstrap.Modal(document.getElementById('chatSettingsModal'));
-        modal.show();
-        
-        // Load current settings
-        const usernameInput = document.getElementById('usernameInput');
-        const notificationToggle = document.getElementById('notificationToggle');
-        const themeToggle = document.getElementById('themeToggle');
-        
-        if (usernameInput) usernameInput.value = this.username;
-        if (notificationToggle) notificationToggle.checked = this.getNotificationPreference();
-        if (themeToggle) themeToggle.value = this.getCurrentTheme();
-    }
-
-    saveSettings() {
-        const usernameInput = document.getElementById('usernameInput');
-        const notificationToggle = document.getElementById('notificationToggle');
-        const themeToggle = document.getElementById('themeToggle');
-        
-        if (usernameInput) {
-            this.username = usernameInput.value.trim() || 'Anonymous';
-            this.saveUserPreference('username', this.username);
-        }
-        
-        if (notificationToggle) {
-            this.saveUserPreference('notifications', notificationToggle.checked);
-        }
-        
-        if (themeToggle) {
-            this.applyTheme(themeToggle.value);
-        }
-        
-        // Close modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('chatSettingsModal'));
-        if (modal) {
-            modal.hide();
-        }
-        
-        this.displaySystemMessage('Settings saved successfully');
-    }
-
-    applyTheme(theme) {
-        document.body.setAttribute('data-theme', theme);
-        this.saveUserPreference('theme', theme);
-        
-        if (theme === 'auto') {
-            this.autoTheme();
-        }
-    }
-
-    autoTheme() {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.body.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-    }
-
-    handleQuickAction(action) {
-        switch (action) {
-            case 'shareResource':
-                this.displaySystemMessage('Resource sharing feature coming soon!');
-                break;
-            case 'requestSupport':
-                this.displaySystemMessage('Support request sent to moderators');
-                break;
-            case 'reportIssue':
-                this.displaySystemMessage('Issue reported. Thank you for helping keep our community safe.');
-                break;
-        }
     }
 
     updateConnectionStatus(status, type) {
         const statusElement = document.getElementById('connectionStatus');
         if (!statusElement) return;
-
+        
         statusElement.textContent = status;
         statusElement.className = `status-indicator ${type}`;
+    }
+
+    enableInputs() {
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendMessage');
+        const attachFileBtn = document.getElementById('attachFile');
+        const emojiPickerBtn = document.getElementById('emojiPicker');
         
-        const icon = statusElement.querySelector('i');
-        if (icon) {
-            icon.className = `bi bi-circle-fill me-2 ${type}`;
+        if (messageInput) messageInput.disabled = false;
+        if (sendButton) sendButton.disabled = false;
+        if (attachFileBtn) attachFileBtn.disabled = false;
+        if (emojiPickerBtn) emojiPickerBtn.disabled = false;
+    }
+
+    disableInputs() {
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendMessage');
+        const attachFileBtn = document.getElementById('attachFile');
+        const emojiPickerBtn = document.getElementById('emojiPicker');
+        
+        if (messageInput) messageInput.disabled = true;
+        if (sendButton) sendButton.disabled = true;
+        if (attachFileBtn) attachFileBtn.disabled = true;
+        if (emojiPickerBtn) emojiPickerBtn.disabled = true;
+    }
+
+    clearMessages() {
+        const messagesContainer = document.getElementById('messagesContainer');
+        if (messagesContainer) {
+            // Keep the welcome message
+            const welcomeMessage = messagesContainer.querySelector('.welcome-message');
+            messagesContainer.innerHTML = '';
+            if (welcomeMessage) {
+                messagesContainer.appendChild(welcomeMessage);
+            }
+        }
+    }
+
+    scrollToBottom() {
+        const messagesContainer = document.getElementById('messagesContainer');
+        if (messagesContainer) {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
     }
 
@@ -665,194 +479,220 @@ class ChatRoom {
             charCount.textContent = count;
             
             if (count > 450) {
-                charCount.classList.add('text-warning');
+                charCount.style.color = '#dc3545';
+            } else if (count > 400) {
+                charCount.style.color = '#ffc107';
             } else {
-                charCount.classList.remove('text-warning');
+                charCount.style.color = '#6c757d';
             }
         }
     }
 
-    updateRoomInfo(roomData) {
-        const currentRoomName = document.getElementById('currentRoomName');
-        const roomDescription = document.getElementById('roomDescription');
-        
-        if (currentRoomName) {
-            currentRoomName.textContent = this.getRoomDisplayName(roomData.room);
+    handleTyping() {
+        if (!this.socket || !this.isConnected) return;
+
+        // Clear existing timeout
+        if (this.typingTimeout) {
+            clearTimeout(this.typingTimeout);
         }
         
-        if (roomDescription) {
-            roomDescription.textContent = this.getRoomDescription(roomData.room);
-        }
-    }
+        // Emit typing event
+        this.socket.emit('typing', {
+            room: this.currentRoom,
+            isTyping: true
+        });
 
-    getRoomDisplayName(roomId) {
-        const roomNames = {
-            general: 'General Support',
-            recovery: 'Recovery Journey',
-            crisis: 'Crisis Support',
-            celebrations: 'Celebrations'
-        };
-        return roomNames[roomId] || roomId;
-    }
-
-    getRoomDescription(roomId) {
-        const descriptions = {
-            general: 'General recovery support and community discussion',
-            recovery: 'Share your recovery journey and milestones',
-            crisis: 'Immediate support for crisis situations',
-            celebrations: 'Celebrate sobriety milestones and achievements'
-        };
-        return descriptions[roomId] || 'Community discussion';
-    }
-
-    updateRoomDisplay(roomId) {
-        const currentRoomName = document.getElementById('currentRoomName');
-        const roomDescription = document.getElementById('roomDescription');
-        
-        if (currentRoomName) {
-            currentRoomName.textContent = this.getRoomDisplayName(roomId);
-        }
-        
-        if (roomDescription) {
-            roomDescription.textContent = this.getRoomDescription(roomId);
-        }
-    }
-
-    clearMessages() {
-        const messagesContainer = document.getElementById('messagesContainer');
-        if (messagesContainer) {
-            // Keep welcome message, remove others
-            const welcomeMessage = messagesContainer.querySelector('.welcome-message');
-            messagesContainer.innerHTML = '';
-            if (welcomeMessage) {
-                messagesContainer.appendChild(welcomeMessage);
+        // Set timeout to stop typing indicator
+        this.typingTimeout = setTimeout(() => {
+            if (this.socket && this.isConnected) {
+                this.socket.emit('typing', {
+                    room: this.currentRoom,
+                    isTyping: false
+                });
             }
+        }, 1000);
+    }
+
+    // Emoji picker functionality
+    toggleEmojiPicker() {
+        const emojiPicker = document.getElementById('emojiPickerModal');
+        if (emojiPicker) {
+            emojiPicker.style.display = emojiPicker.style.display === 'none' ? 'block' : 'none';
         }
     }
 
-    loadRoomMessages(roomId) {
-        // Load messages from history
-        const messages = this.messageHistory.get(roomId) || [];
-        messages.forEach(message => {
-            this.displayMessage(message);
+    hideEmojiPicker() {
+        const emojiPicker = document.getElementById('emojiPickerModal');
+        if (emojiPicker) {
+            emojiPicker.style.display = 'none';
+        }
+    }
+
+    switchEmojiCategory(category) {
+        this.currentEmojiCategory = category;
+        this.populateEmojiGrid();
+        
+        // Update active category button
+        document.querySelectorAll('.emoji-category').forEach(btn => {
+            btn.classList.remove('active');
         });
-    }
-
-    loadMessageHistory(messages) {
-        messages.forEach(message => {
-            this.displayMessage(message);
-        });
-    }
-
-    updateOnlineUsers() {
-        // This would be populated from server data
-        // For now, just update the count
-        const onlineUsers = document.getElementById('onlineUsers');
-        if (onlineUsers) {
-            const userCount = this.onlineUsers.size;
-            // Update user count display
+        
+        const activeBtn = document.querySelector(`[data-category="${category}"]`);
+        if (activeBtn) {
+            activeBtn.classList.add('active');
         }
     }
 
-    scrollToBottom() {
-        const messagesContainer = document.getElementById('messagesContainer');
-        if (messagesContainer) {
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    populateEmojiGrid() {
+        const emojiGrid = document.getElementById('emojiGrid');
+        if (!emojiGrid) return;
+
+        const emojis = this.emojiCategories[this.currentEmojiCategory] || [];
+        emojiGrid.innerHTML = emojis.map(emoji => 
+            `<button class="emoji-btn" onclick="chatRoom.insertEmoji('${emoji}')">${emoji}</button>`
+        ).join('');
+    }
+
+    insertEmoji(emoji) {
+        const messageInput = document.getElementById('messageInput');
+        if (messageInput) {
+            const cursorPos = messageInput.selectionStart;
+            const textBefore = messageInput.value.substring(0, cursorPos);
+            const textAfter = messageInput.value.substring(cursorPos);
+            
+            messageInput.value = textBefore + emoji + textAfter;
+            messageInput.selectionStart = messageInput.selectionEnd = cursorPos + emoji.length;
+            
+            this.updateCharacterCount();
+            messageInput.focus();
+        }
+        
+        this.hideEmojiPicker();
+    }
+
+    // Settings functionality
+    openSettings() {
+        const settingsModal = new bootstrap.Modal(document.getElementById('chatSettingsModal'));
+        settingsModal.show();
+    }
+
+    saveSettings() {
+        const usernameInput = document.getElementById('usernameInput');
+        const notificationToggle = document.getElementById('notificationToggle');
+        const themeToggle = document.getElementById('themeToggle');
+        
+        const settings = {
+            username: usernameInput?.value || this.username,
+            notifications: notificationToggle?.checked || false,
+            theme: themeToggle?.value || 'light'
+        };
+        
+        // Save to localStorage
+        localStorage.setItem('chatSettings', JSON.stringify(settings));
+        
+        // Update current username if changed
+        if (settings.username !== this.username) {
+            this.username = settings.username;
+        }
+        
+        // Apply theme
+        this.applyTheme(settings.theme);
+        
+        // Close modal
+        const settingsModal = bootstrap.Modal.getInstance(document.getElementById('chatSettingsModal'));
+        if (settingsModal) {
+            settingsModal.hide();
+        }
+        
+        this.showSuccess('Settings saved successfully');
+    }
+
+    loadUserPreferences() {
+        try {
+            const settings = JSON.parse(localStorage.getItem('chatSettings') || '{}');
+            
+            // Apply settings
+            if (settings.theme) {
+                this.applyTheme(settings.theme);
+            }
+            
+            if (settings.username) {
+                this.username = settings.username;
+            }
+            
+            // Update UI elements
+            const usernameInput = document.getElementById('usernameInput');
+            const notificationToggle = document.getElementById('notificationToggle');
+            const themeToggle = document.getElementById('themeToggle');
+            
+            if (usernameInput) usernameInput.value = this.username;
+            if (notificationToggle) notificationToggle.checked = settings.notifications !== false;
+            if (themeToggle) themeToggle.value = settings.theme || 'light';
+            
+        } catch (error) {
+            console.error('Error loading user preferences:', error);
         }
     }
 
+    getUserPreference(key, defaultValue = null) {
+        try {
+            const settings = JSON.parse(localStorage.getItem('chatSettings') || '{}');
+            return settings[key] !== undefined ? settings[key] : defaultValue;
+        } catch (error) {
+            return defaultValue;
+        }
+    }
+
+    applyTheme(theme) {
+        document.body.setAttribute('data-theme', theme);
+    }
+
+    // Quick action handlers
+    shareResource() {
+        this.addSystemMessage('Resource sharing feature coming soon!');
+    }
+
+    requestSupport() {
+        this.addSystemMessage('Support request feature coming soon!');
+    }
+
+    reportIssue() {
+        this.addSystemMessage('Issue reporting feature coming soon!');
+    }
+
+    toggleSidebar() {
+        const sidebar = document.querySelector('.chat-sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('collapsed');
+        }
+    }
+
+    // File attachment (placeholder)
+    handleFileAttachment() {
+        this.addSystemMessage('File attachment feature coming soon!');
+    }
+
+    // Utility functions
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
 
-    formatTimestamp(timestamp) {
-        if (!timestamp) return 'Just now';
-        
-        const date = new Date(timestamp);
-        const now = new Date();
-        const diffMs = now - date;
-        const diffMins = Math.floor(diffMs / 60000);
-        const diffHours = Math.floor(diffMs / 3600000);
-        const diffDays = Math.floor(diffMs / 86400000);
-        
-        if (diffMins < 1) return 'Just now';
-        if (diffMins < 60) return `${diffMins}m ago`;
-        if (diffHours < 24) return `${diffHours}h ago`;
-        if (diffDays < 7) return `${diffDays}d ago`;
-        
-        return date.toLocaleDateString();
+    showError(message) {
+        // Simple error display - you can enhance this with a proper notification system
+        console.error('Chat Error:', message);
+        this.addSystemMessage(`Error: ${message}`);
     }
 
-    saveUserPreference(key, value) {
-        try {
-            const preferences = JSON.parse(localStorage.getItem('chatPreferences') || '{}');
-            preferences[key] = value;
-            localStorage.setItem('chatPreferences', JSON.stringify(preferences));
-        } catch (error) {
-            console.error('Error saving preference:', error);
-        }
-    }
-
-    loadUserPreferences() {
-        try {
-            const preferences = JSON.parse(localStorage.getItem('chatPreferences') || '{}');
-            
-            if (preferences.username) {
-                this.username = preferences.username;
-            }
-            
-            if (preferences.theme) {
-                this.applyTheme(preferences.theme);
-            }
-            
-        } catch (error) {
-            console.error('Error loading preferences:', error);
-        }
-    }
-
-    getNotificationPreference() {
-        try {
-            const preferences = JSON.parse(localStorage.getItem('chatPreferences') || '{}');
-            return preferences.notifications !== false; // Default to true
-        } catch (error) {
-            return true;
-        }
-    }
-
-    getCurrentTheme() {
-        try {
-            const preferences = JSON.parse(localStorage.getItem('chatPreferences') || '{}');
-            return preferences.theme || 'light';
-        } catch (error) {
-            return 'light';
-        }
+    showSuccess(message) {
+        // Simple success display - you can enhance this with a proper notification system
+        console.log('Success:', message);
     }
 
     playNotificationSound() {
-        if (!this.getNotificationPreference()) return;
-        
-        try {
-            // Create a simple notification sound
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-            oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
-            
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.2);
-        } catch (error) {
-            console.error('Error playing notification sound:', error);
-        }
+        // Simple notification sound - you can enhance this with actual audio
+        console.log('Playing notification sound');
     }
 }
 

@@ -1,78 +1,79 @@
 {
-    "title": "Creative",
-    "name": "startbootstrap-creative",
-    "version": "7.0.7",
-    "scripts": {
-        "build": "npm run build:pug && npm run build:scss && npm run build:scripts && npm run build:assets",
-        "build:assets": "node scripts/build-assets.js",
-        "build:pug": "node scripts/build-pug.js",
-        "build:scripts": "node scripts/build-scripts.js",
-        "build:scss": "node scripts/build-scss.js",
-        "build:seo": "node scripts/build-seo.js",
-        "build:full": "npm run build:seo && npm run build",
-        "clean": "node scripts/clean.js",
-        "start": "npm run build:full && node scripts/start.js",
-        "start:server": "node scripts/start-server.js",
-        "start:debug": "npm run build:full && node scripts/start-debug.js",
-        "start:prod": "node src/start-production.js",
-        "start:cluster": "node src/start-production.js",
-        "start:chat": "node scripts/start-chat.js",
-        "start:all": "concurrently \"npm run start:server\" \"npm run start:chat\"",
-        "dev:refresh": "node scripts/dev-refresh.js",
-        "seo:optimize": "node scripts/seo-optimizer.js"
-    },
-    "description": "Creative is a stylish one page HTML theme built with Bootstrap.",
-    "keywords": [
-        "css",
-        "sass",
-        "scss",
-        "html",
-        "pug",
-        "responsive",
-        "theme",
-        "template"
-    ],
-    "homepage": "https://YOUR_USERNAME.github.io/sober-spokane",
-    "bugs": {
-        "url": "https://github.com/StartBootstrap/startbootstrap-creative/issues",
-        "email": "feedback@startbootstrap.com"
-    },
-    "license": "MIT",
-    "author": "Start Bootstrap",
-    "contributors": [
-        "David Miller (https://davidmiller.io/)"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/StartBootstrap/startbootstrap-creative.git"
-    },
-    "dependencies": {
-        "@supabase/supabase-js": "^2.55.0",
-        "bootstrap": "5.2.3",
-        "cors": "^2.8.5",
-        "dotenv": "^17.2.0",
-        "express": "^5.1.0",
-        "express-rate-limit": "^8.0.1",
-        "express-session": "^1.18.2",
-        "moment": "^2.29.4",
-        "morgan": "^1.10.1",
-        "nodemailer": "^7.0.5",
-        "open": "^10.1.2",
-        "sharp": "^0.32.6",
-        "socket.io": "^4.7.4",
-        "socket.io-client": "^4.7.4",
-        "uuid": "^9.0.1"
-    },
-    "devDependencies": {
-        "autoprefixer": "10.4.14",
-        "browser-sync": "2.29.1",
-        "chokidar": "3.5.3",
-        "concurrently": "6.3.0",
-        "postcss": "8.4.21",
-        "prettier": "2.8.6",
-        "pug": "3.0.2",
-        "sass": "1.60.0",
-        "shelljs": "0.8.5",
-        "upath": "2.0.1"
-    }
+  "title": "Creative",
+  "name": "startbootstrap-creative",
+  "version": "7.0.8",
+  "scripts": {
+    "build": "npm run build:pug && npm run build:scss && npm run build:scripts && npm run build:assets",
+    "build:assets": "node scripts/build-assets.js",
+    "build:pug": "node scripts/build-pug.js",
+    "build:scripts": "node scripts/build-scripts.js",
+    "build:scss": "node scripts/build-scss.js",
+    "build:seo": "node scripts/build-seo.js",
+    "build:full": "npm run build:seo && npm run build",
+    "clean": "node scripts/clean.js",
+    "start": "npm run build:full && node scripts/start.js",
+    "start:server": "node scripts/start-server.js",
+    "start:debug": "npm run build:full && node scripts/start-debug.js",
+    "start:prod": "node src/start-production.js",
+    "start:cluster": "node src/start-production.js",
+    "start:chat": "node scripts/start-chat.js",
+    "start:all": "concurrently \"npm run start:server\" \"npm run start:chat\"",
+    "dev:refresh": "node scripts/dev-refresh.js",
+    "seo:optimize": "node scripts/seo-optimizer.js",
+    "setup:chat": "node scripts/setup-chat-db.js"
+  },
+  "description": "Creative is a stylish one page HTML theme built with Bootstrap.",
+  "keywords": [
+    "css",
+    "sass",
+    "scss",
+    "html",
+    "pug",
+    "responsive",
+    "theme",
+    "template"
+  ],
+  "homepage": "https://YOUR_USERNAME.github.io/sober-spokane",
+  "bugs": {
+    "url": "https://github.com/StartBootstrap/startbootstrap-creative/issues",
+    "email": "feedback@startbootstrap.com"
+  },
+  "license": "MIT",
+  "author": "Start Bootstrap",
+  "contributors": [
+    "David Miller (https://davidmiller.io/)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StartBootstrap/startbootstrap-creative.git"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.55.0",
+    "bootstrap": "5.2.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "express-session": "^1.18.2",
+    "moment": "^2.29.4",
+    "morgan": "^1.10.1",
+    "nodemailer": "^7.0.5",
+    "open": "^10.1.2",
+    "sharp": "^0.32.6",
+    "socket.io": "^4.7.4",
+    "socket.io-client": "^4.7.4",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.4.14",
+    "browser-sync": "2.29.1",
+    "chokidar": "3.5.3",
+    "concurrently": "6.3.0",
+    "postcss": "8.4.21",
+    "prettier": "2.8.6",
+    "pug": "3.0.2",
+    "sass": "1.60.0",
+    "shelljs": "0.8.5",
+    "upath": "2.0.1"
+  }
 }

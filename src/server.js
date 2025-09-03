@@ -6,8 +6,11 @@ const session = require('express-session');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 const morgan = require('morgan');
+const { createServer } = require('http');
+const cacheBuster = require('./middleware/cacheBuster');
 
 const app = express();
+const server = createServer(app);
 const PORT = process.env.PORT || 3000;
 
 // Supabase client
@@ -29,8 +32,21 @@ app.use(express.urlencoded({ extended: true }));
 // Logging middleware
 app.use(morgan('combined'));
 
+// Cache busting middleware
+app.use(cacheBuster);
+
 // Serve static files with proper MIME types
-app.use(express.static(path.join(__dirname, '..', 'docs')));
+app.use(express.static(path.join(__dirname, '..', 'docs'), {
+  etag: false,
+  lastModified: false,
+  setHeaders: (res, path) => {
+    if (process.env.NODE_ENV !== 'production') {
+      res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.set('Pragma', 'no-cache');
+      res.set('Expires', '0');
+    }
+  }
+}));
 
 // Serve CSS files with correct MIME type and cache busting
 app.use('/css', (req, res, next) => {
@@ -42,11 +58,17 @@ app.use('/css', (req, res, next) => {
     res.set('Expires', '0');
   }
   next();
-}, express.static(path.join(__dirname, '..', 'docs/css')));
+}, express.static(path.join(__dirname, '..', 'docs/css')), express.static(path.join(__dirname, 'scss/components')));
 
 // Serve JavaScript files with correct MIME type
 app.use('/js', (req, res, next) => {
   res.type('application/javascript');
+  // Add cache control headers for development
+  if (process.env.NODE_ENV !== 'production') {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
   next();
 }, express.static(path.join(__dirname, '..', 'src/js')));
 
@@ -368,6 +390,10 @@ app.get('/auth/google/callback', async (req, res) => {
 const userRoutes = require('../routes/user');
 app.use('/user', userRoutes);
 
+// Chat routes
+const chatRoutes = require('./routes/chat');
+app.use('/chat', chatRoutes);
+
 // Error handling middleware (must be last)
 const errorHandler = require('../middleware/errorHandler');
 app.use(errorHandler);
@@ -557,8 +583,16 @@ app.get('/api/dashboard/recent-activity', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+// Initialize Socket.IO chat handler
+const ChatSocketHandler = require('./socket');
+const chatSocket = new ChatSocketHandler(server, supabaseUrl, supabaseAnonKey);
+
+// Make chat socket available to routes
+app.set('chatSocket', chatSocket);
+
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Supabase URL: ${supabaseUrl}`);
+  console.log('Socket.IO chat server initialized');
 }); 

@@ -9,7 +9,7 @@
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
-        <meta name="timestamp" content="1756632980574" />
+        <meta name="timestamp" content="1756691267218" />
         <!-- Force GitHub Pages refresh - Updated paths for proper routing-->
         <!-- Bootstrap Icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
@@ -17,7 +17,7 @@
         <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="/css/styles.css?v=1756632980574" rel="stylesheet" />
+        <link href="/css/styles.css?v=1756691267218" rel="stylesheet" />
         <style>
             /* Fix navigation text visibility */
             .navbar.navbar-light .navbar-nav .nav-link {
@@ -92,7 +92,7 @@
         <title>Live Chat Room - Get Sober Spokane</title>
         <meta name="description" content="Join our live recovery support chat room. Connect with the community in real-time, share your journey, and find immediate support." />
         <meta name="keywords" content="recovery chat, sobriety support chat, live recovery support, Spokane recovery chat, sober community chat" />
-        <link rel="stylesheet" href="/css/styles.css?v=1756632980574" />
+        <link rel="stylesheet" href="/css/styles.css?v=1756691267218&amp;r=undefined" />
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -175,7 +175,7 @@
             <div class="chat-hero">
                 <div class="container">
                     <div class="row justify-content-center text-center">
-                        <div class="col-lg-8">
+                        <div class="col-lg-10 col-md-12">
                             <h1 class="chat-hero-title">Live Chat Room</h1>
                             <p class="chat-hero-subtitle">Connect with the recovery community in real-time. Share your journey and find immediate support.</p>
                             <div class="chat-status">
@@ -184,14 +184,21 @@
                                     Connecting...
                                 </span>
                             </div>
+                            <div class="user-welcome">
+                                <p>
+                                    You're chatting as Anonymous.
+                                    <a class="sign-in-link" href="/login">Sign in</a>
+                                    to use your username.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Main Chat Content-->
             <div class="chat-content">
-                <div class="container-fluid">
-                    <div class="row">
+                <div class="container">
+                    <div class="row justify-content-center">
                         <!-- Chat Sidebar-->
                         <div class="col-lg-3 col-md-4 d-none d-md-block">
                             <div class="chat-sidebar">
@@ -202,19 +209,9 @@
                                         Online Now
                                     </h5>
                                     <div class="online-users" id="onlineUsers">
-                                        <div class="user-item">
-                                            <div class="user-avatar"><i class="bi bi-person-circle"></i></div>
-                                            <div class="user-info">
-                                                <div class="user-name">Anonymous User</div>
-                                                <div class="user-status">Online</div>
-                                            </div>
-                                        </div>
-                                        <div class="user-item">
-                                            <div class="user-avatar"><i class="bi bi-person-circle"></i></div>
-                                            <div class="user-info">
-                                                <div class="user-name">Recovery Warrior</div>
-                                                <div class="user-status">Online</div>
-                                            </div>
+                                        <div class="loading-users">
+                                            <i class="bi bi-arrow-clockwise spin"></i>
+                                            Loading users...
                                         </div>
                                     </div>
                                 </div>
@@ -225,19 +222,19 @@
                                         Chat Rooms
                                     </h5>
                                     <div class="chat-rooms">
-                                        <div class="room-item active" id="generalRoom">
+                                        <div class="room-item active" id="generalRoom" data-room="general">
                                             <i class="bi bi-hash me-2"></i>
                                             General Support
                                         </div>
-                                        <div class="room-item" id="recoveryRoom">
+                                        <div class="room-item" id="recoveryRoom" data-room="recovery">
                                             <i class="bi bi-hash me-2"></i>
                                             Recovery Journey
                                         </div>
-                                        <div class="room-item" id="crisisRoom">
+                                        <div class="room-item" id="crisisRoom" data-room="crisis">
                                             <i class="bi bi-hash me-2"></i>
                                             Crisis Support
                                         </div>
-                                        <div class="room-item" id="celebrationsRoom">
+                                        <div class="room-item" id="celebrationsRoom" data-room="celebrations">
                                             <i class="bi bi-hash me-2"></i>
                                             Celebrations
                                         </div>
@@ -267,7 +264,7 @@
                             </div>
                         </div>
                         <!-- Main Chat Area-->
-                        <div class="col-lg-9 col-md-8 col-12">
+                        <div class="col-lg-8 col-md-8 col-12">
                             <div class="chat-main">
                                 <!-- Chat Header-->
                                 <div class="chat-header">
@@ -302,9 +299,9 @@
                                     <div class="input-container">
                                         <div class="input-group">
                                             <button class="btn btn-outline-secondary" id="emojiPicker" type="button"><i class="bi bi-emoji-smile"></i></button>
-                                            <input class="form-control" id="messageInput" type="text" placeholder="Type your message here..." maxlength="500" />
-                                            <button class="btn btn-outline-secondary" id="attachFile" type="button"><i class="bi bi-paperclip"></i></button>
-                                            <button class="btn btn-primary" id="sendMessage" type="button"><i class="bi bi-send"></i></button>
+                                            <input class="form-control" id="messageInput" type="text" placeholder="Type your message here..." maxlength="500" disabled />
+                                            <button class="btn btn-outline-secondary" id="attachFile" type="button" disabled><i class="bi bi-paperclip"></i></button>
+                                            <button class="btn btn-primary" id="sendMessage" type="button" disabled><i class="bi bi-send"></i></button>
                                         </div>
                                         <div class="input-actions">
                                             <div class="typing-indicator" id="typingIndicator" style="display: none">
@@ -341,18 +338,18 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-group mb-3">
-                                <label for="usernameInput" class="form-label">Display Name</label>
-                                <input type="text" class="form-control" id="usernameInput" placeholder="Enter your display name" />
+                                <label class="form-label" for="usernameInput">Display Name</label>
+                                <input class="form-control" type="text" id="usernameInput" placeholder="Enter your display name" value="" />
                             </div>
                             <div class="form-group mb-3">
-                                <label for="notificationToggle" class="form-label">Notifications</label>
+                                <label class="form-label" for="notificationToggle">Notifications</label>
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="notificationToggle" checked />
                                     <label class="form-check-label" for="notificationToggle">Enable sound notifications</label>
                                 </div>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="themeToggle" class="form-label">Theme</label>
+                                <label class="form-label" for="themeToggle">Theme</label>
                                 <select class="form-select" id="themeToggle">
                                     <option value="light">Light Theme</option>
                                     <option value="dark">Dark Theme</option>
@@ -361,8 +358,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="saveSettings">Save Settings</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-primary" id="saveSettings" type="button">Save Settings</button>
                         </div>
                     </div>
                 </div>
@@ -399,8 +396,8 @@
                             <div class="file-preview-content" id="filePreviewContent"><!-- File preview will be shown here--></div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" id="downloadFile">Download</button>
+                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                            <button class="btn btn-primary" id="downloadFile" type="button">Download</button>
                         </div>
                     </div>
                 </div>
@@ -426,8 +423,8 @@
         <!-- Inject environment values for frontend consumption-->
         <script src="/env.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
-        <script src="/js/config.js?v=1756632980574"></script>
-        <script src="/js/auth.js?v=1756632980574"></script>
+        <script src="/js/config.js?v=1756691267218"></script>
+        <script src="/js/auth.js?v=1756691267218"></script>
         <!-- Initialize Bootstrap dropdowns for navigation-->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -483,26 +480,276 @@
             });
         </script>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/chat-room.js?v=1756632980574"></script>
+        <script src="/js/chat.js?v=1756691267218&amp;r=undefined"></script>
+        <!-- Prevent any other chat scripts from loading-->
+        <script>
+            // Block any attempts to load the old chat-room.js
+            const originalCreateElement = document.createElement;
+            document.createElement = function (tagName) {
+                const element = originalCreateElement.call(document, tagName);
+                if (tagName.toLowerCase() === 'script') {
+                    const originalSetAttribute = element.setAttribute;
+                    element.setAttribute = function (name, value) {
+                        if (name === 'src' && value && value.includes('chat-room.js')) {
+                            console.log('🚫 Blocked attempt to load old chat-room.js:', value);
+                            return element;
+                        }
+                        return originalSetAttribute.call(this, name, value);
+                    };
+                }
+                return element;
+            };
+
+            // Also block any script tags that might be added dynamically
+            const originalAppendChild = Node.prototype.appendChild;
+            Node.prototype.appendChild = function (child) {
+                if (child.tagName === 'SCRIPT' && child.src && child.src.includes('chat-room.js')) {
+                    console.log('🚫 Blocked dynamic loading of old chat-room.js:', child.src);
+                    return child;
+                }
+                return originalAppendChild.call(this, child);
+            };
+        </script>
+        <!-- Pass user data to JavaScript-->
+        <script>
+            window.currentUser = {};
+            window.timestamp = '1756691267218';
+            window.random = '';
+        </script>
         <!-- Additional cache busting for development-->
         <script>
             // Force refresh of CSS and JS files if they're cached
             (function () {
-                const timestamp = '1756632980574';
-                const links = document.querySelectorAll('link[href*="styles.css"]');
-                const scripts = document.querySelectorAll('script[src*="chat-room.js"]');
+                const timestamp = '1756691267218';
+                const random = '';
+                const currentTime = Date.now();
 
+                console.log('🔄 Starting enhanced cache busting...');
+
+                // Force refresh CSS with multiple cache busters
+                const links = document.querySelectorAll('link[href*="styles.css"]');
                 links.forEach((link) => {
                     if (link.href.includes('styles.css')) {
-                        link.href = link.href.split('?')[0] + '?v=' + timestamp;
+                        link.href = link.href.split('?')[0] + '?v=' + timestamp + '&r=' + random + '&t=' + currentTime + '&cb=' + Math.random();
                     }
                 });
 
+                // Force refresh JS with multiple cache busters
+                const scripts = document.querySelectorAll('script[src*="chat.js"]');
                 scripts.forEach((script) => {
-                    if (script.src.includes('chat-room.js')) {
-                        script.src = script.src.split('?')[0] + '?v=' + timestamp;
+                    if (script.src.includes('chat.js')) {
+                        script.src = script.src.split('?')[0] + '?v=' + timestamp + '&r=' + random + '&t=' + currentTime + '&cb=' + Math.random();
                     }
                 });
+
+                // Clear any cached images
+                const images = document.querySelectorAll('img');
+                images.forEach((img) => {
+                    if (img.src && !img.src.includes('data:')) {
+                        img.src = img.src.split('?')[0] + '?v=' + timestamp + '&r=' + random + '&t=' + currentTime + '&cb=' + Math.random();
+                    }
+                });
+
+                console.log('🔄 Enhanced cache busting applied:', { timestamp, random, currentTime });
+
+                // Force a complete page reload if cache is still an issue
+                if (window.performance && window.performance.navigation.type === window.performance.navigation.TYPE_BACK_FORWARD) {
+                    console.log('🔄 Back/forward navigation detected, forcing reload');
+                    window.location.reload(true);
+                }
+
+                // Monitor for style changes and DOM modifications
+                let styleCheckInterval;
+                let mutationObserver;
+
+                function checkStyles() {
+                    const roomItems = document.querySelectorAll('.room-item');
+                    const messageBubbles = document.querySelectorAll('.message-bubble');
+                    const chatHeader = document.querySelector('.chat-header');
+                    const chatHero = document.querySelector('.chat-hero');
+
+                    console.log('🔍 Checking styles...', {
+                        roomItemsCount: roomItems.length,
+                        messageBubblesCount: messageBubbles.length,
+                        chatHeaderExists: !!chatHeader,
+                        chatHeroExists: !!chatHero,
+                    });
+
+                    // Check if styles are being overridden
+                    roomItems.forEach((item, index) => {
+                        const computedStyle = window.getComputedStyle(item);
+                        const padding = computedStyle.padding;
+                        const borderRadius = computedStyle.borderRadius;
+                        const border = computedStyle.border;
+                        const background = computedStyle.background;
+
+                        console.log(`Room item ${index} styles:`, { padding, borderRadius, border, background });
+
+                        // If styles are wrong, force them
+                        if (padding !== '14px 16px' && borderRadius !== '10px') {
+                            console.log(`🔄 Forcing styles for room item ${index}`);
+                            item.style.setProperty('padding', '0.875rem 1rem', 'important');
+                            item.style.setProperty('border-radius', '10px', 'important');
+                            item.style.setProperty('border', '2px solid rgba(0, 123, 255, 0.1)', 'important');
+                            item.style.setProperty('font-weight', '500', 'important');
+                            item.style.setProperty('font-size', '0.95rem', 'important');
+                        }
+
+                        // Check for active state
+                        if (item.classList.contains('active')) {
+                            if (!background.includes('linear-gradient')) {
+                                console.log(`🔄 Forcing active styles for room item ${index}`);
+                                item.style.setProperty('background', 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)', 'important');
+                                item.style.setProperty('color', 'white', 'important');
+                                item.style.setProperty('border-color', '#007bff', 'important');
+                                item.style.setProperty('box-shadow', '0 6px 20px rgba(0, 123, 255, 0.4)', 'important');
+                            }
+                        }
+                    });
+
+                    messageBubbles.forEach((bubble, index) => {
+                        const computedStyle = window.getComputedStyle(bubble);
+                        const borderRadius = computedStyle.borderRadius;
+                        const padding = computedStyle.padding;
+
+                        console.log(`Message bubble ${index} styles:`, { borderRadius, padding });
+
+                        if (borderRadius !== '16px' && padding !== '20px') {
+                            console.log(`🔄 Forcing styles for message bubble ${index}`);
+                            bubble.style.setProperty('border-radius', '16px', 'important');
+                            bubble.style.setProperty('padding', '1.25rem', 'important');
+                            bubble.style.setProperty('margin-bottom', '1.25rem', 'important');
+                            bubble.style.setProperty('box-shadow', '0 4px 20px rgba(0, 0, 0, 0.08)', 'important');
+                            bubble.style.setProperty('max-width', '85%', 'important');
+                        }
+                    });
+
+                    if (chatHeader) {
+                        const computedStyle = window.getComputedStyle(chatHeader);
+                        const background = computedStyle.background;
+
+                        console.log('Chat header background:', background);
+
+                        if (!background.includes('linear-gradient')) {
+                            console.log('🔄 Forcing chat header styles');
+                            chatHeader.style.setProperty('background', 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)', 'important');
+                            chatHeader.style.setProperty('padding', '2rem 1.5rem', 'important');
+                            chatHeader.style.setProperty('border-radius', '12px 12px 0 0', 'important');
+                            chatHeader.style.setProperty('color', 'white', 'important');
+                        }
+                    }
+
+                    if (chatHero) {
+                        const computedStyle = window.getComputedStyle(chatHero);
+                        const background = computedStyle.background;
+
+                        console.log('Chat hero background:', background);
+
+                        if (!background.includes('linear-gradient')) {
+                            console.log('🔄 Forcing chat hero styles');
+                            chatHero.style.setProperty('background', 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)', 'important');
+                            chatHero.style.setProperty('color', 'white', 'important');
+                            chatHero.style.setProperty('padding', '3rem 0', 'important');
+                            chatHero.style.setProperty('margin-bottom', '2rem', 'important');
+                            chatHero.style.setProperty('box-shadow', '0 4px 20px rgba(0, 123, 255, 0.3)', 'important');
+                        }
+                    }
+                }
+
+                // Monitor DOM changes
+                function setupMutationObserver() {
+                    const targetNode = document.body;
+                    const config = {
+                        childList: true,
+                        subtree: true,
+                        attributes: true,
+                        attributeFilter: ['class', 'style'],
+                    };
+
+                    const callback = function (mutationsList, observer) {
+                        for (const mutation of mutationsList) {
+                            if (mutation.type === 'attributes') {
+                                console.log('🔍 DOM attribute changed:', {
+                                    target: mutation.target.tagName,
+                                    attributeName: mutation.attributeName,
+                                    oldValue: mutation.oldValue,
+                                    newValue: mutation.target.getAttribute(mutation.attributeName),
+                                });
+
+                                // If styles or classes are being modified, check and fix
+                                if (mutation.attributeName === 'style' || mutation.attributeName === 'class') {
+                                    setTimeout(checkStyles, 100);
+                                }
+                            }
+                        }
+                    };
+
+                    mutationObserver = new MutationObserver(callback);
+                    mutationObserver.observe(targetNode, config);
+                    console.log('🔍 Mutation observer started');
+                }
+
+                // Force apply styles after a short delay to ensure they take precedence
+                setTimeout(() => {
+                    console.log('🔄 Forcing style application...');
+
+                    // Force room items to have correct styling
+                    const roomItems = document.querySelectorAll('.room-item');
+                    roomItems.forEach((item) => {
+                        item.style.setProperty('padding', '0.875rem 1rem', 'important');
+                        item.style.setProperty('border-radius', '10px', 'important');
+                        item.style.setProperty('border', '2px solid rgba(0, 123, 255, 0.1)', 'important');
+                        item.style.setProperty('font-weight', '500', 'important');
+                        item.style.setProperty('font-size', '0.95rem', 'important');
+                    });
+
+                    // Force message bubbles to have correct styling
+                    const messageBubbles = document.querySelectorAll('.message-bubble');
+                    messageBubbles.forEach((bubble) => {
+                        bubble.style.setProperty('border-radius', '16px', 'important');
+                        bubble.style.setProperty('padding', '1.25rem', 'important');
+                        bubble.style.setProperty('margin-bottom', '1.25rem', 'important');
+                        bubble.style.setProperty('box-shadow', '0 4px 20px rgba(0, 0, 0, 0.08)', 'important');
+                        bubble.style.setProperty('max-width', '85%', 'important');
+                    });
+
+                    // Force chat header styling
+                    const chatHeader = document.querySelector('.chat-header');
+                    if (chatHeader) {
+                        chatHeader.style.setProperty('background', 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)', 'important');
+                        chatHeader.style.setProperty('padding', '2rem 1.5rem', 'important');
+                        chatHeader.style.setProperty('border-radius', '12px 12px 0 0', 'important');
+                        chatHeader.style.setProperty('color', 'white', 'important');
+                    }
+
+                    // Force chat hero styling
+                    const chatHero = document.querySelector('.chat-hero');
+                    if (chatHero) {
+                        chatHero.style.setProperty('background', 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)', 'important');
+                        chatHero.style.setProperty('color', 'white', 'important');
+                        chatHero.style.setProperty('padding', '3rem 0', 'important');
+                        chatHero.style.setProperty('margin-bottom', '2rem', 'important');
+                        chatHero.style.setProperty('box-shadow', '0 4px 20px rgba(0, 123, 255, 0.3)', 'important');
+                    }
+
+                    console.log('✅ Styles forced applied');
+
+                    // Start monitoring for style changes
+                    styleCheckInterval = setInterval(checkStyles, 500); // Check every 500ms
+                    setupMutationObserver();
+
+                    // Stop monitoring after 60 seconds
+                    setTimeout(() => {
+                        if (styleCheckInterval) {
+                            clearInterval(styleCheckInterval);
+                            console.log('🛑 Style monitoring stopped');
+                        }
+                        if (mutationObserver) {
+                            mutationObserver.disconnect();
+                            console.log('🛑 Mutation observer stopped');
+                        }
+                    }, 60000);
+                }, 100);
             })();
         </script>
     </body>
