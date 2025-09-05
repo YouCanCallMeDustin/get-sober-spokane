@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth State Checker</title>
+    <!-- Load Supabase -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="/js/config.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        pre { background-color: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔐 Authentication State Checker</h1>
+    <div id="results"></div>
+
+    <script>
+        async function checkAuthState() {
+            const results = document.getElementById('results');
+            
+            function addStatus(message, type = 'info') {
+                const div = document.createElement('div');
+                div.className = `status ${type}`;
+                div.innerHTML = message;
+                results.appendChild(div);
+            }
+            
+            try {
+                // Check if Supabase is loaded
+                addStatus('🔍 Checking Supabase availability...', 'info');
+                
+                if (typeof window.supabase === 'undefined') {
+                    addStatus('❌ Supabase not loaded globally', 'error');
+                    return;
+                }
+                
+                addStatus('✅ Supabase is loaded', 'success');
+                
+                // Check config
+                addStatus('🔍 Checking Supabase configuration...', 'info');
+                
+                const supabaseUrl = window.APP_CONFIG?.SUPABASE_URL || '';
+                const supabaseKey = window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
+                
+                if (!supabaseUrl || !supabaseKey) {
+                    addStatus('❌ Supabase configuration missing', 'error');
+                    return;
+                }
+                
+                addStatus('✅ Supabase configuration found', 'success');
+                
+                // Initialize Supabase client
+                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+                
+                // Check current session
+                addStatus('🔍 Checking current session...', 'info');
+                
+                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                
+                if (sessionError) {
+                    addStatus(`❌ Error getting session: ${sessionError.message}`, 'error');
+                    return;
+                }
+                
+                if (session) {
+                    addStatus('✅ User is logged in!', 'success');
+                    addStatus(`👤 User ID: ${session.user.id}`, 'info');
+                    addStatus(`📧 Email: ${session.user.email}`, 'info');
+                    addStatus(`🕒 Last sign in: ${new Date(session.user.last_sign_in_at).toLocaleString()}`, 'info');
+                    addStatus(`⏰ Session expires: ${new Date(session.expires_at * 1000).toLocaleString()}`, 'info');
+                    
+                    // Test comment insertion
+                    addStatus('💬 Testing comment insertion...', 'info');
+                    
+                    // Get a post to comment on
+                    const { data: posts, error: postsError } = await supabase
+                        .from('forum_posts')
+                        .select('id, title')
+                        .limit(1);
+                    
+                    if (postsError) {
+                        addStatus(`❌ Error fetching posts: ${postsError.message}`, 'error');
+                    } else if (posts && posts.length > 0) {
+                        const testPostId = posts[0].id;
+                        addStatus(`📝 Testing with post: ${posts[0].title}`, 'info');
+                        
+                        const testComment = {
+                            post_id: testPostId,
+                            user_id: session.user.id,
+                            content: 'Test comment from auth checker - ' + new Date().toISOString(),
+                            created_at: new Date().toISOString()
+                        };
+                        
+                        const { data: insertedComment, error: insertError } = await supabase
+                            .from('forum_comments')
+                            .insert([testComment])
+                            .select()
+                            .single();
+                        
+                        if (insertError) {
+                            addStatus(`❌ Comment insertion failed: ${insertError.message}`, 'error');
+                            addStatus(`   Error code: ${insertError.code}`, 'error');
+                            addStatus(`   Error details: ${insertError.details}`, 'error');
+                        } else {
+                            addStatus('✅ Comment insertion successful!', 'success');
+                            addStatus(`   Comment ID: ${insertedComment.id}`, 'info');
+                            
+                            // Clean up
+                            await supabase
+                                .from('forum_comments')
+                                .delete()
+                                .eq('id', insertedComment.id);
+                            addStatus('🧹 Test comment cleaned up', 'info');
+                        }
+                    } else {
+                        addStatus('⚠️ No posts available for testing', 'warning');
+                    }
+                    
+                } else {
+                    addStatus('❌ No active session - user is not logged in', 'error');
+                    addStatus('💡 Try logging in first, then refresh this page', 'warning');
+                }
+                
+                // Check localStorage and sessionStorage
+                addStatus('🔍 Checking browser storage...', 'info');
+                
+                const localStorage = window.localStorage;
+                const sessionStorage = window.sessionStorage;
+                
+                addStatus(`📦 LocalStorage items: ${localStorage.length}`, 'info');
+                addStatus(`📦 SessionStorage items: ${sessionStorage.length}`, 'info');
+                
+                // Show relevant storage items
+                const relevantKeys = ['supabase.auth.token', 'sb-', 'auth-', 'user-'];
+                const relevantItems = [];
+                
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (relevantKeys.some(prefix => key.includes(prefix))) {
+                        relevantItems.push(`${key}: ${localStorage.getItem(key).substring(0, 100)}...`);
+                    }
+                }
+                
+                if (relevantItems.length > 0) {
+                    addStatus('🔑 Relevant storage items found:', 'info');
+                    relevantItems.forEach(item => {
+                        addStatus(`   ${item}`, 'info');
+                    });
+                }
+                
+            } catch (error) {
+                addStatus(`❌ Test failed: ${error.message}`, 'error');
+                console.error('Test error:', error);
+            }
+        }
+        
+        // Run the test when page loads
+        document.addEventListener('DOMContentLoaded', checkAuthState);
+    </script>
+</body>
+</html>

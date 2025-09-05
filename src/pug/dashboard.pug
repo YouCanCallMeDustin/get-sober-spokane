@@ -52,21 +52,49 @@ block content
               .dashboard-card.recovery-card
                 h3.card-title Recovery Progress
                 
-                // Sobriety Counter Section
-                .sobriety-section
-                  h5.section-label Sobriety Counter
-                  .sobriety-counter
-                    .counter-display
-                      span.counter-number#sobrietyDays 0
-                      span.counter-label days
-                    p.counter-subtitle Since your last drink or drug use
+                // Interactive Progress Visualization
+                .progress-visualization
+                  .row
+                    .col-md-6
+                      // Sobriety Progress Ring
+                      .progress-ring-container
+                        h5.section-label Sobriety Progress
+                        .progress-ring-wrapper
+                          canvas#sobrietyProgressRing(width="200" height="200")
+                          .progress-ring-overlay
+                            .progress-text
+                              span.progress-number#progressRingDays 0
+                              span.progress-label days
+                            .progress-subtitle Sober & Strong
+                      
+                      // Achievement Badges
+                      .achievement-badges
+                        h5.section-label Recent Achievements
+                        .badges-grid#achievementBadges
+                          // Badges will be populated dynamically
+                    
+                    .col-md-6
+                      // Sobriety Counter Section
+                      .sobriety-section
+                        h5.section-label Sobriety Counter
+                        .sobriety-counter
+                          .counter-display
+                            span.counter-number#sobrietyDays 0
+                            span.counter-label days
+                          p.counter-subtitle Since your last drink or drug use
+                        
+                        // Sobriety Date Update
+                        .sobriety-date-update
+                          label(for="sobrietyDate") Update Sobriety Date:
+                          .date-input-group
+                            input.form-control#sobrietyDate(type="date" name="sobrietyDate")
+                            button.btn.btn-primary#updateSobrietyDate Update
                   
-                  // Sobriety Date Update
-                  .sobriety-date-update
-                    label(for="sobrietyDate") Update Sobriety Date:
-                    .date-input-group
-                      input.form-control#sobrietyDate(type="date" name="sobrietyDate")
-                      button.btn.btn-primary#updateSobrietyDate Update
+                  // Progress Timeline
+                  .progress-timeline
+                    h5.section-label Recovery Journey
+                    .timeline-container#progressTimeline
+                      // Timeline will be populated dynamically
                 
                 // Recovery Milestones Section
                 .milestones-section
@@ -76,46 +104,88 @@ block content
                   .add-milestone
                     button.btn.btn-success#addMilestoneBtn(type="button") + Add Milestone
             
-            // Right Column - Quick Actions
+            // Right Column - Community Connections and Quick Actions
             .col-lg-4.mb-4
-              .dashboard-card.quick-actions-card
+              // Community Connections
+              .dashboard-card.connections-card
+                h3.card-title Community Connections
+                .connections-section
+                  h5.section-label My Connections
+                  .connections-list#connectionsList
+                    // Connections will be loaded dynamically
+                    .connection-item.placeholder(style="display: none;")
+                      .connection-avatar
+                        i.bi.bi-person-circle
+                      .connection-info
+                        .connection-name Loading...
+                        .connection-status Loading connections...
+                      .connection-actions
+                        button.btn.btn-sm.btn-outline-primary(disabled) Loading
+                  .no-connections.text-center.py-4(style="display: none;")
+                    i.bi.bi-people.text-muted(style="font-size: 2rem;")
+                    p.text-muted.mt-2 No connections yet
+                    p.small.text-muted Connect with sponsors and recovery friends
+                  button.btn.btn-success.btn-sm.w-100.mt-2#addConnectionBtn
+                    i.bi.bi-person-plus
+                    |  Find Sponsor
+                .challenges-section
+                  h5.section-label Active Challenges
+                  .challenges-list#challengesList
+                    .challenge-item
+                      .challenge-header
+                        h6 30-Day Sobriety Challenge
+                        span.challenge-participants 24 participants
+                      .challenge-progress
+                        .progress
+                          .progress-bar(style="width: 65%")
+                        span.progress-text 19/30 days
+                      .challenge-actions
+                        button.btn.btn-sm.btn-outline-success View Details
+                  button.btn.btn-outline-primary.btn-sm.w-100.mt-2#joinChallengeBtn
+                    i.bi.bi-trophy
+                    |  Join Challenge
+
+              // Quick Actions
+              .dashboard-card.quick-actions-card.mt-3
                 h3.card-title Quick Actions
                 .quick-actions-list
                   a.quick-action-btn.emergency-btn(href="/resource-directory.html#emergency-help")
                     .action-icon
                       i.bi.bi-exclamation-triangle
                     .action-text Emergency Help
-                  
                   a.quick-action-btn(href="/resource-directory.html")
                     .action-icon
                       i.bi.bi-search
                     .action-text Resource Directory
-                  
                   a.quick-action-btn(href="/community-forum.html")
                     .action-icon
                       i.bi.bi-people
                     .action-text Community Forum
-                  
                   a.quick-action-btn(href="/chat")
                     .action-icon
                       i.bi.bi-chat-dots
                     .action-text Live Chat
-                  
+                  a.quick-action-btn(href="/sponsor-finder.html")
+                    .action-icon
+                      i.bi.bi-person-heart
+                    .action-text Find Sponsor
                   a.quick-action-btn#viewProfileLink(href="#" style="display: none;")
                     .action-icon
                       i.bi.bi-person
                     .action-text View Profile
-                  
                   a.quick-action-btn(href="/donations.html")
                     .action-icon
                       i.bi.bi-heart
                     .action-text Support Our Mission
+                a.btn.btn-outline-success.btn-sm.w-100.mt-2(href="/community-engagement-sober-activities.html") View All Events
 
 block scripts
+  script(src="https://cdn.jsdelivr.net/npm/chart.js")
   script.
     // Dashboard functionality with Supabase integration
     let supabase;
     let currentUser = null;
+    let sobrietyProgressChart = null;
     
     // Initialize dashboard
     document.addEventListener('DOMContentLoaded', async function() {
@@ -178,8 +248,14 @@ block scripts
           // Load milestones
           await loadMilestones();
           
+          // Load sponsor connections
+          await loadSponsorConnections();
+          
           // Calculate sobriety days
           calculateSobrietyDays();
+          
+          // Initialize progress visualization
+          initializeProgressVisualization();
         } else {
           // User is not authenticated, show sign-in form
           showSignInForm();
@@ -197,6 +273,11 @@ block scripts
       
       // Add milestone
       document.getElementById('addMilestoneBtn').addEventListener('click', showAddMilestoneModal);
+      
+      // Add connection button
+      document.getElementById('addConnectionBtn').addEventListener('click', function() {
+        window.location.href = '/sponsor-finder.html';
+      });
       
       // Sign-in form
       document.getElementById('loginForm').addEventListener('submit', handleSignIn);
@@ -307,6 +388,129 @@ block scripts
       } catch (error) {
         console.error('Failed to load milestones', error);
       }
+    }
+    
+    async function loadSponsorConnections() {
+      try {
+        if (!supabase || !currentUser) return;
+        
+        console.log('Loading sponsor connections for user:', currentUser.id);
+        
+        // Attempt to fetch via server API first
+        try {
+          const response = await fetch(`/api/sponsor/relationships?user_id=${encodeURIComponent(currentUser.id)}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-user-id': currentUser.id
+            }
+          });
+          if (!response.ok) {
+            const text = await response.text();
+            console.warn('Sponsor relationships API response not ok:', response.status, text);
+            throw new Error('api_failed');
+          }
+          const { relationships } = await response.json();
+          console.log('Loaded relationships via API:', relationships);
+          displaySponsorConnections(relationships || []);
+          return;
+        } catch (apiError) {
+          console.warn('Falling back to direct Supabase query for relationships:', apiError);
+        }
+
+        // Fallback: query Supabase directly (works in static environments)
+        const { data: relationships, error: sbError } = await supabase
+          .from('sponsor_relationships')
+          .select(`
+            *,
+            sponsor:sponsor_id(
+              profiles_consolidated(
+                display_name,
+                avatar_url
+              )
+            ),
+            sponsee:sponsee_id(
+              profiles_consolidated(
+                display_name,
+                avatar_url
+              )
+            )
+          `)
+          .or(`sponsor_id.eq.${currentUser.id},sponsee_id.eq.${currentUser.id}`);
+
+        if (sbError) {
+          console.error('Supabase relationships query failed:', sbError);
+          throw new Error('Failed to fetch sponsor connections');
+        }
+
+        console.log('Loaded relationships via Supabase:', relationships);
+        displaySponsorConnections(relationships || []);
+      } catch (error) {
+        console.error('Failed to load sponsor connections:', error);
+        displaySponsorConnections([]);
+      }
+    }
+    
+    function displaySponsorConnections(relationships) {
+      const connectionsList = document.getElementById('connectionsList');
+      const noConnections = document.querySelector('.no-connections');
+      const placeholder = document.querySelector('.connection-item.placeholder');
+      
+      if (!connectionsList) return;
+      
+      // Hide placeholder
+      if (placeholder) {
+        placeholder.style.display = 'none';
+      }
+      
+      if (relationships.length === 0) {
+        // Show no connections message
+        if (noConnections) {
+          noConnections.style.display = 'block';
+        }
+        connectionsList.innerHTML = '';
+        return;
+      }
+      
+      // Hide no connections message
+      if (noConnections) {
+        noConnections.style.display = 'none';
+      }
+      
+      // Display relationships
+      connectionsList.innerHTML = relationships.map(relationship => {
+        const isSponsor = relationship.sponsor_id === currentUser.id;
+        const otherPerson = isSponsor ? relationship.sponsee : relationship.sponsor;
+        const relationshipType = isSponsor ? 'Sponsee' : 'Sponsor';
+        
+        return `
+          <div class="connection-item">
+            <div class="connection-avatar">
+              ${otherPerson?.profiles_consolidated?.avatar_url ? 
+                `<img src="${otherPerson.profiles_consolidated.avatar_url}" alt="${otherPerson.profiles_consolidated.display_name}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` :
+                `<i class="bi bi-person-circle"></i>`
+              }
+            </div>
+            <div class="connection-info">
+              <div class="connection-name">${otherPerson?.profiles_consolidated?.display_name || 'Anonymous'} (${relationshipType})</div>
+              <div class="connection-status ${relationship.relationship_status === 'active' ? 'online' : ''}">
+                ${relationship.relationship_status === 'active' ? 'Active' : relationship.relationship_status}
+              </div>
+            </div>
+            <div class="connection-actions">
+              <button class="btn btn-sm btn-outline-primary" onclick="openChat('${otherPerson.id}')">
+                <i class="bi bi-chat-dots me-1"></i>
+                Message
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    function openChat(userId) {
+      // Navigate to chat with specific user
+      window.location.href = `/chat?user=${userId}`;
     }
     
     function displayMilestones(milestones) {
@@ -439,6 +643,7 @@ block scripts
       const sobrietyDate = document.getElementById('sobrietyDate').value;
       if (!sobrietyDate) {
         document.getElementById('sobrietyDays').textContent = '0';
+        updateProgressVisualization();
         return;
       }
       
@@ -448,18 +653,38 @@ block scripts
       const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
       
       document.getElementById('sobrietyDays').textContent = Math.max(0, daysDiff);
+      
+      // Update progress visualization
+      updateProgressVisualization();
     }
     
-    function updateUserDisplay() {
+    async function updateUserDisplay() {
       if (currentUser) {
-        const metaName =
-          currentUser.user_metadata?.full_name ||
-          currentUser.user_metadata?.display_name ||
-          currentUser.user_metadata?.name ||
-          currentUser.user_metadata?.user_name ||
-          'Get Sober Spokane';
-        const displayName = metaName;
-        document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${displayName}!`;
+        try {
+          // Get the user's profile from database to get their custom display_name
+          const { data: profile } = await supabase
+            .from('forum_user_profiles')
+            .select('display_name')
+            .eq('user_id', currentUser.id)
+            .single();
+          
+          const displayName = profile?.display_name || 
+                             currentUser.user_metadata?.full_name ||
+                             currentUser.user_metadata?.display_name ||
+                             currentUser.user_metadata?.name ||
+                             currentUser.user_metadata?.user_name ||
+                             'Get Sober Spokane';
+          document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${displayName}!`;
+        } catch (error) {
+          console.error('Error loading profile for display:', error);
+          // Fallback to Google Auth data
+          const metaName = currentUser.user_metadata?.full_name ||
+                          currentUser.user_metadata?.display_name ||
+                          currentUser.user_metadata?.name ||
+                          currentUser.user_metadata?.user_name ||
+                          'Get Sober Spokane';
+          document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${metaName}!`;
+        }
       }
     }
     
@@ -640,4 +865,127 @@ block scripts
           alertDiv.remove();
         }
       }, 5000);
-    } 
+    }
+    
+    // Progress Visualization Functions
+    function initializeProgressVisualization() {
+      createSobrietyProgressRing();
+      createAchievementBadges();
+      createProgressTimeline();
+    }
+    
+    function createSobrietyProgressRing() {
+      const canvas = document.getElementById('sobrietyProgressRing');
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = 80;
+      
+      // Calculate progress percentage (assuming 365 days = 100%)
+      const sobrietyDays = parseInt(document.getElementById('sobrietyDays').textContent) || 0;
+      const progressPercentage = Math.min((sobrietyDays / 365) * 100, 100);
+      
+      // Draw background circle
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+      ctx.strokeStyle = '#e9ecef';
+      ctx.lineWidth = 12;
+      ctx.stroke();
+      
+      // Draw progress arc
+      if (progressPercentage > 0) {
+        const startAngle = -Math.PI / 2; // Start from top
+        const endAngle = startAngle + (progressPercentage / 100) * 2 * Math.PI;
+        
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.strokeStyle = getProgressColor(progressPercentage);
+        ctx.lineWidth = 12;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+      }
+      
+      // Update overlay text
+      document.getElementById('progressRingDays').textContent = sobrietyDays;
+    }
+    
+    function getProgressColor(percentage) {
+      if (percentage >= 80) return '#28a745'; // Green for high progress
+      if (percentage >= 60) return '#17a2b8'; // Blue for medium-high
+      if (percentage >= 40) return '#ffc107'; // Yellow for medium
+      if (percentage >= 20) return '#fd7e14'; // Orange for low-medium
+      return '#dc3545'; // Red for low progress
+    }
+    
+    function createAchievementBadges() {
+      const badgesContainer = document.getElementById('achievementBadges');
+      if (!badgesContainer) return;
+      
+      const sobrietyDays = parseInt(document.getElementById('sobrietyDays').textContent) || 0;
+      const badges = [];
+      
+      // Define achievement milestones
+      if (sobrietyDays >= 1) badges.push({ name: 'First Step', icon: '🎯', color: '#28a745' });
+      if (sobrietyDays >= 7) badges.push({ name: 'Week Warrior', icon: '⭐', color: '#17a2b8' });
+      if (sobrietyDays >= 30) badges.push({ name: 'Month Master', icon: '🏆', color: '#ffc107' });
+      if (sobrietyDays >= 90) badges.push({ name: 'Quarter Champion', icon: '👑', color: '#fd7e14' });
+      if (sobrietyDays >= 180) badges.push({ name: 'Halfway Hero', icon: '💎', color: '#6f42c1' });
+      if (sobrietyDays >= 365) badges.push({ name: 'Year Legend', icon: '🌟', color: '#e83e8c' });
+      
+      // Display badges
+      badgesContainer.innerHTML = badges.map(badge => `
+        <div class="achievement-badge" style="border-color: ${badge.color}">
+          <div class="badge-icon" style="color: ${badge.color}">${badge.icon}</div>
+          <div class="badge-name">${badge.name}</div>
+        </div>
+      `).join('');
+    }
+    
+    function createProgressTimeline() {
+      const timelineContainer = document.getElementById('progressTimeline');
+      if (!timelineContainer) return;
+      
+      const sobrietyDays = parseInt(document.getElementById('sobrietyDays').textContent) || 0;
+      const milestones = [
+        { days: 1, title: 'First Day', description: 'The journey begins' },
+        { days: 7, title: 'One Week', description: 'Building new habits' },
+        { days: 30, title: 'One Month', description: 'Establishing routine' },
+        { days: 90, title: 'Three Months', description: 'Strong foundation' },
+        { days: 180, title: 'Six Months', description: 'Halfway there' },
+        { days: 365, title: 'One Year', description: 'Incredible achievement' }
+      ];
+      
+      const timelineHTML = milestones.map(milestone => {
+        const isAchieved = sobrietyDays >= milestone.days;
+        const isNext = sobrietyDays < milestone.days && sobrietyDays >= (milestone.days - 30);
+        
+        return `
+          <div class="timeline-item ${isAchieved ? 'achieved' : ''} ${isNext ? 'next' : ''}">
+            <div class="timeline-marker">
+              <i class="bi ${isAchieved ? 'bi-check-circle-fill' : 'bi-circle'}"></i>
+            </div>
+            <div class="timeline-content">
+              <h6 class="timeline-title">${milestone.title}</h6>
+              <p class="timeline-description">${milestone.description}</p>
+              <div class="timeline-progress">
+                <div class="progress">
+                  <div class="progress-bar" style="width: ${Math.min((sobrietyDays / milestone.days) * 100, 100)}%"></div>
+                </div>
+                <span class="progress-text">${sobrietyDays}/${milestone.days} days</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      timelineContainer.innerHTML = timelineHTML;
+    }
+    
+    // Update progress visualization when sobriety days change
+    function updateProgressVisualization() {
+      createSobrietyProgressRing();
+      createAchievementBadges();
+      createProgressTimeline();
+    } ild

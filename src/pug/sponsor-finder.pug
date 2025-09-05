@@ -1,0 +1,379 @@
+extends layout
+
+block head
+  title Find a Sponsor - Get Sober Spokane
+  meta(name="description" content="Find a sponsor or become a sponsor in the Spokane recovery community. Connect with experienced mentors for your sobriety journey.")
+  style.
+    .sponsor-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 100px 0 60px;
+      margin-top: 76px;
+    }
+    .sponsor-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 30px;
+    }
+    .sponsor-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    .sponsor-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      margin: 0 auto 20px;
+    }
+    .sponsor-badge {
+      background: linear-gradient(45deg, #ffd700, #ffed4e);
+      color: #333;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 15px;
+      box-shadow: 0 3px 12px rgba(255, 215, 0, 0.4);
+      border: 2px solid #ffd700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      animation: sponsorGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes sponsorGlow {
+      from {
+        box-shadow: 0 3px 12px rgba(255, 215, 0, 0.4);
+      }
+      to {
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.6);
+      }
+    }
+    
+    .sponsor-badge i {
+      color: #ff6b35;
+      font-size: 1.1rem;
+      margin-right: 6px;
+      animation: starPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes starPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .sponsor-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #667eea;
+    }
+    .stat-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    .filter-section {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 40px;
+    }
+    .filter-group {
+      margin-bottom: 20px;
+    }
+    .filter-label {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #495057;
+    }
+    .sponsor-request-form {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+    }
+    .btn-sponsor-primary {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      border: none;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .btn-sponsor-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      color: white;
+    }
+    .btn-sponsor-secondary {
+      background: linear-gradient(45deg, #28a745, #20c997);
+      border: none;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .btn-sponsor-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+      color: white;
+    }
+    .sponsor-rating {
+      color: #ffc107;
+      font-size: 1.2rem;
+    }
+    .sponsor-specializations {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 10px 0;
+    }
+    .specialization-tag {
+      background: #e9ecef;
+      color: #495057;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+    }
+    .no-sponsors {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6c757d;
+    }
+    .no-sponsors i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: #dee2e6;
+    }
+
+block content
+  // Hero Section
+  section.sponsor-hero
+    .container
+      .row.justify-content-center.text-center
+        .col-lg-8
+          h1.display-4.mb-4 Find Your Recovery Sponsor
+          p.lead.mb-4 Connect with experienced mentors who understand your journey and can provide the support you need for lasting sobriety.
+          .row.justify-content-center
+            .col-md-8
+              .d-flex.gap-3.justify-content-center.flex-wrap
+                button.btn.btn-light.btn-lg#findSponsorBtn
+                  i.bi.bi-search.me-2
+                  | Find a Sponsor
+                button.btn.btn-outline-light.btn-lg#becomeSponsorBtn
+                  i.bi.bi-person-plus.me-2
+                  | Become a Sponsor
+
+  // Main Content
+  .container.py-5
+    // Filter Section
+    .filter-section#filterSection(style="display: none;")
+      h3.mb-4 Filter Available Sponsors
+      .row
+        .col-md-3
+          .filter-group
+            label.filter-label Recovery Program
+            select.form-select#recoveryProgramFilter
+              option(value="") All Programs
+              option(value="AA") Alcoholics Anonymous (AA)
+              option(value="NA") Narcotics Anonymous (NA)
+              option(value="SMART") SMART Recovery
+              option(value="Other") Other
+        .col-md-3
+          .filter-group
+            label.filter-label Years Sober
+            select.form-select#yearsSoberFilter
+              option(value="") Any Experience
+              option(value="1-2") 1-2 Years
+              option(value="3-5") 3-5 Years
+              option(value="5+") 5+ Years
+        .col-md-3
+          .filter-group
+            label.filter-label Meeting Preference
+            select.form-select#meetingPreferenceFilter
+              option(value="") Any Method
+              option(value="in_person") In Person
+              option(value="online") Online
+              option(value="phone") Phone
+        .col-md-3
+          .filter-group
+            label.filter-label Specialization
+            select.form-select#specializationFilter
+              option(value="") Any Focus
+              option(value="early_recovery") Early Recovery
+              option(value="relapse_prevention") Relapse Prevention
+              option(value="family_support") Family Support
+              option(value="step_work") Step Work
+      .row.mt-3
+        .col-12.text-center
+          button.btn.btn-sponsor-primary#applyFiltersBtn Apply Filters
+          button.btn.btn-outline-secondary.ms-2#clearFiltersBtn Clear Filters
+
+    // Sponsor Request Form
+    .sponsor-request-form#sponsorRequestForm(style="display: none;")
+      h3.mb-4 Request a Sponsor
+      form#requestSponsorForm
+        .row
+          .col-md-6
+            .mb-3
+              label.form-label(for="requestType") I am looking for:
+              select.form-select#requestType(name="requestType" required)
+                option(value="") Select one...
+                option(value="find_sponsor") A sponsor to help me
+                option(value="become_sponsor") To become a sponsor for others
+          .col-md-6
+            .mb-3
+              label.form-label(for="sobrietyDate") My sobriety date:
+              input.form-control#sobrietyDate(type="date" name="sobrietyDate")
+        .row
+          .col-md-6
+            .mb-3
+              label.form-label(for="recoveryProgram") Recovery program:
+              select.form-select#recoveryProgram(name="recoveryProgram")
+                option(value="") Select program...
+                option(value="AA") Alcoholics Anonymous (AA)
+                option(value="NA") Narcotics Anonymous (NA)
+                option(value="SMART") SMART Recovery
+                option(value="Other") Other
+          .col-md-6
+            .mb-3
+              label.form-label(for="contactMethod") Preferred contact method:
+              select.form-select#contactMethod(name="contactMethod")
+                option(value="message") Message through platform
+                option(value="email") Email
+                option(value="phone") Phone call
+        .mb-3
+          label.form-label(for="sponsorExperience") Your experience as a sponsor:
+          textarea.form-control#sponsorExperience(name="sponsorExperience" rows="3" placeholder="Describe your experience sponsoring others, or if you're new, your willingness to learn...")
+        .mb-3
+          label.form-label(for="supportOffer") What kind of support can you offer?
+          textarea.form-control#supportOffer(name="supportOffer" rows="3" placeholder="Describe the type of support, guidance, or mentorship you can provide...")
+        .mb-3
+          label.form-label(for="availabilityNotes") Your availability:
+          textarea.form-control#availabilityNotes(name="availabilityNotes" rows="2" placeholder="When are you typically available for check-ins or meetings?")
+        .text-center
+          button.btn.btn-sponsor-primary.btn-lg#submitRequestBtn(type="submit")
+            i.bi.bi-send.me-2
+            | Submit Request
+
+    // Available Sponsors Section
+    .row.mb-5
+      .col-12
+        h2.mb-4 Available Sponsors
+        .row#sponsorsList
+          // Sponsors will be loaded dynamically here
+          .col-12
+            .no-sponsors#noSponsorsMessage
+              i.bi.bi-people
+              h4 No sponsors available at the moment
+              p Please check back later or submit a request to be matched with a sponsor.
+
+    // How It Works Section
+    .row.mb-5
+      .col-12
+        h2.mb-4.text-center How the Sponsor Matching Works
+        .row
+          .col-md-4.mb-4
+            .text-center
+              .sponsor-avatar.mx-auto.mb-3
+                i.bi.bi-person-plus
+              h5 Create Your Profile
+              p.text-muted Tell us about your recovery journey and what kind of support you're looking for.
+          .col-md-4.mb-4
+            .text-center
+              .sponsor-avatar.mx-auto.mb-3
+                i.bi.bi-search
+              h5 Find Your Match
+              p.text-muted Browse available sponsors or let us match you with someone who understands your needs.
+          .col-md-4.mb-4
+            .text-center
+              .sponsor-avatar.mx-auto.mb-3
+                i.bi.bi-chat-dots
+              h5 Start Your Journey
+              p.text-muted Connect with your sponsor and begin building a supportive relationship for your recovery.
+
+    // Safety and Guidelines Section
+    .row
+      .col-12
+        .alert.alert-info
+          h5.mb-3
+            i.bi.bi-shield-check.me-2
+            | Safety Guidelines
+          ul.mb-0
+            li All sponsors are verified members of the recovery community
+            li Always meet in public places for in-person meetings
+            li Never share personal financial information
+            li Report any inappropriate behavior immediately
+            li Remember: sponsors provide guidance, not professional therapy
+          p.mt-3.mb-0
+            strong Need immediate help?
+            |  Call the 24/7 Crisis Line: 
+            a(href="tel:988") (988) or text HOME to 741741
+
+block scripts
+  script(src="/js/sponsor-finder.js?v=" + timestamp)
+  script.
+    // Initialize sponsor finder page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize the sponsor finder functionality
+      if (window.SponsorFinder) {
+        window.sponsorFinder = new window.SponsorFinder();
+        window.sponsorFinder.init();
+      }
+      
+      // Event listeners for main buttons
+      document.getElementById('findSponsorBtn').addEventListener('click', function() {
+        document.getElementById('filterSection').style.display = 'block';
+        document.getElementById('sponsorRequestForm').style.display = 'none';
+        document.getElementById('findSponsorBtn').scrollIntoView({ behavior: 'smooth' });
+      });
+      
+      document.getElementById('becomeSponsorBtn').addEventListener('click', function() {
+        document.getElementById('sponsorRequestForm').style.display = 'block';
+        document.getElementById('filterSection').style.display = 'none';
+        document.getElementById('requestType').value = 'become_sponsor';
+        document.getElementById('sponsorRequestForm').scrollIntoView({ behavior: 'smooth' });
+      });
+      
+      // Filter functionality
+      document.getElementById('applyFiltersBtn').addEventListener('click', function() {
+        if (window.sponsorFinder) {
+          window.sponsorFinder.applyFilters();
+        }
+      });
+      
+      document.getElementById('clearFiltersBtn').addEventListener('click', function() {
+        if (window.sponsorFinder) {
+          window.sponsorFinder.clearFilters();
+        }
+      });
+      
+      // Form submission
+      document.getElementById('requestSponsorForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (window.sponsorFinder) {
+          window.sponsorFinder.submitSponsorRequest();
+        }
+      });
+    });

@@ -23,8 +23,6 @@ block content
             if user && !user.isAnonymous
               .user-welcome
                 p Welcome back, #{user.display_name || user.username || 'User'}!
-                // Debug info - remove this later
-                small.text-light (Debug: #{user.display_name || 'no display_name'} | #{user.username || 'no username'} | #{user.email || 'no email'})
             else
               .user-welcome
                 p You're chatting as Anonymous. #[a(href="/login" class="sign-in-link") Sign in] to use your username.
@@ -54,16 +52,20 @@ block content
                 .chat-rooms
                   .room-item.active#generalRoom(data-room="general")
                     i.bi.bi-hash.me-2
-                    | General Support
+                    span.room-name General Support
+                    span.room-count 0
                   .room-item#recoveryRoom(data-room="recovery")
                     i.bi.bi-hash.me-2
-                    | Recovery Journey
+                    span.room-name Recovery Journey
+                    span.room-count 0
                   .room-item#crisisRoom(data-room="crisis")
                     i.bi.bi-hash.me-2
-                    | Crisis Support
+                    span.room-name Crisis Support
+                    span.room-count 0
                   .room-item#celebrationsRoom(data-room="celebrations")
                     i.bi.bi-hash.me-2
-                    | Celebrations
+                    span.room-name Celebrations
+                    span.room-count 0
               
               // Quick Actions
               .sidebar-section
@@ -89,14 +91,9 @@ block content
                 .chat-room-info
                   h4#currentRoomName General Support
                   p#roomDescription General recovery support and community discussion
-                .chat-controls
-                  button.btn.btn-outline-secondary.btn-sm#toggleSidebar
-                    i.bi.bi-list
-                  button.btn.btn-outline-primary.btn-sm#chatSettings
-                    i.bi.bi-gear
-                .room-status
-                  span.status-dot.active
-                  | Active
+                  .room-status
+                    span.status-dot.active
+                    | Active
               
               // Messages Container
               .messages-container#messagesContainer
@@ -105,7 +102,9 @@ block content
                     .message-content
                       h6 Welcome to the Recovery Support Chat!
                       p This is a safe space for sharing, supporting, and connecting with others on their recovery journey.
-                      .message-time Just now
+                      .message-header
+                        span.message-sender System
+                        span.message-time Just now
                 
                 // Messages will be loaded dynamically here
               

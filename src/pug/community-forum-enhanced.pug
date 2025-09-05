@@ -1,0 +1,433 @@
+extends layout
+
+block head
+  title Enhanced Community Forum - Get Sober Spokane
+  meta(name="description" content="Connect with the recovery community in Spokane. Share your journey, find support, and celebrate milestones together.")
+  meta(name="keywords" content="recovery community, sobriety support, addiction recovery forum, Spokane recovery, sober living support")
+  link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css")
+
+block content
+  // Forum Container with proper spacing for fixed navigation
+  .forum-container
+    // Hero Banner Section
+    .forum-hero
+      .container
+        .row.justify-content-center.text-center
+          .col-lg-8
+            h1.forum-hero-title Enhanced Community Forum
+            p.forum-hero-subtitle Connect, share, and support each other on your recovery journey
+            .forum-hero-actions
+              if user
+                .d-flex.justify-content-center.gap-3.mt-3
+                  button.btn.btn-outline-light#personalizedFeedBtn
+                    i.bi.bi-person-heart.me-2
+                    | My Feed
+                  button.btn.btn-outline-light#bookmarksBtn
+                    i.bi.bi-bookmark.me-2
+                    | Bookmarks
+                  button.btn.btn-outline-light#notificationsBtn
+                    i.bi.bi-bell.me-2
+                    | Notifications
+                    span.badge.bg-danger.ms-1#notificationBadge(style="display: none;") 0
+    
+    // Main Forum Content
+    .forum-content
+      .container
+        // Enhanced Forum Navigation and Controls
+        .forum-controls.mb-4
+          .row.align-items-center
+            .col-lg-8
+              .d-flex.flex-wrap.gap-3.align-items-center
+                // Enhanced Search Bar
+                .search-container
+                  .input-group
+                    .input-group-text
+                      i.bi.bi-search
+                    input.form-control#forum-search(type="text" placeholder="Search posts, topics, users, or tags...")
+                    button.btn.btn-outline-secondary#advancedSearchBtn(type="button" title="Advanced Search")
+                      i.bi.bi-sliders
+                
+                // Category Filter with Subcategories
+                select.form-select#category-filter(style="min-width: 180px;")
+                  option(value="") All Categories
+                  optgroup(label="Recovery Support")
+                    option(value="Recovery Support") General Recovery
+                    option(value="Recovery Support - Early Days") Early Days
+                    option(value="Recovery Support - Long-term") Long-term Recovery
+                  optgroup(label="Community")
+                    option(value="General Discussion") General Discussion
+                    option(value="Sober Activities") Sober Activities
+                    option(value="Success Stories") Success Stories
+                  optgroup(label="Support")
+                    option(value="Family & Friends") Family & Friends
+                    option(value="Mental Health") Mental Health
+                    option(value="Treatment & Resources") Treatment & Resources
+                  optgroup(label="Practical")
+                    option(value="Employment & Housing") Employment & Housing
+                
+                // Sort Options
+                select.form-select#sort-posts(style="min-width: 150px;")
+                  option(value="newest") Newest First
+                  option(value="oldest") Oldest First
+                  option(value="most-voted") Most Voted
+                  option(value="most-commented") Most Commented
+                  option(value="trending") Trending
+                  option(value="following") Following
+                
+                // Tag Filter
+                select.form-select#tag-filter(style="min-width: 150px;")
+                  option(value="") All Tags
+                  option(value="recovery") Recovery
+                  option(value="support") Support
+                  option(value="advice") Advice
+                  option(value="spokane") Spokane
+                  option(value="milestone") Milestone
+                  option(value="mental-health") Mental Health
+                  option(value="family") Family
+                  option(value="resources") Resources
+            
+            .col-lg-4.text-lg-end
+              .d-flex.gap-2.justify-content-lg-end
+                button.btn.btn-outline-primary#filterBtn(type="button")
+                  i.bi.bi-funnel.me-2
+                  | Filters
+                button.btn.btn-primary#newPostBtn(type="button")
+                  i.bi.bi-plus-circle.me-2
+                  | New Post
+        
+        // Advanced Search Modal
+        #advancedSearchModal.modal.fade(tabindex="-1")
+          .modal-dialog.modal-lg
+            .modal-content
+              .modal-header
+                h5.modal-title
+                  i.bi.bi-search.me-2
+                  | Advanced Search
+                button.btn-close(type="button" data-bs-dismiss="modal")
+              .modal-body
+                form#advancedSearchForm
+                  .row
+                    .col-md-6
+                      .mb-3
+                        label.form-label(for="search-query") Search Query
+                        input.form-control#search-query(type="text" placeholder="Enter search terms...")
+                    .col-md-6
+                      .mb-3
+                        label.form-label(for="search-author") Author
+                        input.form-control#search-author(type="text" placeholder="Search by author...")
+                  .row
+                    .col-md-6
+                      .mb-3
+                        label.form-label(for="search-category") Category
+                        select.form-select#search-category
+                          option(value="") All Categories
+                          option(value="Recovery Support") Recovery Support
+                          option(value="General Discussion") General Discussion
+                          option(value="Success Stories") Success Stories
+                    .col-md-6
+                      .mb-3
+                        label.form-label(for="search-tags") Tags
+                        input.form-control#search-tags(type="text" placeholder="Enter tags separated by commas...")
+                  .row
+                    .col-md-6
+                      .mb-3
+                        label.form-label(for="search-date-from") From Date
+                        input.form-control#search-date-from(type="date")
+                    .col-md-6
+                      .mb-3
+                        label.form-label(for="search-date-to") To Date
+                        input.form-control#search-date-to(type="date")
+                  .mb-3
+                    .form-check
+                      input.form-check-input#search-featured(type="checkbox")
+                      label.form-check-label(for="search-featured") Featured posts only
+                    .form-check
+                      input.form-check-input#search-following(type="checkbox")
+                      label.form-check-label(for="search-following") Following users only
+              .modal-footer
+                button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+                button.btn.btn-primary#performAdvancedSearch(type="button") Search
+        
+        // Filter Panel
+        #filterPanel.card.mb-4(style="display: none;")
+          .card-header
+            h6.mb-0
+              i.bi.bi-funnel.me-2
+              | Filter Options
+          .card-body
+            .row
+              .col-md-3
+                .mb-3
+                  label.form-label(for="filter-reputation") Minimum Reputation
+                  select.form-select#filter-reputation
+                    option(value="") Any
+                    option(value="10") 10+
+                    option(value="50") 50+
+                    option(value="100") 100+
+                    option(value="500") 500+
+              .col-md-3
+                .mb-3
+                  label.form-label(for="filter-activity") Activity Level
+                  select.form-select#filter-activity
+                    option(value="") Any
+                    option(value="active") Active (last 7 days)
+                    option(value="recent") Recent (last 30 days)
+                    option(value="popular") Popular
+              .col-md-3
+                .mb-3
+                  label.form-label(for="filter-content") Content Type
+                  select.form-select#filter-content
+                    option(value="") Any
+                    option(value="text") Text Only
+                    option(value="media") With Media
+                    option(value="links") With Links
+              .col-md-3
+                .mb-3
+                  label.form-label(for="filter-sort") Sort By
+                  select.form-select#filter-sort
+                    option(value="newest") Newest
+                    option(value="oldest") Oldest
+                    option(value="popular") Most Popular
+                    option(value="discussed") Most Discussed
+        
+        // Enhanced Forum Statistics
+        .forum-stats.mb-4
+          .row.text-center
+            .col-md-2.col-6.mb-3
+              .stat-card
+                .stat-number#totalPosts 0
+                .stat-label Total Posts
+            .col-md-2.col-6.mb-3
+              .stat-card
+                .stat-number#totalUsers 0
+                .stat-label Active Users
+            .col-md-2.col-6.mb-3
+              .stat-card
+                .stat-number#totalComments 0
+                .stat-label Comments
+            .col-md-2.col-6.mb-3
+              .stat-card
+                .stat-number#successStories 0
+                .stat-label Success Stories
+            .col-md-2.col-6.mb-3
+              .stat-card
+                .stat-number#followingCount 0
+                .stat-label Following
+            .col-md-2.col-6.mb-3
+              .stat-card
+                .stat-number#bookmarksCount 0
+                .stat-label Bookmarks
+        
+        // Notifications Panel
+        #notificationsPanel.card.mb-4(style="display: none;")
+          .card-header.d-flex.justify-content-between.align-items-center
+            h6.mb-0
+              i.bi.bi-bell.me-2
+              | Notifications
+            button.btn.btn-sm.btn-outline-secondary#markAllReadBtn Mark All Read
+          .card-body
+            #notificationsList
+              .text-center.py-3
+                .spinner-border.text-primary(role="status")
+                  span.visually-hidden Loading notifications...
+        
+        // Featured Success Stories
+        .featured-stories.mb-4
+          h3.section-title
+            i.bi.bi-star-fill.text-warning.me-2
+            | Featured Success Stories
+          .row#featuredStories
+            // Featured stories will be loaded dynamically
+        
+        // Main Posts Container
+        .posts-section
+          h3.section-title
+            i.bi.bi-chat-dots.me-2
+            | Community Discussions
+          #posts-container
+            // Posts will be loaded dynamically
+        
+        // Load More Button
+        .text-center.mt-4
+          button.btn.btn-outline-primary#loadMoreBtn(type="button" style="display: none;")
+            i.bi.bi-arrow-down.me-2
+            | Load More Posts
+
+    // Enhanced New Post Modal
+    #newPostModal.modal.fade(tabindex="-1")
+      .modal-dialog.modal-xl
+        .modal-content
+          .modal-header
+            h5.modal-title
+              i.bi.bi-plus-circle.me-2
+              | Create New Post
+            button.btn-close(type="button" data-bs-dismiss="modal")
+          .modal-body
+            form#newPostForm
+              .row
+                .col-md-8
+                  .mb-3
+                    label.form-label(for="post-title") Post Title *
+                    input.form-control#post-title(type="text" required maxlength="200" placeholder="What would you like to discuss?")
+                
+                .col-md-4
+                  .mb-3
+                    label.form-label(for="post-category") Category *
+                    select.form-select#post-category(required)
+                      option(value="") Select Category
+                      option(value="General Discussion") General Discussion
+                      option(value="Recovery Support") Recovery Support
+                      option(value="Treatment & Resources") Treatment & Resources
+                      option(value="Family & Friends") Family & Friends
+                      option(value="Mental Health") Mental Health
+                      option(value="Employment & Housing") Employment & Housing
+                      option(value="Sober Activities") Sober Activities
+                      option(value="Success Stories") Success Stories
+              
+              .mb-3
+                label.form-label(for="post-tags") Tags (optional)
+                input.form-control#post-tags(type="text" placeholder="recovery, support, advice, spokane")
+                .form-text Separate tags with commas. Use @username to mention someone.
+              
+              .mb-3
+                label.form-label(for="post-content") Post Content *
+                // Rich text editor container
+                #post-content-editor(style="height: 300px;")
+                textarea.form-control#post-content(rows="8" required placeholder="Share your thoughts, experiences, questions, or success story..." style="display: none;")
+                .form-text Minimum 50 characters. Supports markdown formatting.
+              
+              .mb-3
+                .form-check
+                  input.form-check-input#post-anonymous(type="checkbox")
+                  label.form-check-label(for="post-anonymous") Post anonymously
+                
+                .form-check
+                  input.form-check-input#post-featured(type="checkbox")
+                  label.form-check-label(for="post-featured") Mark as success story (if applicable)
+                
+                .form-check
+                  input.form-check-input#post-pinned(type="checkbox")
+                  label.form-check-label(for="post-pinned") Pin to top (moderators only)
+              
+              .alert.alert-info
+                i.bi.bi-info-circle.me-2
+                strong Community Guidelines:
+                |  Be supportive, respectful, and mindful of others' privacy. Share experiences rather than medical advice. All posts are moderated.
+          
+          .modal-footer
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+            button.btn.btn-primary#submitPostBtn(type="submit") Create Post
+
+    // Enhanced Post Detail Modal
+    #postDetailModal.modal.fade(tabindex="-1")
+      .modal-dialog.modal-xl
+        .modal-content
+          .modal-header
+            h5.modal-title#postDetailTitle
+            button.btn-close(type="button" data-bs-dismiss="modal")
+          .modal-body
+            #postDetailContent
+              // Post content and comments will be loaded here
+          .modal-footer
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Close
+
+    // User Profile Quick View Modal
+    #userProfileModal.modal.fade(tabindex="-1")
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-header
+            h5.modal-title#userProfileTitle
+            button.btn-close(type="button" data-bs-dismiss="modal")
+          .modal-body
+            #userProfileContent
+              // User profile content will be loaded here
+          .modal-footer
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Close
+
+block scripts
+  script(src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js")
+  script(src="/js/community-forum-enhanced.js?v=20250822d")
+  script(src="/js/forum-enhanced.js?v=20250822d")
+  script.
+    // Initialize enhanced forum when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Quill editor
+      if (typeof Quill !== 'undefined') {
+        const quill = new Quill('#post-content-editor', {
+          theme: 'snow',
+          modules: {
+            toolbar: [
+              [{ 'header': [1, 2, 3, false] }],
+              ['bold', 'italic', 'underline', 'strike'],
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+              ['link', 'image'],
+              ['blockquote', 'code-block'],
+              ['clean']
+            ]
+          },
+          placeholder: 'Share your thoughts, experiences, questions, or success story...'
+        });
+        
+        // Sync with hidden textarea
+        quill.on('text-change', function() {
+          document.getElementById('post-content').value = quill.root.innerHTML;
+        });
+      }
+      
+      // Wire Create Post button to submit the form
+      const submitBtn = document.getElementById('submitPostBtn');
+      const form = document.getElementById('newPostForm');
+      if (submitBtn && form) {
+        submitBtn.addEventListener('click', function() {
+          if (typeof form.requestSubmit === 'function') {
+            form.requestSubmit();
+          } else {
+            form.submit();
+          }
+        });
+      }
+      
+      // Advanced search button
+      const advancedSearchBtn = document.getElementById('advancedSearchBtn');
+      const advancedSearchModal = document.getElementById('advancedSearchModal');
+      if (advancedSearchBtn && advancedSearchModal) {
+        advancedSearchBtn.addEventListener('click', function() {
+          const modal = new bootstrap.Modal(advancedSearchModal);
+          modal.show();
+        });
+      }
+      
+      // Filter panel toggle
+      const filterBtn = document.getElementById('filterBtn');
+      const filterPanel = document.getElementById('filterPanel');
+      if (filterBtn && filterPanel) {
+        filterBtn.addEventListener('click', function() {
+          filterPanel.style.display = filterPanel.style.display === 'none' ? 'block' : 'none';
+        });
+      }
+      
+      // Notifications button
+      const notificationsBtn = document.getElementById('notificationsBtn');
+      const notificationsPanel = document.getElementById('notificationsPanel');
+      if (notificationsBtn && notificationsPanel) {
+        notificationsBtn.addEventListener('click', function() {
+          notificationsPanel.style.display = notificationsPanel.style.display === 'none' ? 'block' : 'none';
+        });
+      }
+      
+      // Personalized feed button
+      const personalizedFeedBtn = document.getElementById('personalizedFeedBtn');
+      if (personalizedFeedBtn && window.forum) {
+        personalizedFeedBtn.addEventListener('click', function() {
+          window.forum.loadPersonalizedFeed();
+        });
+      }
+      
+      // Bookmarks button
+      const bookmarksBtn = document.getElementById('bookmarksBtn');
+      if (bookmarksBtn && window.forum) {
+        bookmarksBtn.addEventListener('click', function() {
+          window.forum.loadBookmarkedPosts();
+        });
+      }
+    });

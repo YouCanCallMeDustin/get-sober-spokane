@@ -140,12 +140,38 @@ html(lang="en")
                   a.dropdown-item(href="/map.html")
                     i.bi.bi-geo-alt.me-2
                     | Recovery Map
-            li.nav-item
-              a.nav-link(href="/donations.html") Donate
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Community
+              ul.dropdown-menu
+                li
+                  a.dropdown-item(href="/sponsor-finder.html")
+                    i.bi.bi-person-heart.me-2
+                    | Find a Sponsor
+                li
+                  a.dropdown-item(href="/chat.html")
+                    i.bi.bi-chat-dots.me-2
+                    | Live Chat
+                li
+                  a.dropdown-item(href="/community-forum.html")
+                    i.bi.bi-people.me-2
+                    | Forum
+            li.nav-item.dropdown
+              a.nav-link.dropdown-toggle(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") About Us
+              ul.dropdown-menu
+                li
+                  a.dropdown-item(href="/about-us.html")
+                    i.bi.bi-info-circle.me-2
+                    | About Us
+                li
+                  a.dropdown-item(href="/#contact")
+                    i.bi.bi-envelope.me-2
+                    | Contact
+                li
+                  a.dropdown-item(href="/donations.html")
+                    i.bi.bi-heart.me-2
+                    | Donate
             li.nav-item
               a.nav-link(href="/dashboard.html") Dashboard
-            li.nav-item
-              a.nav-link(href="/#contact") Contact
             // Auth navigation
             li.nav-item(data-auth="guest")
               a.nav-link#navbarLogin(href="/dashboard.html") Sign In

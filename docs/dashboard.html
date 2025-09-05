@@ -9,7 +9,7 @@
         <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Expires" content="0" />
-        <meta name="timestamp" content="1756691267218" />
+        <meta name="timestamp" content="1756691269000" />
         <!-- Force GitHub Pages refresh - Updated paths for proper routing-->
         <!-- Bootstrap Icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
@@ -17,7 +17,7 @@
         <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="/css/styles.css?v=1756691267218" rel="stylesheet" />
+        <link href="/css/styles.css?v=1756691269000" rel="stylesheet" />
         <style>
             /* Fix navigation text visibility */
             .navbar.navbar-light .navbar-nav .nav-link {
@@ -155,9 +155,53 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="/donations.html">Donate</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Community</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="/sponsor-finder.html">
+                                        <i class="bi bi-person-heart me-2"></i>
+                                        Find a Sponsor
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/chat.html">
+                                        <i class="bi bi-chat-dots me-2"></i>
+                                        Live Chat
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/community-forum.html">
+                                        <i class="bi bi-people me-2"></i>
+                                        Forum
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">About Us</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="/about-us.html">
+                                        <i class="bi bi-info-circle me-2"></i>
+                                        About Us
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/#contact">
+                                        <i class="bi bi-envelope me-2"></i>
+                                        Contact
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/donations.html">
+                                        <i class="bi bi-heart me-2"></i>
+                                        Donate
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
                         <!-- Auth navigation-->
                         <li class="nav-item" data-auth="guest"><a class="nav-link" id="navbarLogin" href="/dashboard.html">Sign In</a></li>
                         <li class="nav-item" data-auth="required" style="display: none"><a class="nav-link" id="navbarLogout" href="#">Sign Out</a></li>
@@ -220,23 +264,56 @@
                             <div class="col-lg-8 mb-4">
                                 <div class="dashboard-card recovery-card">
                                     <h3 class="card-title">Recovery Progress</h3>
-                                    <!-- Sobriety Counter Section-->
-                                    <div class="sobriety-section">
-                                        <h5 class="section-label">Sobriety Counter</h5>
-                                        <div class="sobriety-counter">
-                                            <div class="counter-display">
-                                                <span class="counter-number" id="sobrietyDays">0</span>
-                                                <span class="counter-label">days</span>
+                                    <!-- Interactive Progress Visualization-->
+                                    <div class="progress-visualization">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <!-- Sobriety Progress Ring-->
+                                                <div class="progress-ring-container">
+                                                    <h5 class="section-label">Sobriety Progress</h5>
+                                                    <div class="progress-ring-wrapper">
+                                                        <canvas id="sobrietyProgressRing" width="200" height="200"></canvas>
+                                                        <div class="progress-ring-overlay">
+                                                            <div class="progress-text">
+                                                                <span class="progress-number" id="progressRingDays">0</span>
+                                                                <span class="progress-label">days</span>
+                                                            </div>
+                                                            <div class="progress-subtitle">Sober & Strong</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Achievement Badges-->
+                                                <div class="achievement-badges">
+                                                    <h5 class="section-label">Recent Achievements</h5>
+                                                    <div class="badges-grid" id="achievementBadges"><!-- Badges will be populated dynamically--></div>
+                                                </div>
                                             </div>
-                                            <p class="counter-subtitle">Since your last drink or drug use</p>
+                                            <div class="col-md-6">
+                                                <!-- Sobriety Counter Section-->
+                                                <div class="sobriety-section">
+                                                    <h5 class="section-label">Sobriety Counter</h5>
+                                                    <div class="sobriety-counter">
+                                                        <div class="counter-display">
+                                                            <span class="counter-number" id="sobrietyDays">0</span>
+                                                            <span class="counter-label">days</span>
+                                                        </div>
+                                                        <p class="counter-subtitle">Since your last drink or drug use</p>
+                                                    </div>
+                                                    <!-- Sobriety Date Update-->
+                                                    <div class="sobriety-date-update">
+                                                        <label for="sobrietyDate">Update Sobriety Date:</label>
+                                                        <div class="date-input-group">
+                                                            <input class="form-control" id="sobrietyDate" type="date" name="sobrietyDate" />
+                                                            <button class="btn btn-primary" id="updateSobrietyDate">Update</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <!-- Sobriety Date Update-->
-                                        <div class="sobriety-date-update">
-                                            <label for="sobrietyDate">Update Sobriety Date:</label>
-                                            <div class="date-input-group">
-                                                <input class="form-control" id="sobrietyDate" type="date" name="sobrietyDate" />
-                                                <button class="btn btn-primary" id="updateSobrietyDate">Update</button>
-                                            </div>
+                                        <!-- Progress Timeline-->
+                                        <div class="progress-timeline">
+                                            <h5 class="section-label">Recovery Journey</h5>
+                                            <div class="timeline-container" id="progressTimeline"><!-- Timeline will be populated dynamically--></div>
                                         </div>
                                     </div>
                                     <!-- Recovery Milestones Section-->
@@ -247,9 +324,57 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Right Column - Quick Actions-->
+                            <!-- Right Column - Community Connections and Quick Actions-->
                             <div class="col-lg-4 mb-4">
-                                <div class="dashboard-card quick-actions-card">
+                                <!-- Community Connections-->
+                                <div class="dashboard-card connections-card">
+                                    <h3 class="card-title">Community Connections</h3>
+                                    <div class="connections-section">
+                                        <h5 class="section-label">My Connections</h5>
+                                        <div class="connections-list" id="connectionsList">
+                                            <!-- Connections will be loaded dynamically-->
+                                            <div class="connection-item placeholder" style="display: none">
+                                                <div class="connection-avatar"><i class="bi bi-person-circle"></i></div>
+                                                <div class="connection-info">
+                                                    <div class="connection-name">Loading...</div>
+                                                    <div class="connection-status">Loading connections...</div>
+                                                </div>
+                                                <div class="connection-actions"><button class="btn btn-sm btn-outline-primary" disabled>Loading</button></div>
+                                            </div>
+                                        </div>
+                                        <div class="no-connections text-center py-4" style="display: none">
+                                            <i class="bi bi-people text-muted" style="font-size: 2rem"></i>
+                                            <p class="text-muted mt-2">No connections yet</p>
+                                            <p class="small text-muted">Connect with sponsors and recovery friends</p>
+                                        </div>
+                                        <button class="btn btn-success btn-sm w-100 mt-2" id="addConnectionBtn">
+                                            <i class="bi bi-person-plus"></i>
+                                            Find Sponsor
+                                        </button>
+                                    </div>
+                                    <div class="challenges-section">
+                                        <h5 class="section-label">Active Challenges</h5>
+                                        <div class="challenges-list" id="challengesList">
+                                            <div class="challenge-item">
+                                                <div class="challenge-header">
+                                                    <h6>30-Day Sobriety Challenge</h6>
+                                                    <span class="challenge-participants">24 participants</span>
+                                                </div>
+                                                <div class="challenge-progress">
+                                                    <div class="progress"><div class="progress-bar" style="width: 65%"></div></div>
+                                                    <span class="progress-text">19/30 days</span>
+                                                </div>
+                                                <div class="challenge-actions"><button class="btn btn-sm btn-outline-success">View Details</button></div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline-primary btn-sm w-100 mt-2" id="joinChallengeBtn">
+                                            <i class="bi bi-trophy"></i>
+                                            Join Challenge
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Quick Actions-->
+                                <div class="dashboard-card quick-actions-card mt-3">
                                     <h3 class="card-title">Quick Actions</h3>
                                     <div class="quick-actions-list">
                                         <a class="quick-action-btn emergency-btn" href="/resource-directory.html#emergency-help">
@@ -268,6 +393,10 @@
                                             <div class="action-icon"><i class="bi bi-chat-dots"></i></div>
                                             <div class="action-text">Live Chat</div>
                                         </a>
+                                        <a class="quick-action-btn" href="/sponsor-finder.html">
+                                            <div class="action-icon"><i class="bi bi-person-heart"></i></div>
+                                            <div class="action-text">Find Sponsor</div>
+                                        </a>
                                         <a class="quick-action-btn" id="viewProfileLink" href="#" style="display: none">
                                             <div class="action-icon"><i class="bi bi-person"></i></div>
                                             <div class="action-text">View Profile</div>
@@ -277,6 +406,7 @@
                                             <div class="action-text">Support Our Mission</div>
                                         </a>
                                     </div>
+                                    <a class="btn btn-outline-success btn-sm w-100 mt-2" href="/community-engagement-sober-activities.html">View All Events</a>
                                 </div>
                             </div>
                         </div>
@@ -304,8 +434,8 @@
         <!-- Inject environment values for frontend consumption-->
         <script src="/env.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
-        <script src="/js/config.js?v=1756691267218"></script>
-        <script src="/js/auth.js?v=1756691267218"></script>
+        <script src="/js/config.js?v=1756691269000"></script>
+        <script src="/js/auth.js?v=1756691269000"></script>
         <!-- Initialize Bootstrap dropdowns for navigation-->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -360,10 +490,12 @@
                 }
             });
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             // Dashboard functionality with Supabase integration
             let supabase;
             let currentUser = null;
+            let sobrietyProgressChart = null;
 
             // Initialize dashboard
             document.addEventListener('DOMContentLoaded', async function () {
@@ -428,8 +560,14 @@
                         // Load milestones
                         await loadMilestones();
 
+                        // Load sponsor connections
+                        await loadSponsorConnections();
+
                         // Calculate sobriety days
                         calculateSobrietyDays();
+
+                        // Initialize progress visualization
+                        initializeProgressVisualization();
                     } else {
                         // User is not authenticated, show sign-in form
                         showSignInForm();
@@ -447,6 +585,11 @@
 
                 // Add milestone
                 document.getElementById('addMilestoneBtn').addEventListener('click', showAddMilestoneModal);
+
+                // Add connection button
+                document.getElementById('addConnectionBtn').addEventListener('click', function () {
+                    window.location.href = '/sponsor-finder.html';
+                });
 
                 // Sign-in form
                 document.getElementById('loginForm').addEventListener('submit', handleSignIn);
@@ -547,6 +690,130 @@
                 } catch (error) {
                     console.error('Failed to load milestones', error);
                 }
+            }
+
+            async function loadSponsorConnections() {
+                try {
+                    if (!supabase || !currentUser) return;
+
+                    console.log('Loading sponsor connections for user:', currentUser.id);
+
+                    // Attempt to fetch via server API first
+                    try {
+                        const response = await fetch(`/api/sponsor/relationships?user_id=${encodeURIComponent(currentUser.id)}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'x-user-id': currentUser.id,
+                            },
+                        });
+                        if (!response.ok) {
+                            const text = await response.text();
+                            console.warn('Sponsor relationships API response not ok:', response.status, text);
+                            throw new Error('api_failed');
+                        }
+                        const { relationships } = await response.json();
+                        console.log('Loaded relationships via API:', relationships);
+                        displaySponsorConnections(relationships || []);
+                        return;
+                    } catch (apiError) {
+                        console.warn('Falling back to direct Supabase query for relationships:', apiError);
+                    }
+
+                    // Fallback: query Supabase directly (works in static environments)
+                    const { data: relationships, error: sbError } = await supabase
+                        .from('sponsor_relationships')
+                        .select(
+                            `
+        *,
+        sponsor:sponsor_id(
+          profiles_consolidated(
+            display_name,
+            avatar_url
+          )
+        ),
+        sponsee:sponsee_id(
+          profiles_consolidated(
+            display_name,
+            avatar_url
+          )
+        )
+      `
+                        )
+                        .or(`sponsor_id.eq.${currentUser.id},sponsee_id.eq.${currentUser.id}`);
+
+                    if (sbError) {
+                        console.error('Supabase relationships query failed:', sbError);
+                        throw new Error('Failed to fetch sponsor connections');
+                    }
+
+                    console.log('Loaded relationships via Supabase:', relationships);
+                    displaySponsorConnections(relationships || []);
+                } catch (error) {
+                    console.error('Failed to load sponsor connections:', error);
+                    displaySponsorConnections([]);
+                }
+            }
+
+            function displaySponsorConnections(relationships) {
+                const connectionsList = document.getElementById('connectionsList');
+                const noConnections = document.querySelector('.no-connections');
+                const placeholder = document.querySelector('.connection-item.placeholder');
+
+                if (!connectionsList) return;
+
+                // Hide placeholder
+                if (placeholder) {
+                    placeholder.style.display = 'none';
+                }
+
+                if (relationships.length === 0) {
+                    // Show no connections message
+                    if (noConnections) {
+                        noConnections.style.display = 'block';
+                    }
+                    connectionsList.innerHTML = '';
+                    return;
+                }
+
+                // Hide no connections message
+                if (noConnections) {
+                    noConnections.style.display = 'none';
+                }
+
+                // Display relationships
+                connectionsList.innerHTML = relationships
+                    .map((relationship) => {
+                        const isSponsor = relationship.sponsor_id === currentUser.id;
+                        const otherPerson = isSponsor ? relationship.sponsee : relationship.sponsor;
+                        const relationshipType = isSponsor ? 'Sponsee' : 'Sponsor';
+
+                        return `
+      <div class="connection-item">
+        <div class="connection-avatar">
+          ${otherPerson?.profiles_consolidated?.avatar_url ? `<img src="${otherPerson.profiles_consolidated.avatar_url}" alt="${otherPerson.profiles_consolidated.display_name}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">` : `<i class="bi bi-person-circle"></i>`}
+        </div>
+        <div class="connection-info">
+          <div class="connection-name">${otherPerson?.profiles_consolidated?.display_name || 'Anonymous'} (${relationshipType})</div>
+          <div class="connection-status ${relationship.relationship_status === 'active' ? 'online' : ''}">
+            ${relationship.relationship_status === 'active' ? 'Active' : relationship.relationship_status}
+          </div>
+        </div>
+        <div class="connection-actions">
+          <button class="btn btn-sm btn-outline-primary" onclick="openChat('${otherPerson.id}')">
+            <i class="bi bi-chat-dots me-1"></i>
+            Message
+          </button>
+        </div>
+      </div>
+    `;
+                    })
+                    .join('');
+            }
+
+            function openChat(userId) {
+                // Navigate to chat with specific user
+                window.location.href = `/chat?user=${userId}`;
             }
 
             function displayMilestones(milestones) {
@@ -666,6 +933,7 @@
                 const sobrietyDate = document.getElementById('sobrietyDate').value;
                 if (!sobrietyDate) {
                     document.getElementById('sobrietyDays').textContent = '0';
+                    updateProgressVisualization();
                     return;
                 }
 
@@ -675,13 +943,25 @@
                 const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
                 document.getElementById('sobrietyDays').textContent = Math.max(0, daysDiff);
+
+                // Update progress visualization
+                updateProgressVisualization();
             }
 
-            function updateUserDisplay() {
+            async function updateUserDisplay() {
                 if (currentUser) {
-                    const metaName = currentUser.user_metadata?.full_name || currentUser.user_metadata?.display_name || currentUser.user_metadata?.name || currentUser.user_metadata?.user_name || 'Get Sober Spokane';
-                    const displayName = metaName;
-                    document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${displayName}!`;
+                    try {
+                        // Get the user's profile from database to get their custom display_name
+                        const { data: profile } = await supabase.from('forum_user_profiles').select('display_name').eq('user_id', currentUser.id).single();
+
+                        const displayName = profile?.display_name || currentUser.user_metadata?.full_name || currentUser.user_metadata?.display_name || currentUser.user_metadata?.name || currentUser.user_metadata?.user_name || 'Get Sober Spokane';
+                        document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${displayName}!`;
+                    } catch (error) {
+                        console.error('Error loading profile for display:', error);
+                        // Fallback to Google Auth data
+                        const metaName = currentUser.user_metadata?.full_name || currentUser.user_metadata?.display_name || currentUser.user_metadata?.name || currentUser.user_metadata?.user_name || 'Get Sober Spokane';
+                        document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${metaName}!`;
+                    }
                 }
             }
 
@@ -859,6 +1139,136 @@
                     }
                 }, 5000);
             }
+
+            // Progress Visualization Functions
+            function initializeProgressVisualization() {
+                createSobrietyProgressRing();
+                createAchievementBadges();
+                createProgressTimeline();
+            }
+
+            function createSobrietyProgressRing() {
+                const canvas = document.getElementById('sobrietyProgressRing');
+                if (!canvas) return;
+
+                const ctx = canvas.getContext('2d');
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = 80;
+
+                // Calculate progress percentage (assuming 365 days = 100%)
+                const sobrietyDays = parseInt(document.getElementById('sobrietyDays').textContent) || 0;
+                const progressPercentage = Math.min((sobrietyDays / 365) * 100, 100);
+
+                // Draw background circle
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.strokeStyle = '#e9ecef';
+                ctx.lineWidth = 12;
+                ctx.stroke();
+
+                // Draw progress arc
+                if (progressPercentage > 0) {
+                    const startAngle = -Math.PI / 2; // Start from top
+                    const endAngle = startAngle + (progressPercentage / 100) * 2 * Math.PI;
+
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+                    ctx.strokeStyle = getProgressColor(progressPercentage);
+                    ctx.lineWidth = 12;
+                    ctx.lineCap = 'round';
+                    ctx.stroke();
+                }
+
+                // Update overlay text
+                document.getElementById('progressRingDays').textContent = sobrietyDays;
+            }
+
+            function getProgressColor(percentage) {
+                if (percentage >= 80) return '#28a745'; // Green for high progress
+                if (percentage >= 60) return '#17a2b8'; // Blue for medium-high
+                if (percentage >= 40) return '#ffc107'; // Yellow for medium
+                if (percentage >= 20) return '#fd7e14'; // Orange for low-medium
+                return '#dc3545'; // Red for low progress
+            }
+
+            function createAchievementBadges() {
+                const badgesContainer = document.getElementById('achievementBadges');
+                if (!badgesContainer) return;
+
+                const sobrietyDays = parseInt(document.getElementById('sobrietyDays').textContent) || 0;
+                const badges = [];
+
+                // Define achievement milestones
+                if (sobrietyDays >= 1) badges.push({ name: 'First Step', icon: '🎯', color: '#28a745' });
+                if (sobrietyDays >= 7) badges.push({ name: 'Week Warrior', icon: '⭐', color: '#17a2b8' });
+                if (sobrietyDays >= 30) badges.push({ name: 'Month Master', icon: '🏆', color: '#ffc107' });
+                if (sobrietyDays >= 90) badges.push({ name: 'Quarter Champion', icon: '👑', color: '#fd7e14' });
+                if (sobrietyDays >= 180) badges.push({ name: 'Halfway Hero', icon: '💎', color: '#6f42c1' });
+                if (sobrietyDays >= 365) badges.push({ name: 'Year Legend', icon: '🌟', color: '#e83e8c' });
+
+                // Display badges
+                badgesContainer.innerHTML = badges
+                    .map(
+                        (badge) => `
+    <div class="achievement-badge" style="border-color: ${badge.color}">
+      <div class="badge-icon" style="color: ${badge.color}">${badge.icon}</div>
+      <div class="badge-name">${badge.name}</div>
+    </div>
+  `
+                    )
+                    .join('');
+            }
+
+            function createProgressTimeline() {
+                const timelineContainer = document.getElementById('progressTimeline');
+                if (!timelineContainer) return;
+
+                const sobrietyDays = parseInt(document.getElementById('sobrietyDays').textContent) || 0;
+                const milestones = [
+                    { days: 1, title: 'First Day', description: 'The journey begins' },
+                    { days: 7, title: 'One Week', description: 'Building new habits' },
+                    { days: 30, title: 'One Month', description: 'Establishing routine' },
+                    { days: 90, title: 'Three Months', description: 'Strong foundation' },
+                    { days: 180, title: 'Six Months', description: 'Halfway there' },
+                    { days: 365, title: 'One Year', description: 'Incredible achievement' },
+                ];
+
+                const timelineHTML = milestones
+                    .map((milestone) => {
+                        const isAchieved = sobrietyDays >= milestone.days;
+                        const isNext = sobrietyDays < milestone.days && sobrietyDays >= milestone.days - 30;
+
+                        return `
+      <div class="timeline-item ${isAchieved ? 'achieved' : ''} ${isNext ? 'next' : ''}">
+        <div class="timeline-marker">
+          <i class="bi ${isAchieved ? 'bi-check-circle-fill' : 'bi-circle'}"></i>
+        </div>
+        <div class="timeline-content">
+          <h6 class="timeline-title">${milestone.title}</h6>
+          <p class="timeline-description">${milestone.description}</p>
+          <div class="timeline-progress">
+            <div class="progress">
+              <div class="progress-bar" style="width: ${Math.min((sobrietyDays / milestone.days) * 100, 100)}%"></div>
+            </div>
+            <span class="progress-text">${sobrietyDays}/${milestone.days} days</span>
+          </div>
+        </div>
+      </div>
+    `;
+                    })
+                    .join('');
+
+                timelineContainer.innerHTML = timelineHTML;
+            }
+
+            // Update progress visualization when sobriety days change
+            function updateProgressVisualization() {
+                createSobrietyProgressRing();
+                createAchievementBadges();
+                createProgressTimeline();
+            }
+            ild;
         </script>
     </body>
 </html>

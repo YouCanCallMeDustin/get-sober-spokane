@@ -46,7 +46,9 @@ class UserController {
       const profile = {
         id: userId,
         // Google Auth data
-        name: googleAuthData.status === 'fulfilled' ? googleAuthData.value.name : 'Unknown User',
+        name: sobrietyData.status === 'fulfilled' && sobrietyData.value.display_name ? 
+              sobrietyData.value.display_name : 
+              (googleAuthData.status === 'fulfilled' ? googleAuthData.value.name : 'Unknown User'),
         email: googleAuthData.status === 'fulfilled' ? googleAuthData.value.email : 'No email available',
         avatar_url: googleAuthData.status === 'fulfilled' ? googleAuthData.value.avatar : null,
         memberSince: googleAuthData.status === 'fulfilled' ? googleAuthData.value.created_at : null,
@@ -133,19 +135,19 @@ class UserController {
       console.log('🔍 Debug - Supabase URL:', process.env.SUPABASE_URL);
       console.log('🔍 Debug - User ID being queried:', userId);
       
-      // Query the consolidated profiles table first
+      // Query the forum_user_profiles table first (matches frontend)
       let { data: sobrietyData, error } = await supabase
-        .from('profiles_consolidated')
-        .select('sobriety_date, bio, location, privacy_settings, avatar_url')
+        .from('forum_user_profiles')
+        .select('sobriety_date, bio, location, privacy_settings, avatar_url, display_name')
         .eq('user_id', userId)
         .single();
 
-      // If that fails, try the profiles view
+      // If that fails, try the consolidated profiles table
       if (error && error.code !== 'PGRST116') {
-        console.log('Trying profiles view as fallback...');
+        console.log('Trying profiles_consolidated table as fallback...');
         const fallbackResult = await supabase
-          .from('profiles')
-          .select('sobriety_date, bio, location, privacy_settings, avatar_url')
+          .from('profiles_consolidated')
+          .select('sobriety_date, bio, location, privacy_settings, avatar_url, display_name')
           .eq('user_id', userId)
           .single();
         
@@ -153,12 +155,12 @@ class UserController {
         error = fallbackResult.error;
       }
 
-      // If still no data, try the old user_profiles table as last resort
+      // If still no data, try the profiles view
       if (error && error.code !== 'PGRST116') {
-        console.log('Trying user_profiles table as last resort...');
+        console.log('Trying profiles view as last resort...');
         const lastResortResult = await supabase
-          .from('user_profiles')
-          .select('sobriety_date, bio, location, privacy_settings, avatar_url')
+          .from('profiles')
+          .select('sobriety_date, bio, location, privacy_settings, avatar_url, display_name')
           .eq('user_id', userId)
           .single();
         
@@ -206,7 +208,8 @@ class UserController {
         location: sobrietyData.location || 'Spokane, WA',
         milestones: milestones,
         privacy_settings: sobrietyData.privacy_settings || 'public',
-        avatar_url: sobrietyData.avatar_url || null
+        avatar_url: sobrietyData.avatar_url || null,
+        display_name: sobrietyData.display_name || null
       };
     } catch (error) {
       console.error('Error in getSobrietyData:', error);
@@ -374,31 +377,33 @@ class UserController {
    */
   async updateUserProfile(userId, updateData) {
     try {
-      // Try profiles_consolidated first
+      // Try forum_user_profiles first (matches frontend)
       let { data, error } = await supabase
-        .from('profiles_consolidated')
+        .from('forum_user_profiles')
         .upsert({
           user_id: userId,
           sobriety_date: updateData.sobriety_date,
           bio: updateData.bio,
           location: updateData.location,
           privacy_settings: updateData.privacy_settings,
+          display_name: updateData.display_name,
           updated_at: new Date().toISOString()
         })
         .select()
         .single();
 
-      // If that fails, try the profiles view
+      // If that fails, try profiles_consolidated
       if (error) {
-        console.log('Trying profiles view as fallback for update...');
+        console.log('Trying profiles_consolidated table as fallback for update...');
         const fallbackResult = await supabase
-          .from('profiles')
+          .from('profiles_consolidated')
           .upsert({
             user_id: userId,
             sobriety_date: updateData.sobriety_date,
             bio: updateData.bio,
             location: updateData.location,
             privacy_settings: updateData.privacy_settings,
+            display_name: updateData.display_name,
             updated_at: new Date().toISOString()
           })
           .select()
@@ -408,17 +413,18 @@ class UserController {
         error = fallbackResult.error;
       }
 
-      // If still fails, try the old user_profiles table as last resort
+      // If still fails, try the profiles view
       if (error) {
-        console.log('Trying user_profiles table as last resort for update...');
+        console.log('Trying profiles view as last resort for update...');
         const lastResortResult = await supabase
-          .from('user_profiles')
+          .from('profiles')
           .upsert({
             user_id: userId,
             sobriety_date: updateData.sobriety_date,
             bio: updateData.bio,
             location: updateData.location,
             privacy_settings: updateData.privacy_settings,
+            display_name: updateData.display_name,
             updated_at: new Date().toISOString()
           })
           .select()

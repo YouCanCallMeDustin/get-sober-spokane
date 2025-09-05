@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2025 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2025-09-03T04:14:18.959Z
+* Built: 2025-09-05T05:13:30.709Z
 */
 /*!
 * Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
@@ -182,6 +182,9 @@
       if (bioEl) {
         bioEl.textContent = profile?.bio || 'No bio available';
       }
+
+      // Check if user is a sponsor and show badge
+      await checkAndShowSponsorBadge(userId);
 
       // Update location
       const locationEl = document.querySelector('#userLocation');
@@ -803,5 +806,40 @@
       // Restore the original bio element
       editForm.parentNode.replaceChild(bioEl, editForm);
     });
+  }
+
+  // Check if user is a sponsor and show badge
+  async function checkAndShowSponsorBadge(userId) {
+    try {
+      console.log('checkAndShowSponsorBadge - Checking for user:', userId);
+      
+      // Check if user has a sponsor profile
+      const { data: sponsorProfile, error } = await supabaseClient
+        .from('sponsor_profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('is_verified_sponsor', true)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('checkAndShowSponsorBadge - Error checking sponsor profile:', error);
+        return;
+      }
+
+      const sponsorBadge = document.querySelector('#sponsorBadge');
+      if (sponsorBadge) {
+        if (sponsorProfile && sponsorProfile.is_verified_sponsor) {
+          console.log('checkAndShowSponsorBadge - User is a verified sponsor, showing badge');
+          sponsorBadge.style.display = 'inline-flex';
+        } else {
+          console.log('checkAndShowSponsorBadge - User is not a verified sponsor, hiding badge');
+          sponsorBadge.style.display = 'none';
+        }
+      } else {
+        console.log('checkAndShowSponsorBadge - Sponsor badge element not found');
+      }
+    } catch (err) {
+      console.error('checkAndShowSponsorBadge - Exception:', err);
+    }
   }
 })();

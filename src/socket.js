@@ -292,37 +292,53 @@ class ChatSocketHandler {
 
     async updateUserPresence(socketId, room, username, userId, isAnonymous, status = 'online') {
         try {
-            // First, get the room ID from the room name
-            const { data: roomData, error: roomError } = await this.supabase
-                .from('chat_rooms')
-                .select('id')
-                .eq('name', room)
-                .single();
-
-            if (roomError) {
-                console.error('Error fetching room ID:', roomError);
-                return;
-            }
-
             const presenceData = {
                 user_id: userId,
-                room_id: roomData.id,
+                room: room, // Use room name directly as per schema
                 username,
                 status,
                 socket_id: socketId,
+                is_anonymous: isAnonymous,
                 last_seen: new Date().toISOString()
             };
 
-            // Upsert presence record
-            const { error } = await this.supabase
-                .from('user_presence')
-                .upsert(presenceData, { 
-                    onConflict: 'user_id,room_id',
-                    ignoreDuplicates: false 
-                });
+            // For anonymous users, we need to handle the upsert differently since user_id is null
+            if (isAnonymous || !userId) {
+                // First, try to update existing record for this socket_id and room
+                const { data: existingRecord, error: updateError } = await this.supabase
+                    .from('user_presence')
+                    .update(presenceData)
+                    .eq('socket_id', socketId)
+                    .eq('room', room)
+                    .select()
+                    .single();
 
-            if (error) {
-                console.error('Error updating user presence:', error);
+                if (updateError && updateError.code !== 'PGRST116') {
+                    console.error('Error updating anonymous user presence:', updateError);
+                }
+
+                // If no record was updated, insert a new one
+                if (!existingRecord) {
+                    const { error: insertError } = await this.supabase
+                        .from('user_presence')
+                        .insert(presenceData);
+
+                    if (insertError) {
+                        console.error('Error inserting anonymous user presence:', insertError);
+                    }
+                }
+            } else {
+                // For authenticated users, use the normal upsert
+                const { error } = await this.supabase
+                    .from('user_presence')
+                    .upsert(presenceData, { 
+                        onConflict: 'user_id,room',
+                        ignoreDuplicates: false 
+                    });
+
+                if (error) {
+                    console.error('Error updating user presence:', error);
+                }
             }
         } catch (error) {
             console.error('Error in updateUserPresence:', error);
@@ -331,18 +347,6 @@ class ChatSocketHandler {
 
     async updateUserLastSeen(socketId, room) {
         try {
-            // Get the room ID from the room name
-            const { data: roomData, error: roomError } = await this.supabase
-                .from('chat_rooms')
-                .select('id')
-                .eq('name', room)
-                .single();
-
-            if (roomError) {
-                console.error('Error fetching room ID:', roomError);
-                return;
-            }
-
             const { error } = await this.supabase
                 .from('user_presence')
                 .update({ 
@@ -350,7 +354,7 @@ class ChatSocketHandler {
                     status: 'online'
                 })
                 .eq('socket_id', socketId)
-                .eq('room_id', roomData.id);
+                .eq('room', room);
 
             if (error) {
                 console.error('Error updating last seen:', error);
@@ -362,6 +366,7 @@ class ChatSocketHandler {
 
     async getRoomMessages(room, limit = 50) {
         try {
+            // Get messages
             const { data: messages, error: messagesError } = await this.supabase
                 .from('messages')
                 .select('*')
@@ -374,16 +379,53 @@ class ChatSocketHandler {
                 return [];
             }
 
+            // Get usernames for each message by looking up user presence
+            const messagesWithUsernames = await Promise.all(
+                messages.map(async (msg) => {
+                    let username = 'Anonymous';
+                    let isAnonymous = true;
+
+                    if (msg.user_id) {
+                        // Try to get username from user presence table
+                        const { data: presence } = await this.supabase
+                            .from('user_presence')
+                            .select('username, is_anonymous')
+                            .eq('user_id', msg.user_id)
+                            .eq('room', room)
+                            .single();
+
+                        if (presence) {
+                            username = presence.username;
+                            isAnonymous = presence.is_anonymous;
+                        } else {
+                            // Fallback: try to get from forum_user_profiles (this has the actual user data)
+                            const { data: profile } = await this.supabase
+                                .from('forum_user_profiles')
+                                .select('display_name')
+                                .eq('user_id', msg.user_id)
+                                .single();
+
+                            if (profile?.display_name) {
+                                username = profile.display_name;
+                                isAnonymous = false;
+                            }
+                        }
+                    }
+
+                    return {
+                        id: msg.id,
+                        content: msg.content,
+                        username,
+                        userId: msg.user_id,
+                        isAnonymous,
+                        messageType: 'text',
+                        timestamp: msg.timestamp
+                    };
+                })
+            );
+
             // Return messages in chronological order
-            return messages.reverse().map(msg => ({
-                id: msg.id,
-                content: msg.content,
-                username: msg.username || 'Anonymous',
-                userId: msg.user_id,
-                isAnonymous: !msg.user_id,
-                messageType: 'text',
-                timestamp: msg.timestamp
-            }));
+            return messagesWithUsernames.reverse();
 
         } catch (error) {
             console.error('Error in getRoomMessages:', error);
@@ -393,23 +435,11 @@ class ChatSocketHandler {
 
     async getOnlineUsers(room) {
         try {
-            // Get the room ID from the room name
-            const { data: roomData, error: roomError } = await this.supabase
-                .from('chat_rooms')
-                .select('id')
-                .eq('name', room)
-                .single();
-
-            if (roomError) {
-                console.error('Error fetching room ID:', roomError);
-                return [];
-            }
-
             // Get online users for the room
             const { data: onlineUsers, error } = await this.supabase
                 .from('user_presence')
                 .select('username, user_id, status')
-                .eq('room_id', roomData.id)
+                .eq('room', room)
                 .eq('status', 'online')
                 .order('username');
 

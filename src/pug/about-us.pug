@@ -1,0 +1,272 @@
+extends layout
+
+block head
+  title About Us - Get Sober Spokane Community
+  meta(name="description" content="Learn about Get Sober Spokane's mission to build a supportive community for individuals in recovery. Founded during recovery at UGM, we're dedicated to helping others on their sobriety journey.")
+  meta(name="keywords" content="about us, recovery community, sobriety support, addiction recovery, Spokane recovery, UGM, community building")
+  style.
+    .about-us-container {
+      padding-top: 100px;
+    }
+    
+    .about-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 80px 0;
+      margin-bottom: 60px;
+    }
+    
+    .about-hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .about-hero-subtitle {
+      font-size: 1.25rem;
+      opacity: 0.9;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+    
+    .mission-card, .offer-card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid #f0f0f0;
+    }
+    
+    .offer-icon {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 60px;
+      margin-bottom: 1rem;
+    }
+    
+    .mission-card:hover, .offer-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    
+    .mission-title, .offer-title {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+    
+    .mission-text, .offer-text {
+      color: #666;
+      line-height: 1.6;
+    }
+    
+    .about-image, .impact-image {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+    }
+    
+    .about-image img, .impact-image img {
+      transition: transform 0.3s ease;
+    }
+    
+    .about-image:hover img, .impact-image:hover img {
+      transform: scale(1.05);
+    }
+    
+    .cta-section {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 20px;
+      margin: 60px 0;
+    }
+    
+    .cta-title {
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .cta-text {
+      font-size: 1.1rem;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .impact-stat {
+      padding: 1rem;
+    }
+    
+    .stat-number {
+      display: block;
+      font-weight: 700;
+    }
+    
+    .stat-label {
+      color: #666;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    @media (max-width: 768px) {
+      .about-hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .cta-title {
+        font-size: 2rem;
+      }
+    }
+
+block content
+  .about-us-container
+    // Hero Banner Section
+    .about-hero
+      .container
+        .row.justify-content-center.text-center
+          .col-lg-8
+            h1.about-hero-title About Get Sober Spokane
+            p.about-hero-subtitle Building a community of hope, support, and lasting recovery
+    
+    // Main Content
+    .about-content
+      .container
+        // Our Story Section
+        .our-story.mb-5
+          .row.align-items-center
+            .col-lg-6
+              h2.section-title
+                i.bi.bi-heart-fill.text-primary.me-2
+                | Our Story
+              p.lead.text-muted
+                | Get Sober Spokane was born from a personal journey of recovery and a deep desire to help others find their path to sobriety.
+              p
+                | During my time in the recovery program at the Union Gospel Mission (UGM), I experienced firsthand the transformative power of community support and the importance of having resources readily available during the recovery process. It was during this period of healing and growth that the vision for Get Sober Spokane took shape.
+              p
+                | In my free time, I began building this website with a simple yet powerful mission: to create a comprehensive digital community where sober-minded individuals could connect, find resources, and support each other on their journey to lasting recovery.
+              p
+                | What started as a personal project has grown into a vital resource for the Spokane recovery community, providing access to treatment options, support groups, housing resources, employment opportunities, and most importantly, a network of people who understand the challenges and triumphs of the recovery journey.
+            .col-lg-6
+              .about-image
+                img.img-fluid.rounded.shadow(src="/assets/img/portfolio/thumbnails/1.jpg" alt="Recovery community support" loading="lazy")
+        
+        // Mission & Values Section
+        .mission-values.mb-5
+          .row
+            .col-lg-4.mb-4
+              .mission-card.text-center.h-100
+                .mission-icon.mb-3
+                  i.bi.bi-people-fill.text-primary(style="font-size: 3rem;")
+                h4.mission-title Community First
+                p.mission-text
+                  | We believe that recovery happens in community. Our platform connects individuals with peers, sponsors, and support networks that understand the journey.
+            .col-lg-4.mb-4
+              .mission-card.text-center.h-100
+                .mission-icon.mb-3
+                  i.bi.bi-heart-pulse-fill.text-primary(style="font-size: 3rem;")
+                h4.mission-title Holistic Support
+                p.mission-text
+                  | Recovery encompasses all aspects of life. We provide resources for treatment, housing, employment, mental health, and community engagement.
+            .col-lg-4.mb-4
+              .mission-card.text-center.h-100
+                .mission-icon.mb-3
+                  i.bi.bi-shield-fill.text-primary(style="font-size: 3rem;")
+                h4.mission-title Safe & Confidential
+                p.mission-text
+                  | Your privacy and safety are our top priorities. We maintain strict confidentiality and provide a secure environment for sharing and growth.
+        
+        // What We Offer Section
+        .what-we-offer.mb-5
+          h2.section-title.text-center.mb-4
+            i.bi.bi-list-check.me-2
+            | What We Offer
+          .row
+            .col-md-6.col-lg-3.mb-4
+              .offer-card.text-center
+                .offer-icon.mb-3
+                  i.bi.bi-geo-alt-fill.text-success(style="font-size: 2.5rem;")
+                h5.offer-title Resource Directory
+                p.offer-text
+                  | Comprehensive directory of local treatment centers, support groups, and recovery resources in Spokane.
+            .col-md-6.col-lg-3.mb-4
+              .offer-card.text-center
+                .offer-icon.mb-3
+                  i.bi.bi-chat-dots-fill.text-success(style="font-size: 2.5rem;")
+                h5.offer-title Sponsor Matching
+                p.offer-text
+                  | Connect with experienced sponsors who can provide guidance and support throughout your recovery journey.
+            .col-md-6.col-lg-3.mb-4
+              .offer-card.text-center
+                .offer-icon.mb-3
+                  i.bi.bi-chat-square-dots-fill.text-success(style="font-size: 2.5rem;")
+                h5.offer-title Live Chat Support
+                p.offer-text
+                  | 24/7 chat support with trained volunteers and peers who understand what you're going through. Get instant help when you need it most.
+            .col-md-6.col-lg-3.mb-4
+              .offer-card.text-center
+                .offer-icon.mb-3
+                  i.bi.bi-calendar-check-fill.text-success(style="font-size: 2.5rem;")
+                h5.offer-title Milestone Tracking
+                p.offer-text
+                  | Celebrate your recovery milestones and track your progress with our built-in sobriety counter and achievement system.
+        
+        // Community Impact Section
+        .community-impact.mb-5
+          .row.align-items-center
+            .col-lg-6
+              .impact-image
+                img.img-fluid.rounded.shadow(src="/assets/img/portfolio/thumbnails/2.jpg" alt="Community impact and support" loading="lazy")
+            .col-lg-6
+              h2.section-title
+                i.bi.bi-graph-up-arrow.text-primary.me-2
+                | Our Impact
+              p.lead.text-muted
+                | Since our founding, Get Sober Spokane has become a cornerstone of the local recovery community.
+              .impact-stats
+                .row.text-center
+                  .col-6.mb-3
+                    .impact-stat
+                      .stat-number.text-primary(style="font-size: 2.5rem; font-weight: bold;") 500+
+                      .stat-label Lives Connected
+                  .col-6.mb-3
+                    .impact-stat
+                      .stat-number.text-primary(style="font-size: 2.5rem; font-weight: bold;") 50+
+                      .stat-label Resources Listed
+                  .col-6.mb-3
+                    .impact-stat
+                      .stat-number.text-primary(style="font-size: 2.5rem; font-weight: bold;") 24/7
+                      .stat-label Support Available
+                  .col-6.mb-3
+                    .impact-stat
+                      .stat-number.text-primary(style="font-size: 2.5rem; font-weight: bold;") 100%
+                      .stat-label Free Access
+        
+        // Call to Action Section
+        .cta-section.text-center.py-5
+          .container
+            h2.cta-title.mb-3
+              i.bi.bi-arrow-right-circle-fill.text-primary.me-2
+              | Join Our Community Today
+            p.cta-text.mb-4
+              | Whether you're just beginning your recovery journey or have years of sobriety under your belt, 
+              | Get Sober Spokane is here to support you every step of the way.
+            .cta-buttons
+              a.btn.btn-primary.btn-lg.me-3(href="/dashboard.html")
+                i.bi.bi-person-plus.me-2
+                | Join Community
+              a.btn.btn-outline-primary.btn-lg(href="/resource-directory.html")
+                i.bi.bi-list-ul.me-2
+                | Browse Resources
+

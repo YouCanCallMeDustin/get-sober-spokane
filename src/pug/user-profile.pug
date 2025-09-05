@@ -4,6 +4,48 @@ block head
   title= title || 'User Profile - Get Sober Spokane Community'
   meta(name="description" content="View user profiles, sobriety milestones, and community contributions in the Sober Spokane recovery community.")
   meta(name="keywords" content="user profile, sobriety milestones, recovery achievements, community member")
+  style.
+    .sponsor-badge {
+      background: linear-gradient(45deg, #ffd700, #ffed4e);
+      color: #333;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+      border: 3px solid #ffd700;
+      animation: sponsorGlow 2s ease-in-out infinite alternate;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @keyframes sponsorGlow {
+      from {
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+      }
+      to {
+        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+      }
+    }
+    
+    .sponsor-badge i {
+      color: #ff6b35;
+      font-size: 1.3rem;
+      margin-right: 8px;
+      animation: starPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes starPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    .sponsor-badge span {
+      font-weight: 800;
+    }
 
 block content
   .profile-container
@@ -31,6 +73,10 @@ block content
                 img#userAvatar(src=user && user.avatar_url ? user.avatar_url : "/assets/img/logo.png" alt="User Avatar")
               .profile-details
                 h1#userDisplayName= user ? user.name : 'User Profile'
+                // Sponsor Badge - will be shown if user is a sponsor
+                .sponsor-badge#sponsorBadge(style="display: none;")
+                  i.bi.bi-star-fill.me-2
+                  span Verified Sponsor
                 .d-flex.align-items-center.mb-2
                   p#userBio.profile-bio.mb-0= user && user.bio ? user.bio : 'No bio available'
                 .profile-stats

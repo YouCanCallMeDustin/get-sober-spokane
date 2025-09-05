@@ -1,5 +1,6 @@
 // Enhanced Community Forum with Supabase Integration
 // src/js/community-forum-enhanced.js
+// Version: 20250822g - Fixed comment insertion without name field
 
 class CommunityForum {
     constructor() {
@@ -880,12 +881,27 @@ class CommunityForum {
         }
         
         try {
+            // Debug: Check current user state
+            console.log('handleNewComment: Current user state:', {
+                hasCurrentUser: !!this.currentUser,
+                userId: this.currentUser?.id,
+                userEmail: this.currentUser?.email,
+                userMetadata: this.currentUser?.user_metadata
+            });
+            
+            if (!this.currentUser) {
+                this.showNotification('Please sign in to add comments', 'warning');
+                return;
+            }
+            
             const newComment = {
                 post_id: postId,
                 user_id: this.currentUser.id,
                 content: content,
                 created_at: new Date().toISOString()
             };
+            
+            console.log('handleNewComment: Attempting to insert comment:', newComment);
             
             // Save to Supabase
             if (this.supabase) {
@@ -895,8 +911,30 @@ class CommunityForum {
                     .select()
                     .single();
                 
-                if (error) throw error;
-                newComment.id = data.id;
+                if (error) {
+                    console.error('Comment insertion error:', error);
+                    // If it's a column error, try without the name field
+                    if (error.code === '42703' && error.message.includes('column "name" does not exist')) {
+                        console.log('Retrying comment insertion without name field...');
+                        const { data: retryData, error: retryError } = await this.supabase
+                            .from('forum_comments')
+                            .insert([{
+                                post_id: postId,
+                                user_id: this.currentUser.id,
+                                content: content,
+                                created_at: new Date().toISOString()
+                            }])
+                            .select()
+                            .single();
+                        
+                        if (retryError) throw retryError;
+                        newComment.id = retryData.id;
+                    } else {
+                        throw error;
+                    }
+                } else {
+                    newComment.id = data.id;
+                }
             }
             
             // Add to local data

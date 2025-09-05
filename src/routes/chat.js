@@ -30,12 +30,19 @@ router.get('/', async (req, res) => {
         
         // First check Express session (this is where your login is stored)
         if (req.session.user) {
+            // Get the user's profile from forum_user_profiles table (this has the actual user data)
+            const { data: profile } = await supabase
+                .from('forum_user_profiles')
+                .select('display_name, avatar_url, bio, location')
+                .eq('user_id', req.session.user.id)
+                .single();
+            
             currentUser = {
                 id: req.session.user.id,
                 email: req.session.user.email,
-                username: req.session.user.display_name || req.session.user.username || req.session.user.email?.split('@')[0] || 'Anonymous',
-                display_name: req.session.user.display_name || req.session.user.username,
-                avatar_url: req.session.user.avatar_url,
+                username: profile?.display_name || req.session.user.display_name || req.session.user.username || req.session.user.email?.split('@')[0] || 'Anonymous',
+                display_name: profile?.display_name || req.session.user.display_name || req.session.user.username,
+                avatar_url: profile?.avatar_url || req.session.user.avatar_url,
                 isAnonymous: false
             };
             console.log('✅ User found in session:', currentUser.username);

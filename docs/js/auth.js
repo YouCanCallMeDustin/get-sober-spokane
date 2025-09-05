@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2025 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2025-09-03T04:14:18.959Z
+* Built: 2025-09-05T05:13:30.709Z
 */
 // Authentication JavaScript
 class AuthManager {
@@ -147,7 +147,21 @@ class AuthManager {
   async syncForumProfile(user) {
     try {
       if (!this.supabase) return;
-      const displayName = user.user_metadata?.full_name || user.user_metadata?.display_name || user.user_metadata?.name || user.email;
+      
+      // Check if user already has a profile with a custom display_name
+      const { data: existingProfile } = await this.supabase
+        .from('forum_user_profiles')
+        .select('display_name')
+        .eq('user_id', user.id)
+        .single();
+      
+      // Only set display_name from Google Auth if user hasn't set a custom one
+      const displayName = existingProfile?.display_name || 
+                         user.user_metadata?.full_name || 
+                         user.user_metadata?.display_name || 
+                         user.user_metadata?.name || 
+                         user.email;
+      
       const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
       const { error } = await this.supabase
         .from('forum_user_profiles')

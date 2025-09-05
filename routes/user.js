@@ -148,7 +148,7 @@ router.get('/:id/edit', async (req, res) => {
 router.post('/:id/edit', profileUpdateLimiter, async (req, res) => {
   try {
     const { id } = req.params;
-    const { sobriety_date, bio, location, privacy_settings } = req.body;
+    const { sobriety_date, bio, location, privacy_settings, display_name } = req.body;
     
     // Validate required fields
     if (!sobriety_date) {
@@ -183,7 +183,8 @@ router.post('/:id/edit', profileUpdateLimiter, async (req, res) => {
       sobriety_date,
       bio: bio || null,
       location: location || 'Spokane, WA',
-      privacy_settings: privacy_settings || 'public'
+      privacy_settings: privacy_settings || 'public',
+      display_name: display_name || null
     };
 
     await userController.updateUserProfile(id, updateData);

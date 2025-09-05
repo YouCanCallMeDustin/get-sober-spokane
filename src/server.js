@@ -35,18 +35,28 @@ app.use(morgan('combined'));
 // Cache busting middleware
 app.use(cacheBuster);
 
-// Serve static files with proper MIME types
-app.use(express.static(path.join(__dirname, '..', 'docs'), {
-  etag: false,
-  lastModified: false,
-  setHeaders: (res, path) => {
-    if (process.env.NODE_ENV !== 'production') {
-      res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-      res.set('Pragma', 'no-cache');
-      res.set('Expires', '0');
-    }
+// Custom static file handler that excludes dynamic routes
+app.use((req, res, next) => {
+  // List of routes that should be handled by dynamic routes, not static files
+  const dynamicRoutes = ['/chat', '/login', '/signup', '/reset', '/dashboard', '/user-profile'];
+  
+  if (dynamicRoutes.includes(req.path) || req.path.startsWith('/chat/')) {
+    return next(); // Skip static file serving for dynamic routes
   }
-}));
+  
+  // For other requests, try to serve static files
+  express.static(path.join(__dirname, '..', 'docs'), {
+    etag: false,
+    lastModified: false,
+    setHeaders: (res, path) => {
+      if (process.env.NODE_ENV !== 'production') {
+        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
+      }
+    }
+  })(req, res, next);
+});
 
 // Serve CSS files with correct MIME type and cache busting
 app.use('/css', (req, res, next) => {
@@ -373,11 +383,27 @@ app.get('/auth/google/callback', async (req, res) => {
       return res.redirect('/login?error=' + encodeURIComponent(error.message));
     }
 
+    // Check if user has a custom display_name in the database
+    let displayName = data.user.user_metadata?.full_name || 'User';
+    try {
+      const { data: profile } = await supabase
+        .from('forum_user_profiles')
+        .select('display_name')
+        .eq('user_id', data.user.id)
+        .single();
+      
+      if (profile?.display_name) {
+        displayName = profile.display_name;
+      }
+    } catch (error) {
+      console.log('No custom display name found, using Google Auth name');
+    }
+
     // Set session
     req.session.user = {
       id: data.user.id,
       email: data.user.email,
-      displayName: data.user.user_metadata?.full_name || 'User'
+      displayName: displayName
     };
 
     res.redirect('/dashboard');
@@ -393,6 +419,10 @@ app.use('/user', userRoutes);
 // Chat routes
 const chatRoutes = require('./routes/chat');
 app.use('/chat', chatRoutes);
+
+// Sponsor routes
+const sponsorRoutes = require('../routes/sponsor');
+app.use('/api/sponsor', sponsorRoutes);
 
 // Error handling middleware (must be last)
 const errorHandler = require('../middleware/errorHandler');

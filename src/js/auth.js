@@ -141,7 +141,21 @@ class AuthManager {
   async syncForumProfile(user) {
     try {
       if (!this.supabase) return;
-      const displayName = user.user_metadata?.full_name || user.user_metadata?.display_name || user.user_metadata?.name || user.email;
+      
+      // Check if user already has a profile with a custom display_name
+      const { data: existingProfile } = await this.supabase
+        .from('forum_user_profiles')
+        .select('display_name')
+        .eq('user_id', user.id)
+        .single();
+      
+      // Only set display_name from Google Auth if user hasn't set a custom one
+      const displayName = existingProfile?.display_name || 
+                         user.user_metadata?.full_name || 
+                         user.user_metadata?.display_name || 
+                         user.user_metadata?.name || 
+                         user.email;
+      
       const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
       const { error } = await this.supabase
         .from('forum_user_profiles')

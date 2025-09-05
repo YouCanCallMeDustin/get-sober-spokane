@@ -21,6 +21,14 @@ class ChatClient {
         
         // Initialize room info for the default room
         this.updateRoomInfo();
+        
+        // Update room counts with real data
+        this.updateRoomCounts();
+        
+        // Set up periodic room count updates (every 30 seconds)
+        setInterval(() => {
+            this.updateRoomCounts();
+        }, 30000);
     }
 
     setupEventListeners() {
@@ -246,12 +254,14 @@ class ChatClient {
         console.log('User joined:', data);
         this.addSystemMessage(`${data.username} joined the chat`);
         this.updateOnlineUsersList();
+        this.updateRoomCounts(); // Update room counts when users join
     }
 
     handleUserLeft(data) {
         console.log('User left:', data);
         this.addSystemMessage(`${data.username} left the chat`);
         this.updateOnlineUsersList();
+        this.updateRoomCounts(); // Update room counts when users leave
     }
 
     handleUserTyping(data) {
@@ -287,6 +297,11 @@ class ChatClient {
         this.updateRoomInfo();
         
         this.joinRoom(roomName);
+        
+        // Update room counts after switching
+        setTimeout(() => {
+            this.updateRoomCounts();
+        }, 500);
     }
 
     updateRoomSelection(roomName) {
@@ -697,6 +712,52 @@ class ChatClient {
     playNotificationSound() {
         // Simple notification sound - you can enhance this with actual audio
         console.log('Playing notification sound');
+    }
+
+    // Update room counts with real data
+    async updateRoomCounts() {
+        try {
+            // Fetch room statistics from the API
+            const response = await fetch('/api/chat/stats');
+            if (!response.ok) {
+                throw new Error('Failed to fetch room stats');
+            }
+            
+            const data = await response.json();
+            
+            if (data.rooms && Array.isArray(data.rooms)) {
+                data.rooms.forEach(room => {
+                    // Map the room name from the API to the data-room attribute
+                    let roomKey = room.id;
+                    
+                    // Handle the case where room names might be different
+                    if (roomKey === 'general') {
+                        roomKey = 'general';
+                    } else if (roomKey === 'recovery') {
+                        roomKey = 'recovery';
+                    } else if (roomKey === 'crisis') {
+                        roomKey = 'crisis';
+                    } else if (roomKey === 'celebrations') {
+                        roomKey = 'celebrations';
+                    }
+                    
+                    const roomElement = document.querySelector(`[data-room="${roomKey}"]`);
+                    if (roomElement) {
+                        const countElement = roomElement.querySelector('.room-count');
+                        if (countElement) {
+                            // Show the actual number of users in the room
+                            countElement.textContent = room.userCount || 0;
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Error updating room counts:', error);
+            // Set all counts to 0 if there's an error
+            document.querySelectorAll('.room-count').forEach(countElement => {
+                countElement.textContent = '0';
+            });
+        }
     }
 }
 

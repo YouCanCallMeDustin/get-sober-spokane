@@ -1,0 +1,521 @@
+// Sponsor Finder Component Styles
+// ==========================================
+
+// Sponsor Hero Section
+.sponsor-hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 100px 0 60px;
+  margin-top: 76px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  h1 {
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    opacity: 0.9;
+  }
+
+  .btn {
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: none;
+    letter-spacing: 0.5px;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+  }
+}
+
+// Sponsor Cards
+.sponsor-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 30px;
+  overflow: hidden;
+  background: white;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  }
+
+  .card-body {
+    padding: 2rem;
+  }
+}
+
+// Sponsor Avatar
+.sponsor-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2rem;
+  margin: 0 auto 20px;
+  position: relative;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border-radius: 50%;
+    z-index: -1;
+  }
+}
+
+// Sponsor Badge
+.sponsor-badge {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+// Sponsor Stats
+.sponsor-stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
+
+  .stat-item {
+    text-align: center;
+    flex: 1;
+
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #667eea;
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+// Specialization Tags
+.sponsor-specializations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 15px 0;
+  justify-content: center;
+
+  .specialization-tag {
+    background: #e9ecef;
+    color: #495057;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #667eea;
+      color: white;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// Filter Section
+.filter-section {
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 15px;
+  margin-bottom: 40px;
+  border: 1px solid #e9ecef;
+
+  h3 {
+    color: #495057;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .filter-group {
+    margin-bottom: 20px;
+
+    .filter-label {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #495057;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-select {
+      border-radius: 8px;
+      border: 1px solid #ced4da;
+      transition: all 0.2s ease;
+
+      &:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+      }
+    }
+  }
+}
+
+// Sponsor Request Form
+.sponsor-request-form {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+  border: 1px solid #e9ecef;
+
+  h3 {
+    color: #495057;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .form-control,
+  .form-select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+  }
+
+  textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+  }
+}
+
+// Buttons
+.btn-sponsor-primary {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: none;
+  letter-spacing: 0.5px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    color: white;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.5);
+  }
+}
+
+.btn-sponsor-secondary {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: none;
+  letter-spacing: 0.5px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+    color: white;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+  }
+}
+
+// No Sponsors Message
+.no-sponsors {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6c757d;
+
+  i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    color: #dee2e6;
+  }
+
+  h4 {
+    color: #495057;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+// How It Works Section
+.how-it-works {
+  .sponsor-avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+
+  h5 {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  p {
+    color: #6c757d;
+    line-height: 1.6;
+  }
+}
+
+// Safety Guidelines
+.alert-info {
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+  border-left: 4px solid #17a2b8;
+
+  h5 {
+    color: #0c5460;
+    font-weight: 600;
+    margin-bottom: 15px;
+
+    i {
+      color: #17a2b8;
+    }
+  }
+
+  ul {
+    margin-bottom: 15px;
+
+    li {
+      margin-bottom: 8px;
+      color: #0c5460;
+    }
+  }
+
+  p {
+    margin-bottom: 0;
+    color: #0c5460;
+
+    strong {
+      color: #0c5460;
+    }
+
+    a {
+      color: #17a2b8;
+      font-weight: 600;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .sponsor-hero {
+    padding: 80px 0 40px;
+    text-align: center;
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .lead {
+      font-size: 1.1rem;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+
+  .sponsor-stats {
+    flex-direction: column;
+    gap: 15px;
+
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+
+      .stat-number {
+        font-size: 1.2rem;
+      }
+
+      .stat-label {
+        margin-top: 0;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .filter-section {
+    padding: 20px;
+
+    .row {
+      .col-md-3 {
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .sponsor-request-form {
+    padding: 20px;
+  }
+
+  .sponsor-card {
+    margin-bottom: 20px;
+
+    .card-body {
+      padding: 1.5rem;
+    }
+  }
+}
+
+// Loading States
+.sponsor-loading {
+  text-align: center;
+  padding: 40px;
+
+  .spinner-border {
+    color: #667eea;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  p {
+    margin-top: 15px;
+    color: #6c757d;
+  }
+}
+
+// Animation Classes
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Success/Error States
+.sponsor-success {
+  border-left: 4px solid #28a745;
+  background: #d4edda;
+  color: #155724;
+}
+
+.sponsor-error {
+  border-left: 4px solid #dc3545;
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.sponsor-warning {
+  border-left: 4px solid #ffc107;
+  background: #fff3cd;
+  color: #856404;
+}
