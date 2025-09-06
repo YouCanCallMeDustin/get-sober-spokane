@@ -44,7 +44,7 @@ This document explains how the chat room now integrates with user authentication
 - **UI Updates**: Dynamically updates chat interface based on auth status
 - **WebSocket Integration**: Sends profile data with chat messages
 
-### Backend (chat-server.js)
+### Backend (socket.js)
 - **User Profile Storage**: Stores user profile information with socket connections
 - **Message Enhancement**: Includes profile data in all chat messages
 - **Profile Updates**: Handles real-time profile updates

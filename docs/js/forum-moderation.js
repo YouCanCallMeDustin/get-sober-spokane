@@ -31,7 +31,7 @@ class ForumModeration {
         try {
             // Check if user has moderator role or is admin
             const { data, error } = await this.supabase
-                .from('forum_user_profiles')
+                .from('profiles_consolidated')
                 .select('custom_title, reputation')
                 .eq('user_id', this.currentUser.id)
                 .single();
@@ -421,7 +421,7 @@ class ForumModeration {
             // Load active users count (users active in last 7 days)
             const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
             const { count: activeUsersCount } = await this.supabase
-                .from('forum_user_profiles')
+                .from('profiles_consolidated')
                 .select('*', { count: 'exact', head: true })
                 .gte('last_active', weekAgo);
 

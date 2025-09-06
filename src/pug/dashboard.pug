@@ -304,11 +304,11 @@ block scripts
          
          // Update profile in Supabase
          const { error } = await supabase
-           .from('forum_user_profiles')
+           .from('profiles_consolidated')
            .upsert({
              user_id: currentUser.id,
              sobriety_date: sobrietyDate
-           });
+           }, { onConflict: 'user_id' });
          
          if (error) throw error;
          
@@ -328,7 +328,7 @@ block scripts
          console.log('Loading profile for user:', currentUser.id);
          
          const { data, error } = await supabase
-           .from('forum_user_profiles')
+           .from('profiles_consolidated')
            .select('*')
            .eq('user_id', currentUser.id)
            .single();
@@ -663,7 +663,7 @@ block scripts
         try {
           // Get the user's profile from database to get their custom display_name
           const { data: profile } = await supabase
-            .from('forum_user_profiles')
+            .from('profiles_consolidated')
             .select('display_name')
             .eq('user_id', currentUser.id)
             .single();

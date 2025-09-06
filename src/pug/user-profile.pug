@@ -70,7 +70,7 @@ block content
           .col-lg-8
             .profile-info
               .profile-avatar
-                img#userAvatar(src=user && user.avatar_url ? user.avatar_url : "/assets/img/logo.png" alt="User Avatar")
+                img#userAvatar(src="/assets/img/logo.png" alt="User Avatar" style="display: none;")
               .profile-details
                 h1#userDisplayName= user ? user.name : 'User Profile'
                 // Sponsor Badge - will be shown if user is a sponsor
@@ -231,7 +231,7 @@ block content
               .mb-3
                 label.form-label(for="edit-avatar") Profile Avatar
                 .d-flex.align-items-center.mb-2
-                  img#currentAvatar.me-3(src=user && user.avatar_url ? user.avatar_url : "/assets/img/logo.png" alt="Current Avatar" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover;")
+                  img#currentAvatar.me-3(src="/assets/img/logo.png" alt="Current Avatar" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover;")
                   .flex-grow-1
                     input.form-control#edit-avatar(type="file" name="avatar" accept="image/*")
                     small.text-muted Upload a new profile picture (JPG, PNG, GIF up to 5MB)

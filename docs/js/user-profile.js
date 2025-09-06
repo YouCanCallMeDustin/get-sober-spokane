@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2025 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2025-09-05T05:13:30.709Z
+* Built: 2025-09-06T01:03:56.712Z
 */
 /*!
 * Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
@@ -29,6 +29,53 @@
         });
       }
     });
+  }
+
+  // Debug function to test avatar loading
+  function debugAvatarLoading() {
+    console.log('=== Avatar Loading Debug ===');
+    console.log('Current user:', currentUser);
+    console.log('Viewing user ID:', viewingUserId);
+    console.log('Avatar element:', document.querySelector('#userAvatar'));
+    console.log('Avatar element src:', document.querySelector('#userAvatar')?.src);
+    console.log('Avatar element display:', document.querySelector('#userAvatar')?.style.display);
+    console.log('=== End Avatar Debug ===');
+  }
+
+  // Function to ensure Google profile picture is synced to database
+  async function ensureGoogleAvatarSynced() {
+    if (!currentUser || !supabaseClient) return;
+    
+    try {
+      // Check if profile exists and has avatar_url
+      const { data: profile } = await supabaseClient
+        .from('profiles_consolidated')
+        .select('avatar_url')
+        .eq('user_id', currentUser.id)
+        .single();
+      
+      // If no profile avatar but we have Google picture, sync it
+      if (!profile?.avatar_url && currentUser.user_metadata?.picture) {
+        console.log('Syncing Google profile picture to database...');
+        const { error } = await supabaseClient
+          .from('profiles_consolidated')
+          .upsert({
+            user_id: currentUser.id,
+            avatar_url: currentUser.user_metadata.picture,
+            last_active: new Date().toISOString()
+          }, { onConflict: 'user_id' });
+        
+        if (error) {
+          console.error('Error syncing Google avatar:', error);
+        } else {
+          console.log('Google profile picture synced successfully');
+          // Reload the profile to get the updated avatar
+          await renderProfile(currentUser.id);
+        }
+      }
+    } catch (error) {
+      console.error('Error in ensureGoogleAvatarSynced:', error);
+    }
   }
 
   document.addEventListener('DOMContentLoaded', async () => {
@@ -112,7 +159,7 @@
       console.log('renderProfile - Starting for user:', userId);
       
       const [{ data: profile }, postsCount, commentsCount, upvotesCount, { data: milestones }] = await Promise.all([
-        supabaseClient.from('forum_user_profiles').select('*').eq('user_id', userId).maybeSingle(),
+        supabaseClient.from('profiles_consolidated').select('*').eq('user_id', userId).maybeSingle(),
         supabaseClient.from('forum_posts').select('id', { count: 'exact', head: true }).eq('user_id', userId),
         supabaseClient.from('forum_comments').select('id', { count: 'exact', head: true }).eq('user_id', userId),
         supabaseClient.from('forum_post_votes').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('vote', 1),
@@ -134,17 +181,20 @@
       // Update avatar with improved fallback logic
       const avatarImg = document.querySelector('#userAvatar');
       if (avatarImg) {
-        // Priority: 1. Profile avatar_url, 2. Google picture, 3. Default logo
+        // Priority: 1. Profile avatar_url (from database), 2. Google picture from session, 3. Default logo
         const googlePic = currentUser?.user_metadata?.picture || currentUser?.user_metadata?.avatar_url || null;
         const profileAvatar = profile?.avatar_url;
         
+        console.log('Avatar loading - Current user:', currentUser);
+        console.log('Avatar loading - User metadata:', currentUser?.user_metadata);
+        console.log('Avatar loading - Profile data:', profile);
         console.log('Avatar loading - Profile avatar_url:', profileAvatar);
-        console.log('Avatar loading - Google picture:', googlePic);
+        console.log('Avatar loading - Google picture from session:', googlePic);
         
-        // Try profile avatar first, then Google picture, then default
+        // Try profile avatar first (this should contain the Google picture if it was synced), then Google picture from session, then default
         let src = profileAvatar || googlePic || '/assets/img/logo.png';
         
-        console.log('Avatar loading - Initial src:', src);
+        console.log('Avatar loading - Final src:', src);
         
         // Set up error handling before setting src
         avatarImg.onerror = function() {
@@ -165,16 +215,32 @@
             console.log('All avatars failed, using default logo');
             this.src = '/assets/img/logo.png';
           }
+          
+          // Show the avatar even if it failed to load
+          this.style.display = 'block';
         };
         
         // Set up success handler
         avatarImg.onload = function() {
           console.log('Avatar loaded successfully:', this.src);
+          // Show the avatar once it's loaded
+          this.style.display = 'block';
         };
         
         // Set the initial src
         avatarImg.src = src;
         avatarImg.alt = 'Avatar';
+        
+        // If no avatar URL is available, ensure we show the default logo
+        if (!profileAvatar && !googlePic) {
+          console.log('No avatar URL available, using default logo');
+          avatarImg.src = '/assets/img/logo.png';
+        }
+        
+        // Show the avatar immediately if it's a data URL (already loaded)
+        if (src.startsWith('data:')) {
+          avatarImg.style.display = 'block';
+        }
       }
 
       // Update bio
@@ -185,6 +251,12 @@
 
       // Check if user is a sponsor and show badge
       await checkAndShowSponsorBadge(userId);
+
+      // Debug avatar loading
+      debugAvatarLoading();
+
+      // Ensure Google avatar is synced if needed
+      await ensureGoogleAvatarSynced();
 
       // Update location
       const locationEl = document.querySelector('#userLocation');
@@ -327,7 +399,7 @@
     }
 
     // Load current profile values
-    const { data: profile } = await supabaseClient.from('forum_user_profiles').select('*').eq('user_id', viewingUserId).maybeSingle();
+    const { data: profile } = await supabaseClient.from('profiles_consolidated').select('*').eq('user_id', viewingUserId).maybeSingle();
     const displayNameInput = document.getElementById('edit-display-name');
     const bioInput = document.getElementById('edit-bio');
     const locationInput = document.getElementById('edit-location');
@@ -347,7 +419,9 @@
       sobrietyDateInput.value = profile?.sobriety_date || '';
     }
     if (avatarPrev) {
-      avatarPrev.src = profile?.avatar_url || '/assets/img/logo.png';
+      const avatarUrl = profile?.avatar_url || '/assets/img/logo.png';
+      avatarPrev.src = avatarUrl;
+      console.log('Updated edit modal avatar:', avatarUrl);
     }
 
     // Simple client-side square center crop for avatar
@@ -403,7 +477,7 @@
             updates.avatar_url = avatarDataUrl;
           }
 
-          const { error } = await supabaseClient.from('forum_user_profiles').upsert(updates);
+          const { error } = await supabaseClient.from('profiles_consolidated').upsert(updates, { onConflict: 'user_id' });
           if (error) throw error;
 
           // Update the profile display
@@ -784,10 +858,10 @@
     document.getElementById('saveBioBtn').addEventListener('click', async function() {
       const newBio = textarea.value.trim();
       try {
-        const { error } = await supabaseClient.from('forum_user_profiles').upsert({
+        const { error } = await supabaseClient.from('profiles_consolidated').upsert({
           user_id: viewingUserId,
           bio: newBio || null
-        });
+        }, { onConflict: 'user_id' });
         
         if (error) throw error;
         

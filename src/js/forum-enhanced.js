@@ -56,7 +56,7 @@ class EnhancedCommunityForum extends CommunityForum {
     async loadUserPreferences() {
         try {
             const { data, error } = await this.supabase
-                .from('forum_user_profiles')
+                .from('profiles_consolidated')
                 .select('notification_settings, privacy_settings')
                 .eq('user_id', this.currentUser.id)
                 .single();
@@ -480,7 +480,7 @@ class EnhancedCommunityForum extends CommunityForum {
         try {
             // Get user IDs for mentioned usernames
             const { data: users, error } = await this.supabase
-                .from('forum_user_profiles')
+                .from('profiles_consolidated')
                 .select('user_id, display_name')
                 .in('display_name', usernames);
 
@@ -665,7 +665,7 @@ class EnhancedCommunityForum extends CommunityForum {
     async updateNotificationSetting(setting, enabled) {
         try {
             const { error } = await this.supabase
-                .from('forum_user_profiles')
+                .from('profiles_consolidated')
                 .update({
                     notification_settings: {
                         ...this.notificationSettings,

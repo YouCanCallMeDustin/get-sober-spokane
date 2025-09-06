@@ -100,7 +100,7 @@ class CommunityForum {
         try {
             // Check if profile already exists
             const { data: existingProfile, error: checkError } = await this.supabase
-                .from('forum_user_profiles')
+                .from('profiles_consolidated')
                 .select('user_id, display_name')
                 .eq('user_id', this.currentUser.id)
                 .single();
@@ -132,7 +132,7 @@ class CommunityForum {
                 });
                 
                 const { error } = await this.supabase
-                    .from('forum_user_profiles')
+                    .from('profiles_consolidated')
                     .insert({
                         user_id: this.currentUser.id,
                         display_name: displayName,
@@ -222,7 +222,7 @@ class CommunityForum {
             
             // Load user profiles from our forum_user_profiles table
             const { data: users, error: usersError } = await this.supabase
-                .from('forum_user_profiles')
+                .from('profiles_consolidated')
                 .select('user_id, display_name, avatar_url, sobriety_date')
                 .limit(1000);
             

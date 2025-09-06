@@ -58,6 +58,11 @@ class ChatSocketHandler {
                 await this.handleLeaveRoom(socket, data);
             });
 
+            // Handle request for online users
+            socket.on('getOnlineUsers', async (data) => {
+                await this.handleGetOnlineUsers(socket, data);
+            });
+
             // Handle disconnection
             socket.on('disconnect', async () => {
                 await this.handleDisconnect(socket);
@@ -71,8 +76,9 @@ class ChatSocketHandler {
             const userId = user?.id || null;
             const username = user?.username || user?.display_name || 'Anonymous';
             const isAnonymous = !userId;
+            const provider = user?.provider || 'email';
 
-            console.log(`User ${username} joining room: ${room}`);
+            console.log(`User ${username} (${provider}) joining room: ${room}`);
 
             // Leave previous room if any
             if (this.users.get(socket.id)?.room) {
@@ -88,7 +94,8 @@ class ChatSocketHandler {
                 username,
                 room,
                 userProfile: user,
-                isAuthenticated: !!userId
+                isAuthenticated: !!userId,
+                provider: provider
             });
 
             // Get room info from database
@@ -103,7 +110,7 @@ class ChatSocketHandler {
             }
 
             // Update user presence in database
-            await this.updateUserPresence(socket.id, room, username, userId, isAnonymous);
+            await this.updateUserPresence(socket.id, room, username, userId, isAnonymous, 'online', provider);
 
             // Get recent messages for the room
             const messages = await this.getRoomMessages(room, 50);
@@ -238,7 +245,7 @@ class ChatSocketHandler {
                 }
                 
                 // Update user presence to offline
-                await this.updateUserPresence(socket.id, room, user.username, user.userProfile?.id, !user.isAuthenticated, 'offline');
+                await this.updateUserPresence(socket.id, room, user.username, user.userProfile?.id, !user.isAuthenticated, 'offline', user.provider);
                 
                 // Notify other users
                 socket.to(room).emit('userLeft', {
@@ -257,13 +264,28 @@ class ChatSocketHandler {
         }
     }
 
+    async handleGetOnlineUsers(socket, data) {
+        try {
+            const { room } = data;
+            const onlineUsers = await this.getOnlineUsers(room);
+            
+            // Send online users to the requesting socket
+            socket.emit('onlineUsers', onlineUsers);
+            
+            console.log(`Sent ${onlineUsers.length} online users to socket ${socket.id} for room ${room}`);
+        } catch (error) {
+            console.error('Error in handleGetOnlineUsers:', error);
+            socket.emit('onlineUsers', []);
+        }
+    }
+
     async handleDisconnect(socket) {
         try {
             const user = this.users.get(socket.id);
             
             if (user && user.room) {
                 // Update user presence to offline
-                await this.updateUserPresence(socket.id, user.room, user.username, user.userProfile?.id, !user.isAuthenticated, 'offline');
+                await this.updateUserPresence(socket.id, user.room, user.username, user.userProfile?.id, !user.isAuthenticated, 'offline', user.provider);
                 
                 // Remove user from room users list
                 if (this.roomUsers.has(user.room)) {
@@ -290,17 +312,19 @@ class ChatSocketHandler {
         }
     }
 
-    async updateUserPresence(socketId, room, username, userId, isAnonymous, status = 'online') {
+    async updateUserPresence(socketId, room, username, userId, isAnonymous, status = 'online', provider = 'email') {
         try {
             const presenceData = {
                 user_id: userId,
-                room: room, // Use room name directly as per schema
+                room: room,
                 username,
                 status,
                 socket_id: socketId,
                 is_anonymous: isAnonymous,
                 last_seen: new Date().toISOString()
             };
+
+            console.log('Updating user presence:', { socketId, room, username, userId, isAnonymous, status });
 
             // For anonymous users, we need to handle the upsert differently since user_id is null
             if (isAnonymous || !userId) {
@@ -325,19 +349,42 @@ class ChatSocketHandler {
 
                     if (insertError) {
                         console.error('Error inserting anonymous user presence:', insertError);
+                    } else {
+                        console.log('Successfully inserted anonymous user presence');
                     }
+                } else {
+                    console.log('Successfully updated anonymous user presence');
                 }
             } else {
-                // For authenticated users, use the normal upsert
-                const { error } = await this.supabase
+                // For authenticated users, first try to update by socket_id and room
+                const { data: existingRecord, error: updateError } = await this.supabase
                     .from('user_presence')
-                    .upsert(presenceData, { 
-                        onConflict: 'user_id,room',
-                        ignoreDuplicates: false 
-                    });
+                    .update(presenceData)
+                    .eq('socket_id', socketId)
+                    .eq('room', room)
+                    .select()
+                    .single();
 
-                if (error) {
-                    console.error('Error updating user presence:', error);
+                if (updateError && updateError.code !== 'PGRST116') {
+                    console.error('Error updating authenticated user presence:', updateError);
+                }
+
+                // If no record was updated, try upsert by user_id and room
+                if (!existingRecord) {
+                    const { error: upsertError } = await this.supabase
+                        .from('user_presence')
+                        .upsert(presenceData, { 
+                            onConflict: 'user_id,room',
+                            ignoreDuplicates: false 
+                        });
+
+                    if (upsertError) {
+                        console.error('Error upserting authenticated user presence:', upsertError);
+                    } else {
+                        console.log('Successfully upserted authenticated user presence');
+                    }
+                } else {
+                    console.log('Successfully updated authenticated user presence');
                 }
             }
         } catch (error) {
@@ -379,35 +426,39 @@ class ChatSocketHandler {
                 return [];
             }
 
-            // Get usernames for each message by looking up user presence
+            // Get usernames for each message by looking up user profiles
             const messagesWithUsernames = await Promise.all(
                 messages.map(async (msg) => {
                     let username = 'Anonymous';
                     let isAnonymous = true;
 
                     if (msg.user_id) {
-                        // Try to get username from user presence table
-                        const { data: presence } = await this.supabase
-                            .from('user_presence')
-                            .select('username, is_anonymous')
+                        // First try to get username from profiles_consolidated table
+                        const { data: profile } = await this.supabase
+                            .from('profiles_consolidated')
+                            .select('display_name, email')
                             .eq('user_id', msg.user_id)
-                            .eq('room', room)
                             .single();
 
-                        if (presence) {
-                            username = presence.username;
-                            isAnonymous = presence.is_anonymous;
+                        if (profile?.display_name) {
+                            username = profile.display_name;
+                            isAnonymous = false;
+                        } else if (profile?.email) {
+                            // Fallback to email if no display name
+                            username = profile.email.split('@')[0];
+                            isAnonymous = false;
                         } else {
-                            // Fallback: try to get from forum_user_profiles (this has the actual user data)
-                            const { data: profile } = await this.supabase
-                                .from('forum_user_profiles')
-                                .select('display_name')
+                            // Fallback: try to get from user presence table
+                            const { data: presence } = await this.supabase
+                                .from('user_presence')
+                                .select('username, is_anonymous')
                                 .eq('user_id', msg.user_id)
+                                .eq('room', room)
                                 .single();
 
-                            if (profile?.display_name) {
-                                username = profile.display_name;
-                                isAnonymous = false;
+                            if (presence) {
+                                username = presence.username;
+                                isAnonymous = presence.is_anonymous;
                             }
                         }
                     }
@@ -435,10 +486,12 @@ class ChatSocketHandler {
 
     async getOnlineUsers(room) {
         try {
+            console.log(`Fetching online users for room: ${room}`);
+            
             // Get online users for the room
             const { data: onlineUsers, error } = await this.supabase
                 .from('user_presence')
-                .select('username, user_id, status')
+                .select('username, user_id, status, socket_id, last_seen, is_anonymous')
                 .eq('room', room)
                 .eq('status', 'online')
                 .order('username');
@@ -448,10 +501,36 @@ class ChatSocketHandler {
                 return [];
             }
 
-            return onlineUsers.map(user => ({
-                id: user.user_id,
-                username: user.username
-            }));
+            console.log(`Found ${onlineUsers?.length || 0} online users in room ${room}:`, onlineUsers);
+
+            // For authenticated users, try to get better usernames from profiles_consolidated
+            const usersWithBetterNames = await Promise.all(
+                onlineUsers.map(async (user) => {
+                    let username = user.username;
+                    
+                    // If user is authenticated, try to get display name from profiles
+                    if (user.user_id && !user.is_anonymous) {
+                        const { data: profile } = await this.supabase
+                            .from('profiles_consolidated')
+                            .select('display_name, email')
+                            .eq('user_id', user.user_id)
+                            .single();
+
+                        if (profile?.display_name) {
+                            username = profile.display_name;
+                        } else if (profile?.email) {
+                            username = profile.email.split('@')[0];
+                        }
+                    }
+
+                    return {
+                        id: user.user_id,
+                        username: username
+                    };
+                })
+            );
+
+            return usersWithBetterNames;
 
         } catch (error) {
             console.error('Error in getOnlineUsers:', error);

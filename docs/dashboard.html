@@ -615,10 +615,13 @@
                     console.log('New sobriety date:', sobrietyDate);
 
                     // Update profile in Supabase
-                    const { error } = await supabase.from('forum_user_profiles').upsert({
-                        user_id: currentUser.id,
-                        sobriety_date: sobrietyDate,
-                    });
+                    const { error } = await supabase.from('profiles_consolidated').upsert(
+                        {
+                            user_id: currentUser.id,
+                            sobriety_date: sobrietyDate,
+                        },
+                        { onConflict: 'user_id' }
+                    );
 
                     if (error) throw error;
 
@@ -637,7 +640,7 @@
 
                     console.log('Loading profile for user:', currentUser.id);
 
-                    const { data, error } = await supabase.from('forum_user_profiles').select('*').eq('user_id', currentUser.id).single();
+                    const { data, error } = await supabase.from('profiles_consolidated').select('*').eq('user_id', currentUser.id).single();
 
                     if (error && error.code !== 'PGRST116') throw error;
 
@@ -952,7 +955,7 @@
                 if (currentUser) {
                     try {
                         // Get the user's profile from database to get their custom display_name
-                        const { data: profile } = await supabase.from('forum_user_profiles').select('display_name').eq('user_id', currentUser.id).single();
+                        const { data: profile } = await supabase.from('profiles_consolidated').select('display_name').eq('user_id', currentUser.id).single();
 
                         const displayName = profile?.display_name || currentUser.user_metadata?.full_name || currentUser.user_metadata?.display_name || currentUser.user_metadata?.name || currentUser.user_metadata?.user_name || 'Get Sober Spokane';
                         document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${displayName}!`;

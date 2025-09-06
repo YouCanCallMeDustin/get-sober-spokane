@@ -387,7 +387,7 @@ app.get('/auth/google/callback', async (req, res) => {
     let displayName = data.user.user_metadata?.full_name || 'User';
     try {
       const { data: profile } = await supabase
-        .from('forum_user_profiles')
+        .from('profiles_consolidated')
         .select('display_name')
         .eq('user_id', data.user.id)
         .single();
@@ -403,12 +403,39 @@ app.get('/auth/google/callback', async (req, res) => {
     req.session.user = {
       id: data.user.id,
       email: data.user.email,
-      displayName: displayName
+      displayName: displayName,
+      user_metadata: data.user.user_metadata,
+      app_metadata: data.user.app_metadata
     };
 
     res.redirect('/dashboard');
   } catch (error) {
     res.redirect('/login?error=' + encodeURIComponent('Authentication failed'));
+  }
+});
+
+// Session sync endpoint for client-side authentication
+app.post('/api/auth/sync-session', async (req, res) => {
+  try {
+    const { id, email, displayName, user_metadata, app_metadata } = req.body;
+    
+    if (!id || !email) {
+      return res.status(400).json({ error: 'Missing required user data' });
+    }
+
+    // Set session
+    req.session.user = {
+      id,
+      email,
+      displayName: displayName || email.split('@')[0],
+      user_metadata: user_metadata || {},
+      app_metadata: app_metadata || {}
+    };
+
+    res.json({ success: true, user: req.session.user });
+  } catch (error) {
+    console.error('Session sync error:', error);
+    res.status(500).json({ error: 'Failed to sync session' });
   }
 });
 
@@ -571,7 +598,7 @@ app.get('/api/dashboard/recent-activity', async (req, res) => {
     comments.forEach(comment => userIds.add(comment.user_id));
     
     const { data: profiles, error: profilesError } = await supabase
-      .from('forum_user_profiles')
+      .from('profiles_consolidated')
       .select('user_id, display_name, avatar_url')
       .in('user_id', Array.from(userIds));
     

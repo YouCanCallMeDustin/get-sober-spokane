@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Debug - Sober Spokane</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .debug-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .status.success { background-color: #d4edda; color: #155724; }
+        .status.error { background-color: #f8d7da; color: #721c24; }
+        .status.warning { background-color: #fff3cd; color: #856404; }
+        .status.info { background-color: #d1ecf1; color: #0c5460; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Authentication Debug Tool</h1>
+    <p>This tool helps debug Google authentication issues in the chat system.</p>
+
+    <div class="debug-section">
+        <h2>System Status</h2>
+        <div id="systemStatus">Checking...</div>
+    </div>
+
+    <div class="debug-section">
+        <h2>Authentication Status</h2>
+        <div id="authStatus">Checking...</div>
+        <button onclick="checkAuthStatus()">Refresh Auth Status</button>
+        <button onclick="testGoogleAuth()">Test Google Auth</button>
+    </div>
+
+    <div class="debug-section">
+        <h2>User Information</h2>
+        <div id="userInfo">No user data</div>
+    </div>
+
+    <div class="debug-section">
+        <h2>Console Logs</h2>
+        <div id="consoleLogs">No logs yet</div>
+        <button onclick="clearLogs()">Clear Logs</button>
+    </div>
+
+    <!-- Load the same scripts as the chat page -->
+    <script src="/env.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+
+    <script>
+        let logs = [];
+        
+        // Override console.log to capture logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        console.log = function(...args) {
+            logs.push({ type: 'log', message: args.join(' '), timestamp: new Date().toISOString() });
+            originalLog.apply(console, args);
+            updateConsoleLogs();
+        };
+        
+        console.error = function(...args) {
+            logs.push({ type: 'error', message: args.join(' '), timestamp: new Date().toISOString() });
+            originalError.apply(console, args);
+            updateConsoleLogs();
+        };
+        
+        console.warn = function(...args) {
+            logs.push({ type: 'warn', message: args.join(' '), timestamp: new Date().toISOString() });
+            originalWarn.apply(console, args);
+            updateConsoleLogs();
+        };
+
+        function updateConsoleLogs() {
+            const logsDiv = document.getElementById('consoleLogs');
+            logsDiv.innerHTML = logs.slice(-20).map(log => 
+                `<div class="status ${log.type}">[${log.timestamp}] ${log.message}</div>`
+            ).join('');
+        }
+
+        function clearLogs() {
+            logs = [];
+            updateConsoleLogs();
+        }
+
+        function checkSystemStatus() {
+            const statusDiv = document.getElementById('systemStatus');
+            const checks = [];
+
+            // Check if Supabase is loaded
+            if (typeof window.supabase !== 'undefined') {
+                checks.push('<div class="status success">✅ Supabase library loaded</div>');
+            } else {
+                checks.push('<div class="status error">❌ Supabase library not loaded</div>');
+            }
+
+            // Check if config is loaded
+            if (window.APP_CONFIG) {
+                checks.push('<div class="status success">✅ App config loaded</div>');
+            } else {
+                checks.push('<div class="status error">❌ App config not loaded</div>');
+            }
+
+            // Check if auth manager is loaded
+            if (window.authManager) {
+                checks.push('<div class="status success">✅ Auth manager loaded</div>');
+            } else {
+                checks.push('<div class="status error">❌ Auth manager not loaded</div>');
+            }
+
+            // Check environment variables
+            if (window.__ENV && window.__ENV.SUPABASE_URL) {
+                checks.push('<div class="status success">✅ Environment variables loaded</div>');
+            } else {
+                checks.push('<div class="status warning">⚠️ Environment variables not loaded</div>');
+            }
+
+            statusDiv.innerHTML = checks.join('');
+        }
+
+        async function checkAuthStatus() {
+            const authDiv = document.getElementById('authStatus');
+            const userDiv = document.getElementById('userInfo');
+
+            try {
+                if (!window.authManager) {
+                    authDiv.innerHTML = '<div class="status error">❌ Auth manager not available</div>';
+                    return;
+                }
+
+                const supabase = window.authManager.supabase;
+                if (!supabase) {
+                    authDiv.innerHTML = '<div class="status error">❌ Supabase client not available</div>';
+                    return;
+                }
+
+                const { data: { session }, error } = await supabase.auth.getSession();
+                
+                if (error) {
+                    authDiv.innerHTML = `<div class="status error">❌ Session error: ${error.message}</div>`;
+                    return;
+                }
+
+                if (session && session.user) {
+                    authDiv.innerHTML = '<div class="status success">✅ User is authenticated</div>';
+                    userDiv.innerHTML = `
+                        <pre>${JSON.stringify({
+                            id: session.user.id,
+                            email: session.user.email,
+                            name: session.user.user_metadata?.full_name || session.user.user_metadata?.name,
+                            avatar: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture
+                        }, null, 2)}</pre>
+                    `;
+                } else {
+                    authDiv.innerHTML = '<div class="status warning">⚠️ No active session</div>';
+                    userDiv.innerHTML = 'No user data';
+                }
+
+            } catch (error) {
+                authDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                console.error('Auth check error:', error);
+            }
+        }
+
+        async function testGoogleAuth() {
+            if (!window.authManager) {
+                alert('Auth manager not available');
+                return;
+            }
+
+            try {
+                console.log('Testing Google authentication...');
+                const result = await window.authManager.signInWithGoogle();
+                console.log('Google auth result:', result);
+            } catch (error) {
+                console.error('Google auth test failed:', error);
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSystemStatus();
+            
+            // Wait a bit for auth manager to initialize, then check auth status
+            setTimeout(() => {
+                checkAuthStatus();
+            }, 2000);
+
+            // Set up periodic checks
+            setInterval(checkAuthStatus, 10000);
+        });
+    </script>
+</body>
+</html>

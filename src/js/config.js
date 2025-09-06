@@ -4,6 +4,9 @@ window.APP_CONFIG = {
   SUPABASE_URL: (typeof process !== 'undefined' && process.env && process.env.SUPABASE_URL) || (window.__ENV && window.__ENV.SUPABASE_URL) || 'https://iquczuhmkemjytrqnbxg.supabase.co',
   SUPABASE_ANON_KEY: (typeof process !== 'undefined' && process.env && process.env.SUPABASE_ANON_KEY) || (window.__ENV && window.__ENV.SUPABASE_ANON_KEY) || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxdWN6dWhta2Vtanl0cnFuYnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxMDMzMjcsImV4cCI6MjA2OTY3OTMyN30.FFzZFBUAM1ZgQSTlzPNSuJIikUiQkvSBKvc19wdzulk',
   
+  // Shared Supabase client instance to prevent multiple instances
+  SHARED_SUPABASE_CLIENT: null,
+  
   // App Settings
   APP_NAME: 'Sober Spokane',
   APP_VERSION: '1.0.0',
@@ -56,6 +59,29 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
   // Production environment
   window.APP_CONFIG.ENVIRONMENT = 'production';
 }
+
+// Function to get or create the shared Supabase client
+window.getSupabaseClient = function() {
+  if (!window.APP_CONFIG.SHARED_SUPABASE_CLIENT) {
+    const supabaseUrl = window.APP_CONFIG.SUPABASE_URL;
+    const supabaseKey = window.APP_CONFIG.SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('❌ Supabase credentials not found');
+      return null;
+    }
+    
+    if (typeof window.supabase !== 'undefined') {
+      window.APP_CONFIG.SHARED_SUPABASE_CLIENT = window.supabase.createClient(supabaseUrl, supabaseKey);
+      console.log('✅ Created shared Supabase client');
+    } else {
+      console.error('❌ Supabase library not loaded');
+      return null;
+    }
+  }
+  
+  return window.APP_CONFIG.SHARED_SUPABASE_CLIENT;
+};
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {

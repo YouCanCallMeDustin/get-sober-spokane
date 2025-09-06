@@ -19,6 +19,49 @@ class ChatClient {
         this.initializeSocket();
         this.updateConnectionStatus('Connecting...', 'connecting');
         
+        // Wait for auth system to initialize before proceeding
+        this.waitForAuthAndInitialize();
+    }
+
+    async waitForAuthAndInitialize() {
+        // Wait for auth system to be ready
+        let attempts = 0;
+        const maxAttempts = 50; // Wait up to 5 seconds
+        
+        console.log('Chat: Waiting for auth system to initialize...');
+        
+        while (attempts < maxAttempts) {
+            if (window.authManager && window.authManager.currentUser !== undefined) {
+                console.log('Auth system ready, initializing chat...');
+                this.currentUser = window.authManager.currentUser;
+                console.log('Chat: Set current user to:', this.currentUser?.email);
+                break;
+            }
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+        }
+        
+        // If we still don't have a user, try to get it from window.currentUser
+        if (!this.currentUser && window.currentUser) {
+            this.currentUser = window.currentUser;
+            console.log('Chat: Got user from window.currentUser:', this.currentUser?.email);
+        }
+        
+        // Additional check: try to get user from Supabase session directly
+        if (!this.currentUser && window.authManager && window.authManager.supabase) {
+            try {
+                const { data: { session } } = await window.authManager.supabase.auth.getSession();
+                if (session && session.user) {
+                    this.currentUser = session.user;
+                    console.log('Chat: Got user from Supabase session:', this.currentUser?.email);
+                }
+            } catch (error) {
+                console.warn('Chat: Failed to get session from Supabase:', error);
+            }
+        }
+        
+        console.log('Chat: Final user state:', this.currentUser ? this.currentUser.email : 'No user');
+        
         // Initialize room info for the default room
         this.updateRoomInfo();
         
@@ -29,6 +72,44 @@ class ChatClient {
         setInterval(() => {
             this.updateRoomCounts();
         }, 30000);
+        
+        // Set up periodic user state check (every 10 seconds)
+        setInterval(() => {
+            this.checkAndUpdateUser();
+        }, 10000);
+        
+        // Set up periodic online users refresh (every 30 seconds)
+        setInterval(() => {
+            if (this.isConnected && this.currentRoom) {
+                this.updateOnlineUsersList();
+            }
+        }, 30000);
+        
+        // Set up auth state change listener
+        if (window.authManager) {
+            window.authManager.onUserAuthenticated = (user) => {
+                this.currentUser = user;
+                console.log('Chat: User authenticated via callback:', user?.email);
+                this.updateUserWelcome();
+                if (this.isConnected && this.currentRoom) {
+                    this.joinRoom(this.currentRoom);
+                    // Update online users list after authentication
+                    setTimeout(() => {
+                        this.updateOnlineUsersList();
+                    }, 1000);
+                }
+            };
+            
+            window.authManager.onUserSignedOut = () => {
+                this.currentUser = null;
+                console.log('Chat: User signed out via callback');
+                this.showLoginPrompt();
+                // Update online users list after sign out
+                setTimeout(() => {
+                    this.updateOnlineUsersList();
+                }, 1000);
+            };
+        }
     }
 
     setupEventListeners() {
@@ -134,10 +215,17 @@ class ChatClient {
                 console.log('Connected to chat server');
                 this.isConnected = true;
                 this.updateConnectionStatus('Connected', 'connected');
-                this.enableInputs();
+                
+                // Check for authenticated user when connecting
+                this.checkAndUpdateUser();
                 
                 // Join the default room
                 this.joinRoom(this.currentRoom);
+                
+                // Request initial online users list
+                setTimeout(() => {
+                    this.updateOnlineUsersList();
+                }, 1000);
             });
             
             this.socket.on('disconnect', () => {
@@ -196,13 +284,28 @@ class ChatClient {
         
         console.log(`Joining room: ${roomName}`);
         
-        // Prepare user data
+        // Get user data from multiple sources to ensure we have the authenticated user
+        let user = this.currentUser || window.currentUser || window.authManager?.currentUser;
+        
+        // Prepare user data with proper fallbacks
         const userData = {
-            id: this.currentUser?.id || null,
-            username: this.currentUser?.display_name || this.currentUser?.username || 'Anonymous',
-            display_name: this.currentUser?.display_name,
-            avatar_url: this.currentUser?.avatar_url
+            id: user?.id || null,
+            username: user?.user_metadata?.full_name || 
+                     user?.user_metadata?.display_name || 
+                     user?.user_metadata?.name || 
+                     user?.email?.split('@')[0] || 
+                     'Anonymous',
+            display_name: user?.user_metadata?.full_name || 
+                         user?.user_metadata?.display_name || 
+                         user?.user_metadata?.name || 
+                         user?.email?.split('@')[0] || 
+                         'Anonymous',
+            avatar_url: user?.user_metadata?.avatar_url || 
+                       user?.user_metadata?.picture || 
+                       null
         };
+        
+        console.log('Sending user data to server:', userData);
         
         this.socket.emit('joinRoom', {
             room: roomName,
@@ -236,7 +339,10 @@ class ChatClient {
         this.updateRoomInfo(); // Call without parameters to use internal config
         this.loadMessageHistory(data.messages);
         this.updateRoomSelection(data.room);
-        this.updateOnlineUsersList();
+        
+        // Use the online users data from the roomJoined event
+        const onlineUsers = data.roomInfo?.users || [];
+        this.updateOnlineUsersList(onlineUsers);
     }
 
     handleNewMessage(message) {
@@ -253,6 +359,7 @@ class ChatClient {
     handleUserJoined(data) {
         console.log('User joined:', data);
         this.addSystemMessage(`${data.username} joined the chat`);
+        // Request fresh online users data
         this.updateOnlineUsersList();
         this.updateRoomCounts(); // Update room counts when users join
     }
@@ -260,6 +367,7 @@ class ChatClient {
     handleUserLeft(data) {
         console.log('User left:', data);
         this.addSystemMessage(`${data.username} left the chat`);
+        // Request fresh online users data
         this.updateOnlineUsersList();
         this.updateRoomCounts(); // Update room counts when users leave
     }
@@ -281,6 +389,8 @@ class ChatClient {
             return;
         }
         
+        console.log(`Switching from room ${this.currentRoom} to ${roomName}`);
+        
         // Leave current room
         if (this.socket && this.isConnected) {
             this.socket.emit('leaveRoom', { room: this.currentRoom });
@@ -296,11 +406,15 @@ class ChatClient {
         // Update room header immediately
         this.updateRoomInfo();
         
+        // Clear online users list while switching
+        this.updateOnlineUsersList([]);
+        
         this.joinRoom(roomName);
         
-        // Update room counts after switching
+        // Update room counts and online users after switching
         setTimeout(() => {
             this.updateRoomCounts();
+            this.updateOnlineUsersList(); // Request fresh online users for new room
         }, 500);
     }
 
@@ -429,13 +543,42 @@ class ChatClient {
 
     updateOnlineUsersList(users) {
         const onlineUsersContainer = document.getElementById('onlineUsers');
-        if (!onlineUsersContainer) return;
+        if (!onlineUsersContainer) {
+            console.warn('Online users container not found');
+            return;
+        }
         
         // Remove loading state
         const loadingElement = onlineUsersContainer.querySelector('.loading-users');
         if (loadingElement) {
             loadingElement.remove();
         }
+        
+        // If no users parameter provided, show loading state and request fresh data
+        if (users === undefined) {
+            onlineUsersContainer.innerHTML = '<div class="loading-users"><i class="bi bi-arrow-clockwise spin"></i> Loading users...</div>';
+            
+            // Request fresh online users data from server
+            if (this.socket && this.isConnected && this.currentRoom) {
+                console.log('Requesting online users for room:', this.currentRoom);
+                this.socket.emit('getOnlineUsers', { room: this.currentRoom });
+                
+                // Set a timeout to retry if no response
+                setTimeout(() => {
+                    const stillLoading = onlineUsersContainer.querySelector('.loading-users');
+                    if (stillLoading) {
+                        console.warn('Online users request timed out, retrying...');
+                        this.socket.emit('getOnlineUsers', { room: this.currentRoom });
+                    }
+                }, 5000);
+            } else {
+                console.warn('Cannot request online users - socket not connected or no current room');
+                onlineUsersContainer.innerHTML = '<div class="no-users">Connection issue</div>';
+            }
+            return;
+        }
+        
+        console.log('Updating online users list with:', users);
         
         if (!users || users.length === 0) {
             onlineUsersContainer.innerHTML = '<div class="no-users">No users online</div>';
@@ -485,6 +628,84 @@ class ChatClient {
         if (sendButton) sendButton.disabled = true;
         if (attachFileBtn) attachFileBtn.disabled = true;
         if (emojiPickerBtn) emojiPickerBtn.disabled = true;
+    }
+
+    updateUserWelcome() {
+        if (this.currentUser) {
+            const userWelcome = document.querySelector('.user-welcome');
+            if (userWelcome) {
+                const displayName = this.currentUser.user_metadata?.full_name || 
+                                 this.currentUser.user_metadata?.display_name || 
+                                 this.currentUser.user_metadata?.name || 
+                                 this.currentUser.email?.split('@')[0] || 
+                                 'User';
+                userWelcome.innerHTML = `
+                    <p>Welcome back, ${displayName}!</p>
+                `;
+            }
+            this.enableInputs();
+        } else {
+            this.showLoginPrompt();
+        }
+    }
+
+    showLoginPrompt() {
+        // Update the user welcome message to show login prompt
+        const userWelcome = document.querySelector('.user-welcome');
+        if (userWelcome) {
+            userWelcome.innerHTML = `
+                <p>
+                    You're chatting as Anonymous.
+                    <a class="sign-in-link" href="/auth/login.html">Sign in</a>
+                    to use your username.
+                </p>
+            `;
+        }
+        
+        // Disable inputs for unauthenticated users
+        this.disableInputs();
+    }
+
+    async checkAndUpdateUser() {
+        // Check multiple sources for authenticated user
+        const authUser = window.authManager?.currentUser;
+        const windowUser = window.currentUser;
+        
+        console.log('Chat: Checking user sources:', {
+            authManager: !!window.authManager,
+            authUser: !!authUser,
+            windowUser: !!windowUser,
+            authUserEmail: authUser?.email,
+            windowUserEmail: windowUser?.email
+        });
+        
+        if (authUser) {
+            this.currentUser = authUser;
+            console.log('Chat: Updated user from authManager:', authUser.email);
+            this.updateUserWelcome();
+        } else if (windowUser) {
+            this.currentUser = windowUser;
+            console.log('Chat: Updated user from window.currentUser:', windowUser.email);
+            this.updateUserWelcome();
+        } else {
+            // Try to get user from Supabase session directly
+            if (window.authManager && window.authManager.supabase) {
+                try {
+                    const { data: { session } } = await window.authManager.supabase.auth.getSession();
+                    if (session && session.user) {
+                        this.currentUser = session.user;
+                        console.log('Chat: Updated user from Supabase session:', session.user.email);
+                        this.updateUserWelcome();
+                        return;
+                    }
+                } catch (error) {
+                    console.warn('Chat: Failed to get session from Supabase:', error);
+                }
+            }
+            
+            console.log('Chat: No authenticated user found');
+            this.showLoginPrompt();
+        }
     }
 
     clearMessages() {
@@ -718,7 +939,7 @@ class ChatClient {
     async updateRoomCounts() {
         try {
             // Fetch room statistics from the API
-            const response = await fetch('/api/chat/stats');
+            const response = await fetch('/chat/stats');
             if (!response.ok) {
                 throw new Error('Failed to fetch room stats');
             }

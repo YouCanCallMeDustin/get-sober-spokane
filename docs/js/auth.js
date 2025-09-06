@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2025 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2025-09-05T05:13:30.709Z
+* Built: 2025-09-06T01:03:56.712Z
 */
 // Authentication JavaScript
 class AuthManager {
@@ -22,6 +22,9 @@ class AuthManager {
       return;
     }
 
+    // Check for Google OAuth return
+    this.handleGoogleOAuthReturn();
+
     // Check authentication state
     this.checkAuthState();
     
@@ -31,27 +34,6 @@ class AuthManager {
 
   async initializeSupabase() {
     try {
-      // Get Supabase credentials from config
-      const supabaseUrl = window.APP_CONFIG?.SUPABASE_URL || '';
-      const supabaseKey = window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
-      
-      console.log('🔧 Initializing Supabase with:', { 
-        url: supabaseUrl, 
-        key: supabaseKey ? `${supabaseKey.substring(0, 10)}...` : 'undefined' 
-      });
-      
-      if (!supabaseUrl || !supabaseKey) {
-        console.error('❌ Supabase credentials not found');
-        console.error('   Please check your config.js file or environment variables');
-        return false;
-      }
-
-      if (supabaseUrl === 'https://your-project-id.supabase.co' || supabaseKey === 'your_anon_key_here') {
-        console.error('❌ Supabase credentials are still using placeholder values');
-        console.error('   Please update your actual Supabase credentials');
-        return false;
-      }
-
       // Wait for Supabase to load
       let attempts = 0;
       const maxAttempts = 50; // Wait up to 5 seconds
@@ -62,17 +44,22 @@ class AuthManager {
       }
 
       // Check if Supabase is available globally
-      if (typeof window.supabase !== 'undefined') {
-        console.log('✅ Supabase loaded globally from CDN');
-        this.supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-      } else {
+      if (typeof window.supabase === 'undefined') {
         console.error('❌ Supabase not available globally after waiting');
         console.error('   Please check if the Supabase CDN script loaded properly');
         console.error('   You may need to refresh the page or check your internet connection');
         return false;
       }
+
+      // Use the shared Supabase client to prevent multiple instances
+      this.supabase = window.getSupabaseClient();
       
-      console.log('✅ Supabase client initialized successfully');
+      if (!this.supabase) {
+        console.error('❌ Failed to get shared Supabase client');
+        return false;
+      }
+      
+      console.log('✅ Using shared Supabase client');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize Supabase:', error);
@@ -81,16 +68,44 @@ class AuthManager {
     }
   }
 
+  handleGoogleOAuthReturn() {
+    // Check if this is a Google OAuth return
+    const urlParams = new URLSearchParams(window.location.search);
+    const isGoogleOAuth = sessionStorage.getItem('googleOAuth') === 'true';
+    
+    if (isGoogleOAuth || urlParams.has('code') || urlParams.has('access_token')) {
+      console.log('Auth: Detected Google OAuth return');
+      
+      // Clear the OAuth flag
+      sessionStorage.removeItem('googleOAuth');
+      
+      // Give Supabase a moment to process the OAuth callback
+      setTimeout(() => {
+        console.log('Auth: Re-checking auth state after OAuth return');
+        this.checkAuthState();
+      }, 1000);
+    }
+  }
+
   async checkAuthState() {
     if (!this.supabase) return;
 
     try {
+      console.log('Auth: Checking authentication state...');
       const { data: { session } } = await this.supabase.auth.getSession();
+      
+      console.log('Auth: Session check result:', {
+        hasSession: !!session,
+        hasUser: !!session?.user,
+        userEmail: session?.user?.email
+      });
       
       if (session) {
         this.currentUser = session.user;
+        console.log('Auth: User authenticated:', session.user.email);
         this.onUserAuthenticated(session.user);
       } else {
+        console.log('Auth: No active session found');
         this.onUserSignedOut();
       }
     } catch (error) {
@@ -130,7 +145,9 @@ class AuthManager {
         body: JSON.stringify({
           id: user.id,
           email: user.email,
-          displayName: user.user_metadata?.full_name || user.user_metadata?.display_name || 'User'
+          displayName: user.user_metadata?.full_name || user.user_metadata?.display_name || 'User',
+          user_metadata: user.user_metadata,
+          app_metadata: user.app_metadata
         })
       }).catch(() => {});
     } catch (e) {}
@@ -148,10 +165,10 @@ class AuthManager {
     try {
       if (!this.supabase) return;
       
-      // Check if user already has a profile with a custom display_name
+      // Check if user already has a profile
       const { data: existingProfile } = await this.supabase
-        .from('forum_user_profiles')
-        .select('display_name')
+        .from('profiles_consolidated')
+        .select('display_name, avatar_url')
         .eq('user_id', user.id)
         .single();
       
@@ -162,9 +179,13 @@ class AuthManager {
                          user.user_metadata?.name || 
                          user.email;
       
-      const avatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
+      // Use Google picture if no custom avatar is set, or if the existing avatar is the default logo
+      const googleAvatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
+      const avatarUrl = existingProfile?.avatar_url && existingProfile.avatar_url !== '/assets/img/logo.png' 
+                       ? existingProfile.avatar_url 
+                       : googleAvatarUrl;
       const { error } = await this.supabase
-        .from('forum_user_profiles')
+        .from('profiles_consolidated')
         .upsert({
           user_id: user.id,
           display_name: displayName,

@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
         if (req.session.user) {
             // Get the user's profile from forum_user_profiles table (this has the actual user data)
             const { data: profile } = await supabase
-                .from('forum_user_profiles')
+                .from('profiles_consolidated')
                 .select('display_name, avatar_url, bio, location')
                 .eq('user_id', req.session.user.id)
                 .single();

@@ -24,18 +24,12 @@ NODE_ENV=development
 npm run build:full
 ```
 
-### 4. Start the Chat Server
-```bash
-npm run start:chat
-```
-
-### 5. Start Your Main Server
-In a new terminal:
+### 4. Start Your Main Server
 ```bash
 npm run start:server
 ```
 
-### 6. Access Your Chat Room
+### 5. Access Your Chat Room
 Visit: `http://localhost:3000/chat`
 
 ## 🎯 What You Get
@@ -57,17 +51,17 @@ Visit: `http://localhost:3000/chat`
 - **Log Level**: Set `CHAT_LOG_LEVEL` (debug, info, warn, error)
 
 ### Content Moderation
-Edit `src/chat-server.js` to customize:
+Edit `src/socket.js` to customize:
 - Inappropriate word filtering
 - Message length limits
 - File upload restrictions
 
 ## 🚨 Troubleshooting
 
-### Chat Server Won't Start?
+### Server Won't Start?
 ```bash
 # Check if port is in use
-lsof -i :3001
+lsof -i :3000
 
 # Check Node.js version (needs 16+)
 node --version
@@ -77,7 +71,7 @@ npm list socket.io
 ```
 
 ### WebSocket Connection Fails?
-- Ensure chat server is running on port 3001
+- Ensure main server is running on port 3000
 - Check browser console for errors
 - Verify firewall settings
 
@@ -120,7 +114,7 @@ npm run start:all
 ## 🆘 Need Help?
 
 - Check the browser console for errors
-- Review server logs in `logs/chat-server.log`
+- Review server logs in the console output
 - Read the comprehensive setup guide
 - Contact the development team
 

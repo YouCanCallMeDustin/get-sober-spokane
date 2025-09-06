@@ -16,8 +16,7 @@
     "start:debug": "npm run build:full && node scripts/start-debug.js",
     "start:prod": "node src/start-production.js",
     "start:cluster": "node src/start-production.js",
-    "start:chat": "node scripts/start-chat.js",
-    "start:all": "concurrently \"npm run start:server\" \"npm run start:chat\"",
+    "start:all": "npm run start:server",
     "dev:refresh": "node scripts/dev-refresh.js",
     "seo:optimize": "node scripts/seo-optimizer.js",
     "setup:chat": "node scripts/setup-chat-db.js"
