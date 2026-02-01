@@ -5,12 +5,12 @@ sharp.concurrency(1); // Limit to 1 thread to save memory
 
 // SEO Configuration for all pages
 const seoConfig = {
-    baseUrl: 'https://getsoberspokane.org',
+    baseUrl: 'https://www.getsoberspokane.com',
     defaultImage: '/assets/img/logo.png',
     organization: {
         name: 'Get Sober Spokane',
         description: 'Comprehensive recovery support community providing addiction treatment resources, mental health services, shelter, food assistance, and recovery support in Spokane, Washington.',
-        phone: '+1-509-218-3836',
+        phone: '+1-509-389-9350',
         email: 'spokanesober@gmail.com',
         address: {
             locality: 'Spokane',

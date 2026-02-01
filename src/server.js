@@ -13,6 +13,9 @@ const app = express();
 const server = createServer(app);
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy for Railway/Production to handle HTTPS correctly
+app.set('trust proxy', 1);
+
 // Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
@@ -39,11 +42,11 @@ app.use(cacheBuster);
 app.use((req, res, next) => {
   // List of routes that should be handled by dynamic routes, not static files
   const dynamicRoutes = ['/chat', '/login', '/signup', '/reset', '/dashboard', '/user-profile'];
-  
+
   if (dynamicRoutes.includes(req.path) || req.path.startsWith('/chat/')) {
     return next(); // Skip static file serving for dynamic routes
   }
-  
+
   // For other requests, try to serve static files
   express.static(path.join(__dirname, '..', 'docs'), {
     etag: false,
@@ -166,7 +169,7 @@ app.get('/login', (req, res) => {
   if (req.session.user) {
     res.redirect('/dashboard');
   } else {
-    res.render('auth/login', { 
+    res.render('auth/login', {
       title: 'Login - Sober Spokane',
       error: req.query.error || null,
       success: req.query.success || null
@@ -178,7 +181,7 @@ app.get('/signup', (req, res) => {
   if (req.session.user) {
     res.redirect('/dashboard');
   } else {
-    res.render('auth/signup', { 
+    res.render('auth/signup', {
       title: 'Sign Up - Sober Spokane',
       error: req.query.error || null
     });
@@ -189,7 +192,7 @@ app.get('/reset', (req, res) => {
   if (req.session.user) {
     res.redirect('/dashboard');
   } else {
-    res.render('auth/reset', { 
+    res.render('auth/reset', {
       title: 'Reset Password - Sober Spokane',
       error: req.query.error || null,
       success: req.query.success || null
@@ -260,7 +263,7 @@ app.get('/get-sober-spokane/:filepath', (req, res) => {
 app.post('/api/auth/signup', async (req, res) => {
   try {
     const { email, password, displayName } = req.body;
-    
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -275,10 +278,10 @@ app.post('/api/auth/signup', async (req, res) => {
       return res.status(400).json({ error: error.message });
     }
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: 'Please check your email to verify your account.',
-      user: data.user 
+      user: data.user
     });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -288,7 +291,7 @@ app.post('/api/auth/signup', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password, rememberMe } = req.body;
-    
+
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
@@ -340,7 +343,7 @@ app.post('/api/auth/sync-session', (req, res) => {
 app.post('/api/auth/reset-password', async (req, res) => {
   try {
     const { email } = req.body;
-    
+
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${req.protocol}://${req.get('host')}/reset?token=`
     });
@@ -349,9 +352,9 @@ app.post('/api/auth/reset-password', async (req, res) => {
       return res.status(400).json({ error: error.message });
     }
 
-    res.json({ 
-      success: true, 
-      message: 'Password reset email sent. Please check your inbox.' 
+    res.json({
+      success: true,
+      message: 'Password reset email sent. Please check your inbox.'
     });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -371,14 +374,14 @@ app.post('/api/auth/logout', (req, res) => {
 app.get('/auth/google/callback', async (req, res) => {
   try {
     const { code } = req.query;
-    
+
     if (!code) {
       return res.redirect('/login?error=Google authentication failed');
     }
 
     // Exchange code for session
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-    
+
     if (error) {
       return res.redirect('/login?error=' + encodeURIComponent(error.message));
     }
@@ -391,7 +394,7 @@ app.get('/auth/google/callback', async (req, res) => {
         .select('display_name')
         .eq('user_id', data.user.id)
         .single();
-      
+
       if (profile?.display_name) {
         displayName = profile.display_name;
       }
@@ -418,7 +421,7 @@ app.get('/auth/google/callback', async (req, res) => {
 app.post('/api/auth/sync-session', async (req, res) => {
   try {
     const { id, email, displayName, user_metadata, app_metadata } = req.body;
-    
+
     if (!id || !email) {
       return res.status(400).json({ error: 'Missing required user data' });
     }
@@ -469,11 +472,11 @@ app.get('/api/forum/init', async (req, res) => {
       .from('forum_posts')
       .select('count')
       .limit(1);
-    
+
     if (postsError && postsError.code === '42P01') {
       // Table doesn't exist, create it
       console.log('Creating forum tables...');
-      
+
       // Create forum_posts table
       const { error: createPostsError } = await supabase.rpc('exec_sql', {
         sql: `
@@ -492,12 +495,12 @@ app.get('/api/forum/init', async (req, res) => {
           );
         `
       });
-      
+
       if (createPostsError) {
         console.error('Error creating forum_posts table:', createPostsError);
         return res.status(500).json({ error: 'Failed to create forum tables' });
       }
-      
+
       // Create forum_comments table
       const { error: createCommentsError } = await supabase.rpc('exec_sql', {
         sql: `
@@ -511,12 +514,12 @@ app.get('/api/forum/init', async (req, res) => {
           );
         `
       });
-      
+
       if (createCommentsError) {
         console.error('Error creating forum_comments table:', createCommentsError);
         return res.status(500).json({ error: 'Failed to create forum tables' });
       }
-      
+
       // Create forum_user_profiles table
       const { error: createProfilesError } = await supabase.rpc('exec_sql', {
         sql: `
@@ -533,15 +536,15 @@ app.get('/api/forum/init', async (req, res) => {
           );
         `
       });
-      
+
       if (createProfilesError) {
         console.error('Error creating forum_user_profiles table:', createProfilesError);
         return res.status(500).json({ error: 'Failed to create forum tables' });
       }
-      
+
       console.log('Forum tables created successfully');
     }
-    
+
     res.json({ success: true, message: 'Forum tables ready' });
   } catch (error) {
     console.error('Error initializing forum:', error);
@@ -568,12 +571,12 @@ app.get('/api/dashboard/recent-activity', async (req, res) => {
       `)
       .order('created_at', { ascending: false })
       .limit(5);
-    
+
     if (postsError) {
       console.error('Error fetching posts:', postsError);
       return res.status(500).json({ error: 'Failed to fetch recent posts' });
     }
-    
+
     // Get recent comments
     const { data: comments, error: commentsError } = await supabase
       .from('forum_comments')
@@ -586,54 +589,54 @@ app.get('/api/dashboard/recent-activity', async (req, res) => {
       `)
       .order('created_at', { ascending: false })
       .limit(5);
-    
+
     if (commentsError) {
       console.error('Error fetching comments:', commentsError);
       return res.status(500).json({ error: 'Failed to fetch recent comments' });
     }
-    
+
     // Get user profiles for the posts and comments
     const userIds = new Set();
     posts.forEach(post => userIds.add(post.user_id));
     comments.forEach(comment => userIds.add(comment.user_id));
-    
+
     const { data: profiles, error: profilesError } = await supabase
       .from('profiles_consolidated')
       .select('user_id, display_name, avatar_url')
       .in('user_id', Array.from(userIds));
-    
+
     if (profilesError) {
       console.error('Error fetching profiles:', profilesError);
       // Continue without profiles
     }
-    
+
     const profilesMap = {};
     if (profiles) {
       profiles.forEach(profile => {
         profilesMap[profile.user_id] = profile;
       });
     }
-    
+
     // Enrich posts and comments with user info
     const enrichedPosts = posts.map(post => ({
       ...post,
-      user_name: post.is_anonymous ? 'Anonymous User' : 
+      user_name: post.is_anonymous ? 'Anonymous User' :
         (profilesMap[post.user_id]?.display_name || 'Unknown User'),
       content_preview: post.content.substring(0, 100) + (post.content.length > 100 ? '...' : '')
     }));
-    
+
     const enrichedComments = comments.map(comment => ({
       ...comment,
       user_name: profilesMap[comment.user_id]?.display_name || 'Unknown User',
       content_preview: comment.content.substring(0, 100) + (comment.content.length > 100 ? '...' : '')
     }));
-    
+
     res.json({
       success: true,
       recent_posts: enrichedPosts,
       recent_comments: enrichedComments
     });
-    
+
   } catch (error) {
     console.error('Error fetching recent activity:', error);
     res.status(500).json({ error: 'Failed to fetch recent activity' });
