@@ -12,7 +12,7 @@
 */
 // Populate user profile page from Supabase
 // Version: 2025-01-31-v3 (fixed and cleaned up)
-(function() {
+(function () {
   let supabaseClient = null;
   let currentUser = null;
   let viewingUserId = null;
@@ -45,7 +45,7 @@
   // Function to ensure Google profile picture is synced to database
   async function ensureGoogleAvatarSynced() {
     if (!currentUser || !supabaseClient) return;
-    
+
     try {
       // Check if profile exists and has avatar_url
       const { data: profile } = await supabaseClient
@@ -53,7 +53,7 @@
         .select('avatar_url')
         .eq('user_id', currentUser.id)
         .single();
-      
+
       // If no profile avatar but we have Google picture, sync it
       if (!profile?.avatar_url && currentUser.user_metadata?.picture) {
         console.log('Syncing Google profile picture to database...');
@@ -64,7 +64,7 @@
             avatar_url: currentUser.user_metadata.picture,
             last_active: new Date().toISOString()
           }, { onConflict: 'user_id' });
-        
+
         if (error) {
           console.error('Error syncing Google avatar:', error);
         } else {
@@ -80,20 +80,20 @@
 
   document.addEventListener('DOMContentLoaded', async () => {
     console.log('DOMContentLoaded - Starting profile initialization');
-    
+
     try {
       // Wait for everything to be fully ready
       await waitForReady();
       console.log('Page fully loaded, proceeding with initialization');
-      
+
       const supabaseUrl = window.APP_CONFIG?.SUPABASE_URL || '';
       const supabaseKey = window.APP_CONFIG?.SUPABASE_ANON_KEY || '';
-      
+
       if (!supabaseUrl || !supabaseKey || typeof window.supabase === 'undefined') {
         console.error('Missing Supabase configuration');
         return;
       }
-      
+
       supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
       const { data: { session } } = await supabaseClient.auth.getSession();
       currentUser = session?.user || null;
@@ -101,7 +101,7 @@
 
       const params = new URLSearchParams(window.location.search);
       viewingUserId = params.get('id') || currentUser?.id || null;
-      
+
       if (!viewingUserId) {
         console.error('No viewing user ID found');
         return;
@@ -114,14 +114,14 @@
         renderProfile(viewingUserId),
         loadUserActivity(viewingUserId)
       ]);
-      
+
       console.log('Setting up UI components...');
       setupEditProfileModal();
       setupActivityTabs();
       setupInlineBioEdit();
-      
+
       console.log('Profile initialization complete');
-      
+
       // Test profile picture loading
       testProfilePictureLoading();
     } catch (error) {
@@ -139,13 +139,13 @@
       console.log('Image loaded:', avatarImg.complete);
       console.log('Image natural width:', avatarImg.naturalWidth);
       console.log('Image natural height:', avatarImg.naturalHeight);
-      
+
       // Test if the default logo loads
-      avatarImg.onload = function() {
+      avatarImg.onload = function () {
         console.log('Image loaded successfully:', this.src);
       };
-      
-      avatarImg.onerror = function() {
+
+      avatarImg.onerror = function () {
         console.error('Image failed to load:', this.src);
       };
     } else {
@@ -157,7 +157,7 @@
   async function renderProfile(userId) {
     try {
       console.log('renderProfile - Starting for user:', userId);
-      
+
       const [{ data: profile }, postsCount, commentsCount, upvotesCount, { data: milestones }] = await Promise.all([
         supabaseClient.from('profiles_consolidated').select('*').eq('user_id', userId).maybeSingle(),
         supabaseClient.from('forum_posts').select('id', { count: 'exact', head: true }).eq('user_id', userId),
@@ -184,22 +184,22 @@
         // Priority: 1. Profile avatar_url (from database), 2. Google picture from session, 3. Default logo
         const googlePic = currentUser?.user_metadata?.picture || currentUser?.user_metadata?.avatar_url || null;
         const profileAvatar = profile?.avatar_url;
-        
+
         console.log('Avatar loading - Current user:', currentUser);
         console.log('Avatar loading - User metadata:', currentUser?.user_metadata);
         console.log('Avatar loading - Profile data:', profile);
         console.log('Avatar loading - Profile avatar_url:', profileAvatar);
         console.log('Avatar loading - Google picture from session:', googlePic);
-        
+
         // Try profile avatar first (this should contain the Google picture if it was synced), then Google picture from session, then default
         let src = profileAvatar || googlePic || '/assets/img/logo.png';
-        
+
         console.log('Avatar loading - Final src:', src);
-        
+
         // Set up error handling before setting src
-        avatarImg.onerror = function() {
+        avatarImg.onerror = function () {
           console.error('Failed to load avatar image:', this.src);
-          
+
           // If Google picture failed, try default logo
           if (this.src === googlePic) {
             console.log('Google picture failed, trying default logo');
@@ -215,28 +215,28 @@
             console.log('All avatars failed, using default logo');
             this.src = '/assets/img/logo.png';
           }
-          
+
           // Show the avatar even if it failed to load
           this.style.display = 'block';
         };
-        
+
         // Set up success handler
-        avatarImg.onload = function() {
+        avatarImg.onload = function () {
           console.log('Avatar loaded successfully:', this.src);
           // Show the avatar once it's loaded
           this.style.display = 'block';
         };
-        
+
         // Set the initial src
         avatarImg.src = src;
         avatarImg.alt = 'Avatar';
-        
+
         // If no avatar URL is available, ensure we show the default logo
         if (!profileAvatar && !googlePic) {
           console.log('No avatar URL available, using default logo');
           avatarImg.src = '/assets/img/logo.png';
         }
-        
+
         // Show the avatar immediately if it's a data URL (already loaded)
         if (src.startsWith('data:')) {
           avatarImg.style.display = 'block';
@@ -283,12 +283,12 @@
       if (postsEl && typeof postsCount?.count === 'number') {
         postsEl.textContent = postsCount.count;
       }
-      
+
       const commentsEl = document.querySelector('#userComments');
       if (commentsEl && typeof commentsCount?.count === 'number') {
         commentsEl.textContent = commentsCount.count;
       }
-      
+
       const upvotesEl = document.querySelector('#userUpvotes');
       if (upvotesEl && typeof upvotesCount?.count === 'number') {
         upvotesEl.textContent = upvotesCount.count;
@@ -307,7 +307,7 @@
         } else {
           console.log('renderProfile - Sobriety days element not found');
         }
-        
+
         const dateEl = document.querySelector('#sobrietyDate');
         if (dateEl) {
           dateEl.textContent = profile.sobriety_date;
@@ -318,7 +318,7 @@
         if (daysEl) {
           daysEl.textContent = '0';
         }
-        
+
         const dateEl = document.querySelector('#sobrietyDate');
         if (dateEl) {
           dateEl.textContent = 'Not set';
@@ -340,7 +340,7 @@
             </div>
           `).join('');
           milestonesContainer.innerHTML = milestonesHTML;
-          
+
           // Add click event listeners to milestone links
           const milestoneLinks = milestonesContainer.querySelectorAll('.milestone-link');
           milestoneLinks.forEach(link => {
@@ -373,7 +373,7 @@
     if (!editBtn || !currentUser || currentUser.id !== viewingUserId) {
       return;
     }
-    
+
     editBtn.addEventListener('click', async () => {
       await openEditModal();
     });
@@ -431,7 +431,7 @@
       avatarInput.onchange = (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        
+
         const reader = new FileReader();
         reader.onload = (ev) => {
           const img = new Image();
@@ -458,12 +458,12 @@
     if (saveBtn) {
       saveBtn.onclick = async (e) => {
         e.preventDefault();
-        
+
         // Show loading state
         const originalText = saveBtn.textContent;
         saveBtn.textContent = 'Saving...';
         saveBtn.disabled = true;
-        
+
         try {
           const updates = {
             user_id: viewingUserId,
@@ -472,7 +472,7 @@
             location: locationInput?.value.trim() || null,
             sobriety_date: sobrietyDateInput?.value || null
           };
-          
+
           if (avatarDataUrl) {
             updates.avatar_url = avatarDataUrl;
           }
@@ -482,32 +482,32 @@
 
           // Update the profile display
           await renderProfile(viewingUserId);
-          
+
           // Properly close the modal and clean up
           const modalInstance = bootstrap.Modal.getInstance(modalEl);
           if (modalInstance) {
             modalInstance.hide();
-            
+
             // Ensure modal backdrop is removed
             modalInstance._config.backdrop = true;
             modalEl.addEventListener('hidden.bs.modal', function cleanup() {
               // Remove any lingering backdrop
               const backdrops = document.querySelectorAll('.modal-backdrop');
               backdrops.forEach(backdrop => backdrop.remove());
-              
+
               // Remove body class that might be causing the fade
               document.body.classList.remove('modal-open');
               document.body.style.overflow = '';
               document.body.style.paddingRight = '';
-              
+
               // Remove this event listener
               modalEl.removeEventListener('hidden.bs.modal', cleanup);
             }, { once: true });
           }
-          
+
           // Show success message
           showSuccessMessage('Profile updated successfully!');
-          
+
         } catch (err) {
           console.error('Failed to save profile', err);
           showErrorMessage('Failed to save profile. Please try again.');
@@ -526,7 +526,7 @@
   async function loadUserActivity(userId) {
     try {
       console.log('loadUserActivity - Starting for user:', userId);
-      
+
       // Fetch posts and comments for the user
       const [postsResponse, commentsResponse] = await Promise.all([
         supabaseClient.from('forum_posts')
@@ -546,7 +546,7 @@
 
       const posts = postsResponse.data || [];
       const comments = commentsResponse.data || [];
-      
+
       console.log('loadUserActivity - Found posts:', posts.length);
       console.log('loadUserActivity - Found comments:', comments.length);
 
@@ -570,13 +570,13 @@
     tabs.forEach(tab => {
       tab.addEventListener('click', (e) => {
         e.preventDefault();
-        
+
         // Remove active class from all tabs
         tabs.forEach(t => t.classList.remove('active'));
-        
+
         // Add active class to clicked tab
         tab.classList.add('active');
-        
+
         // Render the selected tab content
         const tabType = tab.getAttribute('data-activity-tab');
         renderActivityTab(tabType);
@@ -592,9 +592,9 @@
     }
 
     const activityData = window.userActivityData || { posts: [], comments: [], achievements: [] };
-    
+
     let html = '';
-    
+
     switch (tabType) {
       case 'posts':
         if (activityData.posts.length === 0) {
@@ -603,7 +603,7 @@
           html = activityData.posts.map(post => createPostHTML(post)).join('');
         }
         break;
-        
+
       case 'comments':
         if (activityData.comments.length === 0) {
           html = '<div class="text-center text-muted py-4">No comments yet</div>';
@@ -611,15 +611,15 @@
           html = activityData.comments.map(comment => createCommentHTML(comment)).join('');
         }
         break;
-        
+
       case 'achievements':
         html = '<div class="text-center text-muted py-4">Achievements coming soon!</div>';
         break;
-        
+
       default:
         html = '<div class="text-center text-muted py-4">No activity found</div>';
     }
-    
+
     contentContainer.innerHTML = html;
   }
 
@@ -627,11 +627,11 @@
     return `
       <div class="activity-item border-bottom pb-3 mb-3">
         <div class="d-flex align-items-start">
-          <div class="flex-grow-1">
+          <div class="flex-grow-1" style="min-width: 0;">
             <h6 class="mb-1">
               <a href="/community-forum.html" class="text-decoration-none">${post.title || 'Untitled Post'}</a>
             </h6>
-            <p class="text-muted small mb-2">${truncateText(post.content || '', 150)}</p>
+            <p class="text-muted small mb-2" style="word-break: break-all; overflow-wrap: anywhere;">${truncateText(post.content || '', 150)}</p>
             <div class="d-flex align-items-center text-muted small">
               <span class="me-3">
                 <i class="fas fa-thumbs-up me-1"></i>${post.upvotes || 0}
@@ -651,12 +651,12 @@
     return `
       <div class="activity-item border-bottom pb-3 mb-3">
         <div class="d-flex align-items-start">
-          <div class="flex-grow-1">
+          <div class="flex-grow-1" style="min-width: 0;">
             <h6 class="mb-1">
               <span class="text-muted">Comment on:</span>
               <a href="/community-forum.html" class="text-decoration-none">${comment.forum_posts?.title || 'Unknown Post'}</a>
             </h6>
-            <p class="text-muted small mb-2">${truncateText(comment.content || '', 150)}</p>
+            <p class="text-muted small mb-2" style="word-break: break-all; overflow-wrap: anywhere;">${truncateText(comment.content || '', 150)}</p>
             <div class="d-flex align-items-center text-muted small">
               <span class="me-3">
                 <i class="fas fa-thumbs-up me-1"></i>${comment.upvotes || 0}
@@ -671,16 +671,16 @@
 
   function formatTimeAgo(dateString) {
     if (!dateString) return 'Unknown time';
-    
+
     const date = new Date(dateString);
     const now = new Date();
     const diffInSeconds = Math.floor((now - date) / 1000);
-    
+
     if (diffInSeconds < 60) return 'Just now';
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
     if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)}d ago`;
-    
+
     return date.toLocaleDateString();
   }
 
@@ -700,9 +700,9 @@
       ${message}
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
-    
+
     document.body.appendChild(successDiv);
-    
+
     // Auto-remove after 5 seconds
     setTimeout(() => {
       if (successDiv.parentNode) {
@@ -721,9 +721,9 @@
       ${message}
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
-    
+
     document.body.appendChild(errorDiv);
-    
+
     // Auto-remove after 8 seconds
     setTimeout(() => {
       if (errorDiv.parentNode) {
@@ -742,7 +742,7 @@
       modal.setAttribute('tabindex', '-1');
       modal.setAttribute('aria-labelledby', 'milestoneModalLabel');
       modal.setAttribute('aria-hidden', 'true');
-      
+
       modal.innerHTML = `
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -770,15 +770,15 @@
           </div>
         </div>
       `;
-      
+
       document.body.appendChild(modal);
     }
-    
+
     // Update modal content
     document.getElementById('milestoneModalTitle').textContent = milestone.title;
     document.getElementById('milestoneModalDate').textContent = formatTimeAgo(milestone.created_at);
     document.getElementById('milestoneModalDescription').textContent = milestone.description;
-    
+
     // Show the modal
     const modalInstance = new bootstrap.Modal(modal);
     modalInstance.show();
@@ -787,12 +787,12 @@
   // Setup inline bio editing
   function setupInlineBioEdit() {
     console.log('setupInlineBioEdit - Starting setup');
-    
+
     // Wait a bit for DOM to be fully ready
     setTimeout(() => {
       const editBioBtn = document.getElementById('editBioBtn');
       console.log('setupInlineBioEdit - Edit button found:', editBioBtn);
-      
+
       if (!editBioBtn) {
         console.log('setupInlineBioEdit - Edit button not found, retrying...');
         // Retry once more after a longer delay
@@ -807,33 +807,33 @@
         }, 1000);
         return;
       }
-      
+
       setupEditButtonListeners(editBioBtn);
     }, 100);
   }
-  
+
   function setupEditButtonListeners(editBioBtn) {
     console.log('setupEditButtonListeners - Setting up click handler');
-    
+
     // Remove any existing listeners to prevent duplicates
     editBioBtn.removeEventListener('click', handleEditBioClick);
     editBioBtn.addEventListener('click', handleEditBioClick);
-    
+
     console.log('setupEditButtonListeners - Click handler set up successfully');
   }
-  
+
   function handleEditBioClick() {
     console.log('handleEditBioClick - Edit button clicked');
-    
+
     const bioEl = document.getElementById('userBio');
     if (!bioEl) {
       console.error('handleEditBioClick - Bio element not found');
       return;
     }
-    
+
     const currentBio = bioEl.textContent;
     console.log('handleEditBioClick - Current bio:', currentBio);
-      
+
     // Create inline edit form
     const editForm = document.createElement('div');
     editForm.className = 'd-flex align-items-center mb-2';
@@ -846,37 +846,37 @@
         <i class="bi bi-x"></i>
       </button>
     `;
-    
+
     // Replace the bio element with the edit form
     bioEl.parentNode.replaceChild(editForm, bioEl);
-    
+
     // Focus on input
     const textarea = document.getElementById('inlineBioInput');
     textarea.focus();
-    
+
     // Setup save button
-    document.getElementById('saveBioBtn').addEventListener('click', async function() {
+    document.getElementById('saveBioBtn').addEventListener('click', async function () {
       const newBio = textarea.value.trim();
       try {
         const { error } = await supabaseClient.from('profiles_consolidated').upsert({
           user_id: viewingUserId,
           bio: newBio || null
         }, { onConflict: 'user_id' });
-        
+
         if (error) throw error;
-        
+
         // Update bio display and restore the original bio element
         bioEl.textContent = newBio || 'No bio available';
         editForm.parentNode.replaceChild(bioEl, editForm);
-        
+
       } catch (err) {
         console.error('Failed to save bio:', err);
         alert('Failed to save bio');
       }
     });
-    
+
     // Setup cancel button
-    document.getElementById('cancelBioBtn').addEventListener('click', function() {
+    document.getElementById('cancelBioBtn').addEventListener('click', function () {
       // Restore the original bio element
       editForm.parentNode.replaceChild(bioEl, editForm);
     });
@@ -886,7 +886,7 @@
   async function checkAndShowSponsorBadge(userId) {
     try {
       console.log('checkAndShowSponsorBadge - Checking for user:', userId);
-      
+
       // Check if user has a sponsor profile
       const { data: sponsorProfile, error } = await supabaseClient
         .from('sponsor_profiles')

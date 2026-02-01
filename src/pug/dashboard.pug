@@ -144,6 +144,26 @@ block content
                   button.btn.btn-outline-primary.btn-sm.w-100.mt-2#joinChallengeBtn
                     i.bi.bi-trophy
                     |  Join Challenge
+    
+    // Milestone Modal
+    #milestoneModal.modal.fade(tabindex="-1" aria-labelledby="milestoneModalTitle" aria-hidden="true")
+      .modal-dialog.modal-dialog-centered
+        .modal-content
+          .modal-header.bg-primary.text-white
+            h5#milestoneModalTitle.modal-title Add Milestone
+            button.btn-close.btn-close-white(type="button" data-bs-dismiss="modal" aria-label="Close")
+          .modal-body
+            form#milestoneForm
+              input#milestoneId(type="hidden")
+              .mb-3
+                label.form-label(for="milestoneTitle") Title
+                input#milestoneTitle.form-control(type="text" required placeholder="e.g. One Month Sober")
+              .mb-3
+                label.form-label(for="milestoneDescription") Description
+                textarea#milestoneDescription.form-control(rows="3" required placeholder="Describe what this milestone means to you...")
+          .modal-footer
+            button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+            button#saveMilestoneBtn.btn.btn-primary(type="button") Save Milestone
 
               // Quick Actions
               .dashboard-card.quick-actions-card.mt-3
@@ -551,14 +571,45 @@ block scripts
     }
     
     function showAddMilestoneModal() {
-      const title = prompt('Enter milestone title:');
-      if (!title) return;
+      // Reset form
+      document.getElementById('milestoneId').value = '';
+      document.getElementById('milestoneTitle').value = '';
+      document.getElementById('milestoneDescription').value = '';
+      document.getElementById('milestoneModalTitle').textContent = 'Add Milestone';
+      document.getElementById('saveMilestoneBtn').textContent = 'Add Milestone';
       
-      const description = prompt('Enter milestone description:');
-      if (!description) return;
-      
-      addMilestone(title, description);
+      // Show modal
+      const modal = new bootstrap.Modal(document.getElementById('milestoneModal'));
+      modal.show();
     }
+    
+    // Centralized save handler for both add and edit
+    document.addEventListener('DOMContentLoaded', () => {
+      const saveBtn = document.getElementById('saveMilestoneBtn');
+      if (saveBtn) {
+        saveBtn.addEventListener('click', async () => {
+          const id = document.getElementById('milestoneId').value;
+          const title = document.getElementById('milestoneTitle').value.trim();
+          const description = document.getElementById('milestoneDescription').value.trim();
+          
+          if (!title || !description) {
+            alert('Please fill in all fields');
+            return;
+          }
+          
+          if (id) {
+            await updateMilestone(id, title, description);
+          } else {
+            await addMilestone(title, description);
+          }
+          
+          // Close modal
+          const modalEl = document.getElementById('milestoneModal');
+          const modalInstance = bootstrap.Modal.getInstance(modalEl);
+          if (modalInstance) modalInstance.hide();
+        });
+      }
+    });
     
     async function addMilestone(title, description) {
       try {
@@ -599,17 +650,28 @@ block scripts
         
         if (error) throw error;
         
-        const newTitle = prompt('Enter new title:', data.title);
-        if (!newTitle) return;
+        // Populate and show modal
+        document.getElementById('milestoneId').value = data.id;
+        document.getElementById('milestoneTitle').value = data.title;
+        document.getElementById('milestoneDescription').value = data.description;
+        document.getElementById('milestoneModalTitle').textContent = 'Edit Milestone';
+        document.getElementById('saveMilestoneBtn').textContent = 'Save Changes';
         
-        const newDescription = prompt('Enter new description:', data.description);
-        if (!newDescription) return;
-        
+        const modal = new bootstrap.Modal(document.getElementById('milestoneModal'));
+        modal.show();
+      } catch (error) {
+        console.error('Failed to load milestone:', error);
+        showMessage('Failed to load milestone data', 'danger');
+      }
+    }
+    
+    async function updateMilestone(milestoneId, title, description) {
+      try {
         const { error: updateError } = await supabase
           .from('recovery_milestones')
           .update({
-            title: newTitle,
-            description: newDescription,
+            title: title,
+            description: description,
             updated_at: new Date().toISOString()
           })
           .eq('id', milestoneId)

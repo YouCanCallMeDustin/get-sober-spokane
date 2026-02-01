@@ -1,9 +1,9 @@
 @charset "UTF-8";
 /*!
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
-* Copyright 2013-2025 Start Bootstrap
+* Copyright 2013-2026 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Generated: 2025-09-08T02:55:57.064Z
+* Generated: 2026-02-01T06:32:23.970Z
 */
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
@@ -15789,6 +15789,9 @@ body .sign-in-link:active,
   margin-bottom: 1.5rem;
   border-left: 5px solid #2c5aa0;
   transition: all 0.3s ease;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 .activity-list .activity-item:hover {
   transform: translateY(-2px);
@@ -15815,6 +15818,9 @@ body .sign-in-link:active,
   line-height: 1.7;
   margin-bottom: 1rem;
   font-size: 1rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 .activity-list .activity-item .activity-footer .badge {
   font-size: 0.85rem;
