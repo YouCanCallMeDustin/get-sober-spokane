@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
+sharp.concurrency(1); // Limit to 1 thread to save memory
 
 // SEO Configuration for all pages
 const seoConfig = {
@@ -97,14 +98,14 @@ function generateMetaTags(pageKey, pageConfig) {
     const baseUrl = seoConfig.baseUrl;
     const pageUrl = pageKey === 'index' ? baseUrl : `${baseUrl}/${pageKey}.html`;
     const imageUrl = `${baseUrl}${pageConfig.image}`;
-    
+
     return {
         // Primary Meta Tags
         title: pageConfig.title,
         description: pageConfig.description,
         keywords: pageConfig.keywords,
         canonical: pageUrl,
-        
+
         // Open Graph
         ogType: 'website',
         ogUrl: pageUrl,
@@ -113,14 +114,14 @@ function generateMetaTags(pageKey, pageConfig) {
         ogImage: imageUrl,
         ogSiteName: seoConfig.organization.name,
         ogLocale: 'en_US',
-        
+
         // Twitter
         twitterCard: 'summary_large_image',
         twitterUrl: pageUrl,
         twitterTitle: pageConfig.title,
         twitterDescription: pageConfig.description,
         twitterImage: imageUrl,
-        
+
         // Additional SEO
         geoRegion: 'US-WA',
         geoPlacename: 'Spokane',
@@ -135,7 +136,7 @@ function generateMetaTags(pageKey, pageConfig) {
 function generateStructuredData(pageKey, pageConfig) {
     const baseUrl = seoConfig.baseUrl;
     const org = seoConfig.organization;
-    
+
     let schema = {
         "@context": "https://schema.org",
         "@type": pageConfig.schemaType,
@@ -160,7 +161,7 @@ function generateStructuredData(pageKey, pageConfig) {
             "name": "Spokane"
         }
     };
-    
+
     // Add specific schema properties based on page type
     if (pageConfig.schemaType === 'MedicalBusiness') {
         schema.medicalSpecialty = "Addiction Medicine";
@@ -169,7 +170,7 @@ function generateStructuredData(pageKey, pageConfig) {
             "name": "Addiction Treatment"
         };
     }
-    
+
     if (pageConfig.schemaType === 'Service') {
         schema.serviceType = "Recovery Support";
         schema.areaServed = {
@@ -177,12 +178,12 @@ function generateStructuredData(pageKey, pageConfig) {
             "name": "Spokane"
         };
     }
-    
+
     if (pageConfig.schemaType === 'Event') {
         schema.eventStatus = "EventScheduled";
         schema.eventAttendanceMode = "OfflineEventAttendanceMode";
     }
-    
+
     return schema;
 }
 
@@ -190,26 +191,37 @@ function generateStructuredData(pageKey, pageConfig) {
 async function optimizeImages() {
     const imageDir = path.join(__dirname, '../src/assets/img');
     const outputDir = path.join(__dirname, '../docs/assets/img');
-    
+
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true });
     }
-    
-    const imageFiles = fs.readdirSync(imageDir).filter(file => 
+
+    const imageFiles = fs.readdirSync(imageDir).filter(file =>
         /\.(jpg|jpeg|png)$/i.test(file)
     );
-    
+
     console.log('Optimizing images to WebP format...');
-    
+
     for (const file of imageFiles) {
         const inputPath = path.join(imageDir, file);
         const outputPath = path.join(outputDir, file.replace(/\.(jpg|jpeg|png)$/i, '.webp'));
-        
+
         try {
+            // Check if file already exists to skip re-processing
+            if (fs.existsSync(outputPath)) {
+                const inputStat = fs.statSync(inputPath);
+                const outputStat = fs.statSync(outputPath);
+                // Skip if output is newer than input
+                if (outputStat.mtime > inputStat.mtime) {
+                    console.log(`- Skipping (already optimized): ${file}`);
+                    continue;
+                }
+            }
+
             await sharp(inputPath)
                 .webp({ quality: 85 })
                 .toFile(outputPath);
-            
+
             console.log(`✓ Optimized: ${file} -> ${path.basename(outputPath)}`);
         } catch (error) {
             console.error(`✗ Error optimizing ${file}:`, error.message);
@@ -221,32 +233,41 @@ async function optimizeImages() {
 async function generateResponsiveImages() {
     const imageDir = path.join(__dirname, '../src/assets/img');
     const outputDir = path.join(__dirname, '../docs/assets/img');
-    
+
     const sizes = [
         { width: 480, suffix: '-sm' },
         { width: 768, suffix: '-md' },
         { width: 1024, suffix: '-lg' },
         { width: 1200, suffix: '-xl' }
     ];
-    
-    const imageFiles = fs.readdirSync(imageDir).filter(file => 
+
+    const imageFiles = fs.readdirSync(imageDir).filter(file =>
         /\.(jpg|jpeg|png)$/i.test(file)
     );
-    
+
     console.log('Generating responsive image sizes...');
-    
+
     for (const file of imageFiles) {
         const inputPath = path.join(imageDir, file);
-        
+
         for (const size of sizes) {
             const outputPath = path.join(outputDir, file.replace(/\.(jpg|jpeg|png)$/i, `${size.suffix}.webp`));
-            
+
             try {
+                // Check if file already exists
+                if (fs.existsSync(outputPath)) {
+                    const inputStat = fs.statSync(inputPath);
+                    const outputStat = fs.statSync(outputPath);
+                    if (outputStat.mtime > inputStat.mtime) {
+                        continue;
+                    }
+                }
+
                 await sharp(inputPath)
                     .resize(size.width, null, { withoutEnlargement: true })
                     .webp({ quality: 85 })
                     .toFile(outputPath);
-                
+
                 console.log(`✓ Generated: ${file} ${size.width}px -> ${path.basename(outputPath)}`);
             } catch (error) {
                 console.error(`✗ Error generating ${file} ${size.width}px:`, error.message);
@@ -335,25 +356,25 @@ function updatePugTemplate(templatePath, pageKey) {
         console.log(`No SEO config found for page: ${pageKey}`);
         return;
     }
-    
+
     const pageConfig = seoConfig.pages[pageKey];
     const metaTags = generateMetaTags(pageKey, pageConfig);
     const structuredData = generateStructuredData(pageKey, pageConfig);
-    
+
     let template = fs.readFileSync(templatePath, 'utf8');
-    
+
     // Update title
     template = template.replace(
         /title\s+[^\\n]+/,
         `title ${metaTags.title}`
     );
-    
+
     // Update description
     template = template.replace(
         /meta\(name='description',\s+content='[^']+'\)/,
         `meta(name='description', content='${metaTags.description}')`
     );
-    
+
     // Add comprehensive meta tags
     const metaTagsSection = `
         // Primary Meta Tags
@@ -395,26 +416,26 @@ function updatePugTemplate(templatePath, pageKey) {
         link(rel='preload', href='assets/img/logo.png', as='image')
         ${pageKey === 'index' ? "link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')" : ''}
     `;
-    
+
     // Insert meta tags after existing meta tags
     const metaInsertPoint = template.indexOf("meta(name='author'");
     if (metaInsertPoint !== -1) {
         const insertAfter = template.indexOf('\n', metaInsertPoint) + 1;
         template = template.slice(0, insertAfter) + metaTagsSection + template.slice(insertAfter);
     }
-    
+
     // Add structured data before closing head tag
     const structuredDataScript = `
         // Structured Data
         script(type='application/ld+json').
             ${JSON.stringify(structuredData, null, 12)}
     `;
-    
+
     const headEnd = template.lastIndexOf('</head>');
     if (headEnd !== -1) {
         template = template.slice(0, headEnd) + structuredDataScript + template.slice(headEnd);
     }
-    
+
     // Add lazy loading attributes to images
     template = template.replace(
         /<img([^>]+)src=['"]([^'"]+)['"]([^>]*)>/g,
@@ -425,7 +446,7 @@ function updatePugTemplate(templatePath, pageKey) {
             return `<img${before}data-src="${src}"${after} class="lazy">`;
         }
     );
-    
+
     // Add lazy loading attributes to videos
     template = template.replace(
         /<video([^>]+)><source\s+src=['"]([^'"]+)['"]([^>]*)>/g,
@@ -433,7 +454,7 @@ function updatePugTemplate(templatePath, pageKey) {
             return `<video${before}><source data-src="${src}"${after}>`;
         }
     );
-    
+
     fs.writeFileSync(templatePath, template);
     console.log(`✓ Updated SEO for: ${pageKey}`);
 }
@@ -441,29 +462,29 @@ function updatePugTemplate(templatePath, pageKey) {
 // Main optimization function
 async function optimizeAllPages() {
     console.log('🚀 Starting comprehensive SEO optimization...');
-    
+
     // Optimize images
     await optimizeImages();
     await generateResponsiveImages();
-    
+
     // Update all Pug templates
     const pugDir = path.join(__dirname, '../src/pug');
     const pugFiles = fs.readdirSync(pugDir).filter(file => file.endsWith('.pug'));
-    
+
     for (const file of pugFiles) {
         const pageKey = file.replace('.pug', '');
         const templatePath = path.join(pugDir, file);
         updatePugTemplate(templatePath, pageKey);
     }
-    
+
     // Create lazy loading script
     const lazyLoadingScript = createLazyLoadingScript();
     const scriptPath = path.join(__dirname, '../src/js/lazy-loading.js');
     fs.writeFileSync(scriptPath, lazyLoadingScript);
-    
+
     // Create SEO report
     createSEOReport();
-    
+
     console.log('✅ SEO optimization complete!');
 }
 
@@ -495,7 +516,7 @@ function createSEOReport() {
             'Consider adding Spanish language support'
         ]
     };
-    
+
     const reportPath = path.join(__dirname, '../seo-report.json');
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
     console.log('📊 SEO report generated: seo-report.json');
