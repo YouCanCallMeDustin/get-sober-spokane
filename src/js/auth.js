@@ -251,8 +251,8 @@ class AuthManager {
       const { data, error } = await this.supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          // Send users back to the static login page; the server route can also handle /auth/google/callback
-          redirectTo: `${window.location.origin}/auth/login.html`,
+          // Redirect to the server callback route which handles the OAuth response
+          redirectTo: `${window.location.origin}/auth/google/callback`,
           queryParams: { access_type: 'offline', prompt: 'consent' }
         }
       });
@@ -332,6 +332,19 @@ class AuthManager {
       if (error) throw error;
       
       console.log('Sign in successful:', data);
+      
+      // Ensure session is saved and current user is set
+      this.currentUser = data.user;
+      
+      // Wait a moment to ensure session is persisted
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Verify session is actually saved
+      const { data: { session } } = await this.supabase.auth.getSession();
+      if (!session) {
+        console.warn('Session not persisted after login');
+        throw new Error('Session not established. Please try again.');
+      }
       
       // Handle remember me functionality
       if (rememberMe) {

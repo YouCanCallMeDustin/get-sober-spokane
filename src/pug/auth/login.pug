@@ -86,7 +86,15 @@ block scripts
             }
             const result = await window.authManager.signIn(email, password, rememberMe);
             if (result.success) {
-              window.location.href = '/dashboard';
+              // Wait a moment for Supabase session to be established
+              await new Promise(resolve => setTimeout(resolve, 500));
+              // Verify session exists before redirecting
+              const { data: { session } } = await window.authManager.supabase.auth.getSession();
+              if (session) {
+                window.location.href = '/dashboard';
+              } else {
+                showAlert('Session not established. Please try again.', 'danger');
+              }
             }
           } else {
             showAlert('Authentication system not ready. Please refresh the page.', 'danger');

@@ -4,8 +4,8 @@
 // Set environment variables for the frontend
 window.__ENV = {
   // Supabase Configuration
-  SUPABASE_URL: 'https://iquczuhmkemjytrqnbxg.supabase.co',
-  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxdWN6dWhta2Vtanl0cnFuYnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQxMDMzMjcsImV4cCI6MjA2OTY3OTMyN30.FFzZFBUAM1ZgQSTlzPNSuJIikUiQkvSBKvc19wdzulk',
+  SUPABASE_URL: 'https://cwkpprcemnspgeoezfrp.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3a3BwcmNlbW5zcGdlb2V6ZnJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzODM0MzQsImV4cCI6MjA4NDk1OTQzNH0.hivNj8arZ2ZsSsaaWRfPaw53t7Z0JEOz7fuHr9awx_w',
   
   // App Configuration
   APP_NAME: 'Sober Spokane',

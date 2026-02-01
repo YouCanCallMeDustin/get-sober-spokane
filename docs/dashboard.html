@@ -519,10 +519,18 @@
                     supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
                     console.log('Supabase client initialized');
 
-                    // Check authentication state
-                    const {
-                        data: { session },
-                    } = await supabase.auth.getSession();
+                    // Check authentication state - retry a few times in case session is still being established
+                    let session = null;
+                    for (let i = 0; i < 3; i++) {
+                        const { data } = await supabase.auth.getSession();
+                        if (data?.session) {
+                            session = data.session;
+                            break;
+                        }
+                        // Wait a bit before retrying
+                        if (i < 2) await new Promise(resolve => setTimeout(resolve, 300));
+                    }
+                    
                     if (session) {
                         currentUser = session.user;
                         updateUserDisplay();
