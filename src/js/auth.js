@@ -9,7 +9,7 @@ class AuthManager {
   async init() {
     // Initialize Supabase client
     const initialized = await this.initializeSupabase();
-    
+
     // If Supabase failed to initialize, default to guest UI
     if (!initialized) {
       this.updateUIForUnauthenticatedUser();
@@ -21,7 +21,7 @@ class AuthManager {
 
     // Check authentication state
     this.checkAuthState();
-    
+
     // Set up auth state change listener
     this.setupAuthListener();
   }
@@ -31,7 +31,7 @@ class AuthManager {
       // Wait for Supabase to load
       let attempts = 0;
       const maxAttempts = 50; // Wait up to 5 seconds
-      
+
       while (attempts < maxAttempts && typeof window.supabase === 'undefined') {
         await new Promise(resolve => setTimeout(resolve, 100));
         attempts++;
@@ -47,12 +47,12 @@ class AuthManager {
 
       // Use the shared Supabase client to prevent multiple instances
       this.supabase = window.getSupabaseClient();
-      
+
       if (!this.supabase) {
         console.error('❌ Failed to get shared Supabase client');
         return false;
       }
-      
+
       console.log('✅ Using shared Supabase client');
       return true;
     } catch (error) {
@@ -66,13 +66,13 @@ class AuthManager {
     // Check if this is a Google OAuth return
     const urlParams = new URLSearchParams(window.location.search);
     const isGoogleOAuth = sessionStorage.getItem('googleOAuth') === 'true';
-    
+
     if (isGoogleOAuth || urlParams.has('code') || urlParams.has('access_token')) {
       console.log('Auth: Detected Google OAuth return');
-      
+
       // Clear the OAuth flag
       sessionStorage.removeItem('googleOAuth');
-      
+
       // Give Supabase a moment to process the OAuth callback
       setTimeout(() => {
         console.log('Auth: Re-checking auth state after OAuth return');
@@ -87,13 +87,13 @@ class AuthManager {
     try {
       console.log('Auth: Checking authentication state...');
       const { data: { session } } = await this.supabase.auth.getSession();
-      
+
       console.log('Auth: Session check result:', {
         hasSession: !!session,
         hasUser: !!session?.user,
         userEmail: session?.user?.email
       });
-      
+
       if (session) {
         this.currentUser = session.user;
         console.log('Auth: User authenticated:', session.user.email);
@@ -112,7 +112,7 @@ class AuthManager {
 
     this.supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('Auth state changed:', event, session);
-      
+
       if (event === 'SIGNED_IN' && session) {
         this.currentUser = session.user;
         this.onUserAuthenticated(session.user);
@@ -127,10 +127,10 @@ class AuthManager {
 
   onUserAuthenticated(user) {
     console.log('User authenticated:', user);
-    
+
     // Update UI for authenticated user
     this.updateUIForAuthenticatedUser(user);
-    
+
     // Attempt to sync server session (useful after Google OAuth client-side return)
     try {
       fetch('/api/auth/sync-session', {
@@ -143,14 +143,14 @@ class AuthManager {
           user_metadata: user.user_metadata,
           app_metadata: user.app_metadata
         })
-      }).catch(() => {});
-    } catch (e) {}
+      }).catch(() => { });
+    } catch (e) { }
 
     // Sync profile to forum_user_profiles
     this.syncForumProfile(user).catch(err => console.warn('Profile sync failed', err));
 
     // Redirect to dashboard if on auth pages
-    if (['/auth/login.html','/auth/signup.html','/auth/reset.html','/login','/signup','/reset'].includes(window.location.pathname)) {
+    if (['/auth/login.html', '/auth/signup.html', '/auth/reset.html', '/login', '/signup', '/reset'].includes(window.location.pathname)) {
       window.location.href = '/dashboard.html';
     }
   }
@@ -158,26 +158,26 @@ class AuthManager {
   async syncForumProfile(user) {
     try {
       if (!this.supabase) return;
-      
+
       // Check if user already has a profile
       const { data: existingProfile } = await this.supabase
         .from('profiles_consolidated')
         .select('display_name, avatar_url')
         .eq('user_id', user.id)
         .single();
-      
+
       // Only set display_name from Google Auth if user hasn't set a custom one
-      const displayName = existingProfile?.display_name || 
-                         user.user_metadata?.full_name || 
-                         user.user_metadata?.display_name || 
-                         user.user_metadata?.name || 
-                         user.email;
-      
+      const displayName = existingProfile?.display_name ||
+        user.user_metadata?.full_name ||
+        user.user_metadata?.display_name ||
+        user.user_metadata?.name ||
+        user.email;
+
       // Use Google picture if no custom avatar is set, or if the existing avatar is the default logo
       const googleAvatarUrl = user.user_metadata?.avatar_url || user.user_metadata?.picture || null;
-      const avatarUrl = existingProfile?.avatar_url && existingProfile.avatar_url !== '/assets/img/logo.png' 
-                       ? existingProfile.avatar_url 
-                       : googleAvatarUrl;
+      const avatarUrl = existingProfile?.avatar_url && existingProfile.avatar_url !== '/assets/img/logo.png'
+        ? existingProfile.avatar_url
+        : googleAvatarUrl;
       const { error } = await this.supabase
         .from('profiles_consolidated')
         .upsert({
@@ -194,12 +194,12 @@ class AuthManager {
 
   onUserSignedOut() {
     console.log('User signed out');
-    
+
     // Update UI for unauthenticated user
     this.updateUIForUnauthenticatedUser();
-    
+
     // Redirect to login if on protected pages
-    if (['/dashboard','/dashboard.html'].includes(window.location.pathname)) {
+    if (['/dashboard', '/dashboard.html'].includes(window.location.pathname)) {
       window.location.href = '/login?logout=true';
     }
   }
@@ -208,11 +208,11 @@ class AuthManager {
     // Show user-specific elements
     const authElements = document.querySelectorAll('[data-auth="required"]');
     authElements.forEach(el => el.style.display = 'block');
-    
+
     // Hide auth-only elements
     const guestElements = document.querySelectorAll('[data-auth="guest"]');
     guestElements.forEach(el => el.style.display = 'none');
-    
+
     // Update user info displays
     const userDisplays = document.querySelectorAll('[data-user-info]');
     userDisplays.forEach(el => {
@@ -227,7 +227,7 @@ class AuthManager {
     // Hide user-specific elements
     const authElements = document.querySelectorAll('[data-auth="required"]');
     authElements.forEach(el => el.style.display = 'none');
-    
+
     // Show auth-only elements
     const guestElements = document.querySelectorAll('[data-auth="guest"]');
     guestElements.forEach(el => el.style.display = 'block');
@@ -236,7 +236,8 @@ class AuthManager {
   // Google OAuth Sign In
   async signInWithGoogle() {
     console.log('🔧 Google OAuth sign-in initiated');
-    
+    console.log('🌐 Current origin:', window.location.origin);
+
     if (!this.supabase) {
       console.error('❌ Supabase not initialized');
       this.showError('Authentication system not ready. Please refresh the page.');
@@ -247,23 +248,31 @@ class AuthManager {
       // Show loading state
       this.showSuccess('Initiating Google sign-in...');
       console.log('🔄 Starting Google OAuth flow...');
-      
+
+      const redirectUrl = `${window.location.origin}/auth/google/callback`;
+      console.log('🔗 OAuth redirect URL:', redirectUrl);
+
       const { data, error } = await this.supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           // Redirect to the server callback route which handles the OAuth response
-          redirectTo: `${window.location.origin}/auth/google/callback`,
+          redirectTo: redirectUrl,
           queryParams: { access_type: 'offline', prompt: 'consent' }
         }
       });
 
       if (error) {
         console.error('❌ Google OAuth error:', error);
+        console.error('❌ Error details:', {
+          message: error.message,
+          status: error.status,
+          name: error.name
+        });
         throw error;
       }
-      
+
       console.log('✅ Google OAuth initiated successfully:', data);
-      
+
       // If we get a URL back, it means we need to redirect
       if (data.url) {
         console.log('🔄 Redirecting to Google OAuth URL:', data.url);
@@ -278,11 +287,15 @@ class AuthManager {
           window.location.href = '/dashboard.html';
         }, 1500);
       }
-      
+
       return { success: true, data };
     } catch (error) {
       console.error('❌ Google sign-in failed:', error);
-      this.showError('Google sign-in failed: ' + error.message);
+      console.error('💡 Troubleshooting tips:');
+      console.error('   1. Check that OAuth Server is enabled in Supabase dashboard');
+      console.error('   2. Verify redirect URL is configured in Supabase: ' + `${window.location.origin}/auth/google/callback`);
+      console.error('   3. Ensure Google OAuth credentials are properly set up');
+      this.showError('Google sign-in failed: ' + error.message + '. Check browser console for details.');
       return { success: false, error: error.message };
     }
   }
@@ -306,7 +319,7 @@ class AuthManager {
       });
 
       if (error) throw error;
-      
+
       console.log('Sign up successful:', data);
       return { success: true, data };
     } catch (error) {
@@ -330,27 +343,27 @@ class AuthManager {
       });
 
       if (error) throw error;
-      
+
       console.log('Sign in successful:', data);
-      
+
       // Ensure session is saved and current user is set
       this.currentUser = data.user;
-      
+
       // Wait a moment to ensure session is persisted
       await new Promise(resolve => setTimeout(resolve, 300));
-      
+
       // Verify session is actually saved
       const { data: { session } } = await this.supabase.auth.getSession();
       if (!session) {
         console.warn('Session not persisted after login');
         throw new Error('Session not established. Please try again.');
       }
-      
+
       // Handle remember me functionality
       if (rememberMe) {
         this.setRememberMe(true);
       }
-      
+
       return { success: true, data };
     } catch (error) {
       console.error('Sign in failed:', error);
@@ -372,7 +385,7 @@ class AuthManager {
       });
 
       if (error) throw error;
-      
+
       console.log('Password reset email sent');
       return { success: true };
     } catch (error) {
@@ -391,14 +404,14 @@ class AuthManager {
 
     try {
       const { error } = await this.supabase.auth.signOut();
-      
+
       if (error) throw error;
-      
+
       console.log('Sign out successful');
-      
+
       // Clear remember me
       this.setRememberMe(false);
-      
+
       return { success: true };
     } catch (error) {
       console.error('Sign out failed:', error);
@@ -422,17 +435,17 @@ class AuthManager {
   // Utility methods
   showError(message) {
     console.error(message);
-    
+
     // Create and show error alert
     const alertDiv = document.createElement('div');
     alertDiv.className = 'alert alert-danger auth-alert';
     alertDiv.textContent = message;
-    
+
     // Find a good place to insert the alert
     const container = document.querySelector('.auth-container, .dashboard-container, .container');
     if (container) {
       container.insertBefore(alertDiv, container.firstChild);
-      
+
       // Auto-remove after 5 seconds
       setTimeout(() => {
         if (alertDiv.parentNode) {
@@ -444,17 +457,17 @@ class AuthManager {
 
   showSuccess(message) {
     console.log(message);
-    
+
     // Create and show success alert
     const alertDiv = document.createElement('div');
     alertDiv.className = 'alert alert-success auth-alert';
     alertDiv.textContent = message;
-    
+
     // Find a good place to insert the alert
     const container = document.querySelector('.auth-container, .dashboard-container, .container');
     if (container) {
       container.insertBefore(alertDiv, container.firstChild);
-      
+
       // Auto-remove after 5 seconds
       setTimeout(() => {
         if (alertDiv.parentNode) {

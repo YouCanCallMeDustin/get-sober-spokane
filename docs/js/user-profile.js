@@ -1,8 +1,8 @@
 /*!
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
-* Copyright 2013-2025 Start Bootstrap
+* Copyright 2013-2026 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2025-09-08T02:55:59.506Z
+* Built: 2026-02-03T02:53:43.528Z
 */
 /*!
 * Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
@@ -625,23 +625,21 @@
 
   function createPostHTML(post) {
     return `
-      <div class="activity-item border-bottom pb-3 mb-3">
-        <div class="d-flex align-items-start">
-          <div class="flex-grow-1" style="min-width: 0;">
-            <h6 class="mb-1">
-              <a href="/community-forum.html" class="text-decoration-none">${post.title || 'Untitled Post'}</a>
-            </h6>
-            <p class="text-muted small mb-2" style="word-break: break-all; overflow-wrap: anywhere;">${truncateText(post.content || '', 150)}</p>
-            <div class="d-flex align-items-center text-muted small">
-              <span class="me-3">
-                <i class="fas fa-thumbs-up me-1"></i>${post.upvotes || 0}
-              </span>
-              <span class="me-3">
-                <i class="fas fa-comment me-1"></i>${post.comment_count || 0}
-              </span>
-              <span>${formatTimeAgo(post.created_at)}</span>
-            </div>
-          </div>
+      <div class="activity-item pb-3 mb-3">
+        <div class="activity-header">
+          <h6 class="activity-title">
+            <a href="/community-forum.html" class="text-decoration-none">${post.title || 'Untitled Post'}</a>
+          </h6>
+          <small class="text-muted">${formatTimeAgo(post.created_at)}</small>
+        </div>
+        <div class="activity-content" style="word-break: break-all; overflow-wrap: anywhere;">${truncateText(post.content || '', 150)}</div>
+        <div class="activity-footer">
+          <span class="badge bg-primary me-2">
+            <i class="fas fa-thumbs-up me-1"></i>${post.upvotes || 0}
+          </span>
+          <span class="badge bg-secondary me-2">
+            <i class="fas fa-comment me-1"></i>${post.comment_count || 0}
+          </span>
         </div>
       </div>
     `;
@@ -649,21 +647,19 @@
 
   function createCommentHTML(comment) {
     return `
-      <div class="activity-item border-bottom pb-3 mb-3">
-        <div class="d-flex align-items-start">
-          <div class="flex-grow-1" style="min-width: 0;">
-            <h6 class="mb-1">
-              <span class="text-muted">Comment on:</span>
-              <a href="/community-forum.html" class="text-decoration-none">${comment.forum_posts?.title || 'Unknown Post'}</a>
-            </h6>
-            <p class="text-muted small mb-2" style="word-break: break-all; overflow-wrap: anywhere;">${truncateText(comment.content || '', 150)}</p>
-            <div class="d-flex align-items-center text-muted small">
-              <span class="me-3">
-                <i class="fas fa-thumbs-up me-1"></i>${comment.upvotes || 0}
-              </span>
-              <span>${formatTimeAgo(comment.created_at)}</span>
-            </div>
-          </div>
+      <div class="activity-item pb-3 mb-3">
+        <div class="activity-header">
+          <h6 class="activity-title">
+            <span class="text-muted">Comment on:</span>
+            <a href="/community-forum.html" class="text-decoration-none">${comment.forum_posts?.title || 'Unknown Post'}</a>
+          </h6>
+          <small class="text-muted">${formatTimeAgo(comment.created_at)}</small>
+        </div>
+        <div class="activity-content" style="word-break: break-all; overflow-wrap: anywhere;">${truncateText(comment.content || '', 150)}</div>
+        <div class="activity-footer">
+          <span class="badge bg-primary me-2">
+            <i class="fas fa-thumbs-up me-1"></i>${comment.upvotes || 0}
+          </span>
         </div>
       </div>
     `;

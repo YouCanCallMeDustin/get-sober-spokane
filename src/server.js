@@ -94,6 +94,7 @@ app.use('/assets', (req, res, next) => {
   else if (ext === '.png') res.type('image/png');
   else if (ext === '.jpg' || ext === '.jpeg') res.type('image/jpeg');
   else if (ext === '.webp') res.type('image/webp');
+  else if (ext === '.mp4') res.type('video/mp4');
   next();
 }, express.static(path.join(__dirname, '..', 'src/assets')));
 
