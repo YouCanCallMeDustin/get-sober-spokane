@@ -950,37 +950,116 @@ block scripts
       const canvas = document.getElementById('sobrietyProgressRing');
       if (!canvas) return;
       
+      // Get the container dimensions to ensure responsive sizing matching CSS
+      const container = canvas.parentElement;
+      const rect = canvas.getBoundingClientRect();
+      const cssWidth = rect.width;
+      const cssHeight = rect.height;
+      
+      // Handle High DPI displays (Retina)
+      const dpr = window.devicePixelRatio || 1;
+      
+      // Set actual canvas size (accounting for DPI)
+      canvas.width = cssWidth * dpr;
+      canvas.height = cssHeight * dpr;
+      
+      // Ensure CSS size matches visible size
+      // (This is redundant if CSS handles it, but ensures consistency)
+      canvas.style.width = `${cssWidth}px`;
+      canvas.style.height = `${cssHeight}px`;
+      
       const ctx = canvas.getContext('2d');
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const radius = 80;
+      ctx.scale(dpr, dpr); // Scale all drawing operations
+      
+      const centerX = cssWidth / 2;
+      const centerY = cssHeight / 2;
+      // Adjust radius based on size (keep padding for stroke)
+      const strokeWidth = 12;
+      const radius = (Math.min(cssWidth, cssHeight) / 2) - (strokeWidth / 2) - 2;
       
       // Calculate progress percentage (assuming 365 days = 100%)
       const sobrietyDays = parseInt(document.getElementById('sobrietyDays').textContent) || 0;
       const progressPercentage = Math.min((sobrietyDays / 365) * 100, 100);
       
+      // Clear canvas
+      ctx.clearRect(0, 0, cssWidth, cssHeight);
+      
       // Draw background circle
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
       ctx.strokeStyle = '#e9ecef';
-      ctx.lineWidth = 12;
+      ctx.lineWidth = strokeWidth;
+      ctx.lineCap = 'round';
       ctx.stroke();
       
       // Draw progress arc
       if (progressPercentage > 0) {
+        // Gradient for progress ring
+        const gradient = ctx.createLinearGradient(0, 0, cssWidth, cssHeight);
+        gradient.addColorStop(0, '#1e40af');
+        gradient.addColorStop(0.5, '#3b82f6');
+        gradient.addColorStop(1, '#60a5fa');
+        
         const startAngle = -Math.PI / 2; // Start from top
         const endAngle = startAngle + (progressPercentage / 100) * 2 * Math.PI;
         
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-        ctx.strokeStyle = getProgressColor(progressPercentage);
-        ctx.lineWidth = 12;
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = strokeWidth;
         ctx.lineCap = 'round';
+        
+        // Add shadow for depth
+        ctx.shadowColor = 'rgba(59, 130, 246, 0.4)';
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 4;
+        
         ctx.stroke();
+        
+        // Reset shadow
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
       }
       
-      // Update overlay text
-      document.getElementById('progressRingDays').textContent = sobrietyDays;
+      // Animate number
+      animateValue("progressRingDays", 0, sobrietyDays, 1500);
+    }
+    
+    // Helper to animate number counting
+    function animateValue(id, start, end, duration) {
+      const obj = document.getElementById(id);
+      if (!obj) return;
+      
+      // If end is 0 or numbers match, just set it
+      if (start === end) {
+        obj.textContent = end;
+        return;
+      }
+      
+      const range = end - start;
+      const minTimer = 50; // minimum time between frames
+      let stepTime = Math.abs(Math.floor(duration / range));
+      stepTime = Math.max(stepTime, minTimer);
+      
+      const startTime = new Date().getTime();
+      const endTime = startTime + duration;
+      let timer;
+      
+      function run() {
+        const now = new Date().getTime();
+        const remaining = Math.max((endTime - now) / duration, 0);
+        const value = Math.round(end - (remaining * range));
+        obj.textContent = value;
+        if (value === end) {
+          clearInterval(timer);
+        }
+      }
+      
+      timer = setInterval(run, stepTime);
+      run(); // Run immediately
     }
     
     function getProgressColor(percentage) {
@@ -1007,8 +1086,8 @@ block scripts
       if (sobrietyDays >= 365) badges.push({ name: 'Year Legend', icon: '🌟', color: '#e83e8c' });
       
       // Display badges
-      badgesContainer.innerHTML = badges.map(badge => `
-        <div class="achievement-badge" style="border-color: ${badge.color}">
+      badgesContainer.innerHTML = badges.map((badge, index) => `
+        <div class="achievement-badge unlocked" style="border-color: ${badge.color}; animation-delay: ${index * 0.1}s">
           <div class="badge-icon" style="color: ${badge.color}">${badge.icon}</div>
           <div class="badge-name">${badge.name}</div>
         </div>
