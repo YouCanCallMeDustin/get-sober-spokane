@@ -44,9 +44,9 @@ html(lang='en')
         link(rel='apple-touch-icon', href='assets/img/logo.png')
         
         // Preload critical resources
-        link(rel='preload', href='/css/styles.css', as='style')
-        link(rel='preload', href='/assets/img/logo.png', as='image')
-        link(rel='preload', href='/assets/img/bg-masthead.mp4', as='video', type='video/mp4')
+        link(rel='preload', href='css/styles.css', as='style')
+        link(rel='preload', href='assets/img/logo.png', as='image')
+        link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')
     
         // Bootstrap Icons
         link(href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css', rel='stylesheet')
@@ -223,7 +223,7 @@ html(lang='en')
         header.masthead
             // Video Background
             video#bgVideo.video-background(autoplay='', muted='', loop='', playsinline='')
-                source(src='/assets/img/bg-masthead.mp4', type='video/mp4')
+                source(src='assets/img/bg-masthead.mp4', type='video/mp4')
                 | Your browser does not support the video tag.
             .container.px-4.px-lg-5.h-100
                 .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
