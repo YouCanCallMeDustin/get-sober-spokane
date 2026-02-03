@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2026 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2026-02-03T03:05:35.346Z
+* Built: 2026-02-03T03:13:29.517Z
 */
 // Authentication JavaScript
 class AuthManager {
@@ -255,13 +255,13 @@ class AuthManager {
       this.showSuccess('Initiating Google sign-in...');
       console.log('🔄 Starting Google OAuth flow...');
 
-      const redirectUrl = `${window.location.origin}/auth/google/callback`;
+      const redirectUrl = `${window.location.origin}/login`;
       console.log('🔗 OAuth redirect URL:', redirectUrl);
 
       const { data, error } = await this.supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          // Redirect to the server callback route which handles the OAuth response
+          // Redirect back to login page where client-side will handle the OAuth tokens
           redirectTo: redirectUrl,
           queryParams: { access_type: 'offline', prompt: 'consent' }
         }

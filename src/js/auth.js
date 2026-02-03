@@ -249,13 +249,13 @@ class AuthManager {
       this.showSuccess('Initiating Google sign-in...');
       console.log('🔄 Starting Google OAuth flow...');
 
-      const redirectUrl = `${window.location.origin}/auth/google/callback`;
+      const redirectUrl = `${window.location.origin}/login`;
       console.log('🔗 OAuth redirect URL:', redirectUrl);
 
       const { data, error } = await this.supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          // Redirect to the server callback route which handles the OAuth response
+          // Redirect back to login page where client-side will handle the OAuth tokens
           redirectTo: redirectUrl,
           queryParams: { access_type: 'offline', prompt: 'consent' }
         }
