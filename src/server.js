@@ -553,6 +553,84 @@ app.get('/api/forum/init', async (req, res) => {
   }
 });
 
+// API endpoint to initialize gamification tables
+app.get('/api/gamification/init', async (req, res) => {
+  try {
+    console.log('Initializing gamification tables...');
+    const fs = require('fs');
+    const path = require('path');
+
+    // Read the SQL file
+    const sqlPath = path.join(__dirname, 'sql/init-gamification.sql');
+    let sqlContent = '';
+
+    try {
+      sqlContent = fs.readFileSync(sqlPath, 'utf8');
+    } catch (fsError) {
+      // Fallback if file not found (e.g. if path is slightly different in prod vs dev)
+      console.warn('Could not read init-gamification.sql, using fallback SQL string', fsError);
+
+      // Minimal fallback if file read fails
+      sqlContent = `
+        CREATE TABLE IF NOT EXISTS user_badges (
+          id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+          user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+          badge_id TEXT NOT NULL,
+          awarded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          metadata JSONB DEFAULT '{}'::jsonb,
+          UNIQUE(user_id, badge_id)
+        );
+        -- Enable RLS for user_badges
+        ALTER TABLE user_badges ENABLE ROW LEVEL SECURITY;
+        -- Policies (simplified for fallback)
+        CREATE POLICY "Users can view their own badges" ON user_badges FOR SELECT USING (auth.uid() = user_id);
+        CREATE POLICY "Users can insert their own badges" ON user_badges FOR INSERT WITH CHECK (auth.uid() = user_id);
+        
+        CREATE TABLE IF NOT EXISTS user_journal (
+          id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+          user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+          mood_rating INTEGER,
+          gratitude_text TEXT,
+          entry_text TEXT,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        );
+        ALTER TABLE user_journal ENABLE ROW LEVEL SECURITY;
+        CREATE POLICY "Users can view their own journal" ON user_journal FOR SELECT USING (auth.uid() = user_id);
+        CREATE POLICY "Users can insert their own journal" ON user_journal FOR INSERT WITH CHECK (auth.uid() = user_id);
+        
+        CREATE TABLE IF NOT EXISTS user_meetings (
+          id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+          user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+          meeting_type TEXT NOT NULL,
+          meeting_name TEXT,
+          attended_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          notes TEXT
+        );
+        ALTER TABLE user_meetings ENABLE ROW LEVEL SECURITY;
+        CREATE POLICY "Users can view their own meetings" ON user_meetings FOR SELECT USING (auth.uid() = user_id);
+        CREATE POLICY "Users can insert their own meetings" ON user_meetings FOR INSERT WITH CHECK (auth.uid() = user_id);
+      `;
+    }
+
+    // Execute the SQL
+    const { error } = await supabase.rpc('exec_sql', { sql: sqlContent });
+
+    if (error) {
+      console.error('Error creating gamification tables:', error);
+      // If exec_sql RPC doesn't exist or fails, we might need a different approach
+      // But assuming it works as per forum init
+      return res.status(500).json({ error: 'Failed to create tables: ' + error.message });
+    }
+
+    console.log('Gamification tables initialized successfully');
+    res.json({ success: true, message: 'Gamification tables ready' });
+
+  } catch (error) {
+    console.error('Error in gamification init:', error);
+    res.status(500).json({ error: 'Internal server error during gamification init' });
+  }
+});
+
 // API endpoint to get recent posts for dashboard
 app.get('/api/dashboard/recent-activity', async (req, res) => {
   try {

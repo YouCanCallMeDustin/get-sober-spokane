@@ -89,9 +89,8 @@
                 }
             }
         </style>
-        <title>Community Forum - Get Sober Spokane</title>
-        <meta name="description" content="Connect with the recovery community in Spokane. Share your journey, find support, and celebrate milestones together." />
-        <meta name="keywords" content="recovery community, sobriety support, addiction recovery forum, Spokane recovery, sober living support" />
+        <title>Meeting Tracker - Get Sober Spokane</title>
+        <meta name="description" content="Log your attendance at recovery meetings (AA, NA, Smart Recovery) and track your commitment." />
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -247,200 +246,73 @@
                 </div>
             </div>
         </nav>
-        <!-- Forum Container with proper spacing for fixed navigation-->
-        <div class="forum-container">
-            <!-- Hero Banner Section-->
-            <div class="forum-hero">
-                <div class="container">
-                    <div class="row justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="forum-hero-title">Community Forum</h1>
-                            <p class="forum-hero-subtitle">Connect, share, and support each other on your recovery journey</p>
-                        </div>
-                    </div>
+        <div class="container py-5 mt-5">
+            <div class="row mb-4">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="text-primary mb-3">Meeting Tracker</h2>
+                    <p class="lead text-muted">"Keep coming back, it works if you work it."</p>
                 </div>
             </div>
-            <!-- Main Forum Content-->
-            <div class="forum-content">
-                <div class="container">
-                    <!-- Forum Navigation and Controls-->
-                    <div class="forum-controls mb-4">
-                        <div class="row align-items-center">
-                            <div class="col-lg-8">
-                                <div class="d-flex flex-wrap gap-3 align-items-center">
-                                    <!-- Search Bar-->
-                                    <div class="search-container">
-                                        <div class="input-group">
-                                            <div class="input-group-text"><i class="bi bi-search"></i></div>
-                                            <input class="form-control" id="forum-search" type="text" placeholder="Search posts, topics, or users..." />
-                                        </div>
-                                    </div>
-                                    <!-- Category Filter-->
-                                    <select class="form-select" id="category-filter" style="min-width: 180px">
-                                        <option value="">All Categories</option>
-                                        <option value="General Discussion">General Discussion</option>
-                                        <option value="Recovery Support">Recovery Support</option>
-                                        <option value="Treatment &amp; Resources">Treatment & Resources</option>
-                                        <option value="Family &amp; Friends">Family & Friends</option>
-                                        <option value="Mental Health">Mental Health</option>
-                                        <option value="Employment &amp; Housing">Employment & Housing</option>
-                                        <option value="Sober Activities">Sober Activities</option>
-                                        <option value="Success Stories">Success Stories</option>
-                                    </select>
-                                    <!-- Sort Options-->
-                                    <select class="form-select" id="sort-posts" style="min-width: 150px">
-                                        <option value="newest">Newest First</option>
-                                        <option value="oldest">Oldest First</option>
-                                        <option value="most-voted">Most Voted</option>
-                                        <option value="most-commented">Most Commented</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 text-lg-end">
-                                <button class="btn btn-primary" id="newPostBtn" type="button">
-                                    <i class="bi bi-plus-circle me-2"></i>
-                                    New Post
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Forum Statistics-->
-                    <div class="forum-stats mb-4">
-                        <div class="row text-center">
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="stat-card">
-                                    <div class="stat-number" id="totalPosts">0</div>
-                                    <div class="stat-label">Total Posts</div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="stat-card">
-                                    <div class="stat-number" id="totalUsers">0</div>
-                                    <div class="stat-label">Active Users</div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="stat-card">
-                                    <div class="stat-number" id="totalComments">0</div>
-                                    <div class="stat-label">Comments</div>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="stat-card">
-                                    <div class="stat-number" id="successStories">0</div>
-                                    <div class="stat-label">Success Stories</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Featured Success Stories-->
-                    <div class="featured-stories mb-4">
-                        <h3 class="section-title">
-                            <i class="bi bi-star-fill text-warning me-2"></i>
-                            Featured Success Stories
-                        </h3>
-                        <div class="row" id="featuredStories"><!-- Featured stories will be loaded dynamically--></div>
-                    </div>
-                    <!-- Main Posts Container-->
-                    <div class="posts-section">
-                        <h3 class="section-title">
-                            <i class="bi bi-chat-dots me-2"></i>
-                            Community Discussions
-                        </h3>
-                        <div id="posts-container"><!-- Posts will be loaded dynamically--></div>
-                    </div>
-                    <!-- Load More Button-->
-                    <div class="text-center mt-4">
-                        <button class="btn btn-outline-primary" id="loadMoreBtn" type="button" style="display: none">
-                            <i class="bi bi-arrow-down me-2"></i>
-                            Load More Posts
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- New Post Modal-->
-            <div class="modal fade" id="newPostModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">
-                                <i class="bi bi-plus-circle me-2"></i>
-                                Create New Post
+            <div class="row">
+                <!-- Log Meeting Column-->
+                <div class="col-lg-5 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-check-circle me-2"></i>
+                                Log Attendance
                             </h5>
-                            <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
                         </div>
-                        <div class="modal-body">
-                            <form id="newPostForm">
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="post-title">Post Title *</label>
-                                            <input class="form-control" id="post-title" type="text" required maxlength="200" placeholder="What would you like to discuss?" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="post-category">Category *</label>
-                                            <select class="form-select" id="post-category" required>
-                                                <option value="">Select Category</option>
-                                                <option value="General Discussion">General Discussion</option>
-                                                <option value="Recovery Support">Recovery Support</option>
-                                                <option value="Treatment &amp; Resources">Treatment & Resources</option>
-                                                <option value="Family &amp; Friends">Family & Friends</option>
-                                                <option value="Mental Health">Mental Health</option>
-                                                <option value="Employment &amp; Housing">Employment & Housing</option>
-                                                <option value="Sober Activities">Sober Activities</option>
-                                                <option value="Success Stories">Success Stories</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="card-body">
+                            <form id="meetingForm">
+                                <!-- Meeting Type-->
                                 <div class="mb-3">
-                                    <label class="form-label" for="post-tags">Tags (optional)</label>
-                                    <input class="form-control" id="post-tags" type="text" placeholder="recovery, support, advice, spokane" />
-                                    <div class="form-text">Separate tags with commas</div>
+                                    <label class="form-label fw-bold">Meeting Type</label>
+                                    <select class="form-select" id="meetingType" required>
+                                        <option value="" selected disabled>Select type...</option>
+                                        <option value="AA">Alcoholics Anonymous (AA)</option>
+                                        <option value="NA">Narcotics Anonymous (NA)</option>
+                                        <option value="Smart">Smart Recovery</option>
+                                        <option value="Celebrate">Celebrate Recovery</option>
+                                        <option value="Other">Other</option>
+                                    </select>
                                 </div>
+                                <!-- Meeting Name-->
                                 <div class="mb-3">
-                                    <label class="form-label" for="post-content">Post Content *</label>
-                                    <textarea class="form-control" id="post-content" rows="8" required placeholder="Share your thoughts, experiences, questions, or success story..."></textarea>
-                                    <div class="form-text">Minimum 50 characters</div>
+                                    <label class="form-label fw-bold">Group Name / Location</label>
+                                    <input class="form-control" id="meetingName" type="text" placeholder="e.g., Sunday Morning Serenity" required />
                                 </div>
+                                <!-- Notes-->
                                 <div class="mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" id="post-anonymous" type="checkbox" />
-                                        <label class="form-check-label" for="post-anonymous">Post anonymously</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" id="post-featured" type="checkbox" />
-                                        <label class="form-check-label" for="post-featured">Mark as success story (if applicable)</label>
-                                    </div>
+                                    <label class="form-label fw-bold">Key Takeaways</label>
+                                    <textarea class="form-control" id="meetingNotes" rows="3" placeholder="What stood out to you today?"></textarea>
                                 </div>
-                                <div class="alert alert-info">
-                                    <i class="bi bi-info-circle me-2"></i>
-                                    <strong>Community Guidelines:</strong>
-                                    Be supportive, respectful, and mindful of others' privacy. Share experiences rather than medical advice. All posts are moderated.
-                                </div>
+                                <button class="btn btn-success w-100 py-2" type="submit">
+                                    <i class="bi bi-plus-circle me-2"></i>
+                                    Log Meeting
+                                </button>
                             </form>
                         </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-primary" id="submitPostBtn" type="submit">Create Post</button>
-                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Post Detail Modal-->
-            <div class="modal fade" id="postDetailModal" tabindex="-1">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="postDetailTitle"></h5>
-                            <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+                <!-- History Column-->
+                <div class="col-lg-7">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-clock-history me-2"></i>
+                                Attendance History
+                            </h5>
+                            <button class="btn btn-sm btn-outline-success" id="refreshMeetings"><i class="bi bi-arrow-clockwise"></i></button>
                         </div>
-                        <div class="modal-body">
-                            <div id="postDetailContent"><!-- Post content and comments will be loaded here--></div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush" id="meetingList">
+                                <div class="text-center py-4 text-muted">
+                                    <div class="spinner-border spinner-border-sm text-success me-2"></div>
+                                    Loading history...
+                                </div>
+                            </div>
                         </div>
-                        <div class="modal-footer"><button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button></div>
                     </div>
                 </div>
             </div>
@@ -521,59 +393,7 @@
                 }
             });
         </script>
-        <script src="/js/community-forum-enhanced.js?v=20250822g"></script>
-        <script src="/js/comment-fix.js?v=20250822d"></script>
-        <script>
-            // Initialize forum when page loads
-            document.addEventListener('DOMContentLoaded', function () {
-                // Wire Create Post button to submit the form (button is outside the form)
-                const submitBtn = document.getElementById('submitPostBtn');
-                const form = document.getElementById('newPostForm');
-                if (submitBtn && form) {
-                    submitBtn.addEventListener('click', function () {
-                        if (typeof form.requestSubmit === 'function') {
-                            form.requestSubmit();
-                        } else {
-                            form.submit();
-                        }
-                    });
-                }
-
-                // Check if user is authenticated
-                if (window.authManager && window.authManager.isAuthenticated()) {
-                    // User is logged in, enable full forum features
-                    initializeAuthenticatedForum();
-                } else {
-                    // User is not logged in, show limited forum view
-                    initializeGuestForum();
-                }
-            });
-
-            function initializeAuthenticatedForum() {
-                console.log('Initializing authenticated forum...');
-                // Enable new post creation
-                document.getElementById('newPostBtn').addEventListener('click', function () {
-                    const modal = new bootstrap.Modal(document.getElementById('newPostModal'));
-                    modal.show();
-                });
-
-                // Initialize forum with full features
-                if (window.forum && typeof window.forum.initializeForum === 'function') {
-                    window.forum.initializeForum();
-                }
-            }
-
-            function initializeGuestForum() {
-                console.log('Initializing guest forum...');
-                // Disable new post creation for guests
-                document.getElementById('newPostBtn').disabled = true;
-                document.getElementById('newPostBtn').title = 'Please sign in to create posts';
-
-                // Show limited forum view
-                if (window.forum && typeof window.forum.initializeForum === 'function') {
-                    window.forum.initializeForum();
-                }
-            }
-        </script>
+        <script src="/js/gamification.js"></script>
+        <script src="/js/meeting-tracker.js"></script>
     </body>
 </html>

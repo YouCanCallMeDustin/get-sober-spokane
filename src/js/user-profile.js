@@ -152,19 +152,29 @@
     try {
       console.log('renderProfile - Starting for user:', userId);
 
-      const [{ data: profile }, postsCount, commentsCount, upvotesCount, { data: milestones }] = await Promise.all([
+      const [{ data: profile }, postsCount, commentsCount, upvotesCount] = await Promise.all([
         supabaseClient.from('profiles_consolidated').select('*').eq('user_id', userId).maybeSingle(),
         supabaseClient.from('forum_posts').select('id', { count: 'exact', head: true }).eq('user_id', userId),
         supabaseClient.from('forum_comments').select('id', { count: 'exact', head: true }).eq('user_id', userId),
-        supabaseClient.from('forum_post_votes').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('vote', 1),
-        supabaseClient.from('recovery_milestones').select('*').eq('user_id', userId).order('created_at', { ascending: false })
+        supabaseClient.from('forum_post_votes').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('vote', 1)
       ]);
+
+      // Initialize Badge Manager
+      const badgeManager = new BadgeManager(supabaseClient);
+
+      // If viewing own profile, check and award new badges
+      if (currentUser && currentUser.id === userId && profile?.sobriety_date) {
+        await badgeManager.checkAndAwardBadges(userId, profile.sobriety_date);
+      }
+
+      // Fetch user badges
+      const badges = await badgeManager.getUserBadges(userId);
+      console.log('renderProfile - Badges:', badges);
 
       console.log('renderProfile - Profile data:', profile);
       console.log('renderProfile - Posts count:', postsCount?.count);
       console.log('renderProfile - Comments count:', commentsCount?.count);
       console.log('renderProfile - Upvotes count:', upvotesCount?.count);
-      console.log('renderProfile - Milestones:', milestones);
 
       // Update display name
       const nameEl = document.querySelector('#userDisplayName') || document.querySelector('h1, .profile-title, .stories-hero-title');
@@ -319,36 +329,25 @@
         }
       }
 
-      // Load and display milestones
+      // Load and display badges (replacing milestones)
       const milestonesContainer = document.getElementById('userMilestones');
       if (milestonesContainer) {
-        if (milestones && milestones.length > 0) {
-          const milestonesHTML = milestones.map(milestone => `
-            <div class="milestone-item d-flex align-items-center mb-2">
-              <div class="flex-grow-1">
-                <a href="#" class="milestone-link text-decoration-none" data-milestone-id="${milestone.id}">
-                  <h6 class="mb-1 text-primary">${milestone.title}</h6>
-                  <small class="text-muted">${formatTimeAgo(milestone.created_at)}</small>
-                </a>
+        if (badges && badges.length > 0) {
+          const badgesHTML = badges.map(badge => `
+            <div class="milestone-item d-flex align-items-center mb-3 p-2 border rounded">
+              <div class="me-3">
+                <i class="bi ${badge.icon || 'bi-trophy'} text-warning fs-2"></i>
+              </div>
+              <div>
+                <h6 class="mb-1 text-dark fw-bold">${badge.name}</h6>
+                <p class="mb-0 text-muted small">${badge.description}</p>
+                <small class="text-muted" style="font-size: 0.75rem;">Awarded: ${new Date(badge.awarded_at || badge.created_at).toLocaleDateString()}</small>
               </div>
             </div>
           `).join('');
-          milestonesContainer.innerHTML = milestonesHTML;
-
-          // Add click event listeners to milestone links
-          const milestoneLinks = milestonesContainer.querySelectorAll('.milestone-link');
-          milestoneLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-              e.preventDefault();
-              const milestoneId = link.getAttribute('data-milestone-id');
-              const milestone = milestones.find(m => m.id === milestoneId);
-              if (milestone) {
-                showMilestoneModal(milestone);
-              }
-            });
-          });
+          milestonesContainer.innerHTML = badgesHTML;
         } else {
-          milestonesContainer.innerHTML = '<p class="text-muted">No milestones yet</p>';
+          milestonesContainer.innerHTML = '<p class="text-muted">No badges yet. Keep going!</p>';
         }
       }
 
