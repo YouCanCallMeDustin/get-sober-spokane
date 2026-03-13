@@ -273,7 +273,7 @@ Edit the `defaultMeta` object in `middleware/metaDataInjector.js`:
 const defaultMeta = {
   site: {
     name: 'Get Sober Spokane',
-    url: 'https://getsoberspokane.org',
+    url: 'https://www.getsoberspokane.com',
     // ... other site defaults
   },
   page: {

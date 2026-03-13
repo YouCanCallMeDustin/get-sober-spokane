@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Update sitemap with resource information
     updateSitemap(resourceData) {
-        const baseUrl = 'https://getsoberspokane.org';
+        const baseUrl = 'https://www.getsoberspokane.com';
         const pages = [
             { url: '/', priority: '1.0', changefreq: 'weekly' },
             { url: '/shelter-housing.html', priority: '0.9', changefreq: 'weekly' },

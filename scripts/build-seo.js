@@ -34,7 +34,7 @@ async function buildSEO() {
 
 // Create XML sitemap
 function createSitemap() {
-    const baseUrl = 'https://getsoberspokane.org';
+    const baseUrl = 'https://www.getsoberspokane.com';
     const pages = [
         { url: '/', priority: '1.0', changefreq: 'weekly' },
         { url: '/shelter-housing.html', priority: '0.9', changefreq: 'weekly' },
@@ -71,7 +71,7 @@ function createRobotsTxt() {
 Allow: /
 
 # Sitemap
-Sitemap: https://getsoberspokane.org/sitemap.xml
+Sitemap: https://www.getsoberspokane.com/sitemap.xml
 
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
