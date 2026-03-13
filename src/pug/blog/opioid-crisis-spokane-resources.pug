@@ -1,0 +1,285 @@
+extends ../layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/blog/opioid-crisis-spokane-resources.html'
+  title Fentanyl & Opioid Crisis in Spokane, WA – Resources for Families & Individuals | Get Sober Spokane
+  meta(name="description" content="Spokane is facing a serious opioid and fentanyl crisis. Find free resources, treatment options, and family support for addiction recovery in Spokane, WA.")
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "The Opioid & Fentanyl Crisis in Spokane, WA – How to Get Help",
+      "description": "Spokane is facing a serious opioid and fentanyl crisis. Find free resources, treatment options, and family support for addiction recovery in Spokane, WA.",
+      "url": "https://www.getsoberspokane.com/blog/opioid-crisis-spokane-resources.html",
+      "datePublished": "2026-03-13",
+      "dateModified": "2026-03-13",
+      "author": {
+        "@type": "Organization",
+        "name": "Get Sober Spokane",
+        "url": "https://www.getsoberspokane.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Get Sober Spokane",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.getsoberspokane.com/assets/img/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.getsoberspokane.com/blog/opioid-crisis-spokane-resources.html"
+      }
+    }
+
+block content
+
+  // Article Hero
+  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          nav(aria-label="breadcrumb")
+            ol.breadcrumb.mb-3
+              li.breadcrumb-item
+                a.text-white-50(href="/") Home
+              li.breadcrumb-item
+                a.text-white-50(href="/blog.html") Blog
+              li.breadcrumb-item.active.text-white(aria-current="page") Opioid Crisis Resources
+          h1.display-5.fw-bold The Opioid &amp; Fentanyl Crisis in Spokane, WA – How to Get Help
+          p.lead.mt-3.text-white-75 The crisis is real — and so is recovery. Free help is available in Spokane right now.
+          .small.text-white-50.mt-2
+            i.bi.bi-calendar3.me-1
+            | March 2026 &nbsp;·&nbsp;
+            i.bi.bi-clock.me-1
+            | 6 min read
+
+  // Article Body
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+
+          // Intro
+          p.lead.mt-5
+            | Spokane is in the middle of a crisis — and if you're reading this, there's a good chance you already know someone who's been touched by it. Opioid and fentanyl overdose deaths have climbed sharply across Eastern Washington over the past several years, leaving families, neighbors, and entire communities reeling. But here's what the statistics don't always show: people recover from opioid addiction every day. In Spokane. With free resources, community support, and the right information. This page is here to help you or someone you love find that path.
+
+          .alert.alert-danger.mt-4
+            strong
+              i.bi.bi-exclamation-triangle-fill.me-2
+              | If someone is overdosing right now, call 911 immediately.
+            |  Stay on the line and, if available, administer Narcan (naloxone). Washington's Good Samaritan law protects you.
+
+          hr.my-5
+
+          // Section 1 – By the Numbers
+          h2.mt-4
+            i.bi.bi-bar-chart.text-primary.me-2
+            | 1. The Opioid Crisis in Spokane — By the Numbers
+          p
+            | Understanding the scale of the crisis is the first step toward demanding and finding better solutions. According to data from the
+            |  &nbsp;
+            a(href="https://doh.wa.gov/data-and-statistical-reports/washington-tracking-network-wtn/opioids" target="_blank" rel="noopener") Washington State Department of Health
+            | :
+          ul
+            li Washington State has seen opioid overdose death rates rise significantly over the past decade, with fentanyl becoming the dominant driver since 2020.
+            li Spokane County ranks among the counties most affected by opioid-related deaths in Eastern Washington.
+            li Synthetic opioids — primarily illicitly manufactured fentanyl — are now involved in the vast majority of fatal overdoses statewide.
+            li Many victims had no history of opioid use disorder; fentanyl is increasingly found in counterfeit pills, cocaine, and methamphetamine.
+          p
+            | These numbers represent real people — parents, siblings, coworkers, friends. The crisis is not abstract, and it is not over. But the response in Spokane has also grown: more naloxone distribution, more treatment capacity, and more peer support than ever before.
+          .alert.alert-info.mt-3
+            i.bi.bi-info-circle.me-2
+            | For current Spokane County overdose data, visit the
+            |  &nbsp;
+            a(href="https://doh.wa.gov" target="_blank" rel="noopener") Washington State DOH website
+            |  or contact Spokane Regional Health District.
+
+          // Section 2 – Recognizing the Signs
+          h2.mt-5
+            i.bi.bi-eye.text-primary.me-2
+            | 2. Recognizing the Signs of Opioid Addiction
+          p
+            | Opioid addiction often develops gradually, and its signs can be easy to miss or rationalize — especially for the person experiencing them. Here's what to look for:
+
+          h5.mt-4 Physical Signs
+          .row.gx-3.gy-3
+            .col-md-6
+              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
+                .card-body
+                  ul.small.mb-0
+                    li Constricted ("pinpoint") pupils
+                    li Nodding off unexpectedly
+                    li Slurred speech or slow movement
+                    li Dramatic weight loss
+            .col-md-6
+              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
+                .card-body
+                  ul.small.mb-0
+                    li Track marks or injection sites
+                    li Pale, clammy skin
+                    li Neglected hygiene or appearance
+                    li Frequent flu-like symptoms (withdrawal)
+
+          h5.mt-4 Behavioral &amp; Emotional Signs
+          .row.gx-3.gy-3
+            .col-md-6
+              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
+                .card-body
+                  ul.small.mb-0
+                    li Withdrawal from family and friends
+                    li Lying about whereabouts or money
+                    li Loss of interest in hobbies or work
+                    li Mood swings — euphoria followed by irritability
+            .col-md-6
+              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
+                .card-body
+                  ul.small.mb-0
+                    li Missing money, valuables, or medications
+                    li Doctor shopping or forged prescriptions
+                    li Legal problems related to substance use
+                    li Continued use despite obvious consequences
+
+          p.mt-4
+            | If you're seeing these signs in yourself or someone you love, please know: this is a medical condition, not a moral failure. And it is treatable.
+
+          // Section 3 – Overdose Emergency
+          h2.mt-5
+            i.bi.bi-heart-pulse.text-danger.me-2
+            | 3. What to Do in an Overdose Emergency
+          p
+            | Opioid overdose is a medical emergency. The window to save a life can be very short — especially with fentanyl, which acts far faster than other opioids. Here's what to do:
+
+          ol
+            li
+              strong Call 911 immediately.
+              |  Tell the dispatcher you suspect an opioid overdose. Stay on the line.
+            li
+              strong Administer Narcan (naloxone) if available.
+              |  Naloxone is a fast-acting medication that reverses opioid overdose. It can be given as a nasal spray or injection. A second dose can be given after 2–3 minutes if there's no response.
+            li
+              strong Place the person in the recovery position
+              |  if they are unconscious but breathing — on their side to prevent choking.
+            li
+              strong Perform rescue breathing if needed
+              |  — 1 breath every 5 seconds — while waiting for emergency services.
+            li
+              strong Stay with them.
+              |  Washington's Good Samaritan Law (RCW 69.50.315) protects you from prosecution for drug possession when you call 911 for an overdose. You will not be arrested for helping.
+
+          .alert.alert-warning.mt-3
+            strong
+              i.bi.bi-capsule.me-2
+              | Narcan is available free in Spokane.
+            |  Pick it up at most pharmacies without a prescription, at the Spokane Regional Health District, and through many local harm reduction programs.
+
+          // Section 4 – Free Treatment Resources
+          h2.mt-5
+            i.bi.bi-hospital.text-primary.me-2
+            | 4. Free Treatment Resources in Spokane
+          p
+            | You don't need insurance or money to get treatment for opioid addiction in Spokane. Multiple programs offer free or sliding-scale care funded through state and federal grants.
+          ul
+            li
+              strong TRIUMPH Treatment Services:
+              |  Residential treatment for opioid and substance use disorders. Accepts individuals with no income or insurance.
+            li
+              strong Frontier Behavioral Health:
+              |  Outpatient and intensive outpatient opioid treatment, including medication-assisted treatment (MAT) with Suboxone/buprenorphine.
+            li
+              strong Providence Health &amp; Services:
+              |  Bridge clinic model for immediate MAT access — no waiting list for qualified patients.
+            li
+              strong CHAS Health:
+              |  Federally qualified health center offering opioid treatment and MAT on a sliding fee scale; multiple Spokane locations.
+            li
+              strong Washington Recovery Help Line:
+              |  1-866-789-1511 — free, 24/7 crisis support and treatment referral specific to Washington State.
+            li
+              strong SAMHSA National Helpline:
+              |  1-800-662-4357 — free, confidential, 24/7 referral service in English and Spanish.
+          p
+            | Browse our full treatment directory: &nbsp;
+            a(href="https://www.getsoberspokane.com/addiction-treatments-support.html") Addiction Treatment &amp; Support in Spokane →
+
+          // Section 5 – Support for Families
+          h2.mt-5
+            i.bi.bi-people-fill.text-primary.me-2
+            | 5. Support for Families
+          p
+            | Loving someone with opioid addiction is one of the most exhausting, heartbreaking experiences a family can go through. Your pain is real, and your need for support is just as valid as theirs.
+          ul
+            li
+              strong Al-Anon Spokane:
+              |  Free support groups for families and friends of people with addiction. No commitment required to attend.
+            li
+              strong Nar-Anon:
+              |  Similar to Al-Anon, specifically focused on family members of people struggling with drug addiction.
+            li
+              strong NAMI Spokane Family Support Group:
+              |  Free peer-led support for families dealing with mental illness and co-occurring addiction.
+            li
+              strong Frontier Behavioral Health Family Services:
+              |  Counseling and case management for family members of individuals in treatment.
+            li
+              strong Get Sober Spokane Community Forum:
+              |  Our online community includes family members, partners, and friends of people in recovery. You are not alone here.
+          p
+            | Mental health and family support resources: &nbsp;
+            a(href="https://www.getsoberspokane.com/medical-mental-health.html") Medical &amp; Mental Health Resources in Spokane →
+          p
+            | Join the conversation: &nbsp;
+            a(href="https://www.getsoberspokane.com/community-forum.html") Get Sober Spokane Community Forum →
+
+          // Section 6 – Peer Support & Sponsor
+          h2.mt-5
+            i.bi.bi-person-heart.text-primary.me-2
+            | 6. Finding a Sponsor or Peer Support
+          p
+            | Treatment is a critical first step — but long-term opioid recovery is sustained by community. Having a sponsor or peer support partner dramatically increases the likelihood of sustained sobriety.
+          ul
+            li
+              strong AA Opiate-Specific Meetings:
+              |  Some AA groups in Spokane are specifically welcoming to opioid/opiate users. Ask at any meeting or check the
+              |  &nbsp;
+              a(href="https://www.aa-eastern-wa.org" target="_blank" rel="noopener") Eastern WA AA directory
+              | .
+            li
+              strong NA Inland Northwest:
+              |  Narcotics Anonymous has a strong Spokane presence with daily meetings. Visit
+              |  &nbsp;
+              a(href="https://www.inlandnorthwestna.org" target="_blank" rel="noopener") inlandnorthwestna.org
+              | .
+            li
+              strong SMART Recovery:
+              |  A secular, evidence-based alternative to 12-step programs with free local and online meetings.
+            li
+              strong Get Sober Spokane Sponsor Finder:
+              |  Connect with a local peer who has walked the opioid recovery road and is ready to walk it with you.
+              |  &nbsp;
+              a(href="https://www.getsoberspokane.com/sponsor-finder.html") Find a sponsor →
+          .alert.alert-success.mt-3
+            i.bi.bi-shield-check.me-2
+            | Peer support is free, immediate, and available 24/7 through our
+            |  &nbsp;
+            a(href="https://www.getsoberspokane.com/chat.html") community chat
+            | . No sign-up required to read.
+
+          hr.my-5
+
+          // Closing CTA
+          .card.border-0.shadow.text-center.p-5.mb-4(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #dc354522 100%);")
+            i.bi.bi-heart-fill.display-4.text-danger.mb-3
+            h3.fw-bold You Are Not Alone
+            p.text-muted.mb-4
+              | The opioid crisis is real — and so is the recovery that happens every single day in Spokane. Whether you're struggling yourself or trying to help someone you love, there are free resources, real people, and a whole community here ready to help.
+            .d-flex.flex-wrap.gap-3.justify-content-center
+              a.btn.btn-primary.btn-lg(href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'blog_opioid_crisis_footer'})")
+                i.bi.bi-heart-pulse.me-2
+                | Browse Treatment Resources
+              a.btn.btn-outline-primary.btn-lg(href="/sponsor-finder.html")
+                i.bi.bi-person-heart.me-2
+                | Find a Sponsor
+              a.btn.btn-outline-danger.btn-lg(href="/chat.html")
+                i.bi.bi-chat-dots.me-2
+                | Talk to Someone Now
