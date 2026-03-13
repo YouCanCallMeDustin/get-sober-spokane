@@ -3,6 +3,14 @@ extends layout
 block head
   title About Us - Get Sober Spokane Community
   meta(name="description" content="Learn about Get Sober Spokane's mission to build a supportive community for individuals in recovery. Founded during recovery at UGM, we're dedicated to helping others on their sobriety journey.")
+  meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  // Google Analytics 4 (GA4)
+  script(async src="https://www.googletagmanager.com/gtag/js?id=G-LB7GNYNX28")
+  script.
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LB7GNYNX28');
   meta(name="keywords" content="about us, recovery community, sobriety support, addiction recovery, Spokane recovery, UGM, community building")
   style.
     .about-us-container {
@@ -263,10 +271,11 @@ block content
               | Whether you're just beginning your recovery journey or have years of sobriety under your belt, 
               | Get Sober Spokane is here to support you every step of the way.
             .cta-buttons
-              a.btn.btn-primary.btn-lg.me-3(href="/dashboard.html")
-                i.bi.bi-person-plus.me-2
-                | Join Community
-              a.btn.btn-outline-primary.btn-lg(href="/resource-directory.html")
-                i.bi.bi-list-ul.me-2
-                | Browse Resources
+                a.btn.btn-primary.btn-xl.m-2(href='community-forum.html' onclick="gtag('event', 'community_click', {event_category: 'engagement'})")
+                    i.bi.bi-people.me-2
+                    | Join Community
+                a.btn.btn-outline-primary.btn-xl.m-2(href='resource-directory.html' onclick="gtag('event', 'resources_click', {event_category: 'engagement'})")
+                    i.bi.bi-search.me-2
+                    | Browse Resources
+
 

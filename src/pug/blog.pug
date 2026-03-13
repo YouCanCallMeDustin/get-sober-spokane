@@ -1,0 +1,71 @@
+extends layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/blog.html'
+  title Blog – Recovery Resources & Stories | Spokane, WA | Get Sober Spokane
+  meta(name="description" content="Recovery tips, local resources, and addiction support stories from the Spokane, WA community.")
+
+block content
+
+  // Blog Hero
+  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8.text-center
+          h1.display-5.fw-bold Recovery Blog – Spokane, WA
+          p.lead.mt-3 Recovery tips, local resources, and community stories from the Spokane area.
+
+  // Blog Posts Grid
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.gx-4.gx-lg-5.mt-4
+
+        // Post Card 1
+        .col-lg-4.col-md-6.mb-4
+          .card.h-100.shadow-sm.border-0(style="border-radius: 12px; overflow: hidden;")
+            .card-img-top.bg-primary.d-flex.align-items-center.justify-content-center(style="height: 160px;")
+              i.bi.bi-people-fill.text-white(style="font-size: 3rem;")
+            .card-body.d-flex.flex-column
+              .small.text-muted.mb-2
+                i.bi.bi-calendar3.me-1
+                | March 2025
+                span.ms-2
+                  i.bi.bi-tag.me-1
+                  | AA / NA
+              h5.card-title
+                a.text-decoration-none.text-dark(href="/blog/aa-na-meetings-spokane.html")
+                  | AA &amp; NA Meetings in Spokane, WA – Complete Guide
+              p.card-text.text-muted Find every AA and NA meeting in Spokane — times, locations, and formats for every neighborhood.
+              a.btn.btn-outline-primary.mt-auto(href="/blog/aa-na-meetings-spokane.html")
+                | Read More
+                i.bi.bi-arrow-right.ms-2
+
+        // Coming Soon Placeholder Cards
+        .col-lg-4.col-md-6.mb-4
+          .card.h-100.shadow-sm.border-0.bg-light(style="border-radius: 12px; overflow: hidden;")
+            .card-img-top.bg-secondary.d-flex.align-items-center.justify-content-center(style="height: 160px; opacity: 0.6;")
+              i.bi.bi-journal-text.text-white(style="font-size: 3rem;")
+            .card-body.d-flex.flex-column
+              .small.text-muted.mb-2 Coming Soon
+              h5.card-title.text-muted Sober Living Homes in Spokane – What to Expect
+              p.card-text.text-muted A guide to finding and moving into a sober living home in the Spokane area.
+              span.btn.btn-light.mt-auto.disabled Coming Soon
+
+        .col-lg-4.col-md-6.mb-4
+          .card.h-100.shadow-sm.border-0.bg-light(style="border-radius: 12px; overflow: hidden;")
+            .card-img-top.bg-secondary.d-flex.align-items-center.justify-content-center(style="height: 160px; opacity: 0.6;")
+              i.bi.bi-heart-pulse.text-white(style="font-size: 3rem;")
+            .card-body.d-flex.flex-column
+              .small.text-muted.mb-2 Coming Soon
+              h5.card-title.text-muted Mental Health & Addiction: Understanding the Connection
+              p.card-text.text-muted How co-occurring disorders affect recovery and what resources are available in Spokane.
+              span.btn.btn-light.mt-auto.disabled Coming Soon
+
+      // CTA
+      .row.justify-content-center.mt-5
+        .col-lg-8.text-center
+          h4 Looking for more resources?
+          p.text-muted Browse our full directory of free addiction recovery services in Spokane.
+          a.btn.btn-primary.btn-lg(href="/resource-directory.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'blog_footer'})")
+            i.bi.bi-list-ul.me-2
+            | Browse Resource Directory

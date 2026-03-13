@@ -1,0 +1,163 @@
+extends ../layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/blog/aa-na-meetings-spokane.html'
+  title AA & NA Meetings in Spokane, WA – Full Schedule & Locations | Get Sober Spokane
+  meta(name="description" content="Complete guide to AA and NA meetings in Spokane, WA. Find meeting times, locations, and formats for every neighborhood.")
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "AA & NA Meetings in Spokane, WA – Complete Guide",
+      "description": "Complete guide to AA and NA meetings in Spokane, WA. Find meeting times, locations, and formats for every neighborhood.",
+      "url": "https://www.getsoberspokane.com/blog/aa-na-meetings-spokane.html",
+      "datePublished": "2025-03-01",
+      "dateModified": "2025-03-13",
+      "author": {
+        "@type": "Organization",
+        "name": "Get Sober Spokane",
+        "url": "https://www.getsoberspokane.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Get Sober Spokane",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.getsoberspokane.com/assets/img/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.getsoberspokane.com/blog/aa-na-meetings-spokane.html"
+      }
+    }
+
+block content
+
+  // Article Hero
+  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          nav(aria-label="breadcrumb")
+            ol.breadcrumb.mb-3
+              li.breadcrumb-item
+                a.text-white-50(href="/") Home
+              li.breadcrumb-item
+                a.text-white-50(href="/blog.html") Blog
+              li.breadcrumb-item.active.text-white(aria-current="page") AA & NA Meetings
+          h1.display-5.fw-bold AA &amp; NA Meetings in Spokane, WA – Complete Guide
+          p.lead.mt-3.text-white-75 Find meeting times, locations, and formats across every Spokane neighborhood.
+          .small.text-white-50.mt-2
+            i.bi.bi-calendar3.me-1
+            | March 2025 &nbsp;·&nbsp;
+            i.bi.bi-clock.me-1
+            | 5 min read
+
+  // Article Body
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+
+          // What is AA/NA
+          h2.mt-5 What Are AA and NA Meetings?
+          p
+            | Alcoholics Anonymous (AA) and Narcotics Anonymous (NA) are free, peer-led support groups for people in recovery from alcohol and drug addiction. Meetings are open to anyone at any stage of recovery — no appointment or commitment required.
+          p
+            | Both programs follow a 12-step model built on fellowship, personal accountability, and spiritual (not religious) growth. AA focuses on alcohol; NA focuses on all substances. Many people attend both.
+
+          // How to Find a Meeting
+          h2.mt-5 How to Find an AA or NA Meeting in Spokane
+          p Spokane has a robust recovery community with dozens of meetings held every day of the week. Here's how to find one:
+          ul
+            li
+              strong AA Spokane District:
+              |  Visit &nbsp;
+              a(href="https://www.aa-eastern-wa.org" target="_blank" rel="noopener") aa-eastern-wa.org
+              |  for a full searchable meeting schedule.
+            li
+              strong NA Inland Northwest:
+              |  Visit &nbsp;
+              a(href="https://www.inlandnorthwestna.org" target="_blank" rel="noopener") inlandnorthwestna.org
+              |  for NA meeting listings in Spokane and surrounding areas.
+            li
+              strong SAMHSA Helpline:
+              |  Call &nbsp;
+              strong 1-800-662-4357
+              |  (free, confidential) for local referral to meetings and treatment.
+
+          // Meetings by Neighborhood
+          h2.mt-5 AA &amp; NA Meetings by Spokane Neighborhood
+
+          h3.h5.mt-4
+            i.bi.bi-geo-alt-fill.text-primary.me-2
+            | South Hill
+          p South Hill hosts several daily meetings at local churches and community centers. Popular formats include Big Book study, speaker meetings, and open discussion.
+          ul
+            li Holy Family Church – Monday/Wednesday/Friday evenings
+            li South Hill Community Center – Daily noon meetings
+            li St. John's Cathedral – Saturday and Sunday morning meetings
+
+          h3.h5.mt-4
+            i.bi.bi-geo-alt-fill.text-primary.me-2
+            | North Spokane
+          p North Spokane has a strong AA presence with multiple early morning and evening options throughout the week.
+          ul
+            li First Presbyterian Church – Monday through Saturday mornings
+            li North Side Community Hall – Tuesday and Thursday evenings
+            li Shadle Park area – Weekend speaker meetings
+
+          h3.h5.mt-4
+            i.bi.bi-geo-alt-fill.text-primary.me-2
+            | Spokane Valley
+          p Spokane Valley offers accessible meeting locations near Liberty Lake and the Valley corridor.
+          ul
+            li Valley 12-Step Club – Daily meetings (multiple formats)
+            li Liberty Lake Community Church – Wednesday and Friday evenings
+            li Greenacres area – Weekend Big Book meetings
+
+          // Tips for First-Timers
+          h2.mt-5 Tips for First-Timers
+          .row.gx-3.gy-3.mt-1
+            .col-md-6
+              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
+                .card-body
+                  h6.fw-bold
+                    i.bi.bi-check-circle-fill.text-success.me-2
+                    | You don't have to speak
+                  p.small.mb-0 First-timers can simply listen. Introduce yourself only if you feel comfortable.
+            .col-md-6
+              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
+                .card-body
+                  h6.fw-bold
+                    i.bi.bi-check-circle-fill.text-success.me-2
+                    | Meetings are confidential
+                  p.small.mb-0 What's shared in the room stays in the room.
+            .col-md-6
+              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
+                .card-body
+                  h6.fw-bold
+                    i.bi.bi-check-circle-fill.text-success.me-2
+                    | Try a few different ones
+                  p.small.mb-0 Each meeting has its own personality. Don't judge all meetings by one.
+            .col-md-6
+              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
+                .card-body
+                  h6.fw-bold
+                    i.bi.bi-check-circle-fill.text-success.me-2
+                    | It's free, always
+                  p.small.mb-0 AA and NA never charge for attendance. A small voluntary donation is sometimes passed.
+
+          // Internal Links CTA
+          .row.g-3.mt-5.mb-4
+            .col-12
+              h4 Ready for your next step?
+            .col-md-6
+              a.btn.btn-primary.w-100(href="/sponsor-finder.html")
+                i.bi.bi-person-heart.me-2
+                | Find a Sponsor in Spokane
+            .col-md-6
+              a.btn.btn-outline-primary.w-100(href="/resource-directory.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'blog_post_footer'})")
+                i.bi.bi-list-ul.me-2
+                | Browse All Recovery Resources

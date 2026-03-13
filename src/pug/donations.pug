@@ -3,7 +3,14 @@ html(lang='en')
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-    title Donate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane | Support Recovery Community Spokane, WAnate to Get Sober Spokane
+    // Google Analytics 4 (GA4)
+    script(async src="https://www.googletagmanager.com/gtag/js?id=G-LB7GNYNX28")
+    script.
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LB7GNYNX28');
+    title Donate to Get Sober Spokane | Support Recovery Community Spokane, WA
     link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
     link(href='css/styles.css', rel='stylesheet')
   body
@@ -96,7 +103,7 @@ html(lang='en')
     section.page-section
       // Top image
       .container-fluid.p-0
-        img.img-fluid.w-100.mb-5.rounded.shadow(src='assets/img/13.jpg', alt='Community support at Get Sober Spokane')
+        img.img-fluid.w-100.mb-5.rounded.shadow(src='assets/img/13.jpg', alt='Community support at Get Sober Spokane', loading='lazy')
       .container.px-4.px-lg-5.text-center
         h2.mb-4.text-primary Support Get Sober Spokane
         p.lead.mb-5.text-muted
@@ -137,11 +144,11 @@ html(lang='en')
               | Your generosity fuels our mission. Thank you for helping us build a stronger, healthier Spokane.
             .row.g-3
               .col-md-6
-                a.btn.btn-primary.btn-lg.w-100(href='https://paypal.me/SoberSpokane', target='_blank', rel='noopener')
+                a.btn.btn-primary.btn-lg.w-100(href='https://paypal.me/SoberSpokane', target='_blank', rel='noopener' onclick="gtag('event', 'donate_click', {event_category: 'engagement', event_label: 'paypal'})")
                   i.bi-paypal.me-2
                   | PayPal
               .col-md-6
-                a.btn.btn-success.btn-lg.w-100(href='https://cash.app/$SoberSpokane', target='_blank', rel='noopener')
+                a.btn.btn-success.btn-lg.w-100(href='https://cash.app/$SoberSpokane', target='_blank', rel='noopener' onclick="gtag('event', 'donate_click', {event_category: 'engagement', event_label: 'cashapp'})")
                   i.bi-cash-coin.me-2
                   | Cash App
             .mt-4
@@ -154,11 +161,11 @@ html(lang='en')
                   | We'll send you a receipt via email for your records.
       // Bottom image
       .container.px-4.px-lg-5.mt-5
-        img.img-fluid.rounded.shadow-lg.mb-4(src='assets/img/14.jpg', alt='Get Sober Spokane community event')
+        img.img-fluid.rounded.shadow-lg.mb-4(src='assets/img/14.jpg', alt='Get Sober Spokane community event', loading='lazy')
     footer.bg-light.py-5
       .container.px-4.px-lg-5
         a(href='index.html')
-          img.footer-logo(src='assets/img/logo.png', alt='Get Sober Spokane Logo')
+          img.footer-logo(src='assets/img/logo.png', alt='Get Sober Spokane Logo', loading='lazy')
         .small.text-center.text-muted
           | Copyright © 2025 - Get Sober Spokane
           br
@@ -167,3 +174,4 @@ html(lang='en')
           a(href='terms-of-service.html') Terms of Service
     script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js')
     script(src='js/scripts.js') 
+

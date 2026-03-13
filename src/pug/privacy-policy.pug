@@ -4,6 +4,13 @@ html(lang='en')
     head
         meta(charset='utf-8')
         meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        // Google Analytics 4 (GA4)
+        script(async src="https://www.googletagmanager.com/gtag/js?id=G-LB7GNYNX28")
+        script.
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-LB7GNYNX28');
         meta(name='description', content='Privacy Policy - Get Sober Spokane - How we protect your personal information')
         meta(name='author', content='Get Sober Spokane')
 
@@ -40,7 +47,7 @@ html(lang='en')
                             a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false') Resources
                             ul.dropdown-menu
                                 li
-                                    a.dropdown-item(href='resource-directory.html')
+                                    a.dropdown-item(href='resource-directory.html' onclick="gtag('event', 'resources_click', {event_category: 'engagement'})")
                                         i.bi.bi-list-ul.me-2
                                         | Resource Directory
                                 li
@@ -75,7 +82,7 @@ html(lang='en')
                                         i.bi.bi-chat-dots.me-2
                                         | Live Chat
                                 li
-                                    a.dropdown-item(href='community-forum.html')
+                                    a.dropdown-item(href='community-forum.html' onclick="gtag('event', 'community_click', {event_category: 'engagement'})")
                                         i.bi.bi-people.me-2
                                         | Forum
                         li.nav-item.dropdown
@@ -90,7 +97,7 @@ html(lang='en')
                                         i.bi.bi-envelope.me-2
                                         | Contact
                                 li
-                                    a.dropdown-item(href='donations.html')
+                                    a.dropdown-item(href='donations.html' onclick="gtag('event', 'donate_click', {event_category: 'engagement'})")
                                         i.bi.bi-heart.me-2
                                         | Donate
                         li.nav-item
@@ -217,7 +224,7 @@ html(lang='en')
                                     | (509) 389-9350
                                 p
                                     i.bi-envelope.me-2
-                                    a(href='mailto:spokanesober@gmail.com') spokanesober@gmail.com
+                                    a(href='mailto:spokanesober@gmail.com' onclick="gtag('event', 'email_click', {event_category: 'contact'})") spokanesober@gmail.com
 
         // Footer
         footer.bg-light.py-5
@@ -236,3 +243,4 @@ html(lang='en')
 
         // Core theme JS
         script(src='js/scripts.js') 
+

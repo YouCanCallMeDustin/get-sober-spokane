@@ -1,0 +1,99 @@
+extends layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/north-spokane-recovery-resources.html'
+  title Addiction Recovery Resources in North Spokane, WA | Get Sober Spokane
+  meta(name="description" content="Free addiction recovery resources in North Spokane, WA. Find treatment programs, sober living, food banks, and support groups near you.")
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Get Sober Spokane",
+      "url": "https://www.getsoberspokane.com",
+      "logo": "https://www.getsoberspokane.com/assets/img/logo.png",
+      "telephone": "(509) 389-9350",
+      "email": "spokanesober@gmail.com",
+      "areaServed": {
+        "@type": "City",
+        "name": "North Spokane",
+        "addressRegion": "WA"
+      }
+    }
+
+block content
+
+  header.bg-success.text-white.py-5(style="margin-top: 76px;")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8.text-center
+          h1.display-5.fw-bold Free Recovery Resources in North Spokane, WA
+          p.lead.mt-3 Connecting North Spokane residents with free, local addiction recovery services.
+
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          p.lead.mt-4
+            | North Spokane has a strong and supportive recovery community. From Shadle Park to the North Side neighborhoods, Get Sober Spokane helps you find the right resources — whether you need treatment, housing, food support, or just a meeting to attend.
+
+          // Treatment Resources
+          h2.mt-5
+            i.bi.bi-heart-pulse.text-success.me-2
+            | Treatment Resources
+          p Connect with addiction treatment providers serving North Spokane, including counseling, outpatient programs, and peer support.
+          ul
+            li Frontier Behavioral Health — Outpatient and residential services
+            li CHAS Health North Spokane — Primary care + addiction medicine
+            li SAMHSA Helpline: 1-800-662-4357 (free, 24/7)
+          a.btn.btn-outline-primary(href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'treatment_north'})")
+            i.bi.bi-arrow-right.me-2
+            | Browse Treatment Programs
+
+          // Shelter & Housing
+          h2.mt-5
+            i.bi.bi-house.text-success.me-2
+            | Shelter &amp; Housing
+          p Find sober living and transitional housing near North Spokane for people rebuilding after addiction.
+          ul
+            li Truth Ministries Shelter — Emergency beds for men in crisis
+            li Union Gospel Mission — Transitional housing and recovery programs
+            li SNAP (Spokane Neighborhood Action Partners) — Housing assistance
+          a.btn.btn-outline-primary(href="/shelter-housing.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'housing_north'})")
+            i.bi.bi-arrow-right.me-2
+            | Find Housing Resources
+
+          // Sober Activities
+          h2.mt-5
+            i.bi.bi-people.text-success.me-2
+            | Sober Activities
+          p North Spokane has plenty of ways to stay active and connected with the sober community.
+          ul
+            li Northside AA meetings — Daily at multiple locations
+            li Shadle Park — Walking trails, sports leagues, and outdoor events
+            li North Spokane Community Center — Classes and social programs
+          a.btn.btn-outline-primary(href="/community-engagement-sober-activities.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'activities_north'})")
+            i.bi.bi-arrow-right.me-2
+            | Explore Sober Activities
+
+          // Get Help Now
+          .mt-5.p-4.bg-light.rounded-3
+            h2.h4
+              i.bi.bi-telephone-fill.text-danger.me-2
+              | Get Help Now
+            p If you or someone you know needs immediate help with addiction in North Spokane:
+            ul.mb-3
+              li
+                strong Crisis Line:
+                |  988 (Suicide &amp; Crisis Lifeline)
+              li
+                strong SAMHSA:
+                |  1-800-662-4357
+              li
+                strong Local:
+                |  (509) 389-9350
+            a.btn.btn-primary.me-2(href="/resource-directory.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'all_resources_north'})")
+              i.bi.bi-list-ul.me-2
+              | All Resources
+            a.btn.btn-danger(href="tel:+19888" onclick="gtag('event', 'phone_click', {event_category: 'contact', event_label: '988_north'})")
+              i.bi.bi-telephone.me-2
+              | Call 988

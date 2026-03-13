@@ -1,0 +1,99 @@
+extends layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/south-hill-recovery-resources.html'
+  title Addiction Recovery Resources on Spokane's South Hill | Get Sober Spokane
+  meta(name="description" content="Free addiction recovery resources on Spokane's South Hill, WA. Find treatment programs, sober living, food banks, and support groups near you.")
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Get Sober Spokane",
+      "url": "https://www.getsoberspokane.com",
+      "logo": "https://www.getsoberspokane.com/assets/img/logo.png",
+      "telephone": "(509) 389-9350",
+      "email": "spokanesober@gmail.com",
+      "areaServed": {
+        "@type": "Place",
+        "name": "South Hill, Spokane",
+        "addressRegion": "WA"
+      }
+    }
+
+block content
+
+  header.text-white.py-5(style="margin-top: 76px; background: linear-gradient(135deg, #6f42c1, #e83e8c);")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8.text-center
+          h1.display-5.fw-bold Free Recovery Resources on Spokane's South Hill, WA
+          p.lead.mt-3 Connecting South Hill residents with free, local addiction recovery services.
+
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          p.lead.mt-4
+            | Spokane's South Hill is one of the most active neighborhoods for recovery in the region. From the Manito area to Hillyard borders, Get Sober Spokane helps South Hill residents find treatment, sober living, and community support — all at no cost.
+
+          // Treatment Resources
+          h2.mt-5
+            i.bi.bi-heart-pulse(style="color: #6f42c1;").me-2
+            | Treatment Resources
+          p South Hill has several accessible treatment and counseling options for addiction recovery.
+          ul
+            li Cataldo Catholic Charities — Outpatient counseling with sliding-scale fees
+            li South Hill Health Clinic — Primary care + substance use support
+            li SAMHSA Helpline: 1-800-662-4357 (free, 24/7)
+          a.btn.btn-outline-primary(href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'treatment_south'})")
+            i.bi.bi-arrow-right.me-2
+            | Browse Treatment Programs
+
+          // Shelter & Housing
+          h2.mt-5
+            i.bi.bi-house(style="color: #6f42c1;").me-2
+            | Shelter &amp; Housing
+          p Find sober living and housing support resources available to South Hill residents.
+          ul
+            li Holy Family Hospital — Crisis stabilization and referrals
+            li Catholic Charities Transitional Housing — Family and individual units
+            li Interfaith Coalition — Emergency shelter assistance
+          a.btn.btn-outline-primary(href="/shelter-housing.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'housing_south'})")
+            i.bi.bi-arrow-right.me-2
+            | Find Housing Resources
+
+          // Sober Activities
+          h2.mt-5
+            i.bi.bi-people(style="color: #6f42c1;").me-2
+            | Sober Activities
+          p South Hill offers great outdoor spaces and community venues to support a sober, active lifestyle.
+          ul
+            li Manito Park — Walking paths, gardens, and community events
+            li South Hill Community Center — Fitness classes and social activities
+            li South Hill AA/NA meetings — Daily meetings at local churches
+          a.btn.btn-outline-primary(href="/community-engagement-sober-activities.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'activities_south'})")
+            i.bi.bi-arrow-right.me-2
+            | Explore Sober Activities
+
+          // Get Help Now
+          .mt-5.p-4.bg-light.rounded-3
+            h2.h4
+              i.bi.bi-telephone-fill.text-danger.me-2
+              | Get Help Now
+            p If you or someone you know needs immediate help on Spokane's South Hill:
+            ul.mb-3
+              li
+                strong Crisis Line:
+                |  988 (Suicide &amp; Crisis Lifeline)
+              li
+                strong SAMHSA:
+                |  1-800-662-4357
+              li
+                strong Local:
+                |  (509) 389-9350
+            a.btn.btn-primary.me-2(href="/resource-directory.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'all_resources_south'})")
+              i.bi.bi-list-ul.me-2
+              | All Resources
+            a.btn.btn-danger(href="tel:+19888" onclick="gtag('event', 'phone_click', {event_category: 'contact', event_label: '988_south'})")
+              i.bi.bi-telephone.me-2
+              | Call 988

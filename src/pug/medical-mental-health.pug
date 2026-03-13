@@ -24,7 +24,7 @@ html(lang='en')
               a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false') Resources
               ul.dropdown-menu
                 li
-                  a.dropdown-item(href='resource-directory.html')
+                  a.dropdown-item(href='resource-directory.html' onclick="gtag('event', 'resources_click', {event_category: 'engagement'})")
                     i.bi.bi-list-ul.me-2
                     | Resource Directory
                 li
@@ -67,7 +67,7 @@ html(lang='en')
                     i.bi.bi-chat-dots.me-2
                     | Live Chat
                 li
-                  a-dropdown-item(href='community-forum.html')
+                  a-dropdown-item(href='community-forum.html' onclick="gtag('event', 'community_click', {event_category: 'engagement'})")
                     i.bi.bi-people.me-2
                     | Forum
             li.nav-item.dropdown
@@ -82,7 +82,7 @@ html(lang='en')
                     i.bi.bi-envelope.me-2
                     | Contact
                 li
-                  a.dropdown-item(href='donations.html')
+                  a.dropdown-item(href='donations.html' onclick="gtag('event', 'donate_click', {event_category: 'engagement'})")
                     i.bi.bi-heart.me-2
                     | Donate
             li.nav-item
