@@ -1,0 +1,117 @@
+extends layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/cheney-recovery-resources.html'
+  title Addiction & Mental Health Recovery Resources in Cheney, WA | Get Sober Spokane
+  meta(name="description" content="Free addiction and mental health resources serving Cheney, WA and EWU students. Find local support groups, off-campus therapy, and West Plains treatment options.")
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Get Sober Spokane",
+      "url": "https://www.getsoberspokane.com",
+      "logo": "https://www.getsoberspokane.com/assets/img/logo.png",
+      "telephone": "(509) 389-9350",
+      "email": "spokanesober@gmail.com",
+      "areaServed": {
+        "@type": "City",
+        "name": "Cheney",
+        "addressRegion": "WA"
+      }
+    }
+
+block content
+
+  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8.text-center
+          h1.display-5.fw-bold Free Recovery Resources in Cheney, WA
+          p.lead.mt-3 Connecting the West Plains community and EWU students to local addiction support.
+
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          p.lead.mt-4
+            | Located just southwest of Spokane, Cheney is a vibrant college town and the heart of the West Plains. Whether you are an Eastern Washington University student navigating the stresses of college life while staying sober, or a local resident looking for support close to home, Get Sober Spokane connects you with the resources you need without the commute into the city.
+
+          // Treatment & Mental Health Resources
+          h2.mt-5
+            i.bi.bi-heart-pulse.text-primary.me-2
+            | Treatment &amp; Therapy Options
+          p While Cheney itself is smaller, it is highly connected to the broader Spokane health network. There are accessible options for both students and residents.
+          ul
+            li 
+              strong EWU Counseling &amp; Psychological Services (CAPS): 
+              | Free, short-term, confidential therapy and crisis support for actively enrolled Eastern Washington University students.
+            li 
+              strong CHAS Health (Cheney Clinic): 
+              | Located right on 1st Street, offering integrated primary care, behavioral health, and Medication-Assisted Treatment (MAT) for local residents.
+            li 
+              strong Frontier Behavioral Health (Spokane Locations): 
+              | The largest sliding-scale mental health provider, easily accessible via the STA Route 66 bus line from Cheney.
+          a.btn.btn-outline-primary(href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'treatment_cheney'})")
+            i.bi.bi-arrow-right.me-2
+            | Browse All Treatment Partners
+
+          // Support Groups
+          h2.mt-5
+            i.bi.bi-people.text-primary.me-2
+            | Local Meetings &amp; Support Groups
+          p You don't have to drive all the way into downtown Spokane to find a fellowship. Cheney has active local meetings.
+          ul
+            li 
+              strong Cheney AA Group: 
+              | Regular Alcoholics Anonymous meetings held locally at community centers and churches. Check the District 2 directory for the most up-to-date times.
+            li 
+              strong EWU Peer Support: 
+              | The university often hosts on-campus support groups for students dealing with substance use or family behavioral health issues.
+            li 
+              strong West Plains Al-Anon: 
+              | Support meetings for the families and friends of those struggling with addiction.
+          a.btn.btn-outline-primary(href="/community-forum.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'community_cheney'})")
+            i.bi.bi-arrow-right.me-2
+            | Join the Community Forum
+
+          // Basic Needs
+          h2.mt-5
+            i.bi.bi-bag-heart.text-primary.me-2
+            | Food &amp; Basic Needs
+          p Recovery is much harder when you are worried about basic necessities. Local food banks serve the Cheney and West Plains region.
+          ul
+            li
+              strong Cheney Outreach Center:
+              | Providing emergency food assistance, clothing, and utility help to local residents in crisis.
+            li
+              strong EWU Central Food Pantry:
+              | A free resource for currently enrolled students facing food insecurity.
+            li
+              strong Feed Medical Lake:
+              | A neighboring community resource providing free groceries on a regular schedule.
+          a.btn.btn-outline-primary(href="/food-basic-needs.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'food_cheney'})")
+            i.bi.bi-arrow-right.me-2
+            | Find Food Security Resources
+
+          // Get Help Now
+          .mt-5.p-4.bg-light.rounded-3
+            h2.h4
+              i.bi.bi-telephone-fill.text-danger.me-2
+              | Get Help Now
+            p If you or a loved one in Cheney needs immediate crisis intervention:
+            ul.mb-3
+              li
+                strong Suicide &amp; Crisis Lifeline:
+                |  988 (Call or Text, 24/7)
+              li
+                strong Spokane County Regional Crisis Line:
+                |  1-877-266-1818
+              li
+                strong EWU 24/7 Crisis Line (Students):
+                |  (509) 359-2366
+            a.btn.btn-primary.me-2(href="/resource-directory.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'all_resources_cheney'})")
+              i.bi.bi-list-ul.me-2
+              | View Full Directory
+            a.btn.btn-danger(href="tel:+1988" onclick="gtag('event', 'phone_click', {event_category: 'contact', event_label: '988_cheney'})")
+              i.bi.bi-telephone.me-2
+              | Call 988

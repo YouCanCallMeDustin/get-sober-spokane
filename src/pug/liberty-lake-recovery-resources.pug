@@ -1,0 +1,95 @@
+extends layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/liberty-lake-recovery-resources.html'
+  title Addiction Recovery & Therapy Sources in Liberty Lake, WA
+  meta(name="description" content="Discreet, professional addiction recovery resources in Liberty Lake, WA. Find private therapy, intensive outpatient programs, and local support connections.")
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Get Sober Spokane",
+      "url": "https://www.getsoberspokane.com",
+      "logo": "https://www.getsoberspokane.com/assets/img/logo.png",
+      "telephone": "(509) 389-9350",
+      "email": "spokanesober@gmail.com",
+      "areaServed": {
+        "@type": "City",
+        "name": "Liberty Lake",
+        "addressRegion": "WA"
+      }
+    }
+
+block content
+
+  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8.text-center
+          h1.display-5.fw-bold Recovery Resources in Liberty Lake, WA
+          p.lead.mt-3 Professional, discreet addiction support along the eastern corridor.
+
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          p.lead.mt-4
+            | Nestled between Spokane Valley and the Idaho border, Liberty Lake is a quiet, rapidly growing community. The challenges of addiction and mental health don't skip the suburbs. Many professionals and families in Liberty Lake seek high-quality, discreet resources to tackle substance use disorders before they completely derail their careers or home lives. 
+
+          // Professional Outpatient Focus
+          h2.mt-5
+            i.bi.bi-clipboard-check.text-primary.me-2
+            | Private Practice &amp; Outpatient Rehab
+          p For many employed professionals, leaving for 30 days is impossible. Connecting with local Intensive Outpatient Programs (IOPs) or private therapists along the I-90 corridor is often the safest route.
+          ul
+            li 
+              strong Local Private Therapists: 
+              | Liberty Lake and the adjacent Spokane Valley host dozens of private, licensed mental health counselors specializing in addiction, trauma (EMDR), and cognitive behavioral therapy.
+            li 
+              strong Intensive Outpatient (IOP): 
+              | Treatment centers located just 10 minutes away in the Valley offer flexible evening programs designed to accommodate standard work schedules.
+            li 
+              strong Corporate EAP Utilization: 
+              | Many Liberty Lake tech and business employers offer robust Employee Assistance Programs (EAPs) that fully cover the cost of outpatient counseling and initial substance abuse assessments with complete anonymity.
+          a.btn.btn-outline-primary(href="/medical-mental-health.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'therapy_liberty_lake'})")
+            i.bi.bi-arrow-right.me-2
+            | Find Therapy &amp; Mental Health Help
+
+          // Community Connections
+          h2.mt-5
+            i.bi.bi-people-fill.text-primary.me-2
+            | Finding a Sober Community
+          p Isolating in the suburbs is a fast track to a relapse. Getting plugged into the fellowship is essential.
+          ul
+            li 
+              strong Specialized 12-Step Meetings: 
+              | The Valley corridor hosts specific meetings for almost every demographic, including men's stags, women's meetings, and professionals-only AA groups, offering an added layer of privacy.
+            li 
+              strong The Parks &amp; Outdoors: 
+              | The Liberty Lake Regional Park and Centennial Trail are prime grounds for the Spokane sober community's outdoor meetups and hiking groups. Stay active, naturally.
+            li 
+              strong Our Online Forum: 
+              | Want to ask questions about local resources anonymously before walking into a clinic? Jump on our local forum.
+          a.btn.btn-outline-primary(href="/community-forum.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'forum_liberty_lake'})")
+            i.bi.bi-arrow-right.me-2
+            | Connect Anonymously
+
+          // Immediate Help
+          .mt-5.p-4.bg-light.rounded-3
+            h2.h4
+              i.bi.bi-telephone-fill.text-danger.me-2
+              | Connect with Help Now
+            p Don't wait until the weekend is over. Help is available 24/7.
+            ul.mb-3
+              li
+                strong Suicide &amp; Crisis Lifeline:
+                |  988 (Call or Text)
+              li
+                strong WA Recovery Help Line:
+                |  1-866-789-1511 (Opioid, gambling, and mental health referrals)
+            a.btn.btn-primary.me-2(href="/resource-directory.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'all_resources_liberty_lake'})")
+              i.bi.bi-list-ul.me-2
+              | Access Full Directory
+            a.btn.btn-danger(href="tel:18667891511" onclick="gtag('event', 'phone_click', {event_category: 'contact', event_label: 'helpline_liberty_lake'})")
+              i.bi.bi-telephone.me-2
+              | Call WA Help Line

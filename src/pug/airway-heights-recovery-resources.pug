@@ -1,0 +1,107 @@
+extends layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/airway-heights-recovery-resources.html'
+  title Addiction Support & Recovery in Airway Heights, WA
+  meta(name="description" content="Substance abuse and mental health support for the West Plains. Resources for Airway Heights residents, Fairchild AFB families, and Kalispel Tribe members.")
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Get Sober Spokane",
+      "url": "https://www.getsoberspokane.com",
+      "logo": "https://www.getsoberspokane.com/assets/img/logo.png",
+      "telephone": "(509) 389-9350",
+      "email": "spokanesober@gmail.com",
+      "areaServed": {
+        "@type": "City",
+        "name": "Airway Heights",
+        "addressRegion": "WA"
+      }
+    }
+
+block content
+
+  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8.text-center
+          h1.display-5.fw-bold Recovery Resources in Airway Heights, WA
+          p.lead.mt-3 Serving the West Plains, military families at Fairchild AFB, and the local community.
+
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          p.lead.mt-4
+            | Airway Heights is a crucial crossroads in the West Plains. As home to Fairchild Air Force Base, neighboring tribal lands, and rapid suburban expansion, the need for accessible mental health and addiction resources has never been higher. Whether you are active duty military, a veteran, or a long-time West Plains resident, Get Sober Spokane is here to map out your path to recovery.
+
+          // Military & Veteran Focus
+          h2.mt-5
+            i.bi.bi-star-fill.text-primary.me-2
+            | Military &amp; Veteran Support
+          p Addiction and PTSD often go hand-in-hand, especially for those who have served. Specific resources exist for the military community.
+          ul
+            li 
+              strong Mann-Grandstaff VA Medical Center (Spokane): 
+              | The VA offers free, highly specialized substance use treatment (SATP) and PTSD care for qualifying veterans.
+            li 
+              strong Fairchild AFB Mental Health Clinic: 
+              | ADAPT (Alcohol and Drug Abuse Prevention and Treatment) services for active-duty airmen and their families.
+            li 
+              strong Local Vet Centers: 
+              | Community-based counseling for combat vets and their families facing readjustment challenges, which often include substance abuse.
+          a.btn.btn-outline-primary(href="/medical-mental-health.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'mental_health_airway_heights'})")
+            i.bi.bi-arrow-right.me-2
+            | Mental Health &amp; Trauma Resources
+
+          // Local West Plains Providers
+          h2.mt-5
+            i.bi.bi-building-add.text-primary.me-2
+            | Local Clinics &amp; Community Care
+          p You do not have to fight traffic into downtown Spokane to get high-quality clinical care or counseling.
+          ul
+            li 
+              strong Camas Path (Kalispel Tribe): 
+              | Providing comprehensive behavioral health counseling, community wellness, and recovery support services.
+            li 
+              strong Unify Community Health (Airway Heights): 
+              | Community health clinics often partner to provide integrated behavioral health services for low-income or Medicaid-eligible individuals on the West Plains.
+            li 
+              strong Surrounding AA/NA Meetings: 
+              | There is a dedicated, tight-knit 12-step community in Airway Heights that meets weekly across various local churches and community buildings.
+          a.btn.btn-outline-primary(href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'treatment_airway_heights'})")
+            i.bi.bi-arrow-right.me-2
+            | Browse Local Clinics
+
+          // Second Chance Employment
+          h2.mt-5
+            i.bi.bi-briefcase.text-primary.me-2
+            | Jobs in the West Plains
+          p With the massive distribution centers and manufacturing hubs surrounding Airway Heights, there are excellent opportunities for "second chance" employers willing to hire individuals in early recovery or those with a criminal record. 
+          a.btn.btn-outline-primary(href="/employment-skills.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'jobs_airway_heights'})")
+            i.bi.bi-arrow-right.me-2
+            | Find Job Support
+
+          // Crisis Information
+          .mt-5.p-4.bg-light.rounded-3
+            h2.h4
+              i.bi.bi-telephone-fill.text-danger.me-2
+              | Emergency Crisis Support
+            p If you feel you are a danger to yourself or experiencing an overdose emergency:
+            ul.mb-3
+              li
+                strong Veterans Crisis Line:
+                |  Dial 988, then press 1 (Text 838255)
+              li
+                strong General Suicide Lifeline:
+                |  988 (Call or Text)
+              li
+                strong Overdose Emergency:
+                |  Call 911 immediately and administer Narcan if available.
+            a.btn.btn-primary.me-2(href="/resource-directory.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'all_resources_airway_heights'})")
+              i.bi.bi-list-ul.me-2
+              | Directory Home
+            a.btn.btn-danger(href="tel:+1988" onclick="gtag('event', 'phone_click', {event_category: 'contact', event_label: '988_airway_heights'})")
+              i.bi.bi-telephone.me-2
+              | Call 988

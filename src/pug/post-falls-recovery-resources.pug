@@ -1,0 +1,98 @@
+extends layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/post-falls-recovery-resources.html'
+  title Addiction Treatment & Recovery Resources near Post Falls, ID
+  meta(name="description" content="Connecting residents of Post Falls and North Idaho to addiction treatment, rehab centers, and sober community resources across the state line in Spokane.")
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Get Sober Spokane",
+      "url": "https://www.getsoberspokane.com",
+      "logo": "https://www.getsoberspokane.com/assets/img/logo.png",
+      "telephone": "(509) 389-9350",
+      "email": "spokanesober@gmail.com",
+      "areaServed": {
+        "@type": "City",
+        "name": "Post Falls",
+        "addressRegion": "ID"
+      }
+    }
+
+block content
+
+  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8.text-center
+          h1.display-5.fw-bold Recovery Resources near Post Falls, ID
+          p.lead.mt-3 Connecting North Idaho residents with expansive treatment and recovery support options right across the border.
+
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          p.lead.mt-4
+            | Post Falls sits perfectly on the state line, making it a unique hub for recovery. Many residents of Kootenai County find that crossing the state border into Spokane drastically opens up their options for inpatient rehab, intensive outpatient programs, and larger sober communities. Get Sober Spokane is here to help bridge that gap.
+
+          // Treatment Corridors
+          h2.mt-5
+            i.bi.bi-hospital.text-primary.me-2
+            | Reaching Spokane Treatment Centers
+          p The I-90 corridor makes accessing world-class addiction treatment in Washington incredibly straightforward for Post Falls residents.
+          ul
+            li 
+              strong Outpatient Programs (IOP): 
+              | The neighboring Spokane Valley is home to numerous intensive outpatient centers that are less than a 15-minute drive from Post Falls.
+            li 
+              strong Detox &amp; Inpatient Rehab: 
+              | If you require medical detoxification or long-term inpatient care, Spokane's larger medical infrastructure provides state-of-the-art facilities not always available locally.
+            li 
+              strong Insurance Considerations: 
+              | Many private employer health insurances in North Idaho have reciprocal coverage networks across the border in Washington. (Note: State Medicaid programs usually do not cross state lines).
+          a.btn.btn-outline-primary(href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'treatment_post_falls'})")
+            i.bi.bi-arrow-right.me-2
+            | Browse Treatment Options
+
+          // Sober Community
+          h2.mt-5
+            i.bi.bi-calendar-event.text-primary.me-2
+            | Tapping into the Spokane Sober Scene
+          p If you feel like you've exhausted the local meetings in Kootenai County, crossing the border provides a breath of fresh air. 
+          ul
+            li 
+              strong Massive Meeting Networks: 
+              | Spokane Valley and Liberty Lake host dozens of AA, NA, and SMART Recovery meetings safely outside your immediate local social circle.
+            li 
+              strong Regional Sober Events: 
+              | Spokane frequently hosts large-scale recovery conventions, sober sports leagues, and holiday sober-dances that happily welcome North Idaho attendees.
+            li 
+              strong Online Connections: 
+              | Can't make the drive today? Join the Get Sober Spokane live chat to connect with peers regionally.
+          a.btn.btn-outline-primary(href="/community-engagement-sober-activities.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'activities_post_falls'})")
+            i.bi.bi-arrow-right.me-2
+            | Explore Upcoming Events
+
+          // Regional Crisis Lines
+          .mt-5.p-4.bg-light.rounded-3
+            h2.h4
+              i.bi.bi-telephone-fill.text-danger.me-2
+              | Get Help Now in North Idaho
+            p If you are in Idaho and need immediate crisis support:
+            ul.mb-3
+              li
+                strong Suicide &amp; Crisis Lifeline:
+                |  988 (Call or Text, 24/7)
+              li
+                strong Idaho Crisis &amp; Suicide Hotline:
+                |  Call or Text 988
+              li
+                strong Kootenai Health Emergency:
+                |  2003 Kootenai Health Way, Coeur d'Alene
+            a.btn.btn-primary.me-2(href="/resource-directory.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'all_resources_post_falls'})")
+              i.bi.bi-list-ul.me-2
+              | View Full Directory
+            a.btn.btn-danger(href="tel:+1988" onclick="gtag('event', 'phone_click', {event_category: 'contact', event_label: '988_post_falls'})")
+              i.bi.bi-telephone.me-2
+              | Call 988
