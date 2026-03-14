@@ -1,0 +1,115 @@
+extends ../layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/blog/best-sober-coffee-shops-spokane.html'
+  title The Best Sober Coffee Shops & Hangouts in Spokane, WA | Get Sober Spokane
+  meta(name="description" content="Looking for an alcohol-free place to hang out with friends, read a book, or meet your sponsor? Check out our list of the best sober coffee shops in Spokane.")
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "The Best Sober Coffee Shops & Hangouts in Spokane",
+      "description": "Looking for an alcohol-free place to hang out with friends, read a book, or meet your sponsor? Check out our list of the best sober coffee shops in Spokane.",
+      "url": "https://www.getsoberspokane.com/blog/best-sober-coffee-shops-spokane.html",
+      "datePublished": "2026-03-13",
+      "dateModified": "2026-03-13",
+      "author": {
+        "@type": "Organization",
+        "name": "Get Sober Spokane",
+        "url": "https://www.getsoberspokane.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Get Sober Spokane",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.getsoberspokane.com/assets/img/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.getsoberspokane.com/blog/best-sober-coffee-shops-spokane.html"
+      }
+    }
+
+block content
+
+  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          nav(aria-label="breadcrumb")
+            ol.breadcrumb.mb-3
+              li.breadcrumb-item
+                a.text-white-50(href="/") Home
+              li.breadcrumb-item
+                a.text-white-50(href="/blog.html") Blog
+              li.breadcrumb-item.active.text-white(aria-current="page") Best Sober Coffee Shops
+          h1.display-5.fw-bold The Best Sober Coffee Shops &amp; Hangouts in Spokane
+          p.lead.mt-3.text-white-75 Safe, warm, alcohol-free spaces to meet a sponsor, read the Big Book, or just exist peacefully.
+          .small.text-white-50.mt-2
+            i.bi.bi-calendar3.me-1
+            | March 2026 &nbsp;·&nbsp;
+            i.bi.bi-clock.me-1
+            | 5 min read
+
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+
+          p.lead.mt-5
+            | When you first give up drinking, evening socializing suddenly feels terrifying. The bars, the breweries, the pubs—so much of Spokane's social scene revolves around alcohol. If you're looking for a comfortable, warm place to meet your sponsor on a Tuesday night or hang out with sober friends on a Saturday devoid of alcohol triggers, coffee shops are your new best friend. Here are some of the best (and late-night) sober coffee spots in town.
+
+          hr.my-5
+
+          h2.mt-4
+            i.bi.bi-cup-hot.text-primary.me-2
+            | The Late-Night Classics
+          p
+            | The hardest hours in early sobriety are usually between 8 PM and midnight when the cravings hit the hardest and the meetings end. Finding a coffee shop open late is a massive win.
+          ul
+            li
+              strong First Avenue Coffee (Downtown):
+              |  A beautifully modern, bright location in the heart of downtown. With excellent pour-overs, massive windows, and plenty of seating, it's a stellar spot for meeting up after a downtown AA or NA meeting.
+            li
+              strong Atticus Coffee &amp; Gifts (Downtown):
+              |  A staple of the Spokane coffee scene. It's cozy, slightly dark, famously welcoming, and attached to a wonderful gift shop. If you want somewhere to sit quietly and read recovery literature, this is the spot.
+
+          h2.mt-5
+            i.bi.bi-house-check.text-primary.me-2
+            | The Neighborhood Hideaways
+          p
+            | Want something away from the hustle of downtown? Spokane's neighborhoods are packed with local roasters.
+          ul
+            li
+              strong Indaba Coffee (Multiple Locations):
+              |  Indaba is a local powerhouse with locations in Kendall Yards, Riverside, and Broadway. The Kendall Yards location sits right on the Centennial Trail—perfect for grabbing a coffee and taking a sober walk along the river.
+            li
+              strong Meeting House Café (South Hill):
+              |  Located up on the South Hill, this cafe literally operates as a community gathering space. It has large tables perfect for group meetings or sitting down with a sponsor.
+            li
+              strong Brews Bros Coffee Bar (Brownes Addition):
+              |  A cozy, deeply atmospheric spot in Spokane's oldest neighborhood. It is highly walkable and nestled among beautiful historic homes.
+
+          h2.mt-5
+            i.bi.bi-tree.text-primary.me-2
+            | The "Not A Coffee Shop, But Caffeinated" Option
+          p
+            | Sometimes you just need somewhere 24/7 or highly casual.
+          ul
+            li
+              strong The Shari's on Monroe or Sullivan:
+              |  In the recovery world, there is a long-standing tradition of hitting a local diner after a late-night meeting. Ordering a slice of pie and endless cups of decaf at a classic diner booth is practically a rite of passage in the Spokane sober community. No one cares how long you sit there, and it's totally alcohol-free.
+
+          hr.my-5
+
+          .card.border-0.shadow.text-center.p-5.mb-4(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #0d6efd22 100%);")
+            i.bi.bi-people.display-4.text-primary.mb-3
+            h3.fw-bold Looking for Sober Events?
+            p.text-muted.mb-4
+              | You don't have to just sit in coffee shops! Spokane has a vibrant, active sober community that hosts regular outdoor hikes, dinners, and events.
+            .d-flex.flex-wrap.gap-3.justify-content-center
+              a.btn.btn-primary.btn-lg(href="/community-engagement-sober-activities.html")
+                i.bi.bi-calendar-event.me-2
+                | View Upcoming Sober Events

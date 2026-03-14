@@ -1,0 +1,108 @@
+extends ../layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/blog/mental-health-addiction-spokane.html'
+  title Mental Health & Addiction in Spokane: Dual Diagnosis Explained | Get Sober Spokane
+  meta(name="description" content="Struggling with both mental health and addiction? Learn about dual diagnosis, co-occurring disorders, and how to find integrated treatment in Spokane, WA.")
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Mental Health & Addiction in Spokane: Understanding the Connection",
+      "description": "Struggling with both mental health and addiction? Learn about dual diagnosis, co-occurring disorders, and how to find integrated treatment in Spokane, WA.",
+      "url": "https://www.getsoberspokane.com/blog/mental-health-addiction-spokane.html",
+      "datePublished": "2026-03-13",
+      "dateModified": "2026-03-13",
+      "author": {
+        "@type": "Organization",
+        "name": "Get Sober Spokane",
+        "url": "https://www.getsoberspokane.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Get Sober Spokane",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.getsoberspokane.com/assets/img/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.getsoberspokane.com/blog/mental-health-addiction-spokane.html"
+      }
+    }
+
+block content
+
+  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          nav(aria-label="breadcrumb")
+            ol.breadcrumb.mb-3
+              li.breadcrumb-item
+                a.text-white-50(href="/") Home
+              li.breadcrumb-item
+                a.text-white-50(href="/blog.html") Blog
+              li.breadcrumb-item.active.text-white(aria-current="page") Mental Health & Addiction
+          h1.display-5.fw-bold Mental Health &amp; Addiction: Understanding Co-Occurring Disorders in Spokane
+          p.lead.mt-3.text-white-75 Why treating both at the same time is the key to lasting recovery.
+          .small.text-white-50.mt-2
+            i.bi.bi-calendar3.me-1
+            | March 2026 &nbsp;·&nbsp;
+            i.bi.bi-clock.me-1
+            | 6 min read
+
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+
+          p.lead.mt-5
+            | It's a common story: someone starts drinking to quiet their severe anxiety, or begins using drugs to pull themselves out of a deep depression. Before long, what started as a coping mechanism turns into a crushing physical dependence. When a substance use disorder and a mental health condition happen at the same time, it's called a **co-occurring disorder** or **dual diagnosis**. In Spokane, getting help means treating *both*.
+
+          hr.my-5
+
+          h2.mt-4
+            i.bi.bi-infinity.text-primary.me-2
+            | The Dangerous Cycle of Dual Diagnosis
+          p
+            | Mental health struggles and addiction fuel each other. Alcohol might offer temporary relief from a panic attack, but as the alcohol wears off, the brain's massive chemical swing causes *rebound anxiety*—which is often worse than the original panic attack. This leads the person to drink more to stop the rebound anxiety, creating a vicious, nearly inescapable cycle.
+          p
+            | Nearly 50% of people experiencing a severe mental illness will also experience a substance use disorder at some point in their lives. You are not alone, and this is not a personal failure—it is a recognizable, treatable medical pattern.
+
+          h2.mt-5
+            i.bi.bi-puzzle.text-primary.me-2
+            | Integrated Treatment in Spokane
+          p
+            | For decades, rehab centers told patients, *"We can't treat your depression until you get sober."* Meanwhile, psychiatrists told them, *"We can't treat your depression until you stop drinking."* Patients were stuck in the middle.
+          p
+            | Today, the standard of care is **Integrated Treatment**. This means that your treatment team handles both the addiction and the mental health illness simultaneously. They understand that if you only treat the addiction but leave the trauma, PTSD, or bipolar disorder untreated, relapse is almost guaranteed.
+          
+          h2.mt-5
+            i.bi.bi-geo-alt.text-primary.me-2
+            | Where to Find Dual Diagnosis Help in Spokane
+          p
+            | Spokane is home to several excellent providers who are equipped to handle severe co-occurring disorders.
+          ul
+            li
+              strong Frontier Behavioral Health:
+              |  The largest community mental health provider in the region. Their Co-Occurring Treatment services provide specialized counseling and psychiatric medication management.
+            li
+              strong CHAS Health:
+              |  Many CHAS clinics in Spokane offer integrated behavioral health. You can see your primary care provider, a therapist, and an addiction medicine specialist all under the same umbrella.
+            li
+              strong SRHD Treatment Services:
+              |  The Spokane Regional Health District offers outpatient treatment and specifically works with individuals facing complex mental health barriers.
+
+          hr.my-5
+
+          .card.border-0.shadow.text-center.p-5.mb-4(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #0d6efd22 100%);")
+            i.bi.bi-heart-pulse.display-4.text-primary.mb-3
+            h3.fw-bold Don't Wait for the 'Perfect' Time
+            p.text-muted.mb-4
+              | You don't have to have your mental health perfectly managed to start addiction treatment, and you don't have to be perfectly sober to seek psychiatric help. Start where you are today.
+            .d-flex.flex-wrap.gap-3.justify-content-center
+              a.btn.btn-primary.btn-lg(href="/medical-mental-health.html")
+                i.bi.bi-search.me-2
+                | Browse Mental Health Resources
