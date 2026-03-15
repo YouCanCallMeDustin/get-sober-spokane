@@ -28,6 +28,20 @@ function initializeForum() {
         loadForumData();
         loadPosts();
         setupCategories();
+
+        // Check for specific post in URL (used by global search)
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('post');
+        if (postId) {
+            console.log('Found post parameter in URL:', postId);
+            // Search for the post and show it
+            searchPosts(postId); // This will filter the view
+            
+            // Optionally auto-open the post details if viewPost is implemented
+            if (typeof viewPost === 'function') {
+                setTimeout(() => viewPost(postId), 500);
+            }
+        }
     } catch (error) {
         console.error('Forum initialization error:', error);
         showNotification('Error loading forum: ' + error.message, 'error');

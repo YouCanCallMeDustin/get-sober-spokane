@@ -16,7 +16,28 @@ class ResourceDirectory {
         console.log('Initializing ResourceDirectory');
         this.loadResources();
         console.log('Loaded', this.resources.length, 'resources');
+        
+        // Populate filteredResources initially with all resources so the page isn't empty on load
+        this.filteredResources = [...this.resources];
+        
         this.setupEventListeners();
+
+        // Check for specific resource ID in the URL (used by global search)
+        const urlParams = new URLSearchParams(window.location.search);
+        const resourceId = urlParams.get('id');
+        if (resourceId) {
+            console.log('Found ID parameter in URL:', resourceId);
+            this.filteredResources = this.resources.filter(resource => resource.id === resourceId);
+            
+            // If the resource exists, automatically show its details
+            if (this.filteredResources.length > 0) {
+                // We use a small timeout to ensure the DOM is ready for the modal
+                setTimeout(() => {
+                    this.showResourceDetails(resourceId);
+                }, 300);
+            }
+        }
+
         this.renderResources();
         console.log('ResourceDirectory initialization complete');
     }
