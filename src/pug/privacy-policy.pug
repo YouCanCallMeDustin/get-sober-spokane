@@ -1,250 +1,128 @@
-doctype html
-html(lang='en')
+extends layout.pug
 
-    head
-        meta(charset='utf-8')
-        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-        // Google Analytics 4 (GA4)
-        script(async src="https://www.googletagmanager.com/gtag/js?id=G-LB7GNYNX28")
-        script.
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-LB7GNYNX28');
-        meta(name='description', content='Privacy Policy - Get Sober Spokane - How we protect your personal information')
-        meta(name='author', content='Get Sober Spokane')
+block head
+    title Privacy Policy - Get Sober Spokane
 
-        title Privacy Policy - Get Sober Spokane
+block content
+    // Page Header
+    header.page-header.bg-primary.text-white.py-5.mt-5
+        .container.px-4.px-lg-5.text-center
+            h1.display-4.fw-bold Privacy Policy
+            p.lead Last updated: January 2025
 
-        // Favicon
-        link(rel='icon', type='image/x-icon', href='assets/favicon.ico')
+    // Privacy Policy Content
+    section.page-section.py-5
+        .container.px-4.px-lg-5
+            .row.justify-content-center
+                .col-lg-8
+                    .content
+                        h2.mb-4 Introduction
+                        p
+                            | Get Sober Spokane ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.
 
-        // Bootstrap Icons
-        link(href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css', rel='stylesheet')
+                        h2.mb-4 Information We Collect
+                        h3.h5.mb-3 Personal Information
+                        p
+                            | We may collect personal information that you voluntarily provide to us when you:
+                        ul
+                            li Contact us through our contact form
+                            li Sign up for our services
+                            li Request information about our programs
+                            li Participate in our community activities
 
-        // Google fonts
-        link(href='https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700', rel='stylesheet')
-        link(href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic', rel='stylesheet', type='text/css')
+                        p
+                            | The personal information we collect may include:
+                        ul
+                            li Name
+                            li Email address
+                            li Phone number
+                            li Messages or communications you send to us
 
-        // Core theme CSS (includes Bootstrap)
-        link(href='css/styles.css', rel='stylesheet')
+                        h3.h5.mb-3 Automatically Collected Information
+                        p
+                            | When you visit our website, we may automatically collect certain information about your device, including:
+                        ul
+                            li IP address
+                            li Browser type and version
+                            li Operating system
+                            li Pages visited
+                            li Time spent on pages
+                            li Referring website
 
-    body#page-top
+                        h2.mb-4 How We Use Your Information
+                        p
+                            | We use the information we collect to:
+                        ul
+                            li Respond to your inquiries and provide support
+                            li Connect you with appropriate recovery resources
+                            li Improve our website and services
+                            li Send you relevant information about our programs
+                            li Comply with legal obligations
+                            li Protect against fraud and abuse
 
-        // Navigation
-        nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3
-            .container.px-4.px-lg-5
-                a.navbar-brand.d-flex.align-items-center(href='index.html')
-                    img.logo(src='assets/img/logo.png', alt='Get Sober Spokane Logo')
-                    span.ms-2 Get Sober Spokane
-                button.navbar-toggler.navbar-toggler-right(type='button', data-bs-toggle='collapse', data-bs-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
-                    span.navbar-toggler-icon
-                #navbarResponsive.collapse.navbar-collapse
-                    ul.navbar-nav.ms-auto.my-2.my-lg-0
-                        li.nav-item
-                            a.nav-link(href='index.html') Home
-                        li.nav-item.dropdown
-                            a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false') Resources
-                            ul.dropdown-menu
-                                li
-                                    a.dropdown-item(href='resource-directory.html' onclick="gtag('event', 'resources_click', {event_category: 'engagement'})")
-                                        i.bi.bi-list-ul.me-2
-                                        | Resource Directory
-                                li
-                                    a.dropdown-item(href='addiction-treatments-support.html')
-                                        i.bi.bi-heart-pulse.me-2
-                                        | Treatment & Support
-                                li
-                                    a.dropdown-item(href='medical-mental-health.html')
-                                        i.bi.bi-stethoscope.me-2
-                                        | Medical & Mental Health
-                                li
-                                    a.dropdown-item(href='shelter-housing.html')
-                                        i.bi.bi-house.me-2
-                                        | Shelter & Housing
-                                li
-                                    a.dropdown-item(href='food-basic-needs.html')
-                                        i.bi.bi-bag-heart.me-2
-                                        | Food & Basic Needs
-                                li
-                                    a.dropdown-item(href='employment-skills.html')
-                                        i.bi.bi-briefcase.me-2
-                                        | Employment & Skills
-                        li.nav-item.dropdown
-                            a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false') Community
-                            ul.dropdown-menu
-                                li
-                                    a.dropdown-item(href='sponsor-finder.html')
-                                        i.bi.bi-person-heart.me-2
-                                        | Find a Sponsor
-                                li
-                                    a-dropdown-item(href='chat.html')
-                                        i.bi.bi-chat-dots.me-2
-                                        | Live Chat
-                                li
-                                    a.dropdown-item(href='community-forum.html' onclick="gtag('event', 'community_click', {event_category: 'engagement'})")
-                                        i.bi.bi-people.me-2
-                                        | Forum
-                        li.nav-item.dropdown
-                            a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false') About Us
-                            ul.dropdown-menu
-                                li
-                                    a.dropdown-item(href='about-us.html')
-                                        i.bi.bi-info-circle.me-2
-                                        | About Us
-                                li
-                                    a.dropdown-item(href='index.html#contact')
-                                        i.bi.bi-envelope.me-2
-                                        | Contact
-                                li
-                                    a.dropdown-item(href='donations.html' onclick="gtag('event', 'donate_click', {event_category: 'engagement'})")
-                                        i.bi.bi-heart.me-2
-                                        | Donate
-                        li.nav-item
-                            a.nav-link(href='dashboard.html') Dashboard
+                        h2.mb-4 Information Sharing and Disclosure
+                        p
+                            | We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except in the following circumstances:
+                        ul
+                            li
+                                strong Service Providers: 
+                                | We may share information with trusted third-party service providers who assist us in operating our website and providing services (such as Formspree for contact form processing)
+                            li
+                                strong Legal Requirements: 
+                                | We may disclose information if required by law or to protect our rights and safety
+                            li
+                                strong Emergency Situations: 
+                                | In emergency situations where someone's safety is at risk, we may share information with appropriate authorities
 
-                        li.nav-item
+                        h2.mb-4 Third-Party Services
+                        p
+                            | Our website uses the following third-party services:
+                        ul
+                            li
+                                strong Formspree: 
+                                | Processes our contact form submissions. Please review their 
+                                a(href='https://formspree.io/legal/privacy-policy/', target='_blank') privacy policy
+                                | .
+                            li
+                                strong Google Fonts: 
+                                | Provides web fonts. Google may collect usage data. Please review their 
+                                a(href='https://policies.google.com/privacy', target='_blank') privacy policy
+                                | .
+                            li
+                                strong Bootstrap CDN: 
+                                | Provides CSS and JavaScript libraries.
 
-                          a.nav-link(href='blog.html') Blog
+                        h2.mb-4 Data Security
+                        p
+                            | We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure.
 
-        // Page Header
-        header.page-header.bg-primary.text-white.py-5.mt-5
-            .container.px-4.px-lg-5.text-center
-                h1.display-4.fw-bold Privacy Policy
-                p.lead Last updated: January 2025
+                        h2.mb-4 Your Rights
+                        p
+                            | You have the right to:
+                        ul
+                            li Access the personal information we hold about you
+                            li Request correction of inaccurate information
+                            li Request deletion of your personal information
+                            li Opt out of communications from us
+                            li File a complaint with relevant authorities
 
-        // Privacy Policy Content
-        section.page-section.py-5
-            .container.px-4.px-lg-5
-                .row.justify-content-center
-                    .col-lg-8
-                        .content
-                            h2.mb-4 Introduction
+                        h2.mb-4 Children's Privacy
+                        p
+                            | Our website is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13.
+
+                        h2.mb-4 Changes to This Privacy Policy
+                        p
+                            | We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
+
+                        h2.mb-4 Contact Us
+                        p
+                            | If you have any questions about this Privacy Policy or our privacy practices, please contact us:
+                        .contact-info
                             p
-                                | Get Sober Spokane ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.
-
-                            h2.mb-4 Information We Collect
-                            h3.h5.mb-3 Personal Information
+                                strong Get Sober Spokane
                             p
-                                | We may collect personal information that you voluntarily provide to us when you:
-                            ul
-                                li Contact us through our contact form
-                                li Sign up for our services
-                                li Request information about our programs
-                                li Participate in our community activities
-
+                                i.bi-phone.me-2
+                                | (509) 389-9350
                             p
-                                | The personal information we collect may include:
-                            ul
-                                li Name
-                                li Email address
-                                li Phone number
-                                li Messages or communications you send to us
-
-                            h3.h5.mb-3 Automatically Collected Information
-                            p
-                                | When you visit our website, we may automatically collect certain information about your device, including:
-                            ul
-                                li IP address
-                                li Browser type and version
-                                li Operating system
-                                li Pages visited
-                                li Time spent on pages
-                                li Referring website
-
-                            h2.mb-4 How We Use Your Information
-                            p
-                                | We use the information we collect to:
-                            ul
-                                li Respond to your inquiries and provide support
-                                li Connect you with appropriate recovery resources
-                                li Improve our website and services
-                                li Send you relevant information about our programs
-                                li Comply with legal obligations
-                                li Protect against fraud and abuse
-
-                            h2.mb-4 Information Sharing and Disclosure
-                            p
-                                | We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except in the following circumstances:
-                            ul
-                                li
-                                    strong Service Providers: 
-                                    | We may share information with trusted third-party service providers who assist us in operating our website and providing services (such as Formspree for contact form processing)
-                                li
-                                    strong Legal Requirements: 
-                                    | We may disclose information if required by law or to protect our rights and safety
-                                li
-                                    strong Emergency Situations: 
-                                    | In emergency situations where someone's safety is at risk, we may share information with appropriate authorities
-
-                            h2.mb-4 Third-Party Services
-                            p
-                                | Our website uses the following third-party services:
-                            ul
-                                li
-                                    strong Formspree: 
-                                    | Processes our contact form submissions. Please review their 
-                                    a(href='https://formspree.io/legal/privacy-policy/', target='_blank') privacy policy
-                                    | .
-                                li
-                                    strong Google Fonts: 
-                                    | Provides web fonts. Google may collect usage data. Please review their 
-                                    a(href='https://policies.google.com/privacy', target='_blank') privacy policy
-                                    | .
-                                li
-                                    strong Bootstrap CDN: 
-                                    | Provides CSS and JavaScript libraries.
-
-                            h2.mb-4 Data Security
-                            p
-                                | We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet is 100% secure.
-
-                            h2.mb-4 Your Rights
-                            p
-                                | You have the right to:
-                            ul
-                                li Access the personal information we hold about you
-                                li Request correction of inaccurate information
-                                li Request deletion of your personal information
-                                li Opt out of communications from us
-                                li File a complaint with relevant authorities
-
-                            h2.mb-4 Children's Privacy
-                            p
-                                | Our website is not intended for children under 13 years of age. We do not knowingly collect personal information from children under 13.
-
-                            h2.mb-4 Changes to This Privacy Policy
-                            p
-                                | We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
-
-                            h2.mb-4 Contact Us
-                            p
-                                | If you have any questions about this Privacy Policy or our privacy practices, please contact us:
-                            .contact-info
-                                p
-                                    strong Get Sober Spokane
-                                p
-                                    i.bi-phone.me-2
-                                    | (509) 389-9350
-                                p
-                                    i.bi-envelope.me-2
-                                    a(href='mailto:getsoberspokane@outlook.com' onclick="gtag('event', 'email_click', {event_category: 'contact'})") getsoberspokane@outlook.com
-
-        // Footer
-        footer.bg-light.py-5
-            .container.px-4.px-lg-5
-                a(href='index.html')
-                    img.footer-logo(src='assets/img/logo.png', alt='Get Sober Spokane Logo')
-                .small.text-center.text-muted
-                    | Copyright © 2025 - Get Sober Spokane
-                    br
-                    a(href='privacy-policy.html') Privacy Policy
-                    |  | 
-                    a(href='terms-of-service.html') Terms of Service
-
-        // Bootstrap core JS
-        script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js')
-
-        // Core theme JS
-        script(src='js/scripts.js') 
-
+                                i.bi-envelope.me-2
+                                a(href='mailto:getsoberspokane@outlook.com' onclick="gtag('event', 'email_click', {event_category: 'contact'})") getsoberspokane@outlook.com

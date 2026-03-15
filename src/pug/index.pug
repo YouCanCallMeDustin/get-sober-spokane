@@ -1,728 +1,301 @@
-doctype html
-html(lang='en')
+extends layout.pug
 
-    head
-        meta(charset='utf-8')
-        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-        meta(name="google-site-verification" content="yVFofJG3SElxFm9kuw9zPfuKQXLn7a3sW7zt2thnCho")
+block head
+    // Page specific preloads
+    link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')
+    // SimpleLightbox plugin CSS
+    link(href='https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css', rel='stylesheet')
 
-        // Google Analytics 4 (GA4)
-        script(async src="https://www.googletagmanager.com/gtag/js?id=G-LB7GNYNX28")
-        script.
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-LB7GNYNX28');
-
-        title Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WAne - Recovery Support Community | Addiction Treatment Resources Spokane, WAne - Recovery Support Community | Addiction Treatment Resources Spokane, WAne - Recovery Support Community | Addiction Treatment Resources Spokane, WAne - Recovery Support Community | Addiction Treatment Resources Spokane, WAne - Recovery Support Community | Addiction Treatment Resources Spokane, WAne – Free Recovery Resources & Support Community | Spokane, WA
-        meta(name='description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(name='author', content='Get Sober Spokane')
-
-        // Primary Meta Tags
-        meta(name='keywords', content='addiction treatment Spokane, recovery support Spokane, sober living Spokane, mental health Spokane, shelter Spokane, food bank Spokane, AA meetings Spokane, NA meetings Spokane')
-        meta(name='robots', content='index, follow')
-        meta(name='language', content='English')
-        meta(name='revisit-after', content='7 days')
-        
-        // Open Graph / Facebook
-        meta(property='og:type', content='website')
-        meta(property='og:url', content='https://www.getsoberspokane.com')
-        meta(property='og:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(property='og:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(property='og:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        meta(property='og:image:width', content='1200')
-        meta(property='og:image:height', content='630')
-        meta(property='og:site_name', content='Get Sober Spokane')
-        meta(property='og:locale', content='en_US')
-        
-        // Twitter
-        meta(name='twitter:card', content='summary_large_image')
-        meta(name='twitter:url', content='https://www.getsoberspokane.com')
-        meta(name='twitter:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(name='twitter:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(name='twitter:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        
-        // Additional SEO Meta Tags
-        meta(name='geo.region', content='US-WA')
-        meta(name='geo.placename', content='Spokane')
-        meta(name='geo.position', content='47.6588, -117.4260')
-        meta(name='ICBM', content='47.6588, -117.4260')
-        link(rel='canonical', href='https://www.getsoberspokane.com')
-        
-        // Apple Touch Icon
-        link(rel='apple-touch-icon', href='assets/img/logo.png')
-        
-        // Preload critical resources
-        link(rel='preload', href='css/styles.css', as='style')
-        link(rel='preload', href='assets/img/logo.png', as='image')
-        link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')
-    
-        // Primary Meta Tags
-        meta(name='keywords', content='addiction treatment Spokane, recovery support Spokane, sober living Spokane, mental health Spokane, shelter Spokane, food bank Spokane, AA meetings Spokane, NA meetings Spokane')
-        meta(name='robots', content='index, follow')
-        meta(name='language', content='English')
-        meta(name='revisit-after', content='7 days')
-        
-        // Open Graph / Facebook
-        meta(property='og:type', content='website')
-        meta(property='og:url', content='https://www.getsoberspokane.com')
-        meta(property='og:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(property='og:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(property='og:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        meta(property='og:image:width', content='1200')
-        meta(property='og:image:height', content='630')
-        meta(property='og:site_name', content='Get Sober Spokane')
-        meta(property='og:locale', content='en_US')
-        
-        // Twitter
-        meta(name='twitter:card', content='summary_large_image')
-        meta(name='twitter:url', content='https://www.getsoberspokane.com')
-        meta(name='twitter:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(name='twitter:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(name='twitter:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        
-        // Additional SEO Meta Tags
-        meta(name='geo.region', content='US-WA')
-        meta(name='geo.placename', content='Spokane')
-        meta(name='geo.position', content='47.6588, -117.4260')
-        meta(name='ICBM', content='47.6588, -117.4260')
-        link(rel='canonical', href='https://www.getsoberspokane.com')
-        
-        // Apple Touch Icon
-        link(rel='apple-touch-icon', href='assets/img/logo.png')
-        
-        // Preload critical resources
-        link(rel='preload', href='css/styles.css', as='style')
-        link(rel='preload', href='assets/img/logo.png', as='image')
-        link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')
-    
-        // Primary Meta Tags
-        meta(name='keywords', content='addiction treatment Spokane, recovery support Spokane, sober living Spokane, mental health Spokane, shelter Spokane, food bank Spokane, AA meetings Spokane, NA meetings Spokane')
-        meta(name='robots', content='index, follow')
-        meta(name='language', content='English')
-        meta(name='revisit-after', content='7 days')
-        
-        // Open Graph / Facebook
-        meta(property='og:type', content='website')
-        meta(property='og:url', content='https://www.getsoberspokane.com')
-        meta(property='og:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(property='og:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(property='og:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        meta(property='og:image:width', content='1200')
-        meta(property='og:image:height', content='630')
-        meta(property='og:site_name', content='Get Sober Spokane')
-        meta(property='og:locale', content='en_US')
-        
-        // Twitter
-        meta(name='twitter:card', content='summary_large_image')
-        meta(name='twitter:url', content='https://www.getsoberspokane.com')
-        meta(name='twitter:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(name='twitter:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(name='twitter:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        
-        // Additional SEO Meta Tags
-        meta(name='geo.region', content='US-WA')
-        meta(name='geo.placename', content='Spokane')
-        meta(name='geo.position', content='47.6588, -117.4260')
-        meta(name='ICBM', content='47.6588, -117.4260')
-        link(rel='canonical', href='https://www.getsoberspokane.com')
-        
-        // Apple Touch Icon
-        link(rel='apple-touch-icon', href='assets/img/logo.png')
-        
-        // Preload critical resources
-        link(rel='preload', href='css/styles.css', as='style')
-        link(rel='preload', href='assets/img/logo.png', as='image')
-        link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')
-    
-        // Primary Meta Tags
-        meta(name='keywords', content='addiction treatment Spokane, recovery support Spokane, sober living Spokane, mental health Spokane, shelter Spokane, food bank Spokane, AA meetings Spokane, NA meetings Spokane')
-        meta(name='robots', content='index, follow')
-        meta(name='language', content='English')
-        meta(name='revisit-after', content='7 days')
-        
-        // Open Graph / Facebook
-        meta(property='og:type', content='website')
-        meta(property='og:url', content='https://www.getsoberspokane.com')
-        meta(property='og:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(property='og:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(property='og:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        meta(property='og:image:width', content='1200')
-        meta(property='og:image:height', content='630')
-        meta(property='og:site_name', content='Get Sober Spokane')
-        meta(property='og:locale', content='en_US')
-        
-        // Twitter
-        meta(name='twitter:card', content='summary_large_image')
-        meta(name='twitter:url', content='https://www.getsoberspokane.com')
-        meta(name='twitter:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(name='twitter:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(name='twitter:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        
-        // Additional SEO Meta Tags
-        meta(name='geo.region', content='US-WA')
-        meta(name='geo.placename', content='Spokane')
-        meta(name='geo.position', content='47.6588, -117.4260')
-        meta(name='ICBM', content='47.6588, -117.4260')
-        link(rel='canonical', href='https://www.getsoberspokane.com')
-        
-        // Apple Touch Icon
-        link(rel='apple-touch-icon', href='assets/img/logo.png')
-        
-        // Preload critical resources
-        link(rel='preload', href='css/styles.css', as='style')
-        link(rel='preload', href='assets/img/logo.png', as='image')
-        link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')
-    
-        // Primary Meta Tags
-        meta(name='keywords', content='addiction treatment Spokane, recovery support Spokane, sober living Spokane, mental health Spokane, shelter Spokane, food bank Spokane, AA meetings Spokane, NA meetings Spokane')
-        meta(name='robots', content='index, follow')
-        meta(name='language', content='English')
-        meta(name='revisit-after', content='7 days')
-        
-        // Open Graph / Facebook
-        meta(property='og:type', content='website')
-        meta(property='og:url', content='https://www.getsoberspokane.com')
-        meta(property='og:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(property='og:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(property='og:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        meta(property='og:image:width', content='1200')
-        meta(property='og:image:height', content='630')
-        meta(property='og:site_name', content='Get Sober Spokane')
-        meta(property='og:locale', content='en_US')
-        
-        // Twitter
-        meta(name='twitter:card', content='summary_large_image')
-        meta(name='twitter:url', content='https://www.getsoberspokane.com')
-        meta(name='twitter:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(name='twitter:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(name='twitter:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        
-        // Additional SEO Meta Tags
-        meta(name='geo.region', content='US-WA')
-        meta(name='geo.placename', content='Spokane')
-        meta(name='geo.position', content='47.6588, -117.4260')
-        meta(name='ICBM', content='47.6588, -117.4260')
-        link(rel='canonical', href='https://www.getsoberspokane.com')
-        
-        // Apple Touch Icon
-        link(rel='apple-touch-icon', href='assets/img/logo.png')
-        
-        // Preload critical resources
-        link(rel='preload', href='css/styles.css', as='style')
-        link(rel='preload', href='assets/img/logo.png', as='image')
-        link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')
-    
-        // Primary Meta Tags
-        meta(name='keywords', content='addiction treatment Spokane, recovery support Spokane, sober living Spokane, mental health Spokane, shelter Spokane, food bank Spokane, AA meetings Spokane, NA meetings Spokane')
-        meta(name='robots', content='index, follow')
-        meta(name='language', content='English')
-        meta(name='revisit-after', content='7 days')
-        
-        // Open Graph / Facebook
-        meta(property='og:type', content='website')
-        meta(property='og:url', content='https://www.getsoberspokane.com')
-        meta(property='og:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(property='og:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(property='og:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        meta(property='og:image:width', content='1200')
-        meta(property='og:image:height', content='630')
-        meta(property='og:site_name', content='Get Sober Spokane')
-        meta(property='og:locale', content='en_US')
-        
-        // Twitter
-        meta(name='twitter:card', content='summary_large_image')
-        meta(name='twitter:url', content='https://www.getsoberspokane.com')
-        meta(name='twitter:title', content='Get Sober Spokane - Recovery Support Community | Addiction Treatment Resources Spokane, WA')
-        meta(name='twitter:description', content='Find addiction treatment, mental health services, shelters, food banks, and recovery support in Spokane, WA. Comprehensive resource directory for individuals and families seeking sobriety and recovery.')
-        meta(name='twitter:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        
-        // Additional SEO Meta Tags
-        meta(name='geo.region', content='US-WA')
-        meta(name='geo.placename', content='Spokane')
-        meta(name='geo.position', content='47.6588, -117.4260')
-        meta(name='ICBM', content='47.6588, -117.4260')
-        link(rel='canonical', href='https://www.getsoberspokane.com')
-        
-        // Apple Touch Icon
-        link(rel='apple-touch-icon', href='assets/img/logo.png')
-        
-        // Preload critical resources
-        link(rel='preload', href='css/styles.css', as='style')
-        link(rel='preload', href='assets/img/logo.png', as='image')
-        link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')
-    
-        // Primary Meta Tags
-        meta(name='keywords', content='addiction treatment Spokane, recovery support Spokane, sober living Spokane, mental health Spokane, shelter Spokane, food bank Spokane, AA meetings Spokane, NA meetings Spokane')
-        meta(name='robots', content='index, follow')
-        meta(name='language', content='English')
-        meta(name='revisit-after', content='7 days')
-
-        // Open Graph / Facebook
-        meta(property='og:type', content='website')
-        meta(property='og:url', content='https://www.getsoberspokane.com')
-        meta(property='og:title', content='Get Sober Spokane – Free Recovery Resources & Support Community | Spokane, WA')
-        meta(property='og:description', content='Free addiction recovery resources, sober living support, and community connections in Spokane, WA. Find treatment, housing, food, and sponsor matching today.')
-        meta(property='og:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-        meta(property='og:image:width', content='1200')
-        meta(property='og:image:height', content='630')
-        meta(property='og:site_name', content='Get Sober Spokane')
-        meta(property='og:locale', content='en_US')
-
-        // Twitter
-        meta(name='twitter:card', content='summary_large_image')
-        meta(name='twitter:url', content='https://www.getsoberspokane.com')
-        meta(name='twitter:title', content='Get Sober Spokane – Free Recovery Resources & Support Community | Spokane, WA')
-        meta(name='twitter:description', content='Free addiction recovery resources, sober living support, and community connections in Spokane, WA. Find treatment, housing, food, and sponsor matching today.')
-        meta(name='twitter:image', content='https://www.getsoberspokane.com/assets/img/logo.png')
-
-        // Additional SEO Meta Tags
-        meta(name='geo.region', content='US-WA')
-        meta(name='geo.placename', content='Spokane')
-        meta(name='geo.position', content='47.6588, -117.4260')
-        meta(name='ICBM', content='47.6588, -117.4260')
-        link(rel='canonical', href='https://www.getsoberspokane.com')
-
-        // Apple Touch Icon
-        link(rel='apple-touch-icon', href='assets/img/logo.png')
-
-        // Preload critical resources
-        link(rel='preload', href='css/styles.css', as='style')
-        link(rel='preload', href='assets/img/logo.png', as='image')
-        link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')
-
-        // Bootstrap Icons
-        link(href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css', rel='stylesheet')
-
-        // Google fonts
-        link(href='https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700', rel='stylesheet')
-        link(href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic', rel='stylesheet', type='text/css')
-
-        // SimpleLightbox plugin CSS
-        link(href='https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css', rel='stylesheet')
-
-        // Core theme CSS (includes Bootstrap)
-        link(href='css/styles.css', rel='stylesheet')
-
-    body#page-top
-
-        // Navigation
-        nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top.py-3
-            .container.px-4.px-lg-5
-                a.navbar-brand.d-flex.align-items-center(href='index.html')
-                    img.logo(src='assets/img/logo.png', alt='Get Sober Spokane Logo')
-                    span.ms-2 Get Sober Spokane
-                button.navbar-toggler.navbar-toggler-right(type='button', data-bs-toggle='collapse', data-bs-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
-                    span.navbar-toggler-icon
-                #navbarResponsive.collapse.navbar-collapse
-                    ul.navbar-nav.ms-auto.my-2.my-lg-0
-                        li.nav-item
-                            a.nav-link(href='index.html') Home
-                        li.nav-item.dropdown
-                            a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false') Resources
-                            ul.dropdown-menu
-                                li
-                                    a.dropdown-item(href='resource-directory.html')
-                                        i.bi.bi-list-ul.me-2
-                                        | Resource Directory
-                                li
-                                    a.dropdown-item(href='addiction-treatments-support.html')
-                                        i.bi.bi-heart-pulse.me-2
-                                        | Treatment & Support
-                                li
-                                    a.dropdown-item(href='medical-mental-health.html')
-                                        i.bi.bi-stethoscope.me-2
-                                        | Medical & Mental Health
-                                li
-                                    a.dropdown-item(href='shelter-housing.html')
-                                        i.bi.bi-house.me-2
-                                        | Shelter & Housing
-                                li
-                                    a.dropdown-item(href='food-basic-needs.html')
-                                        i.bi.bi-bag-heart.me-2
-                                        | Food & Basic Needs
-                                li
-                                    a.dropdown-item(href='employment-skills.html')
-                                        i.bi.bi-briefcase.me-2
-                                        | Employment & Skills
-                                li
-                                    a.dropdown-item(href='community-engagement-sober-activities.html')
-                                        i.bi.bi-people.me-2
-                                        | Sober Activities
-                                li
-                                    a.dropdown-item(href='map.html')
-                                        i.bi.bi-geo-alt.me-2
-                                        | Recovery Map
-                        li.nav-item.dropdown
-                            a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false') Community
-                            ul.dropdown-menu
-                                li
-                                    a.dropdown-item(href='sponsor-finder.html')
-                                        i.bi.bi-person-heart.me-2
-                                        | Find a Sponsor
-                                li
-                                    a.dropdown-item(href='chat.html')
-                                        i.bi.bi-chat-dots.me-2
-                                        | Live Chat
-                                li
-                                    a.dropdown-item(href='community-forum.html')
-                                        i.bi.bi-people.me-2
-                                        | Forum
-                        li.nav-item.dropdown
-                            a.nav-link.dropdown-toggle(href='#', role='button', data-bs-toggle='dropdown', aria-expanded='false') About Us
-                            ul.dropdown-menu
-                                li
-                                    a.dropdown-item(href='about-us.html')
-                                        i.bi.bi-info-circle.me-2
-                                        | About Us
-                                li
-                                    a.dropdown-item(href='index.html#contact')
-                                        i.bi.bi-envelope.me-2
-                                        | Contact
-                                li
-                                    a.dropdown-item(href='donations.html' onclick="gtag('event', 'donate_click', {event_category: 'engagement'})")
-                                        i.bi.bi-heart.me-2
-                                        | Donate
-                        li.nav-item
-                            a.nav-link(href='dashboard.html') Dashboard
-
-                        li.nav-item
-
-                          a.nav-link(href='blog.html') Blog
-                        // Auth navigation
-                        li.nav-item(data-auth="guest")
-                            a.nav-link#navbarLogin(href='auth/login.html') Sign In
-                        li.nav-item(data-auth="required" style="display:none;")
-                            a.nav-link#navbarLogout(href='#') Sign Out
-
-
-        // Masthead
-        header.masthead
-            // Video Background
-            video#bgVideo.video-background(autoplay='', muted='', loop='', playsinline='', poster='assets/img/bg-masthead.jpg')
-                source(src='assets/img/bg-masthead.mp4', type='video/mp4')
-                | Your browser does not support the video tag.
-            .container.px-4.px-lg-5.h-100
-                .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
-                    .col-lg-8.align-self-end
-                        h1.text-white.font-weight-bold Supporting Recovery in Spokane
-                        hr.divider
-                    .col-lg-8.align-self-baseline
-                        p.text-white-75.mb-5
-                            | A community dedicated to supporting individuals and families on their journey to sobriety and recovery. Find hope, connection, and resources in the Spokane area.
-                        a.btn.btn-primary.btn-xl(href='#about') Learn More
-
-        // About
-        section#about.page-section.bg-primary
-            .container.px-4.px-lg-5
-                .row.gx-4.gx-lg-5.justify-content-center
-                    .col-lg-8.text-center
-                        h2.text-white.mt-0 Supporting Your Recovery Journey
-                        hr.divider.divider-light
-                        p.text-white-75.mb-4
-                            | Get Sober Spokane is committed to providing a safe, supportive environment for individuals seeking recovery from addiction. We believe in the power of community, connection, and hope in the healing process.
-                        a.btn.btn-light.btn-xl(href='#services') Our Services
-
-        // Services
-        section#services.page-section
-            .container.px-4.px-lg-5
-                h2.text-center.mt-0 How We Support You
-                hr.divider
-                p.text-center.text-muted.mb-4 Click On Any Of The Categories Below
-                .row.gx-4.gy-4
-                    .col-lg-4.col-md-6
-                        a.glass-card.fade-in-up.svc-card-1(href='shelter-housing.html')
-                            .icon-wrapper
-                                i.bi-house-door
-                            h3 Shelter and Housing
-                            p Find safe, supportive shelter and housing resources in the Spokane area.
-                    .col-lg-4.col-md-6
-                        a.glass-card.fade-in-up.svc-card-2(href='food-basic-needs.html')
-                            .icon-wrapper
-                                i.bi-bag-heart
-                            h3 Food and Basic Needs
-                            p Access food banks, clothing, hygiene supplies, and other essentials.
-                    .col-lg-4.col-md-6
-                        a.glass-card.fade-in-up.svc-card-3(href='addiction-treatments-support.html')
-                            .icon-wrapper
-                                i.bi-capsule
-                            h3 Treatment & Support
-                            p Connect with treatment programs and peer-led support groups for recovery.
-                    .col-lg-4.col-md-6
-                        a.glass-card.fade-in-up.svc-card-4(href='medical-mental-health.html')
-                            .icon-wrapper
-                                i.bi-heart-pulse
-                            h3 Health Services
-                            p Find mental health counseling, medical care, and wellness support.
-                    .col-lg-4.col-md-6
-                        a.glass-card.fade-in-up.svc-card-5(href='employment-skills.html')
-                            .icon-wrapper
-                                i.bi-briefcase
-                            h3 Employment & Skills
-                            p Explore job training, employment services, and skill-building opportunities.
-                    .col-lg-4.col-md-6
-                        a.glass-card.fade-in-up.svc-card-6(href='community-engagement-sober-activities.html')
-                            .icon-wrapper
-                                i.bi-people-fill
-                            h3 Sober Activities
-                            p Join sober events, volunteer, and connect with a supportive community.
-
-        // Testimonials
-        section#testimonials.page-section.bg-light
-            .container.px-4.px-lg-5
-                .text-center
-                    h2.mt-0 Recovery Stories from the Spokane Community
+block content
+    // Masthead
+    header.masthead
+        // Video Background
+        video#bgVideo.video-background(autoplay='', muted='', loop='', playsinline='', poster='assets/img/bg-masthead.jpg')
+            source(src='assets/img/bg-masthead.mp4', type='video/mp4')
+            | Your browser does not support the video tag.
+        .container.px-4.px-lg-5.h-100
+            .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
+                .col-lg-8.align-self-end
+                    h1.text-white.font-weight-bold Supporting Recovery in Spokane
                     hr.divider
-                    p.text-muted.mb-5 Real stories from real people on their journey to sobriety in Spokane, WA.
-                .row.gx-4.gy-4
-                    .col-lg-4
-                        .testimonial-card.fade-in-up.testi-card-1
-                            i.bi.bi-quote.quote-icon
-                            p.testimonial-text "Get Sober Spokane helped me find a sober living home within days of reaching out. I didn't know this many free resources existed in Spokane. It changed my life."
-                            .author-info
-                                .avatar
-                                    i.bi.bi-person-fill
-                                .details
-                                    span.name Community Member
-                                    span.location Spokane, WA
-                    .col-lg-4
-                        .testimonial-card.fade-in-up.testi-card-2
-                            i.bi.bi-quote.quote-icon
-                            p.testimonial-text "Finding my sponsor through this site was the turning point in my recovery. The process was simple and the match was perfect. I'm 14 months sober today."
-                            .author-info
-                                .avatar
-                                    i.bi.bi-person-fill
-                                .details
-                                    span.name Community Member
-                                    span.location Spokane Valley, WA
-                    .col-lg-4
-                        .testimonial-card.fade-in-up.testi-card-3
-                            i.bi.bi-quote.quote-icon
-                            p.testimonial-text "I was scared and didn't know where to start. The live chat gave me someone to talk to at 2am when I needed it most. This community is the real deal."
-                            .author-info
-                                .avatar
-                                    i.bi.bi-person-fill
-                                .details
-                                    span.name Community Member
-                                    span.location North Spokane, WA
-                .text-center.mt-4
-                    a.btn.btn-outline-primary.btn-xl(href='community-forum.html')
-                        i.bi.bi-chat-left-text.me-2
-                        | Share Your Story
+                .col-lg-8.align-self-baseline
+                    p.text-white-75.mb-5
+                        | A community dedicated to supporting individuals and families on their journey to sobriety and recovery. Find hope, connection, and resources in the Spokane area.
+                    a.btn.btn-primary.btn-xl(href='#about') Learn More
 
-        // Call to action
-        section.cta-premium
-            .container.px-4.px-lg-5.text-center.cta-content
-                h2.mb-4.fade-in-up.cta-fade-1 Ready to Start Your Recovery Journey?
-                .row.justify-content-center
-                    .col-lg-8
-                        p.mb-4.fade-in-up.cta-fade-2 Join our supportive community and access comprehensive resources to help you on your path to recovery.
-                        .row.g-3.fade-in-up.cta-fade-3
-                            .col-md-4
-                                a.btn.btn-light.btn-xl.w-100.cta-btn-premium(href='resource-directory.html' onclick="gtag('event', 'resources_click', {event_category: 'engagement'})")
-                                    i.bi.bi-search.me-2
-                                    | Browse Resources
-                            .col-md-4
-                                a.btn.btn-outline-light.btn-xl.w-100.cta-btn-premium(href='community-forum.html' onclick="gtag('event', 'community_click', {event_category: 'engagement'})")
-                                    i.bi.bi-people.me-2
-                                    | Join Community
-                            .col-md-4
-                                a.btn.btn-outline-light.btn-xl.w-100.cta-btn-premium(href='dashboard.html')
-                                    i.bi.bi-person.me-2
-                                    | Your Dashboard
+    // About
+    section#about.page-section.bg-primary
+        .container.px-4.px-lg-5
+            .row.gx-4.gx-lg-5.justify-content-center
+                .col-lg-8.text-center
+                    h2.text-white.mt-0 Supporting Your Recovery Journey
+                    hr.divider.divider-light
+                    p.text-white-75.mb-4
+                        | Get Sober Spokane is committed to providing a safe, supportive environment for individuals seeking recovery from addiction. We believe in the power of community, connection, and hope in the healing process.
+                    a.btn.btn-light.btn-xl(href='#services') Our Services
 
-        // FAQ
-        section#faq.page-section.bg-light
-            .container.px-4.px-lg-5
-                .row.gx-4.gx-lg-5.justify-content-center
-                    .col-lg-8.text-center
-                        h2.mt-0 Frequently Asked Questions About Recovery in Spokane
-                        hr.divider
-                        p.text-muted.mb-5 Answers to the questions we hear most from people seeking help in Spokane and surrounding areas.
-                    .col-lg-8
-                        .accordion#faqAccordion
-                            .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
-                                h3.accordion-header#faq1heading
-                                    button.accordion-button.fw-semibold(
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faq1"
-                                        aria-expanded="true"
-                                        aria-controls="faq1"
-                                    ) How do I get started with addiction recovery in Spokane?
-                                #faq1.accordion-collapse.collapse.show(aria-labelledby="faq1heading" data-bs-parent="#faqAccordion")
-                                    .accordion-body.text-muted The first step is reaching out. Get Sober Spokane offers a free resource directory, live community chat, and peer sponsor matching to help you take that first step at your own pace.
-                            .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
-                                h3.accordion-header#faq2heading
-                                    button.accordion-button.collapsed.fw-semibold(
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faq2"
-                                        aria-expanded="false"
-                                        aria-controls="faq2"
-                                    ) Are all the resources on Get Sober Spokane free?
-                                #faq2.accordion-collapse.collapse(aria-labelledby="faq2heading" data-bs-parent="#faqAccordion")
-                                    .accordion-body.text-muted Yes. Every resource listed on Get Sober Spokane is free to access. We are a community-run organization with no fees or commercial agenda.
-                            .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
-                                h3.accordion-header#faq3heading
-                                    button.accordion-button.collapsed.fw-semibold(
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faq3"
-                                        aria-expanded="false"
-                                        aria-controls="faq3"
-                                    ) How do I find an AA or NA meeting in Spokane?
-                                #faq3.accordion-collapse.collapse(aria-labelledby="faq3heading" data-bs-parent="#faqAccordion")
-                                    .accordion-body.text-muted You can browse our resource directory or visit our blog for a complete guide to AA and NA meetings across Spokane, Spokane Valley, and surrounding areas.
-                            .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
-                                h3.accordion-header#faq4heading
-                                    button.accordion-button.collapsed.fw-semibold(
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faq4"
-                                        aria-expanded="false"
-                                        aria-controls="faq4"
-                                    ) Can I find a sober living home through Get Sober Spokane?
-                                #faq4.accordion-collapse.collapse(aria-labelledby="faq4heading" data-bs-parent="#faqAccordion")
-                                    .accordion-body.text-muted Yes. Our shelter and housing page lists sober living homes and transitional housing options available in the Spokane area.
-                            .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
-                                h3.accordion-header#faq5heading
-                                    button.accordion-button.collapsed.fw-semibold(
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faq5"
-                                        aria-expanded="false"
-                                        aria-controls="faq5"
-                                    ) How does the sponsor finder work?
-                                #faq5.accordion-collapse.collapse(aria-labelledby="faq5heading" data-bs-parent="#faqAccordion")
-                                    .accordion-body.text-muted Our free sponsor finder connects people in recovery with experienced AA and NA sponsors in the Spokane area. Visit our sponsor finder page to get matched.
-                            .accordion-item.border-0.shadow-sm(style="border-radius: 10px; overflow: hidden;")
-                                h3.accordion-header#faq6heading
-                                    button.accordion-button.collapsed.fw-semibold(
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#faq6"
-                                        aria-expanded="false"
-                                        aria-controls="faq6"
-                                    ) Is Get Sober Spokane only for people in Spokane?
-                                #faq6.accordion-collapse.collapse(aria-labelledby="faq6heading" data-bs-parent="#faqAccordion")
-                                    .accordion-body.text-muted Our primary focus is Spokane and surrounding areas including Spokane Valley, Liberty Lake, and Coeur d'Alene, but anyone seeking recovery support is welcome in our community.
+    // Services
+    section#services.page-section
+        .container.px-4.px-lg-5
+            h2.text-center.mt-0 How We Support You
+            hr.divider
+            p.text-center.text-muted.mb-4 Click On Any Of The Categories Below
+            .row.gx-4.gy-4
+                .col-lg-4.col-md-6
+                    a.glass-card.fade-in-up.svc-card-1(href='shelter-housing.html')
+                        .icon-wrapper
+                            i.bi-house-door
+                        h3 Shelter and Housing
+                        p Find safe, supportive shelter and housing resources in the Spokane area.
+                .col-lg-4.col-md-6
+                    a.glass-card.fade-in-up.svc-card-2(href='food-basic-needs.html')
+                        .icon-wrapper
+                            i.bi-bag-heart
+                        h3 Food and Basic Needs
+                        p Access food banks, clothing, hygiene supplies, and other essentials.
+                .col-lg-4.col-md-6
+                    a.glass-card.fade-in-up.svc-card-3(href='addiction-treatments-support.html')
+                        .icon-wrapper
+                            i.bi-capsule
+                        h3 Treatment & Support
+                        p Connect with treatment programs and peer-led support groups for recovery.
+                .col-lg-4.col-md-6
+                    a.glass-card.fade-in-up.svc-card-4(href='medical-mental-health.html')
+                        .icon-wrapper
+                            i.bi-heart-pulse
+                        h3 Health Services
+                        p Find mental health counseling, medical care, and wellness support.
+                .col-lg-4.col-md-6
+                    a.glass-card.fade-in-up.svc-card-5(href='employment-skills.html')
+                        .icon-wrapper
+                            i.bi-briefcase
+                        h3 Employment & Skills
+                        p Explore job training, employment services, and skill-building opportunities.
+                .col-lg-4.col-md-6
+                    a.glass-card.fade-in-up.svc-card-6(href='community-engagement-sober-activities.html')
+                        .icon-wrapper
+                            i.bi-people-fill
+                        h3 Sober Activities
+                        p Join sober events, volunteer, and connect with a supportive community.
 
-        // Contact
-        section#contact.page-section
-            .container.px-4.px-lg-5
-                .row.gx-4.gx-lg-5.justify-content-center
-                    .col-lg-8.col-xl-6.text-center
-                        h2.mt-0 Get In Touch
-                        hr.divider
-                        p.text-muted.mb-5
-                            | Ready to take the first step? Contact us to learn more about our services and how we can support your recovery journey.
-                .row.gx-4.gx-lg-5.justify-content-center
-                    .col-lg-4.text-center.mb-5.mb-lg-0
-                        i.bi-phone.fs-2.mb-3.text-muted
-                        div
-                            a(href="tel:+15093899350" onclick="gtag('event', 'phone_click', {event_category: 'contact'})") (509) 389-9350
-                        br
-                        i.bi-envelope.fs-2.mb-3.text-muted
-                        div
-                            a(href='mailto:getsoberspokane@outlook.com' onclick="gtag('event', 'email_click', {event_category: 'contact'})") getsoberspokane@outlook.com
-                        // Add more spacing below the email before the form
-                        .mb-4
-                        .mb-4
-                        form#contactForm(action='https://formspree.io/f/xvzwbkdv', method='POST')
+    // Testimonials
+    section#testimonials.page-section.bg-light
+        .container.px-4.px-lg-5
+            .text-center
+                h2.mt-0 Recovery Stories from the Spokane Community
+                hr.divider
+                p.text-muted.mb-5 Real stories from real people on their journey to sobriety in Spokane, WA.
+            .row.gx-4.gy-4
+                .col-lg-4
+                    .testimonial-card.fade-in-up.testi-card-1
+                        i.bi.bi-quote.quote-icon
+                        p.testimonial-text "Get Sober Spokane helped me find a sober living home within days of reaching out. I didn't know this many free resources existed in Spokane. It changed my life."
+                        .author-info
+                            .avatar
+                                i.bi.bi-person-fill
+                            .details
+                                span.name Community Member
+                                span.location Spokane, WA
+                .col-lg-4
+                    .testimonial-card.fade-in-up.testi-card-2
+                        i.bi.bi-quote.quote-icon
+                        p.testimonial-text "Finding my sponsor through this site was the turning point in my recovery. The process was simple and the match was perfect. I'm 14 months sober today."
+                        .author-info
+                            .avatar
+                                i.bi.bi-person-fill
+                            .details
+                                span.name Community Member
+                                span.location Spokane Valley, WA
+                .col-lg-4
+                    .testimonial-card.fade-in-up.testi-card-3
+                        i.bi.bi-quote.quote-icon
+                        p.testimonial-text "I was scared and didn't know where to start. The live chat gave me someone to talk to at 2am when I needed it most. This community is the real deal."
+                        .author-info
+                            .avatar
+                                i.bi.bi-person-fill
+                            .details
+                                span.name Community Member
+                                span.location North Spokane, WA
+            .text-center.mt-4
+                a.btn.btn-outline-primary.btn-xl(href='community-forum.html')
+                    i.bi.bi-chat-left-text.me-2
+                    | Share Your Story
 
-                            // Name input
-                            .form-floating.mb-3
-                                input#name.form-control(
-                                    type='text',
-                                    name='name',
-                                    placeholder='Enter your name...',
-                                    required
-                                )
-                                label(for='name') Full name
+    // Call to action
+    section.cta-premium
+        .container.px-4.px-lg-5.text-center.cta-content
+            h2.mb-4.fade-in-up.cta-fade-1 Ready to Start Your Recovery Journey?
+            .row.justify-content-center
+                .col-lg-8
+                    p.mb-4.fade-in-up.cta-fade-2 Join our supportive community and access comprehensive resources to help you on your path to recovery.
+                    .row.g-3.fade-in-up.cta-fade-3
+                        .col-md-4
+                            a.btn.btn-light.btn-xl.w-100.cta-btn-premium(href='resource-directory.html' onclick="gtag('event', 'resources_click', {event_category: 'engagement'})")
+                                i.bi.bi-search.me-2
+                                | Browse Resources
+                        .col-md-4
+                            a.btn.btn-outline-light.btn-xl.w-100.cta-btn-premium(href='community-forum.html' onclick="gtag('event', 'community_click', {event_category: 'engagement'})")
+                                i.bi.bi-people.me-2
+                                | Join Community
+                        .col-md-4
+                            a.btn.btn-outline-light.btn-xl.w-100.cta-btn-premium(href='dashboard.html')
+                                i.bi.bi-person.me-2
+                                | Your Dashboard
 
-                            // Email address input
-                            .form-floating.mb-3
-                                input#email.form-control(
-                                    type='email',
-                                    name='email',
-                                    placeholder='name@example.com',
-                                    required
-                                )
-                                label(for='email') Email address
+    // FAQ
+    section#faq.page-section.bg-light
+        .container.px-4.px-lg-5
+            .row.gx-4.gx-lg-5.justify-content-center
+                .col-lg-8.text-center
+                    h2.mt-0 Frequently Asked Questions About Recovery in Spokane
+                    hr.divider
+                    p.text-muted.mb-5 Answers to the questions we hear most from people seeking help in Spokane and surrounding areas.
+                .col-lg-8
+                    .accordion#faqAccordion
+                        .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
+                            h3.accordion-header#faq1heading
+                                button.accordion-button.fw-semibold(
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faq1"
+                                    aria-expanded="true"
+                                    aria-controls="faq1"
+                                ) How do I get started with addiction recovery in Spokane?
+                            #faq1.accordion-collapse.collapse.show(aria-labelledby="faq1heading" data-bs-parent="#faqAccordion")
+                                .accordion-body.text-muted The first step is reaching out. Get Sober Spokane offers a free resource directory, live community chat, and peer sponsor matching to help you take that first step at your own pace.
+                        .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
+                            h3.accordion-header#faq2heading
+                                button.accordion-button.collapsed.fw-semibold(
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faq2"
+                                    aria-expanded="false"
+                                    aria-controls="faq2"
+                                ) Are all the resources on Get Sober Spokane free?
+                            #faq2.accordion-collapse.collapse(aria-labelledby="faq2heading" data-bs-parent="#faqAccordion")
+                                .accordion-body.text-muted Yes. Every resource listed on Get Sober Spokane is free to access. We are a community-run organization with no fees or commercial agenda.
+                        .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
+                            h3.accordion-header#faq3heading
+                                button.accordion-button.collapsed.fw-semibold(
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faq3"
+                                    aria-expanded="false"
+                                    aria-controls="faq3"
+                                ) How do I find an AA or NA meeting in Spokane?
+                            #faq3.accordion-collapse.collapse(aria-labelledby="faq3heading" data-bs-parent="#faqAccordion")
+                                .accordion-body.text-muted You can browse our resource directory or visit our blog for a complete guide to AA and NA meetings across Spokane, Spokane Valley, and surrounding areas.
+                        .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
+                            h3.accordion-header#faq4heading
+                                button.accordion-button.collapsed.fw-semibold(
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faq4"
+                                    aria-expanded="false"
+                                    aria-controls="faq4"
+                                ) Can I find a sober living home through Get Sober Spokane?
+                            #faq4.accordion-collapse.collapse(aria-labelledby="faq4heading" data-bs-parent="#faqAccordion")
+                                .accordion-body.text-muted Yes. Our shelter and housing page lists sober living homes and transitional housing options available in the Spokane area.
+                        .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
+                            h3.accordion-header#faq5heading
+                                button.accordion-button.collapsed.fw-semibold(
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faq5"
+                                    aria-expanded="false"
+                                    aria-controls="faq5"
+                                ) How does the sponsor finder work?
+                            #faq5.accordion-collapse.collapse(aria-labelledby="faq5heading" data-bs-parent="#faqAccordion")
+                                .accordion-body.text-muted Our free sponsor finder connects people in recovery with experienced AA and NA sponsors in the Spokane area. Visit our sponsor finder page to get matched.
+                        .accordion-item.border-0.shadow-sm(style="border-radius: 10px; overflow: hidden;")
+                            h3.accordion-header#faq6heading
+                                button.accordion-button.collapsed.fw-semibold(
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faq6"
+                                    aria-expanded="false"
+                                    aria-controls="faq6"
+                                ) Is Get Sober Spokane only for people in Spokane?
+                            #faq6.accordion-collapse.collapse(aria-labelledby="faq6heading" data-bs-parent="#faqAccordion")
+                                .accordion-body.text-muted Our primary focus is Spokane and surrounding areas including Spokane Valley, Liberty Lake, and Coeur d'Alene, but anyone seeking recovery support is welcome in our community.
 
-                            // Phone number input
-                            .form-floating.mb-3
-                                input#phone.form-control(
-                                    type='tel',
-                                    name='phone',
-                                    placeholder='(123) 456-7890',
-                                    required
-                                )
-                                label(for='phone') Phone number
-
-                            // Message input
-                            .form-floating.mb-3
-                                textarea#message.form-control(
-                                    name='message',
-                                    placeholder='Enter your message here...',
-                                    style='height: 10rem;',
-                                    required
-                                )
-                                label(for='message') Message
-
-                            // Submit Button
-                            .d-grid
-                                button#submitButton.btn.btn-primary.btn-xl(type='submit') Send Message
-
-        // Footer
-        footer.bg-light.py-5
-            .container.px-4.px-lg-5
-                a(href='index.html')
-                    img.footer-logo(src='assets/img/logo.png', alt='Get Sober Spokane Logo', loading='lazy')
-                .small.text-center.text-muted
-                    | Copyright © 2025 - Get Sober Spokane
+    // Contact
+    section#contact.page-section
+        .container.px-4.px-lg-5
+            .row.gx-4.gx-lg-5.justify-content-center
+                .col-lg-8.col-xl-6.text-center
+                    h2.mt-0 Get In Touch
+                    hr.divider
+                    p.text-muted.mb-5
+                        | Ready to take the first step? Contact us to learn more about our services and how we can support your recovery journey.
+            .row.gx-4.gx-lg-5.justify-content-center
+                .col-lg-4.text-center.mb-5.mb-lg-0
+                    i.bi-phone.fs-2.mb-3.text-muted
+                    div
+                        a(href="tel:+15093899350" onclick="gtag('event', 'phone_click', {event_category: 'contact'})") (509) 389-9350
                     br
-                    a(href='privacy-policy.html') Privacy Policy
-                    |  | 
-                    a(href='terms-of-service.html') Terms of Service
+                    i.bi-envelope.fs-2.mb-3.text-muted
+                    div
+                        a(href='mailto:getsoberspokane@outlook.com' onclick="gtag('event', 'email_click', {event_category: 'contact'})") getsoberspokane@outlook.com
+                    // Add more spacing below the email before the form
+                    .mb-4
+                    .mb-4
+                    form#contactForm(action='https://formspree.io/f/xvzwbkdv', method='POST')
 
-        // Bootstrap core JS
-        script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js')
+                        // Name input
+                        .form-floating.mb-3
+                            input#name.form-control(
+                                type='text',
+                                name='name',
+                                placeholder='Enter your name...',
+                                required
+                            )
+                            label(for='name') Full name
 
-        // SimpleLightbox plugin JS
-        script(src='https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js')
+                        // Email address input
+                        .form-floating.mb-3
+                            input#email.form-control(
+                                type='email',
+                                name='email',
+                                placeholder='name@example.com',
+                                required
+                            )
+                            label(for='email') Email address
 
-        // Core theme JS
-        script(src='js/scripts.js')
+                        // Phone number input
+                        .form-floating.mb-3
+                            input#phone.form-control(
+                                type='tel',
+                                name='phone',
+                                placeholder='(123) 456-7890',
+                                required
+                            )
+                            label(for='phone') Phone number
 
-        // Supabase and Auth Scripts
-        script(src='env.js')
-        script(src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js')
-        script(src='js/config.js')
-        script(src='js/auth.js?v=20250822c')
+                        // Message input
+                        .form-floating.mb-3
+                            textarea#message.form-control(
+                                name='message',
+                                placeholder='Enter your message here...',
+                                style='height: 10rem;',
+                                required
+                            )
+                            label(for='message') Message
 
-        // Navbar logout handler for homepage
-        script.
-            document.addEventListener('DOMContentLoaded', function() {
-              const navbarLogout = document.getElementById('navbarLogout');
-              if (navbarLogout) {
-                navbarLogout.addEventListener('click', async function(e) {
-                  e.preventDefault();
-                  try {
-                    if (window.authManager && typeof window.authManager.signOut === 'function') {
-                      await window.authManager.signOut();
-                    }
-                    try {
-                      await fetch('/api/auth/logout', { method: 'POST' });
-                    } catch (err) {
-                      console.warn('Server session logout failed or not available', err);
-                    }
-                  } finally {
-                    window.location.href = '/auth/login.html?logout=true';
-                  }
-                });
-              }
-            });
+                        // Submit Button
+                        .d-grid
+                            button#submitButton.btn.btn-primary.btn-xl(type='submit') Send Message
 
-
+block scripts
+    // SimpleLightbox plugin JS
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js')
+    // Core theme JS
+    script(src='js/scripts.js')
+    // Page specific initialization
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+          // Initialize Lightbox if needed
+          if (typeof SimpleLightbox !== 'undefined') {
+            new SimpleLightbox('.portfolio-box', { /* options */ });
+          }
+        });
