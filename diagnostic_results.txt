@@ -1,0 +1,22 @@
+[dotenv@17.2.0] injecting env (6) from .env (tip: ≡ƒöÉ encrypt with dotenvx: https://dotenvx.com)
+--- Checking Columns for recovery_milestones ---
+Columns in recovery_milestones: [
+  {
+    "column_name": "id"
+  },
+  {
+    "column_name": "user_id"
+  },
+  {
+    "column_name": "title"
+  },
+  {
+    "column_name": "description"
+  },
+  {
+    "column_name": "created_at"
+  },
+  {
+    "column_name": "updated_at"
+  }
+]
