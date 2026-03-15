@@ -76,66 +76,6 @@ body .chat-container,
   background: transparent !important;
 }
 
-// Enhanced Hero Section
-html body .chat-container .chat-hero,
-html body .chat-hero,
-body .chat-container .chat-hero,
-body .chat-hero,
-.chat-container .chat-hero,
-.chat-hero {
-  background: var(--primary-gradient) !important;
-  color: white !important;
-  padding: var(--space-2xl) 0 !important;
-  text-align: center !important;
-  box-shadow: var(--shadow-xl) !important;
-  position: relative !important;
-  overflow: hidden !important;
-}
-
-.chat-hero::before {
-  content: '' !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') !important;
-  opacity: 0.3 !important;
-}
-
-html body .chat-container .chat-hero-title,
-html body .chat-hero-title,
-body .chat-container .chat-hero-title,
-body .chat-hero-title,
-.chat-container .chat-hero-title,
-.chat-hero-title {
-  font-size: 3rem !important;
-  font-weight: 800 !important;
-  margin-bottom: var(--space-md) !important;
-  letter-spacing: -0.025em !important;
-  position: relative !important;
-  z-index: 1 !important;
-  color: white !important;
-}
-
-html body .chat-container .chat-hero-subtitle,
-html body .chat-hero-subtitle,
-body .chat-container .chat-hero-subtitle,
-body .chat-hero-subtitle,
-.chat-container .chat-hero-subtitle,
-.chat-hero-subtitle {
-  font-size: 1.25rem !important;
-  opacity: 0.95 !important;
-  margin-bottom: var(--space-xl) !important;
-  font-weight: 400 !important;
-  position: relative !important;
-  z-index: 1 !important;
-  max-width: 600px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  color: white !important;
-}
-
 // Enhanced Sidebar
 html body .chat-sidebar,
 body .chat-sidebar,
@@ -180,46 +120,6 @@ body .chat-sidebar,
   margin-right: var(--space-sm) !important;
   color: var(--primary-color) !important;
   font-size: 1rem !important;
-}
-
-html body .chat-container .chat-hero .col-lg-10,
-html body .chat-hero .col-lg-10,
-body .chat-container .chat-hero .col-lg-10,
-body .chat-hero .col-lg-10,
-.chat-container .chat-hero .col-lg-10,
-.chat-hero .col-lg-10 {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-}
-
-html body .chat-container .chat-hero-title,
-html body .chat-hero-title,
-body .chat-container .chat-hero-title,
-body .chat-hero-title,
-.chat-container .chat-hero-title,
-.chat-hero-title {
-  font-family: "Merriweather", serif !important;
-  font-size: 3rem !important;
-  font-weight: 700 !important;
-  margin-bottom: 1rem !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
-  color: white !important;
-}
-
-html body .chat-container .chat-hero-subtitle,
-html body .chat-hero-subtitle,
-body .chat-container .chat-hero-subtitle,
-body .chat-hero-subtitle,
-.chat-container .chat-hero-subtitle,
-.chat-hero-subtitle {
-  font-size: 1.2rem !important;
-  font-weight: 400 !important;
-  opacity: 0.9 !important;
-  margin-bottom: 1.5rem !important;
-  color: white !important;
 }
 
 // Force chat content centering

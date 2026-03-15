@@ -11,7 +11,7 @@ const seoConfig = {
         name: 'Get Sober Spokane',
         description: 'Comprehensive recovery support community providing addiction treatment resources, mental health services, shelter, food assistance, and recovery support in Spokane, Washington.',
         phone: '+1-509-389-9350',
-        email: 'spokanesober@gmail.com',
+        email: 'getsoberspokane@outlook.com',
         address: {
             locality: 'Spokane',
             region: 'WA',

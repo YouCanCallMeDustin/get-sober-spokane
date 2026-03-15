@@ -1,0 +1,76 @@
+// Emergency Help Cards
+#emergency-help {
+    .emergency-card {
+        color: $dark-navy !important;
+        background-color: $white;
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 8px 24px rgba($dark-navy, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        
+        .card-body, .card-body * {
+            color: $dark-navy !important;
+        }
+
+        h5.card-title {
+            color: $dark-navy !important;
+            font-weight: 700;
+        }
+        
+        .card-text {
+            color: #555 !important;
+        }
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba($dark-navy, 0.25);
+        }
+    }
+}
+
+// Search Filter Card overrides
+.filter-card {
+    background: $white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 25px rgba($dark-navy, 0.08);
+    
+    .input-group {
+        .search-input {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            border: 1px solid #dee2e6;
+            
+            &:focus {
+                border-color: $primary-blue;
+                box-shadow: 0 0 0 0.25rem rgba($primary-blue, 0.25);
+            }
+        }
+        
+        .search-btn {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        
+        .btn-outline-secondary {
+            border-color: #dee2e6;
+            color: #6c757d;
+            
+            &:hover {
+                background-color: #f8f9fa;
+                color: $dark-navy;
+            }
+        }
+    }
+    
+    .filter-select {
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        cursor: pointer;
+        
+        &:focus {
+            border-color: $primary-blue;
+            box-shadow: 0 0 0 0.25rem rgba($primary-blue, 0.25);
+        }
+    }
+}

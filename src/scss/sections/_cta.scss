@@ -1,0 +1,90 @@
+// CTA Premium Section
+.cta-premium {
+    position: relative;
+    padding: 8rem 0;
+    background: linear-gradient(135deg, $dark-navy 0%, $primary-blue 100%);
+    overflow: hidden;
+    color: white;
+
+    // Subtle radial glow
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba($secondary-teal, 0.15) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    h2 {
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 1.5rem;
+    }
+
+    p {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+// Premium Buttons
+.cta-btn-premium {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border-width: 2px;
+    padding: 1.25rem 2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+        transition: transform 0.3s ease;
+    }
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px rgba($secondary-teal, 0.3);
+        
+        i {
+            transform: scale(1.2);
+        }
+    }
+
+    &.btn-light {
+        background: white;
+        color: $dark-navy;
+        border-color: white;
+
+        &:hover {
+            background: #f8f9fa;
+        }
+    }
+
+    &.btn-outline-light {
+        border-color: rgba(white, 0.5);
+
+        &:hover {
+            background: rgba(white, 0.1);
+            border-color: white;
+        }
+    }
+}
+
+// Animation Staggering
+.cta-fade-1 { animation-delay: 0.1s; }
+.cta-fade-2 { animation-delay: 0.3s; }
+.cta-fade-3 { animation-delay: 0.5s; }

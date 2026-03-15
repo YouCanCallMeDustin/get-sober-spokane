@@ -9,12 +9,19 @@ block content
   // Forum Container with proper spacing for fixed navigation
   .forum-container
     // Hero Banner Section
-    .forum-hero
+    section.page-hero
       .container
-        .row.justify-content-center.text-center
+        .row.justify-content-center
           .col-lg-8
-            h1.forum-hero-title Community Forum
-            p.forum-hero-subtitle Connect, share, and support each other on your recovery journey
+            h1 Community Forum
+            p.lead Connect, share, and support each other on your recovery journey
+            .hero-badges
+              .hero-badge
+                i.bi.bi-chat-dots-fill
+                | Join the Conversation
+              .hero-badge
+                i.bi.bi-heart-pulse-fill
+                | Supportive Community
     
     // Main Forum Content
     .forum-content

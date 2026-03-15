@@ -8,12 +8,17 @@ block head
 block content
 
   // Blog Hero
-  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+  header.page-hero
     .container.px-4.px-lg-5
-      .row.justify-content-center
-        .col-lg-8.text-center
-          h1.display-5.fw-bold Recovery Blog – Spokane, WA
-          p.lead.mt-3 Recovery tips, local resources, and community stories from the Spokane area.
+      h1 Recovery Blog – Spokane, WA
+      p.lead Recovery tips, local resources, and community stories from the Spokane area.
+      .hero-badges
+        .hero-badge
+          i.bi.bi-journal-text
+          span Latest Stories
+        .hero-badge
+          i.bi.bi-geo-alt
+          span Local Impact
 
   // Blog Posts Grid
   section.page-section

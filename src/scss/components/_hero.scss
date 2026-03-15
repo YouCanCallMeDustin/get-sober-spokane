@@ -1,0 +1,148 @@
+// 
+// Hero Section
+// 
+
+.page-hero {
+    position: relative;
+    padding: 8rem 0 6rem;
+    margin-top: 76px;
+    background: linear-gradient(135deg, $dark-navy 0%, $primary-blue 100%);
+    color: $white;
+    overflow: hidden;
+    text-align: center;
+
+    // Pattern Overlay
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('/assets/img/hero-pattern.png');
+        background-repeat: repeat;
+        opacity: 0.1;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+    }
+
+    // Subtle Animated Glow
+    &::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at center, rgba($white, 0.05) 0%, transparent 50%);
+        animation: heroGlow 20s linear infinite;
+        pointer-events: none;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    h1 {
+        font-family: 'Merriweather', serif;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 1.5rem;
+        animation: heroFadeSlideUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        opacity: 0;
+    }
+
+    .lead {
+        font-family: 'Merriweather Sans', sans-serif;
+        font-weight: 400;
+        font-size: 1.25rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        opacity: 0;
+        animation: heroFadeSlideUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) 0.2s forwards;
+        text-shadow: 0 2px 4px rgba($black, 0.1);
+        color: rgba($white, 0.9);
+    }
+
+    .hero-actions {
+        margin-top: 3rem;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        opacity: 0;
+        animation: heroFadeSlideUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) 0.4s forwards;
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+        }
+    }
+
+    .hero-badges {
+        margin-top: 3rem;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        opacity: 0;
+        animation: heroFadeIn 1s ease 0.6s forwards;
+
+        .hero-badge {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba($white, 0.85);
+
+            i {
+                font-size: 1.3rem;
+                margin-right: 0.6rem;
+                color: $secondary-teal;
+                filter: drop-shadow(0 0 5px rgba($secondary-teal, 0.3));
+            }
+        }
+    }
+}
+
+// Animations
+@keyframes heroGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes heroFadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heroFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+// Responsive adjustments
+@include media-breakpoint-down(lg) {
+    .page-hero {
+        padding: 6rem 0 4rem;
+        
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero-badges {
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: center;
+        }
+    }
+}

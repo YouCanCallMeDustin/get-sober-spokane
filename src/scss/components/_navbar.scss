@@ -3,17 +3,35 @@
 // 
 
 #mainNav {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    background-color: $white;
-    transition: all 0.3s ease;
-    padding: 1rem 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05); // Deeper, softer shadow
+    background-color: rgba(255, 255, 255, 0.8) !important; // More transparent for glass effect
+    backdrop-filter: blur(12px) saturate(180%); // Stronger glass effect
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3); // Subtle top highlights
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    padding: 0.75rem 0;
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba($primary-blue, 0.2), transparent); // Subtle glow border
+    }
 
     .navbar-brand {
         font-family: 'Merriweather', serif;
         font-weight: 700;
         color: $primary-blue;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         letter-spacing: -0.5px;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.02);
+        }
     }
 
     .navbar-nav {
@@ -22,20 +40,42 @@
                 color: $dark-navy;
                 font-family: 'Merriweather Sans', sans-serif;
                 font-weight: 600;
-                font-size: 0.95rem;
-                padding: 0.75rem 1.25rem;
+                font-size: 0.9rem;
+                padding: 0.75rem 1rem;
+                margin: 0 0.15rem;
                 border-radius: 6px;
                 transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
 
-                &:hover,
-                &:active {
-                    color: $primary-blue;
-                    background-color: fade-out($primary-blue, 0.95);
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    width: 0;
+                    height: 2px;
+                    background-color: $primary-blue;
+                    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+                    transform: translateX(-50%);
+                }
+
+                &:hover {
+                    color: $primary-blue !important;
+                    background-color: rgba($primary-blue, 0.05);
+
+                    &::after {
+                        width: 100%;
+                    }
                 }
 
                 &.active {
                     color: $primary-blue !important;
-                    background-color: fade-out($primary-blue, 0.9);
+                    background-color: rgba($primary-blue, 0.08);
+                    
+                    &::after {
+                        width: 70%;
+                    }
                 }
             }
             
@@ -43,8 +83,9 @@
             &.dropdown {
                 .dropdown-toggle {
                     &::after {
-                        margin-left: 0.5rem;
-                        transition: transform 0.2s ease;
+                        margin-left: 0.4rem;
+                        transition: transform 0.3s ease;
+                        border-top-color: currentColor;
                     }
                     
                     &[aria-expanded="true"]::after {
@@ -53,41 +94,53 @@
                 }
                 
                 .dropdown-menu {
-                    border: none;
-                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-                    border-radius: 8px;
-                    padding: 0.5rem 0;
-                    margin-top: 0.5rem;
-                    min-width: 220px;
-                    animation: dropdownFadeIn 0.2s ease;
+                    border: 1px solid rgba(0, 0, 0, 0.05);
+                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+                    border-radius: 12px;
+                    padding: 0.5rem;
+                    margin-top: 0.75rem;
+                    min-width: 240px;
+                    background-color: rgba(255, 255, 255, 0.98);
+                    backdrop-filter: blur(10px);
+                    animation: dropdownFadeSlide 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
                     
                     .dropdown-item {
-                        padding: 0.75rem 1.5rem;
+                        padding: 0.7rem 1.25rem;
                         font-weight: 500;
                         color: $dark-navy;
+                        border-radius: 8px;
+                        margin-bottom: 2px;
                         transition: all 0.2s ease;
                         display: flex;
                         align-items: center;
                         
                         i {
-                            width: 16px;
-                            text-align: center;
+                            width: 20px;
+                            font-size: 1.1rem;
+                            margin-right: 0.75rem;
+                            opacity: 0.7;
+                            transition: transform 0.2s ease;
                         }
                         
                         &:hover {
-                            background-color: fade-out($primary-blue, 0.95);
+                            background-color: rgba($primary-blue, 0.06);
                             color: $primary-blue;
-                            transform: translateX(3px);
+                            transform: translateX(4px);
+
+                            i {
+                                opacity: 1;
+                                transform: scale(1.1);
+                            }
                         }
                         
                         &:active {
-                            background-color: fade-out($primary-blue, 0.9);
+                            background-color: rgba($primary-blue, 0.1);
                         }
                     }
                     
                     .dropdown-divider {
-                        margin: 0.25rem 0;
-                        border-color: fade-out($dark-navy, 0.8);
+                        margin: 0.4rem 0.5rem;
+                        border-top: 1px solid rgba(0, 0, 0, 0.05);
                     }
                 }
             }
@@ -95,71 +148,16 @@
     }
 
     .logo {
-      height: 40px;
+      height: 38px;
       width: auto;
-      display: inline-block;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     @include media-breakpoint-up(lg) {
-        // Keep a consistent solid navbar on large screens as well
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        background-color: $white;
-        padding: 1.5rem 0;
-
-        .navbar-brand {
-            color: $primary-blue;
-            text-shadow: none;
-
-            &:hover {
-                color: $primary-blue;
-                transform: none;
-            }
-        }
-
-        .navbar-nav {
-            justify-content: center;
-            flex: 1;
-            
-            .nav-item {
-                .nav-link {
-                    color: $dark-navy;
-                    padding: 0.75rem 1.25rem;
-                    margin: 0 0.25rem;
-                    border-radius: 6px;
-
-                    &:hover {
-                        color: $primary-blue;
-                        background-color: fade-out($primary-blue, 0.95);
-                        transform: none;
-                    }
-                }
-                
-                &.dropdown {
-                    .dropdown-menu {
-                        background-color: $white;
-                        border: none;
-                        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-                        
-                        .dropdown-item {
-                            color: $dark-navy;
-                            
-                            &:hover {
-                                background-color: fade-out($primary-blue, 0.95);
-                                color: $primary-blue;
-                            }
-                        }
-                    }
-                }
-
-                &:last-child {
-                    .nav-link {
-                        padding-right: 1.25rem;
-                    }
-                }
-            }
-        }
-
-        // Remove special shrink styling; navbar remains consistent on scroll
+        padding: 1.25rem 0;
+        
+        // Shrink effect handled by JS class toggle if present, 
+        // otherwise stay consistent
     }
 }
 
@@ -171,10 +169,10 @@
 }
 
 // Dropdown animation
-@keyframes dropdownFadeIn {
+@keyframes dropdownFadeSlide {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(12px);
     }
     to {
         opacity: 1;

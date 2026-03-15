@@ -2,23 +2,6 @@
 // src/scss/components/_forum-enhanced.scss
 // Builds on top of existing _forum.scss
 
-// Enhanced Forum Hero
-.forum-hero {
-  .forum-hero-actions {
-    .btn {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-      border-radius: 0.5rem;
-      transition: all 0.2s ease;
-      
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-    }
-  }
-}
-
 // Enhanced Forum Controls
 .forum-controls {
   .search-container {
@@ -205,8 +188,8 @@
   
   .post-engagement {
     display: flex;
-    justify-content-between;
-    align-items-center;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #f8f9fa;

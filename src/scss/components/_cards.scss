@@ -1,0 +1,188 @@
+// 
+// Service Cards (Glassmorphism)
+// 
+
+.glass-card {
+    display: block;
+    height: 100%;
+    padding: 2.5rem 2rem;
+    background: rgba($white, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba($white, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba($dark-navy, 0.05);
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba($primary-blue, 0.03) 0%, rgba($secondary-teal, 0.03) 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .icon-wrapper {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, $primary-blue 0%, $secondary-teal 100%);
+        color: $white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 1.8rem;
+        box-shadow: 0 8px 15px rgba($primary-blue, 0.2);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+        z-index: 1;
+    }
+
+    h3 {
+        color: $dark-navy;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        font-family: 'Merriweather', serif;
+        position: relative;
+        z-index: 1;
+        transition: color 0.4s ease;
+    }
+
+    p {
+        color: #555;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    &:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba($dark-navy, 0.1);
+        background: rgba($white, 0.85);
+        border-color: rgba($primary-blue, 0.2);
+        text-decoration: none;
+
+        &::before {
+            opacity: 1;
+        }
+
+        .icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 25px rgba($primary-blue, 0.3);
+        }
+
+        h3 {
+            color: $primary-blue;
+        }
+    }
+
+    // Entrance Animation class
+    &.fade-in-up {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUpCard 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+}
+
+@keyframes fadeInUpCard {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Staggered delays for cards
+.svc-card-1 { animation-delay: 0.1s; }
+.svc-card-2 { animation-delay: 0.2s; }
+.svc-card-3 { animation-delay: 0.3s; }
+.svc-card-4 { animation-delay: 0.4s; }
+.svc-card-5 { animation-delay: 0.5s; }
+.svc-card-6 { animation-delay: 0.6s; }
+
+// Testimonial Specific Styles
+.testimonial-card {
+    @extend .glass-card;
+    padding: 3rem 2.5rem;
+    text-align: left;
+
+    .quote-icon {
+        font-size: 3rem;
+        color: rgba($secondary-teal, 0.2);
+        position: absolute;
+        top: 1.5rem;
+        left: 2rem;
+        z-index: 0;
+    }
+
+    .testimonial-text {
+        font-size: 1.15rem;
+        font-style: italic;
+        color: $dark-navy;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+        line-height: 1.7;
+    }
+
+    .author-info {
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            background: rgba($primary-blue, 0.1);
+            color: $primary-blue;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-right: 1rem;
+            border: 2px solid rgba($primary-blue, 0.2);
+        }
+
+        .details {
+            display: flex;
+            flex-direction: column;
+
+            .name {
+                font-weight: 700;
+                color: $dark-navy;
+                font-size: 1rem;
+            }
+
+            .location {
+                font-size: 0.85rem;
+                color: #777;
+            }
+        }
+    }
+
+    &:hover {
+        .quote-icon {
+            color: rgba($secondary-teal, 0.4);
+            transform: scale(1.1);
+            transition: all 0.4s ease;
+        }
+    }
+}
+
+// Staggered delays for testimonials
+.testi-card-1 { animation-delay: 0.2s; }
+.testi-card-2 { animation-delay: 0.4s; }
+.testi-card-3 { animation-delay: 0.6s; }

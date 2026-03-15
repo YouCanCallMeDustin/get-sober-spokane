@@ -10,22 +10,25 @@ block content
   // Chat Room Container with proper spacing for fixed navigation
   .chat-container
     // Hero Banner Section
-    .chat-hero
+    section.page-hero
       .container
-        .row.justify-content-center.text-center
-          .col-lg-10.col-md-12
-            h1.chat-hero-title Live Chat Room
-            p.chat-hero-subtitle Connect with the recovery community in real-time. Share your journey and find immediate support.
-            .chat-status
-              span.status-indicator#connectionStatus
-                i.bi.bi-circle-fill.me-2
+        .row.justify-content-center
+          .col-lg-10
+            h1 Live Chat Room
+            p.lead Connect with the recovery community in real-time. Share your journey and find immediate support.
+            
+            .hero-badges
+              .hero-badge#connectionStatus
+                i.bi.bi-circle-fill
                 | Connecting...
-            if user && !user.isAnonymous
-              .user-welcome
-                p Welcome back, #{user.display_name || user.username || 'User'}!
-            else
-              .user-welcome
-                p You're chatting as Anonymous. #[a(href="/login" class="sign-in-link") Sign in] to use your username.
+              if user && !user.isAnonymous
+                .hero-badge
+                  i.bi.bi-person-check-fill
+                  | Welcome, #{user.display_name || user.username || 'User'}
+              else
+                .hero-badge
+                  i.bi.bi-person-fill
+                  | Anonymous Mode
     
     // Main Chat Content
     .chat-content
