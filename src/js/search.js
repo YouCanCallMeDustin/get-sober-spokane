@@ -20,7 +20,12 @@ class GlobalSearch {
     async init() {
         console.log('Initializing Global Search...');
         
-        // Wait for Supabase to be available in global scope if loaded as module
+        // Use the shared Supabase client if available
+        if (typeof window.getSupabaseClient === 'function') {
+            this.supabase = window.getSupabaseClient();
+        }
+
+        // Fallback or explicit initialization if needed
         if (!this.supabase && window.APP_CONFIG?.SUPABASE_URL) {
             const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm');
             this.supabase = createClient(window.APP_CONFIG.SUPABASE_URL, window.APP_CONFIG.SUPABASE_ANON_KEY);
@@ -122,6 +127,7 @@ class GlobalSearch {
     }
 
     async searchForum(query) {
+        if (!this.supabase) return [];
         const { data, error } = await this.supabase
             .from('forum_posts')
             .select('*')
@@ -133,8 +139,9 @@ class GlobalSearch {
     }
 
     async searchMembers(query) {
+        if (!this.supabase) return [];
         const { data, error } = await this.supabase
-            .from('profiles_consolidated')
+            .from('profiles')
             .select('*')
             .ilike('display_name', `%${query}%`)
             .limit(8);
