@@ -101,12 +101,23 @@ class GlobalSearch {
 
             // 2. Search Database (Forum & Members)
             if (this.supabase) {
-                const [forumResults, memberResults] = await Promise.all([
-                    this.searchForum(query),
-                    this.searchMembers(query)
-                ]);
-                this.currentResults.forum = forumResults;
-                this.currentResults.members = memberResults;
+                // Perform database searches individually to handle partial failures
+                try {
+                    const [forumResults, memberResults] = await Promise.all([
+                        this.searchForum(query).catch(err => {
+                            console.warn('Forum search failed:', err);
+                            return [];
+                        }),
+                        this.searchMembers(query).catch(err => {
+                            console.warn('Member search failed:', err);
+                            return [];
+                        })
+                    ]);
+                    this.currentResults.forum = forumResults;
+                    this.currentResults.members = memberResults;
+                } catch (dbError) {
+                    console.warn('Database search error:', dbError);
+                }
             }
 
             this.renderResults(query);
@@ -134,19 +145,25 @@ class GlobalSearch {
             .or(`title.ilike.%${query}%,content.ilike.%${query}%`)
             .limit(10);
         
-        if (error) throw error;
+        if (error) {
+            console.error('Forum search error details:', error);
+            throw error;
+        }
         return data || [];
     }
 
     async searchMembers(query) {
         if (!this.supabase) return [];
         const { data, error } = await this.supabase
-            .from('profiles')
+            .from('profiles_consolidated')
             .select('*')
             .ilike('display_name', `%${query}%`)
             .limit(8);
             
-        if (error) throw error;
+        if (error) {
+            console.error('Member search error details:', error);
+            throw error;
+        }
         return data || [];
     }
 
