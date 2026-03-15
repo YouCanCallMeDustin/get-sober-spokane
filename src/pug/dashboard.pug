@@ -93,12 +93,6 @@ block content
                             input.form-control#sobrietyDate(type="date" name="sobrietyDate")
                             button.btn.btn-primary#updateSobrietyDate Update
                   
-                  // Progress Timeline
-                  .progress-timeline
-                    h5.section-label Recovery Journey
-                    .timeline-container#progressTimeline
-                      // Timeline will be populated dynamically
-                
                 // Recovery Milestones Section
                 .milestones-section
                   h5.section-label Recovery Milestones
@@ -106,12 +100,26 @@ block content
                     // Milestones will be loaded dynamically
                   .add-milestone
                     button.btn.btn-success#addMilestoneBtn(type="button") + Add Milestone
+
             
-            // Right Column - Community Connections and Quick Actions
+            // Right Column - Profile and Community
             .col-lg-4.mb-4
+              // My Profile Card
+              .dashboard-card.profile-summary-card.mb-4
+                h3.card-title My Profile
+                .profile-brief.text-center.py-3
+                  .avatar-wrapper.mb-2
+                    img#userProfileAvatar(src="/assets/img/logo.png" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #eee;")
+                  h5#userProfileName.mb-1 Loading...
+                  p#userProfileBio.small.text-muted.mb-3 Your recovery journey is unique.
+                  a.btn.btn-primary.btn-sm.w-100#dashboardViewProfileBtn(href="#")
+                    i.bi.bi-person-circle.me-2
+                    | View Public Profile
+              
               // Community Connections
               .dashboard-card.connections-card
                 h3.card-title Community Connections
+
                 .connections-section
                   h5.section-label My Connections
                   .connections-list#connectionsList
@@ -131,22 +139,28 @@ block content
                   button.btn.btn-success.btn-sm.w-100.mt-2#addConnectionBtn
                     i.bi.bi-person-plus
                     |  Find Sponsor
-                .challenges-section
-                  h5.section-label Active Challenges
-                  .challenges-list#challengesList
-                    .challenge-item
-                      .challenge-header
-                        h6 30-Day Sobriety Challenge
-                        span.challenge-participants 24 participants
-                      .challenge-progress
-                        .progress
-                          .progress-bar(style="width: 65%")
-                        span.progress-text 19/30 days
-                      .challenge-actions
-                        button.btn.btn-sm.btn-outline-success View Details
-                  button.btn.btn-outline-primary.btn-sm.w-100.mt-2#joinChallengeBtn
-                    i.bi.bi-trophy
-                    |  Join Challenge
+                // Community Hub Section
+                .dashboard-card.community-hub-card.mt-4
+                  h3.card-title Community Hub
+                  .community-stats.mb-3
+                    .row.g-2
+                      .col-6
+                        .stat-box.text-center.p-2.bg-light.rounded
+                          .stat-value.fw-bold#forumPostsCount 0
+                          .stat-label.small.text-muted Posts Made
+                      .col-6
+                        .stat-box.text-center.p-2.bg-light.rounded
+                          .stat-value.fw-bold#forumMembersCount 0
+                          .stat-label.small.text-muted Members
+                  .quick-links
+                    .d-grid.gap-2
+                      a.btn.btn-outline-primary.btn-sm(href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})")
+                        i.bi.bi-people.me-2
+                        | Visit Forum
+                      a.btn.btn-outline-info.btn-sm(href="/chat" onclick="gtag('event', 'chat_click', {event_category: 'engagement', event_label: 'chat_dashboard'})")
+                        i.bi.bi-chat-dots.me-2
+                        | Join Live Chat
+
     
     // Milestone Modal
     #milestoneModal.modal.fade(tabindex="-1" aria-labelledby="milestoneModalTitle" aria-hidden="true")
@@ -244,14 +258,21 @@ block scripts
           if (i < 2) await new Promise(resolve => setTimeout(resolve, 300));
         }
         
-        if (session) {
+          if (session) {
           currentUser = session.user;
           updateUserDisplay();
-          // Update profile link
+          
+          // Update profile navigation link
           const profileLink = document.getElementById('viewProfileLink');
           if (profileLink) {
             profileLink.href = `/user-profile.html?id=${currentUser.id}`;
             profileLink.style.display = 'flex';
+          }
+          
+          // Update dashboard profile card
+          const dashboardProfileBtn = document.getElementById('dashboardViewProfileBtn');
+          if (dashboardProfileBtn) {
+            dashboardProfileBtn.href = `/user-profile.html?id=${currentUser.id}`;
           }
         }
       } catch (error) {
@@ -259,9 +280,34 @@ block scripts
       }
     }
     
+    async function fetchForumStats() {
+      try {
+        if (!supabase) return;
+        
+        // Fetch posts count
+        const { count: postsCount, error: postsError } = await supabase
+          .from('forum_posts')
+          .select('*', { count: 'exact', head: true });
+          
+        // Fetch members count
+        const { count: membersCount, error: membersError } = await supabase
+          .from('profiles_consolidated')
+          .select('*', { count: 'exact', head: true });
+          
+        if (postsCount !== null) document.getElementById('forumPostsCount').textContent = postsCount;
+        if (membersCount !== null) document.getElementById('forumMembersCount').textContent = membersCount;
+        
+      } catch (error) {
+        console.error('Error fetching forum stats:', error);
+      }
+    }
+    
     async function initializeDashboard() {
       try {
         if (!supabase) return;
+        
+        // Fetch forum statistics regardless of auth (stats are public)
+        fetchForumStats();
         
         // Check if user is authenticated
         if (currentUser) {
@@ -274,6 +320,7 @@ block scripts
             profileLink.href = `/user-profile.html?id=${currentUser.id}`;
             profileLink.style.display = 'flex';
           }
+
           
           // Load user profile data
           await loadProfile();
@@ -375,6 +422,17 @@ block scripts
            // Update header with profile display name when available
            if (data.display_name) {
              document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${data.display_name}!`;
+             document.getElementById('userProfileName').textContent = data.display_name;
+           }
+           
+           // Update profile bio
+           if (data.bio) {
+             document.getElementById('userProfileBio').textContent = data.bio.length > 80 ? data.bio.substring(0, 77) + '...' : data.bio;
+           }
+           
+           // Update profile avatar
+           if (data.avatar_url) {
+             document.getElementById('userProfileAvatar').src = data.avatar_url;
            }
            
            // Set sobriety date if available - check multiple possible field names

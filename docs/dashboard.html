@@ -252,6 +252,12 @@
                             </ul>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="/dashboard.html">Dashboard</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/search.html">
+                                <i class="bi bi-search"></i>
+                                <span class="d-lg-none ms-2">Search</span>
+                            </a>
+                        </li>
                         <li class="nav-item"><a class="nav-link" href="/blog.html">Blog</a></li>
                         <!-- Auth navigation-->
                         <li class="nav-item" data-auth="guest"><a class="nav-link" id="navbarLogin" href="/dashboard.html">Sign In</a></li>
@@ -262,13 +268,18 @@
         </nav>
         <!-- Dashboard Container with proper spacing for fixed navigation-->
         <div class="dashboard-container">
-            <!-- Hero Banner Section-->
+            <!-- Hero Banner Section - Refined for premium feel-->
             <div class="dashboard-hero">
                 <div class="container">
                     <div class="row justify-content-center text-center">
-                        <div class="col-lg-8">
-                            <h1 class="dashboard-hero-title">Welcome, Get Sober Spokane!</h1>
-                            <p class="dashboard-hero-subtitle">Manage your recovery journey and access resources</p>
+                        <div class="col-lg-10">
+                            <div class="glass-hero-content fade-in">
+                                <h1 class="dashboard-hero-title">
+                                    <span class="greeting-text">Welcome,</span>
+                                    <span class="user-name" id="userNameHeader">Friend!</span>
+                                </h1>
+                                <p class="dashboard-hero-subtitle">Your journey to lasting recovery continues here. We're with you every step of the way.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -361,11 +372,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Progress Timeline-->
-                                        <div class="progress-timeline">
-                                            <h5 class="section-label">Recovery Journey</h5>
-                                            <div class="timeline-container" id="progressTimeline"><!-- Timeline will be populated dynamically--></div>
-                                        </div>
                                     </div>
                                     <!-- Recovery Milestones Section-->
                                     <div class="milestones-section">
@@ -375,8 +381,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Right Column - Community Connections and Quick Actions-->
+                            <!-- Right Column - Profile and Community-->
                             <div class="col-lg-4 mb-4">
+                                <!-- My Profile Card-->
+                                <div class="dashboard-card profile-summary-card mb-4">
+                                    <h3 class="card-title">My Profile</h3>
+                                    <div class="profile-brief text-center py-3">
+                                        <div class="avatar-wrapper mb-2"><img id="userProfileAvatar" src="/assets/img/logo.png" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #eee" /></div>
+                                        <h5 class="mb-1" id="userProfileName">Loading...</h5>
+                                        <p class="small text-muted mb-3" id="userProfileBio">Your recovery journey is unique.</p>
+                                        <a class="btn btn-primary btn-sm w-100" id="dashboardViewProfileBtn" href="#">
+                                            <i class="bi bi-person-circle me-2"></i>
+                                            View Public Profile
+                                        </a>
+                                    </div>
+                                </div>
                                 <!-- Community Connections-->
                                 <div class="dashboard-card connections-card">
                                     <h3 class="card-title">Community Connections</h3>
@@ -403,25 +422,37 @@
                                             Find Sponsor
                                         </button>
                                     </div>
-                                    <div class="challenges-section">
-                                        <h5 class="section-label">Active Challenges</h5>
-                                        <div class="challenges-list" id="challengesList">
-                                            <div class="challenge-item">
-                                                <div class="challenge-header">
-                                                    <h6>30-Day Sobriety Challenge</h6>
-                                                    <span class="challenge-participants">24 participants</span>
+                                    <!-- Community Hub Section-->
+                                    <div class="dashboard-card community-hub-card mt-4">
+                                        <h3 class="card-title">Community Hub</h3>
+                                        <div class="community-stats mb-3">
+                                            <div class="row g-2">
+                                                <div class="col-6">
+                                                    <div class="stat-box text-center p-2 bg-light rounded">
+                                                        <div class="stat-value fw-bold" id="forumPostsCount">0</div>
+                                                        <div class="stat-label small text-muted">Posts Made</div>
+                                                    </div>
                                                 </div>
-                                                <div class="challenge-progress">
-                                                    <div class="progress"><div class="progress-bar" style="width: 65%"></div></div>
-                                                    <span class="progress-text">19/30 days</span>
+                                                <div class="col-6">
+                                                    <div class="stat-box text-center p-2 bg-light rounded">
+                                                        <div class="stat-value fw-bold" id="forumMembersCount">0</div>
+                                                        <div class="stat-label small text-muted">Members</div>
+                                                    </div>
                                                 </div>
-                                                <div class="challenge-actions"><button class="btn btn-sm btn-outline-success">View Details</button></div>
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline-primary btn-sm w-100 mt-2" id="joinChallengeBtn">
-                                            <i class="bi bi-trophy"></i>
-                                            Join Challenge
-                                        </button>
+                                        <div class="quick-links">
+                                            <div class="d-grid gap-2">
+                                                <a class="btn btn-outline-primary btn-sm" href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})">
+                                                    <i class="bi bi-people me-2"></i>
+                                                    Visit Forum
+                                                </a>
+                                                <a class="btn btn-outline-info btn-sm" href="/chat" onclick="gtag('event', 'chat_click', {event_category: 'engagement', event_label: 'chat_dashboard'})">
+                                                    <i class="bi bi-chat-dots me-2"></i>
+                                                    Join Live Chat
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -476,7 +507,7 @@
                                         </a>
                                         <a class="quick-action-btn" href="/sponsor-finder.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'sponsor_dashboard'})">
                                             <div class="action-icon"><i class="bi bi-person-heart"></i></div>
-                                            <div class="action-text">Find Sponsor</div>
+                                            <div class="action-text">Partner Finder</div>
                                         </a>
                                         <a class="quick-action-btn" id="viewProfileLink" href="#" style="display: none">
                                             <div class="action-icon"><i class="bi bi-person"></i></div>
@@ -649,11 +680,18 @@
                     if (session) {
                         currentUser = session.user;
                         updateUserDisplay();
-                        // Update profile link
+
+                        // Update profile navigation link
                         const profileLink = document.getElementById('viewProfileLink');
                         if (profileLink) {
                             profileLink.href = `/user-profile.html?id=${currentUser.id}`;
                             profileLink.style.display = 'flex';
+                        }
+
+                        // Update dashboard profile card
+                        const dashboardProfileBtn = document.getElementById('dashboardViewProfileBtn');
+                        if (dashboardProfileBtn) {
+                            dashboardProfileBtn.href = `/user-profile.html?id=${currentUser.id}`;
                         }
                     }
                 } catch (error) {
@@ -661,9 +699,29 @@
                 }
             }
 
+            async function fetchForumStats() {
+                try {
+                    if (!supabase) return;
+
+                    // Fetch posts count
+                    const { count: postsCount, error: postsError } = await supabase.from('forum_posts').select('*', { count: 'exact', head: true });
+
+                    // Fetch members count
+                    const { count: membersCount, error: membersError } = await supabase.from('profiles_consolidated').select('*', { count: 'exact', head: true });
+
+                    if (postsCount !== null) document.getElementById('forumPostsCount').textContent = postsCount;
+                    if (membersCount !== null) document.getElementById('forumMembersCount').textContent = membersCount;
+                } catch (error) {
+                    console.error('Error fetching forum stats:', error);
+                }
+            }
+
             async function initializeDashboard() {
                 try {
                     if (!supabase) return;
+
+                    // Fetch forum statistics regardless of auth (stats are public)
+                    fetchForumStats();
 
                     // Check if user is authenticated
                     if (currentUser) {
@@ -774,6 +832,17 @@
                         // Update header with profile display name when available
                         if (data.display_name) {
                             document.querySelector('.dashboard-hero-title').textContent = `Welcome, ${data.display_name}!`;
+                            document.getElementById('userProfileName').textContent = data.display_name;
+                        }
+
+                        // Update profile bio
+                        if (data.bio) {
+                            document.getElementById('userProfileBio').textContent = data.bio.length > 80 ? data.bio.substring(0, 77) + '...' : data.bio;
+                        }
+
+                        // Update profile avatar
+                        if (data.avatar_url) {
+                            document.getElementById('userProfileAvatar').src = data.avatar_url;
                         }
 
                         // Set sobriety date if available - check multiple possible field names
