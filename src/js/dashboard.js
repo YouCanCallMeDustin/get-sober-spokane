@@ -39,6 +39,17 @@ async function initializeDashboard() {
         initializeCharts();
         updateDashboardCounts();
         
+        // Add entrance animations
+        document.querySelectorAll('.dashboard-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            setTimeout(() => {
+                card.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100 * index);
+        });
+
         // Handle mobile responsiveness
         handleMobileLayout();
         window.addEventListener('resize', handleMobileLayout);
@@ -450,6 +461,10 @@ function updateSobrietyDisplay() {
     const counterLarge = document.getElementById('sobriety-counter-large');
     if (counterLarge) counterLarge.textContent = `${daysDiff} days sober`;
     
+    // Odometer effect for the main counter
+    animateNumber('sobrietyDays', daysDiff);
+    animateNumber('progressRingDays', daysDiff);
+    
     // Update chart if available
     if (recoveryChart) {
         updateRecoveryChart();
@@ -499,9 +514,59 @@ function initializeCharts() {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.03)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: 'rgba(15, 23, 42, 0.5)',
+                        font: {
+                            family: 'Inter, system-ui, sans-serif'
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: 'rgba(15, 23, 42, 0.5)',
+                        font: {
+                            family: 'Inter, system-ui, sans-serif'
+                        }
+                    }
+                }
+            },
+            elements: {
+                point: {
+                    radius: 4,
+                    hoverRadius: 6,
+                    backgroundColor: '#3b82f6',
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                },
+                line: {
+                    borderWidth: 3,
+                    borderColor: '#3b82f6',
+                    fill: true,
+                    backgroundColor: (context) => {
+                        const chart = context.chart;
+                        const {ctx, chartArea} = chart;
+                        if (!chartArea) return null;
+                        const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                        gradient.addColorStop(0, 'rgba(59, 130, 246, 0)');
+                        gradient.addColorStop(1, 'rgba(59, 130, 246, 0.1)');
+                        return gradient;
+                    }
                 }
             }
         }
@@ -660,6 +725,28 @@ function showNotification(message, type = 'info') {
             notification.remove();
         }
     }, 5000);
+}
+
+// Animation helper for numbers
+function animateNumber(id, endValue) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    
+    let startValue = 0;
+    const duration = 2000;
+    const stepTime = 20;
+    const steps = duration / stepTime;
+    const increment = endValue / steps;
+    
+    const timer = setInterval(() => {
+        startValue += increment;
+        if (startValue >= endValue) {
+            el.textContent = Math.floor(endValue);
+            clearInterval(timer);
+        } else {
+            el.textContent = Math.floor(startValue);
+        }
+    }, stepTime);
 }
 
 // Export functions for global access

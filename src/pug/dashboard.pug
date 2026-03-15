@@ -3,13 +3,16 @@ extends layout
 block content
   // Dashboard Container with proper spacing for fixed navigation
   .dashboard-container
-    // Hero Banner Section
+    // Hero Banner Section - Refined for premium feel
     .dashboard-hero
       .container
         .row.justify-content-center.text-center
-          .col-lg-8
-            h1.dashboard-hero-title Welcome, #{user ? user.displayName : 'Get Sober Spokane'}!
-            p.dashboard-hero-subtitle Manage your recovery journey and access resources
+          .col-lg-10
+            .glass-hero-content.fade-in
+              h1.dashboard-hero-title 
+                span.greeting-text Welcome, 
+                span.user-name#userNameHeader #{user ? user.displayName : 'Friend'}!
+              p.dashboard-hero-subtitle Your journey to lasting recovery continues here. We're with you every step of the way.
     
     // Main Dashboard Content
     .dashboard-content
@@ -188,7 +191,7 @@ block content
                   a.quick-action-btn(href="/sponsor-finder.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'sponsor_dashboard'})")
                     .action-icon
                       i.bi.bi-person-heart
-                    .action-text Find Sponsor
+                    .action-text Partner Finder
                   a.quick-action-btn#viewProfileLink(href="#" style="display: none;")
                     .action-icon
                       i.bi.bi-person
