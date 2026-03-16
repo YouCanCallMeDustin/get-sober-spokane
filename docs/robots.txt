@@ -50,6 +50,7 @@ Allow: /post-falls-recovery-resources.html
 Allow: /resource-directory.html
 Allow: /search.html
 Allow: /shelter-housing.html
+Allow: /sobriety-guide.html
 Allow: /south-hill-recovery-resources.html
 Allow: /spokane-valley-recovery-resources.html
 Allow: /sponsor-finder.html

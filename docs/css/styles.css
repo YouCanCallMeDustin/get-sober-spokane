@@ -3,7 +3,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2026 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Generated: 2026-03-15T08:50:39.457Z
+* Generated: 2026-03-16T20:37:44.573Z
 */
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
@@ -11651,9 +11651,10 @@ hr.divider-light {
 }
 .dashboard-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  padding-top: 80px;
+  background: radial-gradient(circle at top right, #f0fdf4 0%, #ffffff 50%, #fffbeb 100%);
+  padding-top: 100px;
   position: relative;
+  overflow-x: hidden;
 }
 .dashboard-container::before {
   content: "";
@@ -11662,7 +11663,7 @@ hr.divider-light {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.02) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(147, 197, 253, 0.02) 0%, transparent 50%);
+  background-image: radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.04) 0%, transparent 40%), radial-gradient(circle at 85% 85%, rgba(30, 64, 175, 0.04) 0%, transparent 40%);
   pointer-events: none;
   z-index: 0;
 }
@@ -11696,12 +11697,12 @@ hr.divider-light {
   z-index: 1;
 }
 .dashboard-hero .dashboard-hero-title {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 800;
-  margin-bottom: 1rem;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 10px 30px rgba(15, 23, 42, 0.3);
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 @media (max-width: 768px) {
   .dashboard-hero .dashboard-hero-title {
@@ -11789,15 +11790,15 @@ hr.divider-light {
 }
 
 .dashboard-card {
-  background: rgba(255, 255, 255, 0.85);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-          backdrop-filter: blur(20px) saturate(180%);
-  border-radius: 2rem;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.7);
-  padding: 2.5rem 3rem;
-  margin-bottom: 2.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.75);
+  -webkit-backdrop-filter: blur(25px) saturate(200%);
+          backdrop-filter: blur(25px) saturate(200%);
+  border-radius: 2.5rem;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.08), 0 2px 10px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  padding: 3rem;
+  margin-bottom: 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 }
@@ -11835,8 +11836,8 @@ hr.divider-light {
   pointer-events: none;
 }
 .dashboard-card:hover {
-  box-shadow: 0 24px 64px rgba(31, 38, 135, 0.18), 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.15), 0 10px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-12px) scale(1.02);
   border-color: rgba(59, 130, 246, 0.4);
 }
 .dashboard-card:hover::before {
@@ -11970,32 +11971,20 @@ hr.divider-light {
   margin: 1.5rem 0;
 }
 .recovery-card .progress-visualization .progress-ring-container .progress-ring-wrapper canvas {
-  width: 200px;
-  height: 200px;
-  filter: drop-shadow(0 8px 24px rgba(59, 130, 246, 0.25));
-  transition: all 0.3s ease;
+  width: 220px;
+  height: 220px;
+  filter: drop-shadow(0 15px 35px rgba(59, 130, 246, 0.3));
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 @media (max-width: 768px) {
   .recovery-card .progress-visualization .progress-ring-container .progress-ring-wrapper canvas {
-    width: 170px;
-    height: 170px;
-  }
-}
-@media (max-width: 576px) {
-  .recovery-card .progress-visualization .progress-ring-container .progress-ring-wrapper canvas {
-    width: 140px;
-    height: 140px;
-  }
-}
-@media (max-width: 400px) {
-  .recovery-card .progress-visualization .progress-ring-container .progress-ring-wrapper canvas {
-    width: 120px;
-    height: 120px;
+    width: 180px;
+    height: 180px;
   }
 }
 .recovery-card .progress-visualization .progress-ring-container .progress-ring-wrapper:hover canvas {
-  filter: drop-shadow(0 12px 32px rgba(59, 130, 246, 0.35));
-  transform: scale(1.02);
+  filter: drop-shadow(0 20px 45px rgba(59, 130, 246, 0.45));
+  transform: scale(1.05) rotate(2deg);
 }
 .recovery-card .progress-visualization .progress-ring-container .progress-ring-wrapper .progress-ring-overlay {
   position: absolute;
@@ -12092,7 +12081,7 @@ hr.divider-light {
   -webkit-backdrop-filter: blur(16px) saturate(180%);
           backdrop-filter: blur(16px) saturate(180%);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.8);
   position: relative;
   overflow: hidden;
 }
@@ -14467,6 +14456,11 @@ body .chat-container,
   padding-top: 80px !important;
   background: transparent !important;
 }
+html body .chat-container .page-hero,
+body .chat-container .page-hero,
+.chat-container .page-hero {
+  margin-top: 0 !important;
+}
 
 html body .chat-sidebar,
 body .chat-sidebar,
@@ -16547,7 +16541,7 @@ body .sign-in-link:active,
 
 .page-hero {
   position: relative;
-  padding: 8rem 0 6rem;
+  padding: 4rem 0 3rem;
   margin-top: 76px;
   background: linear-gradient(135deg, #1a365d 0%, #2c5aa0 100%);
   color: #fff;
@@ -16669,7 +16663,7 @@ body .sign-in-link:active,
 }
 @media (max-width: 991.98px) {
   .page-hero {
-    padding: 6rem 0 4rem;
+    padding: 3rem 0 2rem;
   }
   .page-hero h1, .page-hero .h1 {
     font-size: 2.5rem;
