@@ -1,3 +1,9 @@
+/*!
+* Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
+* Copyright 2013-2026 Start Bootstrap
+* Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
+* Built: 2026-03-16T01:46:39.022Z
+*/
 // Resource Directory Management System
 class ResourceDirectory {
     constructor() {
@@ -13,12 +19,51 @@ class ResourceDirectory {
     }
 
     init() {
-        console.log('Initializing ResourceDirectory');
+        console.log('ResourceDirectory: Starting initialization...');
         this.loadResources();
-        console.log('Loaded', this.resources.length, 'resources');
+        
+        // Populate filteredResources initially with all resources
+        this.filteredResources = [...this.resources];
+        console.log(`ResourceDirectory: ${this.resources.length} resources loaded.`);
+        
         this.setupEventListeners();
+
+        // Check for specific resource ID in the URL (used by global search)
+        const urlParams = new URLSearchParams(window.location.search);
+        const resourceId = urlParams.get('id');
+        
+        if (resourceId) {
+            console.log('ResourceDirectory: Targeting specific ID:', resourceId);
+            // Case-insensitive ID search
+            const found = this.resources.filter(resource => 
+                resource.id && resource.id.toLowerCase() === resourceId.toLowerCase()
+            );
+            
+            console.log('ResourceDirectory: Matching resources found:', found.length);
+            
+            if (found.length > 0) {
+                // We've found the specific resource the user clicked on
+                this.filteredResources = found;
+                
+                // If there's a search input, update it with the resource name to contextually show what we found
+                const searchInput = document.getElementById('resourceSearch');
+                if (searchInput) {
+                    searchInput.value = found[0].name;
+                    this.currentFilters.search = found[0].name.toLowerCase();
+                }
+                
+                // Show modal details after a delay to ensure DOM is ready
+                setTimeout(() => {
+                    console.log('ResourceDirectory: Auto-showing details for:', found[0].id);
+                    this.showResourceDetails(found[0].id);
+                }, 800);
+            } else {
+                console.warn('ResourceDirectory: No resource found with ID:', resourceId);
+            }
+        }
+
         this.renderResources();
-        console.log('ResourceDirectory initialization complete');
+        console.log('ResourceDirectory: Initialization complete.');
     }
 
     loadResources() {
@@ -2718,37 +2763,48 @@ class ResourceDirectory {
     }
 
     filterResources() {
-        console.log('Filtering resources with:', this.currentFilters);
-        this.filteredResources = this.resources.filter(resource => {
-            // Search filter
-            if (this.currentFilters.search && this.currentFilters.search.trim() !== '') {
-                const searchTerm = this.currentFilters.search.trim();
-                const searchableText = `${resource.name} ${resource.description} ${resource.services.join(' ')}`.toLowerCase();
-                console.log('Checking resource:', resource.name, 'against search term:', searchTerm);
-                if (!searchableText.includes(searchTerm)) {
+        console.log('ResourceDirectory: Filtering resources...');
+        console.log('ResourceDirectory: Filters:', JSON.stringify(this.currentFilters));
+        console.log('ResourceDirectory: Source resources count:', this.resources.length);
+        
+        try {
+            this.filteredResources = this.resources.filter(resource => {
+                // Search filter
+                if (this.currentFilters.search && this.currentFilters.search.trim() !== '') {
+                    const searchTerm = this.currentFilters.search.trim().toLowerCase();
+                    const name = (resource.name || '').toLowerCase();
+                    const desc = (resource.description || '').toLowerCase();
+                    const services = Array.isArray(resource.services) ? resource.services.join(' ').toLowerCase() : '';
+                    
+                    const searchableText = `${name} ${desc} ${services}`;
+                    if (!searchableText.includes(searchTerm)) {
+                        return false;
+                    }
+                }
+                
+                // Category filter
+                if (this.currentFilters.category !== 'all' && resource.category !== this.currentFilters.category) {
                     return false;
                 }
-            }
-
-            // Category filter
-            if (this.currentFilters.category !== 'all' && resource.category !== this.currentFilters.category) {
-                return false;
-            }
-
-            // Location filter (simplified - could be enhanced with actual location logic)
-            if (this.currentFilters.location !== 'all') {
-                // This would need more sophisticated location filtering
+                
+                // Location filter (subcategory)
+                if (this.currentFilters.location !== 'all' && resource.subcategory !== this.currentFilters.location) {
+                    return false;
+                }
+                
+                // Availability filter
+                if (this.currentFilters.availability !== 'all' && resource.availability !== this.currentFilters.availability) {
+                    return false;
+                }
+                
                 return true;
-            }
-
-            // Availability filter
-            if (this.currentFilters.availability !== 'all' && resource.availability !== this.currentFilters.availability) {
-                return false;
-            }
-
-            return true;
-        });
-
+            });
+            console.log('ResourceDirectory: Filtering complete. Match count:', this.filteredResources.length);
+        } catch (error) {
+            console.error('ResourceDirectory: Filtering error:', error);
+            this.filteredResources = [...this.resources];
+        }
+        
         this.renderResources();
     }
 
@@ -2775,9 +2831,12 @@ class ResourceDirectory {
 
     renderResources() {
         const container = document.getElementById('resourceResults');
-        console.log('Rendering resources, container found:', container);
-        console.log('Filtered resources count:', this.filteredResources.length);
-        if (!container) return;
+        if (!container) {
+            console.warn('ResourceDirectory: Results container (#resourceResults) not found in DOM.');
+            return;
+        }
+        
+        console.log('ResourceDirectory: Rendering results to container.');
 
         if (this.filteredResources.length === 0) {
             container.innerHTML = `
@@ -2809,9 +2868,13 @@ class ResourceDirectory {
     }
 
     createResourceCard(resource) {
-        const ratingStars = this.generateRatingStars(resource.rating);
-        const categoryIcon = this.getCategoryIcon(resource.category);
-        const availabilityBadge = this.getAvailabilityBadge(resource.availability);
+        if (!resource) return '';
+        
+        const ratingStars = this.generateRatingStars(resource.rating || 0);
+        const categoryIcon = this.getCategoryIcon(resource.category || 'default');
+        const availabilityBadge = this.getAvailabilityBadge(resource.availability || 'unknown');
+        const address = resource.address || 'Address not available';
+        const name = resource.name || 'Unnamed Resource';
 
         return `
             <div class="col-lg-6 col-xl-4 mb-4" data-resource-id="${resource.id}">

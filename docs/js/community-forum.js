@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2026 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2026-03-15T08:50:42.255Z
+* Built: 2026-03-16T01:46:39.022Z
 */
 // src/js/community-forum.js - Community Forum (No Auth Required)
 
@@ -34,6 +34,20 @@ function initializeForum() {
         loadForumData();
         loadPosts();
         setupCategories();
+
+        // Check for specific post in URL (used by global search)
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('post');
+        if (postId) {
+            console.log('Found post parameter in URL:', postId);
+            // Search for the post and show it
+            searchPosts(postId); // This will filter the view
+            
+            // Optionally auto-open the post details if viewPost is implemented
+            if (typeof viewPost === 'function') {
+                setTimeout(() => viewPost(postId), 500);
+            }
+        }
     } catch (error) {
         console.error('Forum initialization error:', error);
         showNotification('Error loading forum: ' + error.message, 'error');

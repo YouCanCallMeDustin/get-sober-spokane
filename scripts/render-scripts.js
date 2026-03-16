@@ -17,7 +17,9 @@ module.exports = function renderScripts() {
         'user-profile.js',
         'community-forum.js',
         'auth.js',
-        'config.js'
+        'config.js',
+        'resource-directory.js',
+        'search.js'
     ];
 
     const copyright = `/*!

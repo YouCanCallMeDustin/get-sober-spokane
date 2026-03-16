@@ -32,23 +32,59 @@ async function buildSEO() {
     }
 }
 
+// discover all pug files and map to URLs
+function getPages() {
+    const srcPath = path.join(__dirname, '../src/pug');
+    const pages = [];
+    
+    // Recursive search for .pug files
+    function findPugFiles(dir, prefix = '') {
+        const files = fs.readdirSync(dir);
+        
+        files.forEach(file => {
+            const fullPath = path.join(dir, file);
+            const stats = fs.statSync(fullPath);
+            
+            if (stats.isDirectory()) {
+                if (file !== 'layouts' && file !== 'includes' && file !== 'mixins' && file !== 'auth') {
+                    findPugFiles(fullPath, prefix + file + '/');
+                }
+            } else if (file.endsWith('.pug')) {
+                // Ignore layouts/includes if they were somehow in the wrong place
+                if (file.startsWith('_') || file.includes('layout') || file.includes('mixin')) return;
+                
+                let url = prefix + file.replace('.pug', '.html');
+                if (url === 'index.html') url = '/';
+                
+                // Determine priority and frequency
+                let priority = '0.8';
+                let changefreq = 'weekly';
+                
+                if (url === '/') {
+                    priority = '1.0';
+                } else if (url.includes('recovery-resources.html') || url.startsWith('blog/')) {
+                    priority = '0.7';
+                    changefreq = 'monthly';
+                } else if (url.includes('privacy-policy') || url.includes('terms-of-service')) {
+                    priority = '0.3';
+                    changefreq = 'yearly';
+                } else if (['shelter-housing.html', 'addiction-treatments-support.html', 'medical-mental-health.html', 'resource-directory.html'].includes(url)) {
+                    priority = '0.9';
+                }
+                
+                pages.push({ url: url.startsWith('/') ? url : '/' + url, priority, changefreq });
+            }
+        });
+    }
+    
+    findPugFiles(srcPath);
+    return pages;
+}
+
 // Create XML sitemap
 function createSitemap() {
     const baseUrl = 'https://www.getsoberspokane.com';
-    const pages = [
-        { url: '/', priority: '1.0', changefreq: 'weekly' },
-        { url: '/shelter-housing.html', priority: '0.9', changefreq: 'weekly' },
-        { url: '/addiction-treatments-support.html', priority: '0.9', changefreq: 'weekly' },
-        { url: '/medical-mental-health.html', priority: '0.9', changefreq: 'weekly' },
-        { url: '/food-basic-needs.html', priority: '0.8', changefreq: 'weekly' },
-        { url: '/employment-skills.html', priority: '0.8', changefreq: 'weekly' },
-        { url: '/community-engagement-sober-activities.html', priority: '0.8', changefreq: 'weekly' },
-        { url: '/resource-directory.html', priority: '0.9', changefreq: 'daily' },
-        { url: '/map.html', priority: '0.7', changefreq: 'weekly' },
-        { url: '/donations.html', priority: '0.6', changefreq: 'monthly' },
-        { url: '/privacy-policy.html', priority: '0.3', changefreq: 'yearly' },
-        { url: '/terms-of-service.html', priority: '0.3', changefreq: 'yearly' }
-    ];
+    const pages = getPages();
     
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -61,12 +97,21 @@ ${pages.map(page => `  <url>
 </urlset>`;
     
     const sitemapPath = path.join(__dirname, '../docs/sitemap.xml');
+    const staticSitemapPath = path.join(__dirname, '../public/static/sitemap.xml');
+    
     fs.writeFileSync(sitemapPath, sitemap);
-    console.log('✓ Sitemap created: docs/sitemap.xml');
+    
+    // Also update public/static if it exists
+    if (fs.existsSync(path.join(__dirname, '../public/static'))) {
+        fs.writeFileSync(staticSitemapPath, sitemap);
+    }
+    
+    console.log(`✓ Sitemap created with ${pages.length} pages`);
 }
 
 // Create robots.txt
 function createRobotsTxt() {
+    const pages = getPages();
     const robotsTxt = `User-agent: *
 Allow: /
 
@@ -76,24 +121,24 @@ Sitemap: https://www.getsoberspokane.com/sitemap.xml
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
 
-# Disallow admin areas (if any)
+# Disallow admin areas
 Disallow: /admin/
 Disallow: /private/
+Disallow: /auth/
 
 # Allow all important pages
-Allow: /shelter-housing.html
-Allow: /addiction-treatments-support.html
-Allow: /medical-mental-health.html
-Allow: /food-basic-needs.html
-Allow: /employment-skills.html
-Allow: /community-engagement-sober-activities.html
-Allow: /resource-directory.html
-Allow: /map.html
-Allow: /donations.html`;
+${pages.filter(p => parseFloat(p.priority) >= 0.7).map(p => `Allow: ${p.url}`).join('\n')}`;
     
     const robotsPath = path.join(__dirname, '../docs/robots.txt');
+    const staticRobotsPath = path.join(__dirname, '../public/static/robots.txt');
+    
     fs.writeFileSync(robotsPath, robotsTxt);
-    console.log('✓ Robots.txt created: docs/robots.txt');
+    
+    if (fs.existsSync(path.join(__dirname, '../public/static'))) {
+        fs.writeFileSync(staticRobotsPath, robotsTxt);
+    }
+    
+    console.log('✓ Robots.txt created');
 }
 
 // Update package.json with sharp dependency
