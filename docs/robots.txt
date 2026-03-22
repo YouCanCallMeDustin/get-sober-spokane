@@ -20,6 +20,7 @@ Allow: /blog/aa-na-meetings-spokane.html
 Allow: /blog/addiction-therapy-spokane.html
 Allow: /blog/apple-health-medicaid-rehab-spokane.html
 Allow: /blog/best-sober-coffee-shops-spokane.html
+Allow: /blog/fentanyl-treatment-spokane.html
 Allow: /blog/free-addiction-help-spokane.html
 Allow: /blog/helping-loved-one-addiction-spokane.html
 Allow: /blog/inpatient-vs-outpatient-rehab-spokane.html
