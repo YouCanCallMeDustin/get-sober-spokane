@@ -63,6 +63,26 @@ class ChatSocketHandler {
                 await this.handleGetOnlineUsers(socket, data);
             });
 
+            // Handle private room join
+            socket.on('joinPrivateRoom', async (data) => {
+                await this.handleJoinPrivateRoom(socket, data);
+            });
+
+            // Handle private message
+            socket.on('privateMessage', async (data) => {
+                await this.handlePrivateMessage(socket, data);
+            });
+
+            // Handle private typing indicator
+            socket.on('privateTyping', (data) => {
+                this.handlePrivateTyping(socket, data);
+            });
+
+            // Handle private room leave
+            socket.on('leavePrivateRoom', async (data) => {
+                await this.handleLeavePrivateRoom(socket, data);
+            });
+
             // Handle disconnection
             socket.on('disconnect', async () => {
                 await this.handleDisconnect(socket);
@@ -276,6 +296,108 @@ class ChatSocketHandler {
         } catch (error) {
             console.error('Error in handleGetOnlineUsers:', error);
             socket.emit('onlineUsers', []);
+        }
+    }
+
+    async handleJoinPrivateRoom(socket, data) {
+        try {
+            const { conversationId, user } = data;
+            if (!conversationId || !user?.id) return;
+            const room = `private_conv_${conversationId}`;
+            socket.join(room);
+            // Ensure socket session tracking has the user profile
+            const existing = this.users.get(socket.id) || {};
+            this.users.set(socket.id, {
+                ...existing,
+                id: socket.id,
+                userProfile: user,
+                isAuthenticated: true
+            });
+            console.log(`User ${user.id} joined private room: ${room}`);
+        } catch(error) {
+            console.error('Error joining private room:', error);
+        }
+    }
+
+    async handleLeavePrivateRoom(socket, data) {
+        try {
+            const { conversationId } = data;
+            if (!conversationId) return;
+            const room = `private_conv_${conversationId}`;
+            socket.leave(room);
+            console.log(`User left private room: ${room}`);
+        } catch(error) {
+            console.error('Error leaving private room:', error);
+        }
+    }
+
+    async handlePrivateMessage(socket, data) {
+        try {
+            const { conversationId, content, targetUserId } = data;
+            const user = this.users.get(socket.id);
+            
+            if (!user || (!user.isAuthenticated && !user.userProfile?.id) || !conversationId) {
+                console.error('Rejected private message from unauthenticated user');
+                return;
+            }
+
+            const senderId = user.userProfile.id || user.id;
+            const room = `private_conv_${conversationId}`;
+
+            const messageData = {
+                conversation_id: conversationId,
+                sender_id: senderId,
+                content: content,
+                is_read: false
+            };
+
+            const { data: savedMessage, error } = await this.supabase
+                .from('private_messages')
+                .insert(messageData)
+                .select()
+                .single();
+
+            if (error) {
+                console.error('Error saving private message:', error);
+                socket.emit('privateMessageError', { message: 'Failed to save message' });
+                return;
+            }
+
+            const payload = {
+                id: savedMessage.id,
+                conversationId,
+                content: savedMessage.content,
+                sender_id: savedMessage.sender_id,
+                is_read: savedMessage.is_read,
+                created_at: savedMessage.created_at
+            };
+
+            // Emit to participants currently viewing the room
+            this.io.to(room).emit('newPrivateMessage', payload);
+            
+            // Emit notification to the target user anywhere across the app
+            for (const [id, socketUser] of this.users.entries()) {
+                if (socketUser.userProfile?.id === targetUserId) {
+                    this.io.to(id).emit('privateMessageNotification', payload);
+                }
+            }
+
+        } catch (error) {
+            console.error('Error handling private message:', error);
+        }
+    }
+
+    handlePrivateTyping(socket, data) {
+        const { conversationId, isTyping } = data;
+        if (!conversationId) return;
+        const room = `private_conv_${conversationId}`;
+        const user = this.users.get(socket.id);
+        if (user) {
+            socket.to(room).emit('privateUserTyping', {
+                conversationId,
+                userId: user.userProfile?.id || user.id,
+                isTyping
+            });
         }
     }
 

@@ -99,6 +99,10 @@ block content
               button.btn.btn-primary#followUserBtn(type="button" style="display: none;")
                 i.bi.bi-person-plus.me-2
                 | Follow
+              
+              button.btn.btn-outline-primary.ms-2#messageUserBtn(type="button" style="display: none;")
+                i.bi.bi-envelope.me-2
+                | Message
     
     // Profile Content
     .profile-content
@@ -298,17 +302,8 @@ block scripts
         const { data: { user } } = await supabase.auth.getUser();
         
         if (user) {
-          // Show edit profile button for authenticated users
-          const editBtn = document.getElementById('editProfileBtn');
-          if (editBtn) {
-            editBtn.style.display = 'inline-block';
-          }
-          
-          // Show follow button for other users' profiles
-          const followBtn = document.getElementById('followUserBtn');
-          if (followBtn) {
-            followBtn.style.display = 'inline-block';
-          }
+          // Notice: button toggling logic is exclusively handled by `renderProfile` in user-profile.js 
+          // now to prevent UI flicker and correct ownership resolution.
           
           // Populate form with current user data
           populateEditForm(user);

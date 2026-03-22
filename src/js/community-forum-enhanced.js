@@ -220,11 +220,22 @@ class CommunityForum {
                 comments_count: postIdToCount[p.id] || 0
             }));
             
-            // Load user profiles from our forum_user_profiles table
+            // Load user profiles
             const { data: users, error: usersError } = await this.supabase
                 .from('profiles_consolidated')
                 .select('user_id, display_name, avatar_url, sobriety_date')
                 .limit(1000);
+            
+            // Load verified sponsors
+            const { data: sponsors, error: sponsorsError } = await this.supabase
+                .from('sponsor_profiles')
+                .select('user_id')
+                .eq('is_verified_sponsor', true);
+            
+            const sponsorMap = {};
+            if (sponsors) {
+                sponsors.forEach(s => { sponsorMap[s.user_id] = true; });
+            }
             
             if (usersError) {
                 console.warn('Profiles load warning:', usersError);
@@ -233,7 +244,10 @@ class CommunityForum {
             } else {
                 this.forumData.users = users || [];
                 this.forumData.usersById = {};
-                (users || []).forEach(u => { this.forumData.usersById[u.user_id] = u; });
+                (users || []).forEach(u => { 
+                    u.is_sponsor = !!sponsorMap[u.user_id];
+                    this.forumData.usersById[u.user_id] = u; 
+                });
             }
             
             console.log('loadForumData: User profiles loaded:', {
@@ -398,7 +412,11 @@ class CommunityForum {
         }
         
         console.log('createPostHTML: Final userName resolved:', userName);
-        const nameHtml = post.is_anonymous ? userName : `<a href="/user-profile.html?id=${post.user_id}" class="text-decoration-none">${userName}</a>`;
+        const nameHtml = post.is_anonymous ? userName : `<a href="/user-profile.html?id=${post.user_id}" class="text-decoration-none fw-bold">${userName}</a>`;
+        const sponsorBadge = profile?.is_sponsor ? `
+            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 ms-2 mb-1" style="font-size: 0.7rem; vertical-align: middle;">
+                <i class="bi bi-patch-check-fill me-1"></i>Verified Sponsor
+            </span>` : '';
         
         const sobrietyInfo = profile?.sobriety_date ? 
             `<small class="text-muted d-block">
@@ -426,7 +444,7 @@ class CommunityForum {
                                 <a href="#" onclick="forum.viewPost('${post.id}')" class="text-decoration-none">${post.title}</a>
                             </h5>
                             <div class="text-muted small">
-                                <i class="bi bi-person me-1"></i>${nameHtml}
+                                <i class="bi bi-person me-1"></i>${nameHtml}${sponsorBadge}
                                 <i class="bi bi-clock me-2 ms-2"></i>${timeAgo}
                                 <i class="bi bi-tag me-2 ms-2"></i>${post.category}
                             </div>
@@ -633,7 +651,10 @@ class CommunityForum {
                 <div class="d-flex justify-content-between align-items-start">
                     <div class="post-meta mb-3">
                         <small class="text-muted">
-                            <i class="bi bi-person me-1"></i>${nameHtml}
+                            <i class="bi bi-person me-1"></i>${nameHtml}${profile?.is_sponsor ? `
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 ms-1" style="font-size: 0.65rem; vertical-align: middle;">
+                                    <i class="bi bi-patch-check-fill me-1"></i>Verified Sponsor
+                                </span>` : ''}
                             <i class="bi bi-clock me-2 ms-2"></i>${this.formatTimeAgo(post.created_at)}
                             <i class="bi bi-tag me-2 ms-2"></i>${post.category}
                         </small>
@@ -785,8 +806,11 @@ class CommunityForum {
                 <div class="comment-item border-start border-2 ps-3 mb-3" data-comment-id="${comment.id}">
                     <div class="d-flex justify-content-between">
                         <div class="comment-meta mb-1">
-                            <strong>${nameHtml}</strong>
-                            <small class="text-muted ms-2">${timeAgo}</small>
+                            <strong class="me-1">${nameHtml}</strong>${profile?.is_sponsor ? `
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 me-2" style="font-size: 0.65rem; vertical-align: middle;">
+                                    <i class="bi bi-patch-check-fill me-1"></i>Sponsor
+                                </span>` : ''}
+                            <small class="text-muted">${timeAgo}</small>
                         </div>
                         ${canEdit ? `
                         <div class="btn-group btn-group-sm" id="commentActions-${comment.id}">
@@ -1130,15 +1154,26 @@ class CommunityForum {
         return text.substring(0, maxLength) + '...';
     }
 
-    calculateSobrietyDays(sobrietyDate) {
-        if (!sobrietyDate) return 0;
+    calculateSobrietyDays(sobrietyDateStr) {
+        if (!sobrietyDateStr) return 0;
         
-        const startDate = new Date(sobrietyDate);
-        const today = new Date();
-        const timeDiff = today.getTime() - startDate.getTime();
-        const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        
-        return Math.max(0, daysDiff);
+        try {
+            // Use date parts to create a local date object (avoids UTC shifting)
+            const parts = sobrietyDateStr.split('-');
+            const startDate = new Date(parts[0], parts[1] - 1, parts[2]);
+            startDate.setHours(0, 0, 0, 0);
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const timeDiff = today.getTime() - startDate.getTime();
+            const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
+            
+            return Math.max(0, daysDiff);
+        } catch (e) {
+            console.error('Error calculating sobriety days:', e);
+            return 0;
+        }
     }
 
     // Show notification

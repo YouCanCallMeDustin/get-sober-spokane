@@ -451,6 +451,10 @@ app.use('/user', userRoutes);
 const chatRoutes = require('./routes/chat');
 app.use('/chat', chatRoutes);
 
+// Messages routes
+const messagesRoutes = require('./routes/messages');
+app.use('/messages', messagesRoutes);
+
 // Sponsor routes
 const sponsorRoutes = require('../routes/sponsor');
 app.use('/api/sponsor', sponsorRoutes);

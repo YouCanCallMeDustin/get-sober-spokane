@@ -1,0 +1,78 @@
+extends layout
+
+block head
+  title Private Messages - Get Sober Spokane
+  meta(name="description" content="Your private conversations.")
+  link(rel="stylesheet" href="/css/styles.css?v=" + timestamp + "&r=" + random)
+
+  style.
+    .conversation-item:hover {
+      background-color: #f8f9fa;
+    }
+    .conversation-item.active {
+      background-color: #e9ecef;
+    }
+
+block content
+  .chat-container(style="margin-top: 5rem; height: calc(100vh - 5rem); display: flex; flex-direction: column;")
+    // Hero Banner Section
+    section.page-hero.py-4(style="flex-shrink: 0;")
+      .container
+        .row
+          .col-12
+            h2 Private Messages
+            p.lead Connect one-on-one with members of the recovery community.
+    
+    // Main Chat Content
+    .chat-content(style="flex: 1; overflow: hidden; display: flex; flex-direction: column;")
+      .container.h-100
+        .row.h-100
+          // Inbox Sidebar
+          .col-lg-4.col-md-5.h-100.d-flex.flex-column
+            .chat-sidebar.h-100.d-flex.flex-column.bg-white.rounded.shadow-sm.mb-3.mb-md-0
+              .sidebar-section.p-3.border-bottom
+                h5.sidebar-title.mb-0
+                  i.bi.bi-inbox-fill.me-2
+                  | Conversations
+              .sidebar-section.flex-grow-1.overflow-auto.p-0
+                .conversation-list#conversationList
+                  .p-3.text-center.text-muted
+                    .spinner-border.spinner-border-sm.me-2(role="status")
+                    | Loading conversations...
+
+          // Main Chat Area
+          .col-lg-8.col-md-7.h-100.d-flex.flex-column
+            .chat-main.h-100.d-flex.flex-column.bg-white.rounded.shadow-sm
+              // Empty State
+              .empty-state.d-flex.flex-column.align-items-center.justify-content-center.h-100#emptyState
+                i.bi.bi-chat-dots.display-1.text-muted.mb-3
+                h4 Select a conversation
+                p.text-muted Choose a conversation from the sidebar to start messaging.
+              
+              // Active Chat
+              .active-chat-area.d-none.h-100.d-flex.flex-column#activeChatArea
+                // Chat Header
+                .chat-header.p-3.border-bottom.d-flex.align-items-center.bg-light
+                  img.rounded-circle.me-3#chatAvatar(src="/assets/images/default-avatar.png" width="48" height="48" alt="Avatar")
+                  .chat-user-info
+                    h5.mb-0#chatUserName Loading...
+                
+                // Messages Container
+                .messages-container.flex-grow-1.overflow-auto.p-4#messagesContainer(style="background-color: #fcfcfc;")
+                  // Messages loaded dynamically
+                
+                // Message Input Area
+                .message-input-area.p-3.border-top.bg-white
+                  .input-group
+                    input.form-control#messageInput(type="text" placeholder="Type a message..." disabled)
+                    button.btn.btn-primary#sendMessage(type="button" disabled)
+                      i.bi.bi-send
+                  .typing-indicator.small.text-muted.mt-1#typingIndicator(style="display:none;")
+                    i.bi.bi-three-dots
+                    span.ms-1 Someone is typing...
+
+block scripts
+  script(src="/socket.io/socket.io.js")
+  script.
+    window.currentUser = !{JSON.stringify(user || {})};
+  script(src="/js/private-messaging.js?v=" + timestamp + "&r=" + random)
