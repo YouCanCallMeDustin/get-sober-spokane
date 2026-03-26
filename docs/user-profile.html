@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-site-verification" content="yVFofJG3SElxFm9kuw9zPfuKQXLn7a3sW7zt2thnCho" />
         <link rel="preload" as="image" href="/assets/img/logo.png" />
+        <link rel="icon" href="/assets/img/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/assets/img/logo.png" />
         <title>Get Sober Spokane - Recovery Support Community</title>
         <meta name="description" content="Recovery support community in Spokane, WA" />
         <!-- Canonical URL-->
@@ -272,6 +274,12 @@
                                     </a>
                                 </li>
                                 <li>
+                                    <a class="dropdown-item" href="/messages">
+                                        <i class="bi bi-envelope me-2"></i>
+                                        Private Messages
+                                    </a>
+                                </li>
+                                <li>
                                     <a class="dropdown-item" href="/community-forum.html">
                                         <i class="bi bi-people me-2"></i>
                                         Forum
@@ -361,6 +369,10 @@
                                 <button class="btn btn-primary" id="followUserBtn" type="button" style="display: none">
                                     <i class="bi bi-person-plus me-2"></i>
                                     Follow
+                                </button>
+                                <button class="btn btn-outline-primary ms-2" id="messageUserBtn" type="button" style="display: none">
+                                    <i class="bi bi-envelope me-2"></i>
+                                    Message
                                 </button>
                             </div>
                         </div>
@@ -673,17 +685,8 @@
                     } = await supabase.auth.getUser();
 
                     if (user) {
-                        // Show edit profile button for authenticated users
-                        const editBtn = document.getElementById('editProfileBtn');
-                        if (editBtn) {
-                            editBtn.style.display = 'inline-block';
-                        }
-
-                        // Show follow button for other users' profiles
-                        const followBtn = document.getElementById('followUserBtn');
-                        if (followBtn) {
-                            followBtn.style.display = 'inline-block';
-                        }
+                        // Notice: button toggling logic is exclusively handled by `renderProfile` in user-profile.js
+                        // now to prevent UI flicker and correct ownership resolution.
 
                         // Populate form with current user data
                         populateEditForm(user);
