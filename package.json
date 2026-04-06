@@ -21,6 +21,7 @@
     "start:all": "npm run start:server",
     "dev:refresh": "node scripts/dev-refresh.js",
     "seo:optimize": "node scripts/seo-optimizer.js",
+    "seo:indexnow": "node scripts/submit-indexnow.js",
     "setup:chat": "node scripts/setup-chat-db.js"
   },
   "description": "Creative is a stylish one page HTML theme built with Bootstrap.",
