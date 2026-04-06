@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const HOST = 'www.getsoberspokane.com';
-const API_KEY = 'abfda58abd0480aa668dd43578e1700';
+const API_KEY = '2abfda58abd0480aa668dd43578e1700';
 
 function getUrlsFromSitemap() {
     const sitemapPath = path.join(__dirname, '../docs/sitemap.xml');
