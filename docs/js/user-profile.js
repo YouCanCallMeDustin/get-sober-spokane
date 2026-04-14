@@ -2,7 +2,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2026 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Built: 2026-03-16T20:37:46.281Z
+* Built: 2026-04-14T21:42:49.318Z
 */
 /*!
 * Start Bootstrap - Creative v7.0.7 (https://YOUR_USERNAME.github.io/sober-spokane)
@@ -360,8 +360,46 @@
 
       // Show/hide edit button based on user permissions
       const editBtn = document.getElementById('editProfileBtn');
-      if (editBtn) {
-        editBtn.style.display = (currentUser && currentUser.id === userId) ? 'inline-block' : 'none';
+      const followBtn = document.getElementById('followUserBtn');
+      const messageUserBtn = document.getElementById('messageUserBtn');
+
+      if (currentUser && currentUser.id === userId) {
+        // Current user's own profile
+        if (editBtn) editBtn.style.display = 'inline-block';
+        if (followBtn) followBtn.style.display = 'none';
+        if (messageUserBtn) messageUserBtn.style.display = 'none';
+      } else {
+        // Another user's profile
+        if (editBtn) editBtn.style.display = 'none';
+        if (followBtn) followBtn.style.display = 'inline-block';
+        if (messageUserBtn) {
+          messageUserBtn.style.display = 'inline-block';
+          messageUserBtn.addEventListener('click', async () => {
+            const originalText = messageUserBtn.innerHTML;
+            messageUserBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Starting...';
+            messageUserBtn.disabled = true;
+            
+            try {
+              const res = await fetch('/api/start', {
+                method: 'POST',
+                body: JSON.stringify({targetUserId: userId}), // Use userId here, not viewingUserId
+                headers: {'Content-Type': 'application/json'}
+              });
+              if (res.ok) {
+                window.location.href = '/messages';
+              } else {
+                showErrorMessage('Failed to start chat. Please try again.');
+                messageUserBtn.innerHTML = originalText;
+                messageUserBtn.disabled = false;
+              }
+            } catch(e) {
+              console.error('Error starting PM', e);
+              showErrorMessage('Failed to communicate with chat server.');
+              messageUserBtn.innerHTML = originalText;
+              messageUserBtn.disabled = false;
+            }
+          });
+        }
       }
     } catch (e) {
       console.error('Failed to render profile', e);

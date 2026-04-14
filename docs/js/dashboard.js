@@ -448,10 +448,16 @@ function updateSobrietyDisplay() {
     const sobrietyDate = dashboardData.profile.sobrietyDate;
     if (!sobrietyDate) return;
     
-    const startDate = new Date(sobrietyDate);
+    // Use date parts to create a local date object (avoids UTC shifting)
+    const parts = sobrietyDate.split('-');
+    const startDate = new Date(parts[0], parts[1] - 1, parts[2]);
+    startDate.setHours(0, 0, 0, 0);
+    
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
     const timeDiff = today.getTime() - startDate.getTime();
-    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const daysDiff = Math.max(0, Math.floor(timeDiff / (1000 * 3600 * 24)));
     
     // Update all known counters in the UI
     const sobrietyDisplay = document.getElementById('sobriety-display');

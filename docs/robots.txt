@@ -46,6 +46,7 @@ Allow: /
 Allow: /liberty-lake-recovery-resources.html
 Allow: /map.html
 Allow: /medical-mental-health.html
+Allow: /messages.html
 Allow: /north-spokane-recovery-resources.html
 Allow: /post-falls-recovery-resources.html
 Allow: /resource-directory.html
