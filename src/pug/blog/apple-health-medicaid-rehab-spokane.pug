@@ -2,17 +2,17 @@ extends ../layout
 
 block head
   - var canonicalUrl = 'https://www.getsoberspokane.com/blog/apple-health-medicaid-rehab-spokane.html'
-  title Navigating Apple Health (Medicaid) for Rehab in Washington State | Get Sober Spokane
-  meta(name="description" content="A simple guide on how to pay for rehab using Washington Apple Health (Medicaid), how to apply in Spokane, and exactly what addiction treatments are covered.")
+  title Apple Health Rehab Spokane WA: Medicaid Addiction Treatment Guide | Get Sober Spokane
+  meta(name="description" content="Does Medicaid cover rehab in Washington? Yes. Discover how to use Apple Health for free addiction treatment, medical detox, and inpatient rehabs in Spokane, WA.")
   script(type="application/ld+json").
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "Navigating Apple Health (Medicaid) for Rehab in Washington State",
-      "description": "A simple guide on how to pay for rehab using Washington Apple Health (Medicaid), how to apply in Spokane, and exactly what addiction treatments are covered.",
+      "headline": "Apple Health Rehab Spokane WA: The Medicaid Addiction Treatment Guide",
+      "description": "Does Medicaid cover rehab in Washington? Yes. Discover how to use Apple Health for free addiction treatment, medical detox, and inpatient rehabs in Spokane, WA.",
       "url": "https://www.getsoberspokane.com/blog/apple-health-medicaid-rehab-spokane.html",
       "datePublished": "2026-03-13",
-      "dateModified": "2026-03-13",
+      "dateModified": "2026-04-14",
       "author": {
         "@type": "Organization",
         "name": "Get Sober Spokane",
@@ -31,6 +31,37 @@ block head
         "@id": "https://www.getsoberspokane.com/blog/apple-health-medicaid-rehab-spokane.html"
       }
     }
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does Apple Health (Medicaid) cover inpatient rehab in Washington?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Washington State Apple Health covers up to 90 days of inpatient residential treatment if it is deemed medically necessary by an SUD professional."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I qualify for Medicaid if I am unemployed because of addiction?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Eligibility for adults 19-64 is based strictly on your current monthly income. If you have zero income due to unemployment caused by substance abuse, you qualify for full coverage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Apple Health cover Suboxone or Methadone?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Apple Health completely covers Medication-Assisted Treatment (MAT) prescriptions, including Suboxone (Buprenorphine), Methadone, and Vivitrol."
+          }
+        }
+      ]
+    }
 
 block content
 
@@ -45,11 +76,11 @@ block content
               li.breadcrumb-item
                 a.text-white-50(href="/blog.html") Blog
               li.breadcrumb-item.active.text-white(aria-current="page") Apple Health & Medicaid
-          h1.display-5.fw-bold Navigating Apple Health (Medicaid) for Rehab in Washington
-          p.lead.mt-3.text-white-75 How to get your addiction or mental health treatment covered locally.
+          h1.display-5.fw-bold Apple Health Rehab Spokane WA: The Medicaid Addiction Treatment Guide
+          p.lead.mt-3.text-white-75 Learn exactly how to get your medical detox, rehab, and mental health treatment fully covered today.
           .small.text-white-50.mt-2
             i.bi.bi-calendar3.me-1
-            | March 2026 &nbsp;·&nbsp;
+            | April 2026 &nbsp;·&nbsp;
             i.bi.bi-clock.me-1
             | 6 min read
 
@@ -58,67 +89,168 @@ block content
       .row.justify-content-center
         .col-lg-8
 
-          p.lead.mt-5
-            | "Rehab is too expensive." It is the most common reason people in active addiction hesitate to ask for help. While private, luxury rehabs can cost tens of thousands of dollars, Washington State's Medicaid program—known as **Apple Health**—covers comprehensive substance use disorder treatment for low-income residents. If you have no income, you are likely eligible right now.
+          // TL;DR
+          .card.border-0.bg-light.p-4.mb-4
+            h5.fw-bold TL;DR / Key Takeaways
+            ul.mb-0
+              li 
+                strong It's Completely Covered:
+                |  Apple Health treats addiction as a primary medical illness, funding detox and rehab at 100%.
+              li 
+                strong Instant Qualification:
+                |  If you are a single adult earning less than ~$1,732/month, or have no income, you qualify.
+              li 
+                strong MAT Included:
+                |  Medications like Suboxone and Vivitrol are covered.
+              li 
+                strong Local Approvals:
+                |  Spokane facilities like Frontier Behavioral Health and American Behavioral Health Systems (ABHS) accept Medicaid.
+
+          // Quick Definition & ToC
+          h2.mt-2 Quick Definition
+          p.lead
+             strong Apple Health Rehab in Spokane WA
+             |  refers to state-certified inpatient and outpatient addiction centers that accept Washington's Medicaid program, effectively providing zero-cost withdrawal management, therapy, and residential treatment for low-income residents suffering from substance use disorders.
+
+          .mb-5.p-4.bg-light.rounded
+            h4.h5 Table of Contents
+            ul.list-unstyled.mb-0
+              li.mb-2: a(href="#what-is-covered") What Addiction Treatments Does Apple Health Cover?
+              li.mb-2: a(href="#eligibility") Am I Eligible for Medicaid?
+              li.mb-2: a(href="#how-to-apply") The Step-by-Step Application Process
+              li.mb-2: a(href="#local-centers") Spokane Rehab Centers That Accept Medicaid
+              li.mb-2: a(href="#mistakes") Common Obstacles and Mistakes
+              li.mb-2: a(href="#faq") Frequently Asked Questions
+              li.mb-0: a(href="#conclusion") Take Your Next Step
 
           hr.my-5
 
-          h2.mt-4
+          // Intro
+          p "Rehab is too expensive." It is the most common reason people in active addiction hesitate to ask for help. While private, luxury rehabs can cost tens of thousands of dollars, Washington State's Medicaid program—known as 
+            strong Apple Health
+            | —covers comprehensive substance use disorder treatment for low-income residents. If you have no income, you are likely eligible right this second.
+
+          h2#what-is-covered.mt-5
             i.bi.bi-check2-circle.text-primary.me-2
-            | What Does Apple Health Cover in Spokane?
-          p
-            | Unlike some states, Washington treats addiction as a fundamental medical condition. If a licensed clinician assesses you and determines that treatment is medically necessary, Apple Health covers a vast array of services:
+            | What Addiction Treatments Does Apple Health Cover?
+          
+          p Unlike some states that limit care, Washington aggressively funds recovery. If a licensed clinician assesses you and determines that treatment is medically necessary, Apple Health covers:
+          
           ul
             li
               strong Medical Detoxification:
-              |  Supervised inpatient withdrawal management to keep you safe when detoxing from alcohol, benzos, or severe opioid use.
+              |  Supervised inpatient withdrawal management to keep you safe when detoxing from fentanyl, alcohol, or benzos.
             li
               strong Intensive Outpatient Programs (IOP):
               |  Group and individual therapy sessions at a local clinic multiple times a week.
             li
               strong Residential Inpatient Rehab:
-              |  Living at a treatment facility for 30, 60, or 90 days.
+              |  Living at a dedicated treatment facility for 30, 60, or up to 90 days to rewire your brain and behavior away from your old environment.
             li
               strong Medication-Assisted Treatment (MAT):
-              |  Full coverage for prescriptions like Suboxone, Vivitrol, or Methadone to treat opioid or alcohol addiction.
+              |  Full coverage for life-saving prescriptions like Suboxone (buprenorphine), Vivitrol, or Methadone.
 
-          h2.mt-5
+          h2#eligibility.mt-5
             i.bi.bi-person-plus.text-primary.me-2
             | Am I Eligible for Apple Health (Medicaid)?
-          p
-            | In Washington, Medicaid eligibility for adults (aged 19–64) is simply based on income levels. As of 2025-2026, a single adult making less than approximately $1,732 a month (before taxes) qualifies. If you have children or dependents, that income limit is significantly higher.
-          p
-            | **Crucially:** If you are currently unemployed because of your addiction, you qualify immediately.
+          
+          p In Washington, Medicaid eligibility for adults (aged 19–64) was expanded under the ACA. It is based strictly on your current monthly income.
+          
+          p As of 2026, a single adult making less than approximately 
+            strong $1,732 a month
+            |  (before taxes) qualifies. If you have children or dependents, that income limit is significantly higher.
 
-          h2.mt-5
+          .alert.alert-warning.mt-3
+            i.bi.bi-exclamation-triangle-fill.me-2
+            | **Crucially:** If you are currently unemployed because of your addiction and your income has hit zero, you qualify immediately regardless of what you made last year.
+
+          h2#how-to-apply.mt-5
             i.bi.bi-laptop.text-primary.me-2
-            | How to Apply Today
-          p
-            | You can apply for Apple Health entirely online. The process usually takes less than 30 minutes.
-          ul
-            li
-              strong Online at Washington Healthplanfinder:
-              |  Go to <a href="https://www.wahealthplanfinder.org/" target="_blank">wahealthplanfinder.org</a> and fill out an application. If you meet the income requirements, your coverage often begins on the first day of the month you applied.
-            li
-              strong By Phone:
-              |  Call the Healthplanfinder Customer Support Center at 1-855-923-4633.
-            li
-              strong In-Person Help in Spokane:
-              |  If you are overwhelmed or don't have internet access, local organizations like **CHAS Health** employ "Navigators" whose entire job is to sit down with you and help you fill out the application for free. Just walk into a local clinic and ask for a Navigator.
+            | The Step-by-Step Application Process today
+          
+          p You can apply for Apple Health entirely online. The process usually takes less than 30 minutes, and coverage is often miraculously fast.
+          
+          h3.h5.mt-4 Step 1: Apply via Healthplanfinder
+          p Go to 
+            a(href="https://www.wahealthplanfinder.org/" target="_blank" rel="noopener") wahealthplanfinder.org
+            |  and fill out an application. If you meet the income requirements, your coverage often begins on the first day of the month you applied.
+          
+          h3.h5.mt-4 Step 2: Use a "Navigator" if Overwhelmed
+          p If the paperwork is too triggering or you lack internet access, local organizations like 
+            strong CHAS Health 
+            |  employ "Navigators" whose entire job is to sit down with you and help you fill out the application for free. Walk into any CHAS clinic and ask for a Navigator.
 
-          h2.mt-5
+          h2#local-centers.mt-5
             i.bi.bi-building.text-primary.me-2
-            | Finding Rehab Centers That Accept Medicaid
-          p
-            | Once you are approved, you need to find a "state-certified behavioral health agency" in Spokane that accepts Medicaid (specifically, your Managed Care Organization like Molina, Coordinated Care, or Community Health Plan of WA).
+            | Spokane Rehab Centers That Accept Medicaid
+          
+          p Once approved, you need to find a "state-certified behavioral health agency" in Spokane that accepts your specific Managed Care Organization (MCO) like Molina, Coordinated Care, or Community Health Plan of WA.
            
-          p
-            | Almost all major community behavioral health centers in Spokane accept Apple Health, including:
+          p Almost all major community behavioral health centers in Spokane aggressively accept Apple Health, including:
           ul
-            li Frontier Behavioral Health
-            li Excelsior Wellness
-            li Spokane Regional Health District (Treatment Services)
-            li American Behavioral Health Systems (ABHS)
+            li 
+              strong Frontier Behavioral Health
+              |  (Outpatient therapy & dual diagnosis)
+            li 
+              strong Excelsior Wellness
+              |  (Youth and young adult focus)
+            li 
+              strong Spokane Regional Health District
+              |  (Methadone and MAT services)
+            li 
+              strong American Behavioral Health Systems (ABHS)
+              |  (Residential inpatient and detox)
+
+          hr.my-5
+
+          // Common Mistakes
+          h2#mistakes.mt-5
+            i.bi.bi-x-octagon-fill.text-danger.me-2
+            | Common Mistakes and Obstacles
+          
+          ol.mt-4
+            li.mb-3
+              strong Mistake: Thinking you need an ID to start the process.
+              br
+              strong Fix:
+              |  If you lost your ID on the streets, community centers like CHAS and Compassionate Addiction Treatment (CAT) can help you navigate emergency IDs and Medicaid enrollment simultaneously.
+            li.mb-3
+              strong Mistake: Choosing the wrong MCO.
+              br
+              strong Fix:
+              |  When you get approved, you choose a plan (Molina, Amerigroup, etc.). Check with your preferred rehab center *first* to ensure they accept the plan you select. You can change plans once a month if needed.
+
+          hr.my-5
+
+          // FAQ
+          h2#faq.mt-5
+            i.bi.bi-question-circle.text-primary.me-2
+            | Frequently Asked Questions
+          
+          .accordion.mt-4#faqAccordion
+            .accordion-item
+              h2.accordion-header#faqHeading1
+                button.accordion-button(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1")
+                  | Does Apple Health (Medicaid) cover inpatient rehab in Washington?
+              #faqCollapse1.accordion-collapse.collapse.show(aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Yes. Washington State Apple Health covers up to 90 days of residential inpatient treatment if it is deemed medically necessary by an SUD professional.
+
+            .accordion-item
+              h2.accordion-header#faqHeading2
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2")
+                  | Do I qualify for Medicaid if I am unemployed because of addiction?
+              #faqCollapse2.accordion-collapse.collapse(aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Yes. Eligibility for adults 19-64 is based strictly on your current monthly income. If you have zero income due to unemployment caused by substance abuse, you qualify for full coverage.
+
+            .accordion-item
+              h2.accordion-header#faqHeading3
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3")
+                  | Does Apple Health cover Suboxone or Methadone?
+              #faqCollapse3.accordion-collapse.collapse(aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Yes. Apple Health completely covers Medication-Assisted Treatment (MAT) prescriptions, including Suboxone (Buprenorphine), Methadone, and Vivitrol.
 
           hr.my-5
 
@@ -131,3 +263,16 @@ block content
               a.btn.btn-primary.btn-lg(href="/addiction-treatments-support.html")
                 i.bi.bi-search.me-2
                 | View Treatment Centers
+
+          // About the Author
+          .d-flex.align-items-center.mt-5.pt-4.border-top
+            .flex-shrink-0
+              img.rounded-circle(src="/assets/img/logo.png" alt="Get Sober Spokane Logo" width="64" height="64")
+            .flex-grow-1.ms-3
+              h5.mb-1 About the Author
+              p.small.mb-1 Written by the 
+                strong Get Sober Spokane Editorial Team
+                |  in collaboration with Washington State healthcare navigators.
+              p.small.text-muted.mb-0
+                strong Last updated:
+                |  April 14, 2026

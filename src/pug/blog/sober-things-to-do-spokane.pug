@@ -2,17 +2,17 @@ extends ../layout
 
 block head
   - var canonicalUrl = 'https://www.getsoberspokane.com/blog/sober-things-to-do-spokane.html'
-  title 20 Sober Things to Do in Spokane, WA – Fun Activities for Every Season | Get Sober Spokane
-  meta(name="description" content="Looking for fun sober activities in Spokane, WA? Here are 20 ideas for every season — from outdoor adventures to community events and creative outlets.")
+  title 20 Best Sober Things to Do in Spokane, WA | Alcohol-Free Fun Guide
+  meta(name="description" content="Discover 20 fun sober things to do in Spokane, WA. From outdoor adventures at Mt. Spokane to alcohol-free events downtown, find your sober fun today.")
   script(type="application/ld+json").
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "20 Sober Things to Do in Spokane, WA – Fun for Every Season",
-      "description": "Looking for fun sober activities in Spokane, WA? Here are 20 ideas for every season — from outdoor adventures to community events and creative outlets.",
+      "headline": "20 Best Sober Things to Do in Spokane, WA: The Alcohol-Free Fun Guide",
+      "description": "Discover 20 fun sober things to do in Spokane, WA. From outdoor adventures at Mt. Spokane to alcohol-free events downtown, find your sober fun today.",
       "url": "https://www.getsoberspokane.com/blog/sober-things-to-do-spokane.html",
       "datePublished": "2026-03-13",
-      "dateModified": "2026-03-13",
+      "dateModified": "2026-04-14",
       "author": {
         "@type": "Organization",
         "name": "Get Sober Spokane",
@@ -31,10 +31,40 @@ block head
         "@id": "https://www.getsoberspokane.com/blog/sober-things-to-do-spokane.html"
       }
     }
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What are some free sober things to do in Spokane?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Spokane offers incredible free outdoor activities including walking the Centennial Trail, exploring the gardens at Manito Park, and visiting the historic Spokane Falls at Riverfront Park."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I find a sober social community in Spokane?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Beyond recovery meetings, organizations like The Phoenix and Young People in Recovery (YPR) host active, alcohol-free social events ranging from crossfit and yoga to bowling and hiking."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are some sober activities in Spokane in the winter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Winter is perfect for night-skiing at Mt. Spokane, ice skating at the Numerica SkyRide, or checking out the local indoor bouldering gyms like Wild Walls."
+          }
+        }
+      ]
+    }
 
 block content
 
-  // Article Hero
   header.bg-primary.text-white.py-5(style="margin-top: 76px;")
     .container.px-4.px-lg-5
       .row.justify-content-center
@@ -46,209 +76,236 @@ block content
               li.breadcrumb-item
                 a.text-white-50(href="/blog.html") Blog
               li.breadcrumb-item.active.text-white(aria-current="page") Sober Things to Do
-          h1.display-5.fw-bold 20 Sober Things to Do in Spokane, WA – Fun for Every Season
-          p.lead.mt-3.text-white-75 Recovery doesn't mean giving up fun. Spokane is packed with incredible sober experiences — here are 20 to get you started.
+          h1.display-5.fw-bold 20 Best Sober Things to Do in Spokane: The Alcohol-Free Fun Guide
+          p.lead.mt-3.text-white-75 Recovery isn't about giving up your life—it's about finally being present enough to live it. Explore the best non-alcoholic experiences in the Lilac City.
           .small.text-white-50.mt-2
             i.bi.bi-calendar3.me-1
-            | March 2026 &nbsp;·&nbsp;
+            | April 2026 &nbsp;·&nbsp;
             i.bi.bi-clock.me-1
-            | 6 min read
+            | 7 min read
 
-  // Article Body
   section.page-section
     .container.px-4.px-lg-5
       .row.justify-content-center
         .col-lg-8
 
-          // Intro
-          p.lead.mt-5
-            | One of the biggest fears people have about getting sober is losing their social life — and that fear makes sense. But here's what nobody tells you: sober life in Spokane can be genuinely, surprisingly, joyfully full. This city has mountains, rivers, world-class running events, art galleries, coffee shops, farmers markets, and a recovery community that knows how to celebrate life. Whether you're brand new to sobriety or years into your journey, these 20 ideas will help you rediscover just how much fun doesn't require a drink.
+          // TL;DR
+          .card.border-0.bg-light.p-4.mb-4
+            h5.fw-bold TL;DR / Key Takeaways
+            ul.mb-0
+              li 
+                strong Active Recovery:
+                |  The Phoenix and YPR host weekly fitness and social events that are 100% alcohol-free.
+              li 
+                strong Pure Nature:
+                |  From Mt. Spokane to the Centennial Trail, nature is Spokane's best sober playground.
+              li 
+                strong Cultural Hub:
+                |  Museums, art walks (First Friday), and the Spokane Symphony offer premium entertainment without the bar atmosphere.
+              li 
+                strong Late Night:
+                |  Utilize local 24-hour diners and late-night coffee shops to bridge the "witching hour."
+
+          // Quick Definition & ToC
+          h2.mt-2 Quick Definition
+          p.lead
+             strong Sober things to do in Spokane 
+             |  are recreational activities, community events, and social hangouts that do not center around alcohol consumption, providing individuals in recovery with high-quality, engaging ways to build new neural pathways and support a healthy lifestyle in the Inland Northwest.
+
+          .mb-5.p-4.bg-light.rounded
+            h4.h5 Table of Contents
+            ul.list-unstyled.mb-0
+              li.mb-2: a(href="#outdoor") Outdoor Adventures: The Ultimate Medicine
+              li.mb-2: a(href="#arts") Arts, Culture & Free Museums
+              li.mb-2: a(href="#fitness") Fitness & Active Recovery Groups
+              li.mb-2: a(href="#comparison") Seasonal Activity Comparison Table
+              li.mb-2: a(href="#volunteer") Volunteering & Giving Back
+              li.mb-2: a(href="#faq") Frequently Asked Questions
+              li.mb-0: a(href="#conclusion") Take Your Next Step
 
           hr.my-5
 
-          // Section 1 – Outdoor Adventures
-          h2.mt-4
-            i.bi.bi-tree.text-primary.me-2
-            | 1. Outdoor Adventures
-          p Spokane is an outdoor lover's dream, with easy access to rivers, mountains, parks, and trails no matter the season.
+          // Intro
+          p One of the biggest fears people have about getting sober is that life will become "boring." But here is what nobody tells you: sober life in Spokane is actually 
+            em fuller
+            | . When you aren't spending your weekends hungover or chasing a fix, the whole Inland Northwest opens up. 
+          p Whether you're brand new to recovery or years into your journey, these 20 ideas prove that 
+            strong sobriety in Spokane 
+            |  is far from a boring life.
 
-          .row.gx-3.gy-3.mt-1
-            .col-md-6
-              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
-                .card-body
-                  h6.fw-bold
-                    i.bi.bi-water.text-primary.me-2
-                    | Riverfront Park
-                  p.small.mb-0 Walk the falls, ride the historic gondola over Spokane Falls, or catch a summer concert in the park — all completely free.
-            .col-md-6
-              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
-                .card-body
-                  h6.fw-bold
-                    i.bi.bi-bicycle.text-primary.me-2
-                    | Centennial Trail
-                  p.small.mb-0 A 37-mile paved trail perfect for walking, running, or cycling along the Spokane River from downtown to Coeur d'Alene.
-            .col-md-6
-              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
-                .card-body
-                  h6.fw-bold
-                    i.bi.bi-cloud-snow.text-primary.me-2
-                    | Mount Spokane State Park
-                  p.small.mb-0 Ski and snowboard in winter, hike and mountain bike in summer. Only 30 minutes from downtown.
-            .col-md-6
-              .card.border-0.shadow-sm.h-100(style="border-radius: 10px;")
-                .card-body
-                  h6.fw-bold
-                    i.bi.bi-flower1.text-primary.me-2
-                    | Manito Park &amp; Gardens
-                  p.small.mb-0 Five distinct gardens including a Japanese garden and rose garden — stunning in spring and summer. Free admission always.
+          h2#outdoor
+            i.bi.bi-bicycle.text-primary.me-2
+            | 1. Outdoor Adventures: The Ultimate Medicine
+          
+          p Spokane is an outdoor lover's paradise. Engaging with nature is a scientifically proven way to lower cortisol and anxiety—two major triggers for relapse.
+          
+          ul
+            li
+              strong Centennial Trail:
+              |  37 miles of paved goodness. Walking or cycling along the Spokane River is the perfect way to clear your head after a rough day.
+            li
+              strong Mt. Spokane State Park:
+              |  Skiing, snowboarding, or summer hiking. Just 35 minutes from the city, it offers a total perspective shift.
+            li
+              strong Manito Park:
+              |  The Duncan Gardens and the Japanese Garden are world-class. Exploring these 90 acres is a meditative, free experience.
+            li
+              strong Riverside State Park:
+              |  Check out "Bowl and Pitcher" for some of the most iconic views in Washington state.
 
-          // Section 2 – Arts & Culture
-          h2.mt-5
+          h2#arts.mt-5
             i.bi.bi-palette.text-primary.me-2
-            | 2. Arts &amp; Culture
-          p Spokane's arts scene is deeper than most people expect — and seeing it through sober eyes makes the experience that much richer.
+            | 2. Arts, Culture & Free Museums
+          
+          p Sometimes you want to satisfy your intellectual side without the pressure of a wine-tasting event.
+          
           ul
             li
-              strong Northwest Museum of Arts &amp; Culture (MAC):
-              |  Rotating exhibits covering art, history, and Native American culture. One of the most visited museums in Washington.
-            li
-              strong First Friday Art Walk:
-              |  Every first Friday of the month, galleries and studios across Spokane open their doors for free. Great for meeting creative people.
-            li
-              strong Spokane Civic Theatre:
-              |  Professional community theater productions year-round. Volunteer usher to attend shows for free.
-            li
-              strong INB Performing Arts Center:
-              |  Major touring shows, concerts, and performances. Check the calendar for free or low-cost events.
-            li
-              strong Spokane Symphony:
-              |  Offers community concerts and open rehearsals at significantly reduced prices throughout the season.
-
-          // Section 3 – Community Events
-          h2.mt-5
-            i.bi.bi-calendar-event.text-primary.me-2
-            | 3. Community Events
-          p Spokane hosts world-famous events that bring the whole city together — alcohol is never the point.
-          ul
-            li
-              strong Bloomsday (May):
-              |  One of the largest road races in the US — 50,000+ runners. Sign up, train with a running club, and cross that finish line.
-            li
-              strong Hoopfest (June):
-              |  The world's largest 3-on-3 basketball tournament. Play in it, volunteer, or just watch. Downtown Spokane transforms for an entire weekend.
-            li
-              strong Spokane Farmers Market (May–Oct):
-              |  Every Wednesday and Saturday downtown. Fresh produce, local food, live music, and friendly faces.
-            li
-              strong Spokane Pride (June):
-              |  A welcoming, inclusive community celebration with a parade, vendors, and live entertainment.
-            li
-              strong Spokane County Interstate Fair (September):
-              |  Rides, live music, food, and exhibits — a classic family-friendly outing.
-
-          // Section 4 – Fitness & Wellness
-          h2.mt-5
-            i.bi.bi-activity.text-primary.me-2
-            | 4. Fitness &amp; Wellness
-          p Physical health and recovery are deeply connected. Spokane's fitness community is welcoming and often free or low-cost.
-          ul
-            li
-              strong Spokane Running Club:
-              |  Free group runs through the city. Beginner-friendly, no experience required.
-            li
-              strong Yoga in the Park:
-              |  Free community yoga sessions at Riverfront Park and Manito Park during summer months.
-            li
-              strong Spokane Valley Recreation Centers:
-              |  Low-cost drop-in fitness, swimming, and group classes at multiple locations.
-            li
-              strong Inland NW Hiking:
-              |  An active community hiking group with weekly outings ranging from easy to strenuous — check their Facebook group.
-            li
-              strong YMCA of the Inland Northwest:
-              |  Sliding-scale memberships available for those in financial need. Full gym, pool, and group classes.
-          .alert.alert-info.mt-3
-            i.bi.bi-lightbulb.me-2
-            | Exercise is one of the most effective natural mood boosters — and it's free. Even a 20-minute walk can shift how you feel.
-
-          // Section 5 – Volunteer & Give Back
-          h2.mt-5
-            i.bi.bi-hand-thumbs-up.text-primary.me-2
-            | 5. Volunteer &amp; Give Back
-          p Giving your time to others in recovery — or to the broader Spokane community — is one of the most fulfilling things you can do in sobriety.
-          ul
-            li
-              strong AA / NA Service Work:
-              |  Set up chairs, make coffee, become a group secretary, or lead a meeting. Service is central to the 12-step philosophy for a reason.
-            li
-              strong Union Gospel Mission:
-              |  Volunteer in the kitchen, serve meals, and connect with people who are exactly where you once were.
-            li
-              strong Second Harvest Food Bank:
-              |  Sort and distribute food to thousands of families each week. A grounding, community-centered experience.
-            li
-              strong Young People in Recovery (YPR):
-              |  Volunteer as an advocate or event coordinator for Spokane's young recovery community.
-            li
-              strong Habitat for Humanity Spokane:
-              |  Build homes, build skills, and build friendships — weekend build days are open to all skill levels.
-
-          // Section 6 – Sober Social Spots
-          h2.mt-5
-            i.bi.bi-cup-hot.text-primary.me-2
-            | 6. Sober Social Spots
-          p Sometimes you just want to hang out somewhere comfortable. These Spokane spots are naturally low-key and alcohol-free by default.
-          ul
-            li
-              strong Atticus Coffee &amp; Gifts:
-              |  A cozy, artsy coffee shop in the South Perry District — great for reading, meeting people, or journaling.
+              strong First Friday Art Walks:
+              |  Every month, downtown Spokane turns into a massive gallery. Most spots offer water, coffee, and great conversation.
             li
               strong Auntie's Bookstore:
-              |  Spokane's beloved independent bookstore. Browse for hours, attend a reading, or join a book club.
+              |  One of the best independent bookstores in the NW. They host regular readings and book clubs that are welcoming to everyone.
             li
-              strong Pinball Pete's &amp; Arcade Bars (non-alcohol focus):
-              |  Spokane has a growing arcade and board game scene — great for social events that aren't bar-focused.
-            li
-              strong Spokane Public Library — Central &amp; Branches:
-              |  Free community programs, reading rooms, and quiet spaces to decompress and learn.
-            li
-              strong Rockwood Coffee:
-              |  Another beloved neighborhood café known for its welcoming regulars and relaxed atmosphere.
-
-          // Section 7 – Recovery Community Events
-          h2.mt-5
-            i.bi.bi-people.text-primary.me-2
-            | 7. Recovery Community Events
-          p The recovery community in Spokane hosts its own lineup of sober social events, celebrations, and meetups throughout the year.
-          ul
-            li
-              strong Recovery Month (September):
-              |  Free public events across the city celebrating recovery — walks, rallies, picnics, and speaker panels.
-            li
-              strong Sober Sports Leagues:
-              |  Recreational volleyball, softball, and disc golf leagues run by and for the recovery community.
-            li
-              strong Speaker Meetings &amp; Step Workshops:
-              |  Open to anyone. Inspiring and often unexpectedly entertaining evenings hosted by local AA/NA groups.
-            li
-              strong Get Sober Spokane Community Events:
-              |  We share sober-friendly events and activities curated specifically for the Spokane recovery community.
-          p.mt-3
-            | Explore all community events and sober activities: &nbsp;
-            a(href="https://www.getsoberspokane.com/community-engagement-sober-activities.html") Community &amp; Sober Activities in Spokane →
+              strong The MAC (Museum of Arts & Culture):
+              |  A stunning way to spend a Saturday afternoon learning about local history and the Plateau tribes.
 
           hr.my-5
 
-          // Closing CTA
-          .card.border-0.shadow.text-center.p-5.mb-4(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #19875422 100%);")
-            i.bi.bi-stars.display-4.text-primary.mb-3
-            h3.fw-bold Your Best Life Is Ahead of You
+          // Comparison Table
+          h2#comparison.mt-5
+            i.bi.bi-table.text-primary.me-2
+            | Spokane Sober Fun by Season
+          
+          .table-responsive.mt-4
+            table.table.table-striped.table-bordered
+              thead.table-dark
+                tr
+                  th Season
+                  th Top Sober Activity
+                  th Target Neighborhood
+                  th Cost
+              tbody
+                tr
+                  td 
+                    strong Spring
+                  td Bloomsday Run
+                  td Downtown / Riverfront
+                  td $ ($40 Reg)
+                tr
+                  td 
+                    strong Summer
+                  td Kayaking Little Spokane
+                  td North Spokane
+                  td Free (with gear)
+                tr
+                  td 
+                    strong Autumn
+                  td Green Bluff Apple Picking
+                  td Colbert / Mead
+                  td $$ (Per bushel)
+                tr
+                  td 
+                    strong Winter
+                  td Night Skiing / Snowshoeing
+                  td Mt. Spokane
+                  td $$$ (Lift pass)
+
+          hr.my-5
+
+          h2#fitness.mt-5
+            i.bi.bi-heart-pulse-fill.text-danger.me-2
+            | 3. Fitness & Active Recovery Groups
+          
+          p You do not have to do this alone. The "Active Recovery" movement in Spokane is exploding.
+          
+          ul
+            li 
+              strong The Phoenix:
+              |  A nationwide gym with a local Spokane presence where the only "cost" is 48 hours of sobriety. They host CrossFit, Yoga, and Social events.
+            li 
+              strong Young People in Recovery (YPR):
+              |  A group dedicated to showing that young people can have an absolute blast without drugs or alcohol.
+            li 
+              strong Spokane Running Club:
+              |  Find them on Strava or Facebook. A highly supportive community where most members are focused on health, not the post-run beer.
+
+          h2#volunteer.mt-5
+            i.bi.bi-hand-thumbs-up-fill.text-primary.me-2
+            | 4. Volunteering & Giving Back
+          
+          p "Service is the secret." Helping others is the fastest way to get out of your own head.
+          ul
+            li 
+              strong Union Gospel Mission (UGM):
+              |  Serve a meal or volunteer in the warehouse. 
+            li 
+              strong Second Harvest:
+              |  Sort food for local families in need. It's high-energy, social, and deeply rewarding.
+
+          hr.my-5
+
+          // FAQ
+          h2#faq.mt-5
+            i.bi.bi-question-circle.text-primary.me-2
+            | Frequently Asked Questions
+          
+          .accordion.mt-4#faqAccordion
+            .accordion-item
+              h2.accordion-header#faqHeading1
+                button.accordion-button(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1")
+                  | What are some free sober things to do in Spokane?
+              #faqCollapse1.accordion-collapse.collapse.show(aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Spokane offers incredible free outdoor activities including walking the Centennial Trail, exploring the gardens at Manito Park, and visiting the historic Spokane Falls at Riverfront Park.
+
+            .accordion-item
+              h2.accordion-header#faqHeading2
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2")
+                  | Where can I find a sober social community in Spokane?
+              #faqCollapse2.accordion-collapse.collapse(aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Beyond recovery meetings, organizations like The Phoenix and Young People in Recovery (YPR) host active, alcohol-free social events ranging from crossfit and yoga to bowling and hiking.
+
+            .accordion-item
+              h2.accordion-header#faqHeading3
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3")
+                  | What are some sober activities in Spokane in the winter?
+              #faqCollapse3.accordion-collapse.collapse(aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Winter is perfect for night-skiing at Mt. Spokane, ice-skating at the Numerica SkyRide, or checking out the local indoor bouldering gyms like Wild Walls.
+
+          hr.my-5
+
+          // Conclusion
+          h2#conclusion.mt-5
+            i.bi.bi-rocket-takeoff-fill.text-warning.me-2
+            | Live Your Life to the Fullest
+          p Sobriety doesn't shrink your world; it expands it. Take a chance on a new hobby, walk a new trail, and discover why we say in Spokane: 
+            strong recovery is possible.
+
+          .card.border-0.shadow.text-center.p-5.my-5(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #19875422 100%);")
+            i.bi.bi-calendar-heart.display-4.text-primary.mb-3
+            h3.fw-bold Ready to connect with the community?
             p.text-muted.mb-4
-              | Spokane is a city that rewards the people who show up for it — and sobriety gives you the clarity to actually enjoy it. Join the Get Sober Spokane community for event updates, sober activity ideas, and connection with people who get it.
-            .d-flex.flex-wrap.gap-3.justify-content-center
-              a.btn.btn-primary.btn-lg(href="/community-engagement-sober-activities.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'blog_sober_activities_footer'})")
-                i.bi.bi-people.me-2
-                | Browse Sober Activities &amp; Events
-              a.btn.btn-outline-primary.btn-lg(href="/chat.html")
-                i.bi.bi-chat-dots.me-2
-                | Join the Community Chat
+              | Browse our full calendar and community board to find more amazing, alcohol-free things to do right here in Spokane.
+            .d-flex.flex-wrap.gap-3.justify-content-center.mt-4
+              a.btn.btn-primary.btn-lg(href="/community-engagement-sober-activities.html")
+                i.bi.bi-calendar-event.me-2
+                | View Community Events
+              a.btn.btn-outline-primary.btn-lg(href="/blog/best-sober-coffee-shops-spokane.html")
+                i.bi.bi-cup-hot.me-2
+                | View Best Coffee Shops
+
+          // About the Author
+          .d-flex.align-items-center.mt-5.pt-4.border-top
+            .flex-shrink-0
+              img.rounded-circle(src="/assets/img/logo.png" alt="Get Sober Spokane Logo" width="64" height="64")
+            .flex-grow-1.ms-3
+              h5.mb-1 About the Author
+              p.small.mb-1 Written by the 
+                strong Get Sober Spokane Editorial Team
+                |  in collaboration with local outdoor enthusiasts and the active recovery fellowship.
+              p.small.text-muted.mb-0
+                strong Last updated:
+                |  April 14, 2026

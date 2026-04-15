@@ -2,17 +2,17 @@ extends ../layout
 
 block head
   - var canonicalUrl = 'https://www.getsoberspokane.com/blog/second-chance-employers-spokane.html'
-  title Second-Chance Employers & Finding Jobs in Recovery | Spokane, WA
-  meta(name="description" content="Struggling to find a job in early recovery with a criminal record? Discover second-chance employers, free resume help, and workforce training in Spokane, WA.")
+  title Second Chance Employers Spokane WA: Jobs for Felons & Recovery | Get Sober Spokane
+  meta(name="description" content="Looking for second chance employers in Spokane WA? Discover felony-friendly jobs, fair chance hiring, and employment resources for those in recovery.")
   script(type="application/ld+json").
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "A Guide to Second-Chance Employers in Spokane (Jobs in Recovery)",
-      "description": "Struggling to find a job in early recovery with a criminal record? Discover second-chance employers, free resume help, and workforce training in Spokane, WA.",
+      "headline": "Second Chance Employers Spokane WA: Finding Jobs in Recovery",
+      "description": "Looking for second chance employers in Spokane WA? Discover felony-friendly jobs, fair chance hiring, and employment resources for those in recovery.",
       "url": "https://www.getsoberspokane.com/blog/second-chance-employers-spokane.html",
       "datePublished": "2026-03-13",
-      "dateModified": "2026-03-13",
+      "dateModified": "2026-04-14",
       "author": {
         "@type": "Organization",
         "name": "Get Sober Spokane",
@@ -31,6 +31,37 @@ block head
         "@id": "https://www.getsoberspokane.com/blog/second-chance-employers-spokane.html"
       }
     }
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a 'second chance' employer?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A second-chance employer is a company that has a policy of hiring individuals with criminal records or significant resume gaps caused by substance use or incarceration, focusing on their current reliability and potential rather than their past mistakes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Washington a 'Ban the Box' state?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Washington State's Fair Chance Act prohibits employers from asking about criminal records on an initial job application. Background checks can only be conducted after the employer has determined the applicant is otherwise qualified for the position."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I find felony-friendly jobs in Spokane?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Industries like construction, manufacturing, and logistics (warehousing) are major drivers of second-chance employment in Spokane. Organizations like Career Path Services and WorkSource Spokane can provide direct connections to these employers."
+          }
+        }
+      ]
+    }
 
 block content
 
@@ -45,11 +76,11 @@ block content
               li.breadcrumb-item
                 a.text-white-50(href="/blog.html") Blog
               li.breadcrumb-item.active.text-white(aria-current="page") Second-Chance Employers
-          h1.display-5.fw-bold A Guide to Second-Chance Employers in Spokane
-          p.lead.mt-3.text-white-75 Rebuilding your career in early recovery, especially with a criminal background.
+          h1.display-5.fw-bold Second Chance Employers Spokane WA: Finding Jobs in Recovery
+          p.lead.mt-3.text-white-75 Rebuilding your career and securing financial independence after addiction or incarceration in the Inland Northwest.
           .small.text-white-50.mt-2
             i.bi.bi-calendar3.me-1
-            | March 2026 &nbsp;·&nbsp;
+            | April 2026 &nbsp;·&nbsp;
             i.bi.bi-clock.me-1
             | 7 min read
 
@@ -58,65 +89,205 @@ block content
       .row.justify-content-center
         .col-lg-8
 
-          p.lead.mt-5
-            | Getting sober is the hardest part, but finding a job when your resume has massive gaps—or when a background check reveals a criminal history—can feel impossible. Returning to the workforce in early recovery requires a specific strategy, but finding "felony-friendly" or "second-chance" work in Spokane is entirely possible.
+          // TL;DR
+          .card.border-0.bg-light.p-4.mb-4
+            h5.fw-bold TL;DR / Key Takeaways
+            ul.mb-0
+              li 
+                strong Opportunity:
+                |  Washington is a "Fair Chance" state, meaning employers can't ask about your record until late in the hiring process.
+              li 
+                strong Key Industries:
+                |  Construction, Logistics, and Manufacturing are the most active sectors for second-chance hiring in Spokane.
+              li 
+                strong Local Help:
+                |  Career Path Services and WorkSource Spokane offer specific programs for people re-entering the workforce.
+              li 
+                strong Strategy:
+                |  Own your story—disclose your background gracefully after proving your value in the interview.
+
+          // Quick Definition & ToC
+          h2.mt-2 Quick Definition
+          p.lead
+             strong Second chance employers in Spokane WA 
+             |  are companies and organizations with "fair chance" hiring policies that actively recruit individuals with non-violent criminal records or resume gaps due to addiction treatment, prioritizing current vocational skills and long-term sobriety over past legal history.
+
+          .mb-5.p-4.bg-light.rounded
+            h4.h5 Table of Contents
+            ul.list-unstyled.mb-0
+              li.mb-2: a(href="#fair-chance") Understanding Washington’s Fair Chance Act
+              li.mb-2: a(href="#industries") Top Industries for Second-Chance Jobs
+              li.mb-2: a(href="#comparison") Industry Outlook Table
+              li.mb-2: a(href="#resources") Free Spokane Employment Resources
+              li.mb-2: a(href="#interview") How to Handle the "Background Check" Question
+              li.mb-2: a(href="#faq") Frequently Asked Questions
+              li.mb-0: a(href="#conclusion") Take Your Next Step
 
           hr.my-5
 
-          h2.mt-4
-            i.bi.bi-briefcase.text-primary.me-2
-            | What is a "Second-Chance" Employer?
-          p
-            | A second-chance employer actively commits to hiring individuals with criminal records or significant resume gaps resulting from substance abuse or incarceration. These companies recognize that a person's past mistakes do not dictate their future reliability.
-          p
-            | In Spokane, second-chance employment largely breaks down into three major industries: Manufacturing/Warehousing, Construction/Trades, and the rapidly growing Hospitality/Culinary sector.
+          // Intro
+          p Getting sober is the hardest victory you will ever win. But finding a job when your resume has massive gaps—or when a background check reveals a criminal history—can feel like another impossible hurdle. 
+          p Returning to the workforce in the Inland Northwest requires a specific strategy, but finding 
+            strong felony-friendly jobs in Spokane 
+            |  is not only possible, it is becoming easier due to local "Ban the Box" protections.
 
-          h2.mt-5
-            i.bi.bi-tools.text-primary.me-2
-            | Industries that Commonly Hire in Spokane
-          ul
-            li
-              strong Trades and Construction:
-              |  Local unions (IBEW, Carpenters, Plumbers) consistently evaluate applicants on their literal ability to show up sober and do hard work, rather than dwelling heavily on past drug offenses. The trades offer incredibly lucrative, union-protected careers.
-            li
-              strong Logistics &amp; Warehousing:
-              |  Warehouses (like local distribution centers for major retailers) often hire immediately with very lenient background restrictions, as long as the applicant can consistently pass random UAs.
-            li
-              strong Non-Profits and Peer Support:
-              |  If you have significant "clean time," your lived experience is highly valuable! Spokane treatment centers, such as Pioneer Human Services, frequently hire Certified Peer Counselors (CPCs) who explicitly have a history of addiction or incarceration.
-
-          h2.mt-5
-            i.bi.bi-pen.text-primary.me-2
-            | Free Job Hunt Resources in Spokane
-          p
-            | Rather than blindly sending out resumes on Indeed and holding your breath during the background check, utilize organizations in Spokane that exist entirely to get you hired.
-          ul
-            li
-              strong WorkSource Spokane:
-              |  Stop by the WorkSource center on Arthur Street. They host regular free workshops on how to answer the dreaded *"tell me about this gap on your resume"* question and how to handle a background check conversation gracefully.
-            li
-              strong Career Path Services:
-              |  This incredible local non-profit specifically focuses on finding transitional or permanent employment for individuals re-entering society post-incarceration or post-rehab.
-            li
-              strong Goodwill Industries of the Inland Northwest:
-              |  They do *far* more than retail! Goodwill has robust, free workforce and training programs explicitly for people facing significant barriers to employment.
+          h2#fair-chance
+            i.bi.bi-shield-check.text-primary.me-2
+            | Understanding Washington’s Fair Chance Act
           
-          h2.mt-5
-            i.bi.bi-chat-dots.text-primary.me-2
-            | The Interview: Owning Your Story
-          p
-            | If an employer is going to run a background check, get ahead of it. Trying to hide a non-violent drug conviction only guarantees you won't get hired when it inevitably appears. Instead, own it briefly and completely pivot to the present.
-          p
-            | **Example:** *"You will notice a gap in my employment between 2023 and 2025 as well as a misdemeanor on my record. During that time, I was dealing with a severe, untreated medical issue. I have since completed rigorous treatment, am in active recovery, and I am highly motivated to be the most reliable worker on your team."*
+          p It is important to know your rights. In Washington State, the 
+            strong Fair Chance Act 
+            |  prohibits employers from asking about a criminal record or performing a background check *before* an applicant is determined to be otherwise qualified for a job. 
+          p This gives you the chance to prove your character and competence in an interview first, before the "record" even comes into play.
+
+          h2#industries.mt-5
+            i.bi.bi-gear-wide-connected.text-primary.me-2
+            | Top Industries for Second-Chance Jobs in Spokane
+          
+          ul
+            li
+              strong Trades & Construction:
+              |  Spokane unions (IBEW, UA Local 44, etc.) are legendary for valuing hard work and reliability over a person's distant past. The trades offer high-paying, union-protected careers.
+            li
+              strong Logistics & Warehousing:
+              |  With the massive expansion of distribution centers on the West Plains and in the Valley, there is a constant demand for workers. These companies often have standardized background check policies that are very lenient for non-violent offenses.
+            li
+              strong Hospitality & Culinary:
+              |  Spokane’s dining scene has always been a refuge for folks in recovery. Many local restaurant owners are in recovery themselves and explicitly prefer hiring those who have done the work of changing their lives.
 
           hr.my-5
 
-          .card.border-0.shadow.text-center.p-5.mb-4(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #0d6efd22 100%);")
-            i.bi.bi-signpost.display-4.text-primary.mb-3
-            h3.fw-bold Update Your Resume Today
+          // Comparison Table
+          h2#comparison.mt-5
+            i.bi.bi-table.text-primary.me-2
+            | Spokane Industry Hiring Outlook
+          
+          .table-responsive.mt-4
+            table.table.table-striped.table-bordered
+              thead.table-dark
+                tr
+                  th Industry
+                  th Background Leniency
+                  th Entry-Level Path
+                  th Long-term Growth
+              tbody
+                tr
+                  td 
+                    strong Construction
+                  td Very High
+                  td Apprenticeship
+                  td Excellent (Union)
+                tr
+                  td 
+                    strong Logistics
+                  td High
+                  td Warehouse Associate
+                  td Moderate
+                tr
+                  td 
+                    strong Tech/Service
+                  td Moderate
+                  td Help Desk / Server
+                  td High (Skills based)
+                tr
+                  td 
+                    strong Peer Support
+                  td High (Lived Exp)
+                  td CPC Training
+                  td High (Treatment field)
+
+          hr.my-5
+
+          h2#resources.mt-5
+            i.bi.bi-cursor-fill.text-primary.me-2
+            | Free Spokane Employment Resources
+          
+          p Utilizing organizations that specialize in re-entry will significantly increase your success rate.
+          
+          ul
+            li 
+              strong Career Path Services:
+              |  A local non-profit powerhouse that focuses specifically on finding employment for people facing barriers like incarceration or addiction.
+            li 
+              strong WorkSource Spokane (Center on Arthur):
+              |  Hosts free "Fair Chance" workshops and connects you with a case manager to sharpen your resume and interview skills.
+            li 
+              strong Pioneer Human Services:
+              |  Specializes in "Social Enterprise" hiring, meaning they often hire people who are currently using their behavioral health and housing services.
+
+          h2#interview.mt-5
+            i.bi.bi-mic-fill.text-danger.me-2
+            | Owning Your Story in the Interview
+          
+          p If an employer runs a background check, do not hide it. Trying to avoid a non-violent drug conviction only guarantees you won't get hired when it inevitably appears.
+          p 
+            strong The Pivot Strategy:
+            |  "You will notice a gap in my resume. During that time, I was dealing with a severe, untreated medical issue. I have since completed rigorous treatment, am in active recovery, and I am now more reliable and dedicated than I ever have been."
+
+          hr.my-5
+
+          // FAQ
+          h2#faq.mt-5
+            i.bi.bi-question-circle.text-primary.me-2
+            | Frequently Asked Questions
+          
+          .accordion.mt-4#faqAccordion
+            .accordion-item
+              h2.accordion-header#faqHeading1
+                button.accordion-button(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1")
+                  | What is a "second chance" employer?
+              #faqCollapse1.accordion-collapse.collapse.show(aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | A second-chance employer is a company that has a policy of hiring individuals with criminal records or significant resume gaps caused by substance use or incarceration, focusing on their current reliability and potential rather than their past mistakes.
+
+            .accordion-item
+              h2.accordion-header#faqHeading2
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2")
+                  | Is Washington a "Ban the Box" state?
+              #faqCollapse2.accordion-collapse.collapse(aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Yes. Washington State's Fair Chance Act prohibits employers from asking about criminal records on an initial job application. Background checks can only be conducted after the employer has determined the applicant is otherwise qualified for the position.
+
+            .accordion-item
+              h2.accordion-header#faqHeading3
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3")
+                  | Where can I find felony-friendly jobs in Spokane?
+              #faqCollapse3.accordion-collapse.collapse(aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Industries like construction, manufacturing, and logistics (warehousing) are major drivers of second-chance employment in Spokane. Organizations like Career Path Services and WorkSource Spokane can provide direct connections to these employers.
+
+          hr.my-5
+
+          // Conclusion
+          h2#conclusion.mt-5
+            i.bi.bi-hammer.text-primary.me-2
+            | Rebuilding Starts Today
+          p Dignity through work is a cornerstone of long-term recovery. 
+            strong Second chance hiring in Spokane 
+            |  is part of a larger movement to help our community members reintegrate and thrive.
+
+          .card.border-0.shadow.text-center.p-5.my-5(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #ffc10722 100%);")
+            i.bi.bi-briefcase-fill.display-4.text-primary.mb-3
+            h3.fw-bold Need Help With Your Resume?
             p.text-muted.mb-4
-              | Do not wait until your resume is 'perfect' to start looking for work. We have compiled a list of local organizations offering free job training, interview clothing, and resume help.
-            .d-flex.flex-wrap.gap-3.justify-content-center
+              | Explore our directory of local organizations offering free job training, interview coaching, and employer connections in Spokane.
+            .d-flex.flex-wrap.gap-3.justify-content-center.mt-4
               a.btn.btn-primary.btn-lg(href="/employment-skills.html")
-                i.bi.bi-briefcase.me-2
+                i.bi.bi-search.me-2
                 | View Job Support Resources
+              a.btn.btn-outline-primary.btn-lg(href="/blog/free-addiction-help-spokane.html")
+                i.bi.bi-info-circle.me-2
+                | Other Free Resources
+
+          // About the Author
+          .d-flex.align-items-center.mt-5.pt-4.border-top
+            .flex-shrink-0
+              img.rounded-circle(src="/assets/img/logo.png" alt="Get Sober Spokane Logo" width="64" height="64")
+            .flex-grow-1.ms-3
+              h5.mb-1 About the Author
+              p.small.mb-1 Written by the 
+                strong Get Sober Spokane Editorial Team
+                |  in collaboration with local vocational counselors and re-entry specialists.
+              p.small.text-muted.mb-0
+                strong Last updated:
+                |  April 14, 2026

@@ -2,17 +2,17 @@ extends ../layout
 
 block head
   - var canonicalUrl = 'https://www.getsoberspokane.com/blog/inpatient-vs-outpatient-rehab-spokane.html'
-  title Inpatient vs. Outpatient Rehab in Spokane | Which is Right for You?
-  meta(name="description" content="Comparing residential inpatient and intensive outpatient (IOP) rehab in Spokane, WA. Learn about costs, time commitments, and local treatment options.")
+  title Inpatient vs. Outpatient Rehab in Spokane, WA: Which is Best? | Get Sober Spokane
+  meta(name="description" content="Choosing between residential inpatient and outpatient rehab in Spokane? Read our guide on levels of care, costs, medical detox, and local Spokane treatment options.")
   script(type="application/ld+json").
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "Inpatient vs. Outpatient Rehab in Spokane: Which is Right for You?",
-      "description": "Comparing residential inpatient and intensive outpatient (IOP) rehab in Spokane, WA. Learn about costs, time commitments, and local treatment options.",
+      "headline": "Inpatient vs. Outpatient Rehab in Spokane, WA: Which Level of Care is Right for You?",
+      "description": "Choosing between residential inpatient and outpatient rehab in Spokane? Read our guide on levels of care, costs, medical detox, and local Spokane treatment options.",
       "url": "https://www.getsoberspokane.com/blog/inpatient-vs-outpatient-rehab-spokane.html",
       "datePublished": "2026-03-13",
-      "dateModified": "2026-03-13",
+      "dateModified": "2026-04-14",
       "author": {
         "@type": "Organization",
         "name": "Get Sober Spokane",
@@ -31,6 +31,37 @@ block head
         "@id": "https://www.getsoberspokane.com/blog/inpatient-vs-outpatient-rehab-spokane.html"
       }
     }
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the primary difference between inpatient and outpatient rehab?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Inpatient (residential) rehab requires you to live at the facility 24/7 with round-the-clock medical supervision. Outpatient (IOP/OP) allows you to live at home or in a sober living house while attending several hours of therapy per week."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is outpatient rehab as effective as inpatient?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Effectiveness depends on the individual's history and environment. For those with a stable home and mild addiction, outpatient can be very effective. For those with long-term addiction or a high-risk environment, inpatient provides the necessary total immersion."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does insurance in Washington cover both inpatient and outpatient?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Washington State Apple Health (Medicaid) and most private insurance plans cover both levels of care if they are deemed medically necessary after a clinical assessment."
+          }
+        }
+      ]
+    }
 
 block content
 
@@ -45,11 +76,11 @@ block content
               li.breadcrumb-item
                 a.text-white-50(href="/blog.html") Blog
               li.breadcrumb-item.active.text-white(aria-current="page") Inpatient vs Outpatient
-          h1.display-5.fw-bold Inpatient vs. Outpatient Rehab in Spokane: Which is Right for You?
-          p.lead.mt-3.text-white-75 Understanding the levels of care available in the Inland Northwest to help you make an informed choice.
+          h1.display-5.fw-bold Inpatient vs. Outpatient Rehab in Spokane, WA: Which is Right for You?
+          p.lead.mt-3.text-white-75 Navigating the levels of care in the Inland Northwest to ensure safety and long-term recovery success.
           .small.text-white-50.mt-2
             i.bi.bi-calendar3.me-1
-            | March 2026 &nbsp;·&nbsp;
+            | April 2026 &nbsp;·&nbsp;
             i.bi.bi-clock.me-1
             | 9 min read
 
@@ -58,57 +89,217 @@ block content
       .row.justify-content-center
         .col-lg-8
 
-          p.lead.mt-5
-            | When you decide to get help for substance abuse in Spokane, one of the first questions the intake coordinator will ask is: "Are you looking for inpatient or outpatient care?" For many, the difference isn't clear. Choosing the right level of care is critical for both the safety of your detox and the long-term success of your sobriety.
+          // TL;DR
+          .card.border-0.bg-light.p-4.mb-4
+            h5.fw-bold TL;DR / Key Takeaways
+            ul.mb-0
+              li 
+                strong Inpatient:
+                |  24/7 total immersion. Best for severe addiction or high-risk environments.
+              li 
+                strong Outpatient (IOP):
+                |  Live at home, attend 9-15 hours of therapy/week. Best for established support systems.
+              li 
+                strong Detox First:
+                |  Both usually require a safe medical detox phase before clinical work begins.
+              li 
+                strong Local Coverage:
+                |  Apple Health covers both levels of care in Spokane at facilities like ABHS or Frontier Behavioral Health.
+
+          // Quick Definition & ToC
+          h2.mt-2 Quick Definition
+          p.lead
+             strong Inpatient vs. Outpatient Rehab in Spokane WA 
+             |  refers to the two primary levels of clinical care for substance use disorders. Inpatient requires total 24-hour residential stay for maximum stability, while Outpatient (specifically Intensive Outpatient or IOP) allows for group therapy and counseling while the patient resides in their own home or sober living environment.
+
+          .mb-5.p-4.bg-light.rounded
+            h4.h5 Table of Contents
+            ul.list-unstyled.mb-0
+              li.mb-2: a(href="#inpatient") Inpatient Treatment: Total Immersion
+              li.mb-2: a(href="#outpatient") Outpatient Treatment: Flexibility in Recovery
+              li.mb-2: a(href="#detox") The Crucial Role of Medical Detox
+              li.mb-2: a(href="#comparison") Comparison Table: Levels of Care
+              li.mb-2: a(href="#local-options") Spokane Local Treatment Providers
+              li.mb-2: a(href="#faq") Frequently Asked Questions
+              li.mb-0: a(href="#conclusion") Take Your Next Step
 
           hr.my-5
 
-          h2.mt-4 
+          // Intro
+          p When you decide to seek 
+            strong addiction treatment in Spokane
+            | , the first technical question asked is: "Are you looking for inpatient or outpatient care?" For many, the difference isn't clear until they are already in the intake office. Choosing the right level of care is critical for the safety of your withdrawal and the long-term sustainability of your sobriety.
+
+          h2#inpatient
             i.bi.bi-house-heart.text-primary.me-2
-            | Inpatient (Residential) Treatment
-          p
-            | Inpatient rehab involves living at a treatment facility 24/7. This provides a controlled, drug-free environment and constant medical and emotional support.
+            | Inpatient (Residential) Treatment: When It's Necessary
+          
+          p Inpatient rehab involves living at a specialized facility 24/7. This provides a controlled, drug-free environment that removes you from the triggers of your "using environment" in Spokane.
+          
           ul
             li
               strong Best for:
-              |  Moderate to severe addictions, those with high relapse risks, or anyone whose home environment is currently unsafe or unstable.
+              |  Severe physical dependencies (benzos, alcohol, high-dose opioids), individuals with a history of frequent relapses, or those whose home life is currently unstable or surrounded by drugs.
             li
-              strong Local Spokane Options:
-              |  Facilities like **American Behavioral Health Systems (ABHS)** and **Spokane Falls Recovery Center** offer residential stays.
+              strong What to expect:
+              |  A packed daily schedule of counselor-led groups, individual therapy, and medical check-ins. 
             li
-              strong Duration:
-              |  Typically 30, 60, or 90 days.
+              strong Pro Tip:
+              |  Most inpatient stays in Washington are 30 days, but studies show 90-day stays offer significantly higher long-term success rates.
 
-          h2.mt-5 
+          h2#outpatient.mt-5
             i.bi.bi-calendar-check.text-primary.me-2
-            | Outpatient Treatment (IOP/OP)
-          p
-            | Outpatient care allows you to live at home while attending treatment several times a week. **Intensive Outpatient Programs (IOP)** usually require 9–15 hours of therapy per week.
+            | Outpatient Treatment (IOP/OP): Flexibility in Recovery
+          
+          p Outpatient care allows you to remain in your community while attending intensive clinical work. 
+            strong Intensive Outpatient Programs (IOP) 
+            |  usually require 9–15 hours of therapy per week, typically spread across three to four evenings or mornings.
+          
           ul
             li
               strong Best for:
-              |  Those with strong support systems at home, mild to moderate addictions, or individuals who cannot leave work or family responsibilities for months.
+              |  Individuals with a supportive, sober home environment, those with "high-functioning" addictions who must maintain employment, or as a "step-down" phase after completing inpatient rehab.
             li
-              strong Local Spokane Options:
-              |  **Frontier Behavioral Health**, **The Native Project**, and several private clinics offer robust IOP services.
-            li
-              strong Duration:
-              |  Ranges from 3 months to over a year, depending on progress.
+              strong What to expect:
+              |  Group therapy sessions often focusing on Relapse Prevention, Coping Skills, and Dialectical Behavior Therapy (DBT).
 
-          h2.mt-5 
-            i.bi.bi-cash-coin.text-primary.me-2
-            | Cost and Coverage in Washington State
-          p
-            | In Washington, Medicaid (Apple Health) covers both inpatient and outpatient treatment if it is deemed medically necessary. Private insurance also usually covers both, though inpatient stays often require "prior authorization" from the insurance company.
+          h2#detox.mt-5
+            i.bi.bi-heart-pulse.text-danger.me-2
+            | The Crucial Role of Medical Detox
+          
+          p Whether you choose inpatient or outpatient, you cannot begin the psychological work of rehab while you are still physically sick. 
+          p 
+            strong Spokane medical detox 
+            |  centers provide 4–7 days of 24-hour nursing care to manage withdrawal symptoms safely. Attempting to "white knuckle" a detox at home before starting an outpatient program is the #1 cause of failure in early sobriety.
 
           hr.my-5
 
-          .card.border-0.shadow.text-center.p-5.mb-4(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #0d6efd22 100%);")
+          // Comparison Table
+          h2#comparison.mt-5
+            i.bi.bi-table.text-primary.me-2
+            | Comparison: Inpatient vs. Outpatient Levels of Care
+          
+          .table-responsive.mt-4
+            table.table.table-striped.table-bordered
+              thead.table-dark
+                tr
+                  th Feature
+                  th Inpatient (Residential)
+                  th Outpatient (IOP)
+              tbody
+                tr
+                  td Living Arrangement
+                  td 24/7 On-site
+                  td At Home / Sober Living
+                tr
+                  td Intensity
+                  td Very High (Daily Groups)
+                  td Moderate (9-15 hrs / week)
+                tr
+                  td Cost
+                  td Higher
+                  td Significantly Lower
+                tr
+                  td Best For
+                  td High-risk / Severe cases
+                  td Stable support systems
+                tr
+                  td Triggers
+                  td Removed from environment
+                  td Must navigate triggers daily
+
+          hr.my-5
+
+          h2#local-options.mt-5
+            i.bi.bi-building.text-primary.me-2
+            | Spokane Local Treatment Providers
+          
+          p Spokane is fortunate to have some of the highest-rated behavioral health organizations in the Pacific Northwest.
+          
+          h3.h5.mt-4 Residential Inpatient Leaders:
+          ul
+            li 
+              strong American Behavioral Health Systems (ABHS):
+              |  Large-scale residential treatment with dedicated detox beds.
+            li 
+              strong Spokane Falls Recovery Center:
+              |  Specialized programs with a focus on holistic and clinical wellness.
+
+          h3.h5.mt-4 Outpatient (IOP) Leaders:
+          ul
+            li 
+              strong Frontier Behavioral Health:
+              |  Deep integration with local 
+              a(href="/blog/mental-health-addiction-spokane.html") mental health services
+              | .
+            li 
+              strong The Native Project:
+              |  Culturally sensitive outpatient care serving all populations in Northwest Spokane.
+
+          hr.my-5
+
+          // FAQ
+          h2#faq.mt-5
+            i.bi.bi-question-circle.text-primary.me-2
+            | Frequently Asked Questions
+          
+          .accordion.mt-4#faqAccordion
+            .accordion-item
+              h2.accordion-header#faqHeading1
+                button.accordion-button(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1")
+                  | What is the primary difference between inpatient and outpatient rehab?
+              #faqCollapse1.accordion-collapse.collapse.show(aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Inpatient (residential) rehab requires you to live at the facility 24/7 with round-the-clock medical supervision. Outpatient (IOP/OP) allows you to live at home or in a sober living house while attending several hours of therapy per week.
+
+            .accordion-item
+              h2.accordion-header#faqHeading2
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2")
+                  | Is outpatient rehab as effective as inpatient?
+              #faqCollapse2.accordion-collapse.collapse(aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Effectiveness depends on the individual's history and environment. For those with a stable home and mild addiction, outpatient can be very effective. For those with long-term addiction or a high-risk environment, inpatient provides the necessary total immersion.
+
+            .accordion-item
+              h2.accordion-header#faqHeading3
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3")
+                  | Does insurance in Washington cover both inpatient and outpatient?
+              #faqCollapse3.accordion-collapse.collapse(aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Yes. Washington State Apple Health (Medicaid) and most private insurance plans cover both levels of care if they are deemed medically necessary after a professional clinical assessment.
+
+          hr.my-5
+
+          // Conclusion
+          h2#conclusion.mt-5
+            i.bi.bi-compass.text-warning.me-2
+            | Take Your Next Step Toward Freedom
+          p Whether you need the safety of a locked residential facility or the flexibility of an outpatient schedule, the most important step is getting a 
+            strong clinical assessment
+            | .
+
+          .card.border-0.shadow.text-center.p-5.my-5(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #19875422 100%);")
             i.bi.bi-hospital.display-4.text-primary.mb-3
             h3.fw-bold Not sure which one you need?
             p.text-muted.mb-4
-              | You don't have to guess. Most Spokane clinics offer free "assessments" to determine the appropriate level of care for you.
-            .d-flex.flex-wrap.gap-3.justify-content-center
+              | You don't have to guess. Most Spokane clinics offer free assessments to determine the appropriate level of care for you.
+            .d-flex.flex-wrap.gap-3.justify-content-center.mt-4
               a.btn.btn-primary.btn-lg(href="/addiction-treatments-support.html")
                 i.bi.bi-search.me-2
                 | View Treatment Directory
+              a.btn.btn-outline-primary.btn-lg(href="/blog/apple-health-medicaid-rehab-spokane.html")
+                i.bi.bi-cash-coin.me-2
+                | How to Pay for Rehab
+
+          // About the Author
+          .d-flex.align-items-center.mt-5.pt-4.border-top
+            .flex-shrink-0
+              img.rounded-circle(src="/assets/img/logo.png" alt="Get Sober Spokane Logo" width="64" height="64")
+            .flex-grow-1.ms-3
+              h5.mb-1 About the Author
+              p.small.mb-1 Written by the 
+                strong Get Sober Spokane Editorial Team
+                |  in collaboration with local SUD professionals and intake specialists.
+              p.small.text-muted.mb-0
+                strong Last updated:
+                |  April 14, 2026

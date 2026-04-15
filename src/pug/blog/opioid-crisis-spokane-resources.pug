@@ -2,17 +2,17 @@ extends ../layout
 
 block head
   - var canonicalUrl = 'https://www.getsoberspokane.com/blog/opioid-crisis-spokane-resources.html'
-  title Fentanyl & Opioid Crisis in Spokane, WA – Resources for Families & Individuals | Get Sober Spokane
-  meta(name="description" content="Spokane is facing a serious opioid and fentanyl crisis. Find free resources, treatment options, and family support for addiction recovery in Spokane, WA.")
+  title Opioid Crisis Spokane: Resources, Treatment & Help (2026) | Get Sober Spokane
+  meta(name="description" content="Spokane faces a severe opioid and fentanyl crisis. Find free treatment, Narcan locations, and recovery support in Spokane, WA. Start your recovery journey today.")
   script(type="application/ld+json").
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "The Opioid & Fentanyl Crisis in Spokane, WA – How to Get Help",
-      "description": "Spokane is facing a serious opioid and fentanyl crisis. Find free resources, treatment options, and family support for addiction recovery in Spokane, WA.",
+      "headline": "Opioid Crisis Spokane: How to Access Life-Saving Resources and Treatment",
+      "description": "Spokane faces a severe opioid and fentanyl crisis. Find free treatment, Narcan locations, and recovery support in Spokane, WA. Start your recovery journey today.",
       "url": "https://www.getsoberspokane.com/blog/opioid-crisis-spokane-resources.html",
       "datePublished": "2026-03-13",
-      "dateModified": "2026-03-13",
+      "dateModified": "2026-04-14",
       "author": {
         "@type": "Organization",
         "name": "Get Sober Spokane",
@@ -31,6 +31,61 @@ block head
         "@id": "https://www.getsoberspokane.com/blog/opioid-crisis-spokane-resources.html"
       }
     }
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Narcan really free in Spokane?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can get Narcan at no cost at the Spokane Regional Health District (SRHD), many local pharmacies via the state's standing order, and through various harm reduction outreach programs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will I get arrested if I call 911 for an overdose?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Washington’s Good Samaritan Law protects both the caller and the victim from drug possession charges during a medical emergency."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I don't have insurance or money for rehab?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Providers like TRIUMPH and Frontier Behavioral Health prioritize those without income. Additionally, CHAS Health offers a sliding scale, and many facilities will help you sign up for Apple Health on the spot."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a 'Bridge Clinic'?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A Bridge Clinic is a specialized medical facility (like those at Providence) that provides immediate initiation of life-saving medications like Suboxone to bridge the gap between initial crisis and long-term placement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I find fentanyl testing strips?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Testing strips are available at the SRHD and are often distributed for free at local 'Stop the Overdose' events and through mobile crisis teams."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are there support groups specifically for fentanyl recovery?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "While most NA and AA meetings are inclusive, many local Spokane groups are seeing an influx of fentanyl-specific recovery cohorts. You can browse the Spokane recovery community forum for specific meeting recommendations."
+          }
+        }
+      ]
+    }
 
 block content
 
@@ -46,13 +101,13 @@ block content
               li.breadcrumb-item
                 a.text-white-50(href="/blog.html") Blog
               li.breadcrumb-item.active.text-white(aria-current="page") Opioid Crisis Resources
-          h1.display-5.fw-bold The Opioid &amp; Fentanyl Crisis in Spokane, WA – How to Get Help
+          h1.display-5.fw-bold Opioid Crisis Spokane: How to Access Life-Saving Resources and Treatment
           p.lead.mt-3.text-white-75 The crisis is real — and so is recovery. Free help is available in Spokane right now.
           .small.text-white-50.mt-2
             i.bi.bi-calendar3.me-1
-            | March 2026 &nbsp;·&nbsp;
+            | April 2026 &nbsp;·&nbsp;
             i.bi.bi-clock.me-1
-            | 6 min read
+            | 8 min read
 
   // Article Body
   section.page-section
@@ -60,230 +115,399 @@ block content
       .row.justify-content-center
         .col-lg-8
 
-          // Intro
-          p.lead.mt-5
-            | Spokane is in the middle of a crisis — and if you're reading this, there's a good chance you already know someone who's been touched by it. Opioid and fentanyl overdose deaths have climbed sharply across Eastern Washington over the past several years, leaving families, neighbors, and entire communities reeling. But here's what the statistics don't always show: people recover from opioid addiction every day. In Spokane. With free resources, community support, and the right information. This page is here to help you or someone you love find that path.
-
-          .alert.alert-danger.mt-4
-            strong
-              i.bi.bi-exclamation-triangle-fill.me-2
-              | If someone is overdosing right now, call 911 immediately.
-            |  Stay on the line and, if available, administer Narcan (naloxone). Washington's Good Samaritan law protects you.
-
-          hr.my-5
-
-          // Section 1 – Immediate crisis
-          h2.mt-4
-            i.bi.bi-exclamation-octagon.text-danger.me-2
-            | 1. Immediate Crisis Response: Stopping a Fentanyl Overdose
-          
-          h3.h5.mt-4 1.1 Why Fentanyl is Different: Speed and Potency
-          p
-            | Fentanyl is up to 50 times stronger than heroin and 100 times stronger than morphine. Because it is so potent, an overdose can happen in seconds, not minutes. This means the window to act is extremely small. Understanding that "standard" overdose signs happen faster with fentanyl is the first step in saving a life.
-
-          h3.h5.mt-4 1.2 Where to Get Free Fentanyl Testing Strips in Spokane
-          p
-            | Fentanyl is often hidden in counterfeit pills ("M30s") or mixed into other substances. Testing strips can identify the presence of fentanyl before use. You can pick up free testing strips and harm reduction supplies at the 
-            strong Spokane Regional Health District (SRHD)
-            |  and through programs like the 
-            strong North Idaho AIDS Coalition (NIAC)
-            |  outreach in Spokane.
-
-          h3.h5.mt-4 1.3 How to Use Narcan (Naloxone) in an Emergency
-          p
-            | Narcan is a fast-acting medication that reverses opioid overdose. 
-            strong Call 911 immediately
-            | , then administer Narcan as a nasal spray. A second dose can be given after 2–3 minutes if there's no response. Stay with the person until help arrives.
-
-          h3.h5.mt-4 1.4 Washington's Good Samaritan Law: Your Legal Protections
-          p
-            | Washington's Good Samaritan Law (RCW 69.50.315) protects you from prosecution for drug possession when you call 911 for an overdose. You will not be arrested for helping. Don't let fear of the law stop you from saving a life.
-
-          .alert.alert-warning.mt-3
-            strong
-              i.bi.bi-capsule.me-2
-              | Narcan is available free in Spokane.
-            |  Pick it up at most pharmacies without a prescription, at SRHD, and through local harm reduction programs.
-
-          hr.my-5
-
-          // Section 2 – Treatment Options
-          h2.mt-5
-            i.bi.bi-hospital.text-primary.me-2
-            | 2. Navigating Fentanyl Treatment Options in Spokane
-          
-          h3.h5.mt-4 2.1 Medical Detox vs. Residential Rehab: Which Do You Need?
-          p
-            | For fentanyl, **medical detox** is usually the necessary first step to manage severe withdrawal symptoms safely. Once stabilized, **residential rehab** provides the therapy and tools needed for long-term sobriety. Most local providers offer a continuum of care that includes both.
-
-          h3.h5.mt-4 2.2 The "Bridge Clinic" Model for Immediate MAT Access
-          p
-            strong Providence Health & Services
-            |  operates a bridge clinic model designed for immediate access to Medication-Assisted Treatment (MAT). This removes the "waiting list" barrier, allowing qualified patients to start Suboxone induction the same day they seek help.
-
-          h3.h5.mt-4 2.3 Suboxone, Methadone, and Vivitrol for Fentanyl Recovery
-          p
-            | Fentanyl's high potency often requires higher or more carefully managed doses of MAT. Local clinics provide:
-          ul
-            li 
-              strong Suboxone (Buprenorphine):
-              |  Reduces cravings and withdrawal.
-            li 
-              strong Methadone:
-              |  Highly effective for long-term fentanyl dependence.
-            li 
-              strong Vivitrol:
-              |  A monthly injection that blocks the effects of opioids.
-
-          h3.h5.mt-4 2.4 Checklist: What to Bring to a Spokane Treatment Center
-          .card.border-0.bg-light.p-3.mb-4
-            ul.small.mb-0
-              li Photo ID and Insurance Card (if you have one)
-              li Current list of medications
-              li Comfort items (books, journals)
-              li 7-10 days of comfortable clothing
-              li A willingness to start the journey
-
-          hr.my-5
-
-          // Section 3 – Free Resources
-          h2.mt-5
-            i.bi.bi-cash-coin.text-success.me-2
-            | 3. High-Performance Free & Low-Cost Resources
-          
-          h3.h5.mt-4 3.1 Using Apple Health (Medicaid) for Fentanyl Treatment
-          p
-            | Most state-funded treatment centers in Spokane accept **Apple Health**. This often covers the full cost of detox, residential stay, and outpatient therapy. If you don't have insurance, these centers can often help you sign up on-site.
-
-          h3.h5.mt-4 3.2 TRIUMPH and Frontier Behavioral: No-Cost Entry Points
-          ul
-            li
-              strong TRIUMPH Treatment Services:
-              |  Residential and outpatient care for those with no income.
-            li
-              strong Frontier Behavioral Health:
-              |  Comprehensive outpatient services and 24/7 crisis response.
-
-          h3.h5.mt-4 3.3 CHAS Health: Sliding Scale Care for the Uninsured
-          p
-            | CHAS Health operates multiple locations across Spokane (including Perry Street, Denny Murphy, and North County) offering MAT and primary care on a sliding fee scale based on your income.
-
-          h3.h5.mt-4 3.4 Mobile Crisis Teams: Who to Call Before 911
-          p
-            | If you are in a mental health or addiction crisis but it isn't a life-threatening medical emergency, call the 
-            strong Washington Recovery Help Line at 1-866-789-1511
-            |  or the local 
-            strong Regional Crisis Line at 1-877-266-1818
-            |  to request a mobile crisis responder in Spokane County.
-
-          hr.my-5
-
-          // Section 4 – Family Support
-          h2.mt-5
-            i.bi.bi-people-fill.text-primary.me-2
-            | 4. Intervention & Family Support Systems
-          
-          h3.h5.mt-4 4.1 How to Talk to a Loved One About Fentanyl Use
-          p
-            | Start with empathy, not accusation. Use "I" statements ("I am worried about your safety") and avoid shaming. Focus on the medical reality of the fentanyl crisis rather than personal choices.
-
-          h3.h5.mt-4 4.2 Al-Anon and Nar-Anon Spokane Meeting Locations
-          p
-            | Families need their own recovery. Spokane has daily meetings for families:
-          ul
-            li 
-              strong Al-Anon:
-              |  Held at Alano Club and various community centers.
-            li 
-              strong Nar-Anon:
-              |  Focused specifically on drug addiction impacts on the family.
-
-          h3.h5.mt-4 4.3 Grief Support for Families Impacted by Fentanyl
-          p
-            | Losing someone to fentanyl is a unique trauma. Resources like 
-            strong Hospice of Spokane
-            |  and specialized peer-led support groups offer safe spaces for grieving family members in the Spokane area.
-
-          h3.h5.mt-4 4.4 Online Forums: Connecting with Other Spokane Families
-          p
-            | Our 
-            a(href="/community-forum.html") Community Forum
-            |  includes a dedicated space for family members to share experiences, find local lawyer/medical referrals, and find support from others who "get it."
-
-          hr.my-5
-
-          // Section 5 – Sustaining Sobriety
-          h2.mt-5
-            i.bi.bi-shield-check.text-primary.me-2
-            | 5. Sustaining Sobriety: Peer Support & Spokane Community
-          
-          h3.h5.mt-4 5.1 Finding an Opiate-Specific AA or NA Meeting
-          p
-            | While all meetings are inclusive, some Spokane groups specifically focus on "younger" demographics or opiate recovery. Check the 
-            a(href="https://www.inlandnorthwestna.org" target="_blank") NA Inland Northwest
-            |  directory for local meeting schedules.
-
-          h3.h5.mt-4 5.2 The Get Sober Spokane Sponsor Finder Tool
-          p
-            | Community is the opposite of addiction. Use our 
-            a(href="/sponsor-finder.html") Sponsor Finder
-            |  to connect with a local peer who has at least one year of sobriety and is ready to walk with you.
-
-          h3.h5.mt-4 5.3 SMART Recovery: Evidence-Based Peer Support
-          p
-            | If 12-step isn't for you, Spokane offers several **SMART Recovery** meetings focused on cognitive-behavioral tools to manage cravings and build a balanced life.
-
-          h3.h5.mt-4 5.4 Sober Living and Housing Resources in Spokane County
-          p
-            | Environment is everything. Spokane has vibrant sober living communities like 
-            strong Oxford Houses
-            |  and regional recovery housing. View our full directory: 
-            a(href="/blog/sober-living-housing-spokane.html") Sober Living in Spokane →
-
-          hr.my-5
-
-          // Section 6 – Path Forward
-          h2.mt-5
-            i.bi.bi-sun.text-warning.me-2
-            | 6. Your Path Forward: Life After Fentanyl
-          
-          h3.h5.mt-4 6.1 Success Stories: Recovery is Happening in Spokane
-          p
-            | You don't have to be a statistic. People are recovering from fentanyl every day in Spokane. Read their stories of hope: 
-            a(href="/success-stories.html") Spokane Recovery Success Stories →
-
-          h3.h5.mt-4 6.2 Managing Long-Term Withdrawal and PAWS
-          p
-            | Post-Acute Withdrawal Syndrome (PAWS) can cause mood swings and sleep issues months after stopping. This is normal and a sign your brain is healing. Local therapists at 
-            strong Frontier Behavioral
-            |  specialize in managing these long-term symptoms.
-
-          h3.h5.mt-4 6.3 Implementation Checklist for Your First 72 Hours
-          .card.border-0.shadow-sm.p-4.mb-5(style="border-left: 5px solid #ffc107;")
-            h5.fw-bold Immediate Steps
+          // TL;DR
+          .card.border-0.bg-light.p-4.mb-4
+            h5.fw-bold TL;DR / Key Takeaways
             ul.mb-0
               li 
-                strong Hour 1:
-                |  Call a treatment hotline or a trusted sober friend.
+                strong Act Fast:
+                |  Fentanyl overdoses happen in seconds; call 911 immediately and use Narcan if available.
               li 
-                strong Hour 12:
-                |  Remove all triggers and substances from your immediate environment.
+                strong Legal Safety:
+                |  You are protected by Washington’s Good Samaritan Law when calling for help during an overdose.
               li 
-                strong Hour 24:
-                |  Get to a detox center or a Bridge Clinic (Providence/CHAS).
+                strong Same-Day Help:
+                |  Providence and CHAS Health offer "Bridge Clinics" for immediate Medication-Assisted Treatment (MAT).
               li 
-                strong Hour 72:
-                |  Commit to your first 1-on-1 peer session via Get Sober Spokane.
+                strong Free Resources:
+                |  Multiple Spokane locations provide free Narcan and fentanyl testing strips.
+              li 
+                strong Peer Support:
+                |  Long-term recovery is built on community; use the 
+                a(href="/community-forum.html") Spokane recovery community forum
+                |  to connect.
+
+          // Quick Definition & ToC
+          h2.mt-2 Quick Definition
+          p.lead
+             | The 
+             strong opioid crisis in Spokane
+             |  is a critical public health emergency characterized by a sharp rise in fentanyl-related overdoses and addiction. It requires a multi-faceted response in Spokane County, ranging from immediate harm reduction (Narcan) to clinically-supervised medical detox and long-term peer support systems that help individuals achieve and maintain sobriety.
+
+          .mb-5.p-4.bg-light.rounded
+            h4.h5 Table of Contents
+            ul.list-unstyled.mb-0
+              li.mb-2: a(href="#reality") The Reality of the Crisis in Spokane
+              li.mb-2: a(href="#who-this-is-for") Who This Is For
+              li.mb-2: a(href="#process") The 8-Step Recovery Process
+              li.mb-2: a(href="#best-practices") Best Practices for Long-Term Sobriety
+              li.mb-2: a(href="#comparison") Spokane Treatment Comparison Table
+              li.mb-2: a(href="#mistakes") Common Mistakes to Avoid
+              li.mb-2: a(href="#faq") Frequently Asked Questions
+              li.mb-0: a(href="#conclusion") Take Your Next Step
 
           hr.my-5
 
-          // Closing CTA
-          .card.border-0.shadow.text-center.p-5.mb-4(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #dc354522 100%);")
+          // The Reality
+          h2#reality
+            i.bi.bi-exclamation-octagon.text-danger.me-2
+            | The Reality of the Opioid Crisis in Spokane
+          
+          p Spokane and Eastern Washington have seen an unprecedented rise in opioid-related incidents, largely driven by the influx of illicit fentanyl. Unlike previous waves of the opioid epidemic, the current crisis involves substances so potent that a single pill can be fatal.
+
+          h3.h5.mt-4 Why It Matters
+          p Ignoring the crisis isn't an option when it affects our neighbors, colleagues, and families. However, Spokane is home to some of the most robust recovery networks in the Northwest. Understanding 
+            a(href="/addiction-treatments-support.html") Spokane addiction treatment resources
+            |  is the first step in moving from crisis to stability.
+          
+          ul
+            li
+              strong Example 1:
+              |  A local family uses Narcan to reverse an overdose at home, then connects through a Bridge Clinic to start Suboxone within 24 hours.
+            li
+              strong Example 2:
+              |  A long-term user utilizes the Good Samaritan Law to call 911 for a friend, leading to both entering a state-funded detox program.
+
+          h2#who-this-is-for.mt-5
+            i.bi.bi-people-fill.text-primary.me-2
+            | Who This Is For
+          ul
+            li 
+              strong Individuals
+              |  currently struggling with fentanyl, heroin, or prescription painkillers.
+            li 
+              strong Families and Friends
+              |  searching for intervention strategies and support systems.
+            li 
+              strong Community Members
+              |  wanting to be prepared with Narcan and knowledge of local laws.
+            li 
+              strong Recently Discharged
+              |  patients looking for sober housing or peer sponsorship.
+
+          hr.my-5
+
+          // The Process
+          h2#process
+            i.bi.bi-list-ol.text-primary.me-2
+            | The Step-by-Step Process to Recovery in Spokane
+
+          h3.h5.mt-4 Step 1: Secure Harm Reduction Supplies
+          p Before treatment begins, survival is the priority. Obtain free Narcan (naloxone) and fentanyl testing strips.
+          ul
+            li 
+              strong Why it matters:
+              |  It keeps you or your loved one alive long enough to choose recovery.
+            li 
+              strong Pro tip:
+              |  Keep Narcan in your car and your home. You never know when you'll be the first responder.
+            li 
+              strong Common pitfall:
+              |  Assuming "one dose is enough." Fentanyl often requires multiple rounds of Narcan.
+
+          h3.h5.mt-4 Step 2: Understand Your Legal Protections
+          p Learn the Washington Good Samaritan Law (RCW 69.50.315).
+          ul
+            li 
+              strong Why it matters:
+              |  Fear of arrest often prevents people from calling 911. 
+            li 
+              strong Pro tip:
+              |  Explicitly tell the 911 operator you are reporting an overdose; the law protects you from possession charges.
+            li 
+              strong Common pitfall:
+              |  Delaying the call while trying to "wake them up" with cold water or slapping.
+
+          h3.h5.mt-4 Step 3: Access a "Bridge Clinic"
+          p Visit Providence or CHAS Health for immediate MAT induction.
+          ul
+            li 
+              strong Why it matters:
+              |  The "window of willingness" is short. Bridge clinics bypass long waiting lists.
+            li 
+              strong Pro tip:
+              |  Go early in the morning for the fastest processing.
+            li 
+              strong Common pitfall:
+              |  Waiting for a "perfect" residential bed while in active withdrawal.
+
+          h3.h5.mt-4 Step 4: Complete Medical Detox
+          p Enter a 3–7 day supervised program to manage withdrawal.
+          ul
+            li 
+              strong Why it matters:
+              |  Fentanyl withdrawal is physically grueling and often leads to immediate relapse if not managed.
+            li 
+              strong Pro tip:
+              |  Ask about "comfort meds" like Lucemyra or clonidine.
+            li 
+              strong Common pitfall:
+              |  Attempting "cold turkey" at home, which has a very high failure rate for fentanyl.
+
+          h3.h5.mt-4 Step 5: Transition to Residential or Outpatient Care
+          p Check into a facility like TRIUMPH or Frontier Behavioral Health.
+          ul
+            li 
+              strong Why it matters:
+              |  Detox clears the body; rehab heals the mind and behaviors.
+            li 
+              strong Pro tip:
+              |  Use Apple Health (Medicaid) to cover the costs if you are low-income.
+            li 
+              strong Common pitfall:
+              |  Leaving detox and going straight back to the same environment.
+
+          h3.h5.mt-4 Step 6: Establish a Medication-Assisted Treatment (MAT) Plan
+          p Work with a doctor on Suboxone, Methadone, or Vivitrol.
+          ul
+            li 
+              strong Why it matters:
+              |  MAT reduces the brain’s "hunger" for opioids, allowing you to focus on therapy.
+            li 
+              strong Pro tip:
+              |  Vivitrol is a once-a-month injection that blocks the "high" entirely.
+            li 
+              strong Common pitfall:
+              |  Viewing MAT as "replacing one drug with another"—it is a life-saving medical tool.
+
+          h3.h5.mt-4 Step 7: Build Your Community Support
+          p Find a sponsor and join a local support group.
+          ul
+            li 
+              strong Why it matters:
+              |  Isolation is where addiction thrives.
+            li 
+              strong Pro tip:
+              |  You can 
+              a(href="/sponsor-finder.html") find a local sponsor in Spokane
+              |  through our specialized matching tool.
+            li 
+              strong Common pitfall:
+              |  Thinking you can stay sober alone once the physical cravings stop.
+
+          h3.h5.mt-4 Step 8: Create a Relapse Prevention Plan
+          p Identify triggers and define emergency contacts.
+          ul
+            li 
+              strong Why it matters:
+              |  Recovery is a marathon, not a sprint.
+            li 
+              strong Pro tip:
+              |  Shared your plan with your sponsor and family.
+            li 
+              strong Common pitfall:
+              |  Becoming overconfident after 30 or 60 days of sobriety.
+
+          // Checklist
+          h3.h5.mt-5 Early Recovery Checklist
+          .card.border-0.bg-light.p-3.mb-4
+            ul.list-unstyled.mb-0
+              li.mb-2 
+                i.bi.bi-square.me-2
+                | Registered for Apple Health (if applicable)
+              li.mb-2 
+                i.bi.bi-square.me-2
+                | Emergency Narcan kit in possession
+              li.mb-2 
+                i.bi.bi-square.me-2
+                | First appointment with a MAT provider scheduled
+              li.mb-2 
+                i.bi.bi-square.me-2
+                | Contacted at least one peer support group
+              li 
+                i.bi.bi-square.me-2
+                | Deleted "using" contacts from phone
+
+          hr.my-5
+
+          // Best Practices
+          h2#best-practices.mt-5
+            i.bi.bi-star-fill.text-warning.me-2
+            | Best Practices That Actually Move the Needle
+
+          h3.h5.mt-4 Follow the "Warm Handoff" Protocol
+          p The most dangerous time for a person in the 
+            strong opioid crisis in Spokane
+            |  is the hour they leave detox or jail. A "warm handoff"—where a peer or family member meets them at the door to drive them directly to their next treatment phase—increases success rates by over 50%.
+
+          .alert.alert-info.mt-4
+            h4.alert-heading
+              i.bi.bi-info-circle-fill.me-2
+              | Expert Note: The Spokane Bridge Model
+            p.mb-0 Unlike many cities that require weeks of intake, Spokane’s "Bridge Clinic" model (pioneered by local hospitals) treats addiction as an emergency, similar to a heart attack. If you are ready 
+              em now
+              | , go to an ER or Bridge Clinic 
+              em now
+              | . Do not wait for Monday morning.
+
+          h2.mt-5 Examples & Templates
+          h3.h5.mt-3 How to Ask for Help (Text/Call Script)
+          p If you're struggling to find the words, use this template to reach out to a friend or professional:
+          blockquote.blockquote.bg-light.p-4.border-start.border-4.border-primary
+            p.mb-0 "I'm struggling with opioids and I'm scared. I want to get help but I don't know where to start. Can you help me call a Bridge Clinic or the Washington Recovery Help Line? I don't want to do this alone anymore."
+
+          hr.my-5
+
+          // Comparison Table
+          h2#comparison.mt-5
+            i.bi.bi-table.text-primary.me-2
+            | Comparisons & Options: Spokane Treatment Types
+          
+          .table-responsive.mt-4
+            table.table.table-striped.table-bordered
+              thead.table-dark
+                tr
+                  th Feature
+                  th Medical Detox
+                  th Residential Rehab
+                  th Outpatient (IOP)
+                  th MAT Clinic
+              tbody
+                tr
+                  td 
+                    strong Primary Goal
+                  td Physical Safety
+                  td Therapy & Tools
+                  td Integration
+                  td Craving Control
+                tr
+                  td 
+                    strong Duration
+                  td 3–7 Days
+                  td 30–90 Days
+                  td 3–6 Months
+                  td Ongoing
+                tr
+                  td 
+                    strong Housing
+                  td Inpatient
+                  td Inpatient
+                  td At Home
+                  td At Home
+                tr
+                  td 
+                    strong Best For
+                  td Active Withdrawal
+                  td High-Risk Relapse
+                  td Stable Foundation
+                  td Long-term Stability
+
+          hr.my-5
+
+          // Common Mistakes
+          h2#mistakes.mt-5
+            i.bi.bi-x-octagon-fill.text-danger.me-2
+            | Common Mistakes (and How to Avoid Them)
+          
+          ol.mt-4
+            li.mb-3
+              strong Hiding use from medical professionals.
+              br
+              strong Fix:
+              |  Be 100% honest about fentanyl use; it requires different clinical protocols than heroin.
+            li.mb-3
+              strong Waiting for "hitting rock bottom."
+              br
+              strong Fix:
+              |  In the fentanyl era, "rock bottom" is often fatal. Intervene as soon as use is suspected.
+            li.mb-3
+              strong Stopping MAT too early.
+              br
+              strong Fix:
+              |  Follow clinical guidance. Tapering should be a slow, medical process, not an impulsive decision.
+            li.mb-3
+              strong Neglecting mental health (Dual Diagnosis).
+              br
+              strong Fix:
+              |  Ensure your treatment center also addresses underlying trauma, depression, or anxiety.
+
+          hr.my-5
+
+          // FAQ
+          h2#faq.mt-5
+            i.bi.bi-question-circle.text-primary.me-2
+            | Frequently Asked Questions
+          
+          .accordion.mt-4#faqAccordion
+            .accordion-item
+              h2.accordion-header#faqHeading1
+                button.accordion-button(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1")
+                  | Is Narcan really free in Spokane?
+              #faqCollapse1.accordion-collapse.collapse.show(aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Yes. You can get Narcan at no cost at the Spokane Regional Health District (SRHD), many local pharmacies via the state's standing order (if you have insurance), and through various harm reduction outreach programs like NIAC.
+
+            .accordion-item
+              h2.accordion-header#faqHeading2
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2")
+                  | Will I get arrested if I call 911 for an overdose?
+              #faqCollapse2.accordion-collapse.collapse(aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | No. Washington’s Good Samaritan Law protects both the caller and the victim from drug possession charges and paraphernalia charges during a medical emergency. Do not hesitate to call.
+
+            .accordion-item
+              h2.accordion-header#faqHeading3
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3")
+                  | What if I don't have insurance or money for rehab?
+              #faqCollapse3.accordion-collapse.collapse(aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Providers like TRIUMPH and Frontier Behavioral Health prioritize those without income. Additionally, CHAS Health offers a sliding scale, and many facilities will help you sign up for Apple Health on the spot.
+
+            .accordion-item
+              h2.accordion-header#faqHeading4
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4")
+                  | What is a "Bridge Clinic"?
+              #faqCollapse4.accordion-collapse.collapse(aria-labelledby="faqHeading4" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | A Bridge Clinic is a specialized medical facility (like those at Providence) that provides immediate initiation of life-saving medications like Suboxone to bridge the gap between initial crisis and long-term placement.
+
+            .accordion-item
+              h2.accordion-header#faqHeading5
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5")
+                  | Where can I find fentanyl testing strips?
+              #faqCollapse5.accordion-collapse.collapse(aria-labelledby="faqHeading5" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Testing strips are available at the SRHD and are often distributed for free at local "Stop the Overdose" events and through mobile crisis teams.
+
+            .accordion-item
+              h2.accordion-header#faqHeading6
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse6" aria-expanded="false" aria-controls="faqCollapse6")
+                  | Are there support groups specifically for fentanyl recovery?
+              #faqCollapse6.accordion-collapse.collapse(aria-labelledby="faqHeading6" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | While most NA and AA meetings are inclusive, many local Spokane groups are seeing an influx of fentanyl-specific recovery cohorts. You can browse the 
+                  a(href="/community-forum.html") Spokane recovery community forum
+                  |  for specific meeting recommendations.
+
+          hr.my-5
+
+          // Conclusion
+          h2#conclusion.mt-5
+            i.bi.bi-sun.text-warning.me-2
+            | Conclusion: You Are Not a Statistic
+          p The 
+            strong opioid crisis in Spokane
+            |  is a heavy burden, but it is one that our community carries together. Recovery isn't just a possibility; it's happening every single day in our city. Whether you need immediate MAT access or long-term peer support, there is a seat for you at the table.
+
+          h3.h5.mt-4 Your Next Step
+          p Take 30 seconds to 
+            a(href="/sponsor-finder.html") find a local sponsor in Spokane
+            | . Having a single person who has walked this path before can be the difference between a relapse and a breakthrough.
+
+          .card.border-0.shadow.text-center.p-5.my-5(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #dc354522 100%);")
             i.bi.bi-heart-fill.display-4.text-danger.mb-3
             h3.fw-bold You Are Not Alone
-            p.text-muted.mb-4
-              | The opioid crisis is real — and so is the recovery that happens every single day in Spokane. Whether you're struggling yourself or trying to help someone you love, there are free resources, real people, and a whole community here ready to help.
-            .d-flex.flex-wrap.gap-3.justify-content-center
+            .d-flex.flex-wrap.gap-3.justify-content-center.mt-4
               a.btn.btn-primary.btn-lg(href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'blog_opioid_crisis_footer'})")
                 i.bi.bi-heart-pulse.me-2
                 | Browse Treatment Resources
@@ -293,3 +517,25 @@ block content
               a.btn.btn-outline-danger.btn-lg(href="/chat.html")
                 i.bi.bi-chat-dots.me-2
                 | Talk to Someone Now
+
+          // About the Author
+          .d-flex.align-items-center.mt-5.pt-4.border-top
+            .flex-shrink-0
+              img.rounded-circle(src="/assets/img/logo.png" alt="Get Sober Spokane Logo" width="64" height="64")
+            .flex-grow-1.ms-3
+              h5.mb-1 About the Author
+              p.small.mb-1 Written by the 
+                strong Get Sober Spokane Editorial Team
+                |  in collaboration with local recovery advocates and clinicians. Our team has over 20 years of combined experience in Northwest addiction recovery systems.
+              p.small.text-muted.mb-0
+                strong Last updated:
+                |  April 14, 2026
+
+          // Sources
+          h3.h6.mt-5 Sources
+          ul.small.text-muted
+            li: a.text-muted(href="https://srhd.org" target="_blank") Spokane Regional Health District (SRHD)
+            li: a.text-muted(href="https://www.warecoveryhelpline.org" target="_blank") Washington Recovery Help Line
+            li: a.text-muted(href="https://www.providence.org" target="_blank") Providence Health & Services — Spokane
+            li: a.text-muted(href="https://chas.org" target="_blank") CHAS Health — Spokane County
+            li: a.text-muted(href="https://www.inlandnorthwestna.org" target="_blank") Inland Northwest NA
