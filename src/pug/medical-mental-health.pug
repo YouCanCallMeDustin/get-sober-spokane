@@ -16,17 +16,19 @@ block head
 
 block content
     // Hero Section
-    header.masthead
-      // Background Image
-      .background-image(style='background-image: url("assets/img/9.jpg");')
-      .container.px-4.px-lg-5.h-100
-        .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
-          .col-lg-10.align-self-end
-            h1.text-white.font-weight-bold.mb-3 Medical & Mental Health Services in Spokane
-            hr.divider.divider-light
-          .col-lg-8.align-self-baseline
-            p.text-white-75.mb-4
-              | Find hospitals, clinics, crisis lines, and mental health support in Spokane, WA. This guide connects you to emergency care, primary care, behavioral health, and community resources for all ages and needs.
+    // Hero Section
+    header.page-hero
+      .container.px-4.px-lg-5
+        h1 Medical & Mental Health Services
+        p.lead Comprehensive healthcare and crisis intervention in Spokane, WA.
+        .hero-badges
+          .hero-badge
+            i.bi.bi-hospital
+            span Healthcare
+          .hero-badge
+            i.bi.bi-heart-pulse
+            span Mental Health
+
     // Main Content
     section.page-section
       .container.px-4.px-lg-5

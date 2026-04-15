@@ -39,11 +39,26 @@ block head
       }
 
 block content
+    // Page Hero
+    header.page-hero
+      .container.px-4.px-lg-5
+        h1 Spokane Recovery Resource Map
+        p.lead Visual guide to shelters, food banks, and support centers.
+        .hero-badges
+          .hero-badge
+            i.bi.bi-geo-alt
+            span GPS Located
+          .hero-badge
+            i.bi.bi-map
+            span Area Wide
+    
     section.page-section
       .container.px-4.px-lg-5.text-center
-        h2.mb-4.text-primary Spokane Recovery Resource Map
-        p.lead.mb-2.text-danger Warning: The map's locations might not be accurate by a few blocks.
+        p.lead.mb-2.text-danger 
+          i.bi.bi-exclamation-triangle.me-2
+          | Warning: The map's locations might not be accurate by a few blocks.
         p.lead.mb-4.text-muted Explore shelters, food banks, treatment centers, and support groups in the Spokane area. Hover your mouse over the marker for more information.
+
         .legend.mb-4
           span.shelter &nbsp;
           | Shelter

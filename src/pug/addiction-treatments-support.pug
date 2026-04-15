@@ -12,17 +12,18 @@ block head
 
 block content
     // Hero Section
-    header.masthead
-      // Background Image
-      .background-image(style='background-image: url("assets/img/10.jpg");')
-      .container.px-4.px-lg-5.h-100
-        .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
-          .col-lg-10.align-self-end
-            h1.text-white.font-weight-bold.mb-3 Addiction Treatments & Support Groups in Spokane
-            hr.divider.divider-light
-          .col-lg-8.align-self-baseline
-            p.text-white-75.mb-4
-              | Find professional addiction treatment centers and peer-led support groups in Spokane, WA. This guide connects you to evidence-based care, recovery programs, and community support for substance use disorders.
+    header.page-hero
+      .container.px-4.px-lg-5
+        h1 Addiction Treatment & Support Groups
+        p.lead Professional care and peer-led support networks in Spokane, WA.
+        .hero-badges
+          .hero-badge
+            i.bi.bi-capsule
+            span Clinical Care
+          .hero-badge
+            i.bi.bi-people
+            span Peer Support
+
     
     // Main Content
     section.page-section

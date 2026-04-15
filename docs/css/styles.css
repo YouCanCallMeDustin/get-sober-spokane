@@ -3,7 +3,7 @@
 * Start Bootstrap - Creative v7.0.8 (https://YOUR_USERNAME.github.io/sober-spokane)
 * Copyright 2013-2026 Start Bootstrap
 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-creative/blob/master/LICENSE)
-* Generated: 2026-04-15T05:29:14.326Z
+* Generated: 2026-04-15T05:39:28.109Z
 */
 /*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
@@ -17051,7 +17051,6 @@ body .sign-in-link:active,
 .footer-enhanced .footer-logo {
   max-width: 150px;
   margin-bottom: 1.5rem;
-  filter: brightness(0) invert(1);
 }
 
 header.masthead {
