@@ -1,0 +1,158 @@
+// Footer Component
+.footer-enhanced {
+    background-color: #111827; // Deepest gray-navy
+    color: #f9fafb;
+    padding-top: 5rem;
+    padding-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.3), transparent);
+    }
+
+    .footer-heading {
+        color: #fff;
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        display: inline-block;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background-color: #2563eb;
+            border-radius: 2px;
+        }
+    }
+
+    .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin-bottom: 0.75rem;
+        }
+
+        a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+
+            &:hover {
+                color: #2563eb;
+                padding-left: 5px;
+            }
+        }
+    }
+
+    .footer-contact-info {
+        p {
+            color: #9ca3af;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+
+            i {
+                margin-right: 10px;
+                color: #2563eb;
+                font-size: 1.1rem;
+            }
+        }
+    }
+
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 1.5rem;
+
+        a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            transition: all 0.3s ease;
+            text-decoration: none;
+
+            &:hover {
+                background-color: #2563eb;
+                transform: translateY(-3px);
+            }
+        }
+    }
+
+    .crisis-hotline-footer {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin-top: 2rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+            border-color: rgba(239, 68, 68, 0.4);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.1) 100%);
+        }
+
+        h6 {
+            color: #ef4444;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-crisis {
+            background-color: #ef4444;
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 0.5rem;
+
+            &:hover {
+                background-color: #dc2626;
+                color: #fff;
+            }
+        }
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        margin-top: 4rem;
+        padding-top: 2rem;
+        color: #6b7280;
+        font-size: 0.85rem;
+
+        a {
+            color: #6b7280;
+            text-decoration: none;
+
+            &:hover {
+                color: #fff;
+            }
+        }
+    }
+
+    .footer-logo {
+        max-width: 150px;
+        margin-bottom: 1.5rem;
+        filter: brightness(0) invert(1); // Make logo white if it's dark
+    }
+}

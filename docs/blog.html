@@ -790,46 +790,83 @@
                 </div>
             </div>
         </section>
-        <!-- Footer-->
-        <footer class="bg-light py-5">
+        <!-- Enhanced Footer-->
+        <footer class="footer-enhanced">
             <div class="container px-4 px-lg-5">
-                <div class="row justify-content-center">
-                    <div class="col-lg-4 text-center mb-4 mb-lg-0">
+                <div class="row gx-5">
+                    <!-- Column 1: Brand & Mission-->
+                    <div class="col-lg-3 mb-5 mb-lg-0">
                         <a href="/"><img class="footer-logo" src="/assets/img/logo.png" alt="Get Sober Spokane Logo" loading="lazy" /></a>
-                        <!-- NAP – LocalBusiness Schema Microdata-->
-                        <div class="mt-3 small text-muted" itemscope itemtype="https://schema.org/LocalBusiness">
-                            <p class="mb-1"><span itemprop="name">Get Sober Spokane</span></p>
-                            <p class="mb-1">
+                        <p class="small text-muted pe-lg-4">Empowering individuals in Spokane and surrounding areas to find lasting recovery through community support, verified resources, and professional connection.</p>
+                        <div class="social-links">
+                            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                            <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                    <!-- Column 2: Quick Links-->
+                    <div class="col-lg-3 col-md-4 mb-5 mb-lg-0">
+                        <h6 class="footer-heading">Navigation</h6>
+                        <ul class="footer-links">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/resource-directory.html">Resource Directory</a></li>
+                            <li><a href="/blog.html">Recovery Blog</a></li>
+                            <li><a href="/community-forum.html">Community Forum</a></li>
+                            <li><a href="/about-us.html">About Our Mission</a></li>
+                            <li><a href="/donations.html">Support Us</a></li>
+                        </ul>
+                    </div>
+                    <!-- Column 3: Serving Areas-->
+                    <div class="col-lg-3 col-md-4 mb-5 mb-lg-0">
+                        <h6 class="footer-heading">Serving Regions</h6>
+                        <ul class="footer-links">
+                            <li><a href="/spokane-valley-recovery-resources.html">Spokane Valley, WA</a></li>
+                            <li><a href="/north-spokane-recovery-resources.html">North Spokane, WA</a></li>
+                            <li><a href="/south-hill-recovery-resources.html">South Hill Spokane, WA</a></li>
+                            <li><a href="/coeur-dalene-recovery-resources.html">Coeur d'Alene, ID</a></li>
+                            <li><a href="/airway-heights-recovery-resources.html">Airway Heights, WA</a></li>
+                            <li><a href="/post-falls-recovery-resources.html">Post Falls, ID</a></li>
+                        </ul>
+                    </div>
+                    <!-- Column 4: Contact & Crisis-->
+                    <div class="col-lg-3 col-md-4">
+                        <h6 class="footer-heading">Contact Us</h6>
+                        <div class="footer-contact-info" itemscope itemtype="https://schema.org/LocalBusiness">
+                            <p>
+                                <i class="bi bi-geo-alt"></i>
                                 <span itemprop="addressLocality">Spokane</span>
                                 ,
                                 <span itemprop="addressRegion">WA</span>
                             </p>
-                            <p class="mb-1">
-                                Phone:
-                                <a class="text-muted" href="tel:+15093899350" itemprop="telephone" onclick="gtag('event', 'phone_click', {event_category: 'contact'})">(509) 389-9350</a>
-                                Email:
-                                <a class="text-muted" href="mailto:getsoberspokane@outlook.com" itemprop="email" onclick="gtag('event', 'email_click', {event_category: 'contact'})">getsoberspokane@outlook.com</a>
+                            <p>
+                                <i class="bi bi-telephone"></i>
+                                <a href="tel:+15093899350" itemprop="telephone">(509) 389-9350</a>
+                            </p>
+                            <p>
+                                <i class="bi bi-envelope"></i>
+                                <a href="mailto:getsoberspokane@outlook.com" itemprop="email">getsoberspokane@outlook.com</a>
                             </p>
                         </div>
-                    </div>
-                    <div class="col-lg-4 text-center mt-4 mt-lg-0">
-                        <h6 class="text-uppercase fw-bold mb-3">Serving These Areas</h6>
-                        <div class="d-flex flex-column gap-2 small">
-                            <a class="text-muted text-decoration-none" href="/spokane-valley-recovery-resources.html">Spokane Valley</a>
-                            <a class="text-muted text-decoration-none" href="/north-spokane-recovery-resources.html">North Spokane</a>
-                            <a class="text-muted text-decoration-none" href="/south-hill-recovery-resources.html">South Hill</a>
-                            <a class="text-muted text-decoration-none" href="/coeur-dalene-recovery-resources.html">Coeur d'Alene, ID</a>
+                        <div class="crisis-hotline-footer">
+                            <h6>Immediate Help Needed?</h6>
+                            <p class="small text-muted mb-2">24/7 Crisis Support is available.</p>
+                            <a class="btn btn-crisis btn-sm rounded-pill" href="tel:988">
+                                <i class="bi bi-telephone-fill me-2"></i>
+                                Call 988 Crisis Line
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="small text-center text-muted border-top pt-3">
-                            Copyright © 2025 - Get Sober Spokane
-                            <br />
-                            <a class="text-muted" href="/privacy-policy.html">Privacy Policy</a>
-                            |
-                            <a class="text-muted" href="/terms-of-service.html">Terms of Service</a>
+                <div class="footer-bottom">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-center text-md-start"><p class="mb-0">Copyright © 2025 Get Sober Spokane. All rights reserved.</p></div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item"><a href="/privacy-policy.html">Privacy Policy</a></li>
+                                <li class="list-inline-item mx-2">|</li>
+                                <li class="list-inline-item"><a href="/terms-of-service.html">Terms of Service</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>

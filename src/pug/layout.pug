@@ -254,43 +254,81 @@ html(lang="en")
 
     block content
 
-    // Footer
-    footer.bg-light.py-5
+    // Enhanced Footer
+    footer.footer-enhanced
       .container.px-4.px-lg-5
-        .row.justify-content-center
-          .col-lg-4.text-center.mb-4.mb-lg-0
+        .row.gx-5
+          // Column 1: Brand & Mission
+          .col-lg-3.mb-5.mb-lg-0
             a(href="/")
               img.footer-logo(src="/assets/img/logo.png" alt="Get Sober Spokane Logo" loading="lazy")
-            // NAP – LocalBusiness Schema Microdata
-            div(itemscope itemtype="https://schema.org/LocalBusiness").mt-3.small.text-muted
-              p.mb-1
-                span(itemprop="name") Get Sober Spokane
-              p.mb-1
+            p.small.text-muted.pe-lg-4
+              | Empowering individuals in Spokane and surrounding areas to find lasting recovery through community support, verified resources, and professional connection.
+            .social-links
+              a(href="#" aria-label="Facebook")
+                i.bi.bi-facebook
+              a(href="#" aria-label="Twitter")
+                i.bi.bi-twitter-x
+              a(href="#" aria-label="Instagram")
+                i.bi.bi-instagram
+              a(href="#" aria-label="LinkedIn")
+                i.bi.bi-linkedin
+
+          // Column 2: Quick Links
+          .col-lg-3.col-md-4.mb-5.mb-lg-0
+            h6.footer-heading Navigation
+            ul.footer-links
+              li: a(href="/") Home
+              li: a(href="/resource-directory.html") Resource Directory
+              li: a(href="/blog.html") Recovery Blog
+              li: a(href="/community-forum.html") Community Forum
+              li: a(href="/about-us.html") About Our Mission
+              li: a(href="/donations.html") Support Us
+
+          // Column 3: Serving Areas
+          .col-lg-3.col-md-4.mb-5.mb-lg-0
+            h6.footer-heading Serving Regions
+            ul.footer-links
+              li: a(href="/spokane-valley-recovery-resources.html") Spokane Valley, WA
+              li: a(href="/north-spokane-recovery-resources.html") North Spokane, WA
+              li: a(href="/south-hill-recovery-resources.html") South Hill Spokane, WA
+              li: a(href="/coeur-dalene-recovery-resources.html") Coeur d'Alene, ID
+              li: a(href="/airway-heights-recovery-resources.html") Airway Heights, WA
+              li: a(href="/post-falls-recovery-resources.html") Post Falls, ID
+
+          // Column 4: Contact & Crisis
+          .col-lg-3.col-md-4
+            h6.footer-heading Contact Us
+            .footer-contact-info(itemscope itemtype="https://schema.org/LocalBusiness")
+              p
+                i.bi.bi-geo-alt
                 span(itemprop="addressLocality") Spokane
                 | , 
                 span(itemprop="addressRegion") WA
-              p.mb-1
-                | Phone: 
-                a(href="tel:+15093899350" itemprop="telephone" onclick="gtag('event', 'phone_click', {event_category: 'contact'})").text-muted (509) 389-9350
-                | Email: 
-                a(href="mailto:getsoberspokane@outlook.com" itemprop="email" onclick="gtag('event', 'email_click', {event_category: 'contact'})").text-muted getsoberspokane@outlook.com
+              p
+                i.bi.bi-telephone
+                a(href="tel:+15093899350" itemprop="telephone") (509) 389-9350
+              p
+                i.bi.bi-envelope
+                a(href="mailto:getsoberspokane@outlook.com" itemprop="email") getsoberspokane@outlook.com
+            
+            .crisis-hotline-footer
+              h6 Immediate Help Needed?
+              p.small.text-muted.mb-2 24/7 Crisis Support is available.
+              a.btn.btn-crisis.btn-sm.rounded-pill(href="tel:988") 
+                i.bi.bi-telephone-fill.me-2
+                | Call 988 Crisis Line
 
-          .col-lg-4.text-center.mt-4.mt-lg-0
-            h6.text-uppercase.fw-bold.mb-3 Serving These Areas
-            div.d-flex.flex-column.gap-2.small
-              a.text-muted.text-decoration-none(href="/spokane-valley-recovery-resources.html") Spokane Valley
-              a.text-muted.text-decoration-none(href="/north-spokane-recovery-resources.html") North Spokane
-              a.text-muted.text-decoration-none(href="/south-hill-recovery-resources.html") South Hill
-              a.text-muted.text-decoration-none(href="/coeur-dalene-recovery-resources.html") Coeur d'Alene, ID
+        .footer-bottom
+          .row.align-items-center
+            .col-md-6.text-center.text-md-start
+              p.mb-0 Copyright © 2025 Get Sober Spokane. All rights reserved.
+            .col-md-6.text-center.text-md-end
+              ul.list-inline.mb-0
+                li.list-inline-item: a(href="/privacy-policy.html") Privacy Policy
+                li.list-inline-item.mx-2 |
+                li.list-inline-item: a(href="/terms-of-service.html") Terms of Service
 
-        .row.mt-4
-          .col-12
-            .small.text-center.text-muted.border-top.pt-3
-              | Copyright © 2025 - Get Sober Spokane
-              br
-              a.text-muted(href="/privacy-policy.html") Privacy Policy
-              |  |
-              a.text-muted(href="/terms-of-service.html") Terms of Service
 
     // Bootstrap core JS
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js")
