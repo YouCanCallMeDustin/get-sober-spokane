@@ -90,24 +90,27 @@ block head
 block content
 
   // Article Hero
-  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+  // Hero Section
+  header.page-hero
     .container.px-4.px-lg-5
       .row.justify-content-center
         .col-lg-8
           nav(aria-label="breadcrumb")
             ol.breadcrumb.mb-3
               li.breadcrumb-item
-                a.text-white-50(href="/") Home
+                a(href="/") Home
               li.breadcrumb-item
-                a.text-white-50(href="/blog.html") Blog
-              li.breadcrumb-item.active.text-white(aria-current="page") Opioid Crisis Resources
-          h1.display-5.fw-bold Opioid Crisis Spokane: How to Access Life-Saving Resources and Treatment
-          p.lead.mt-3.text-white-75 The crisis is real — and so is recovery. Free help is available in Spokane right now.
-          .small.text-white-50.mt-2
-            i.bi.bi-calendar3.me-1
-            | April 2026 &nbsp;·&nbsp;
-            i.bi.bi-clock.me-1
-            | 8 min read
+                a(href="/blog.html") Blog
+              li.breadcrumb-item.active(aria-current="page") Opioid Crisis Resources
+          h1 Opioid Crisis Spokane: How to Access Life-Saving Resources and Treatment
+          p.lead The crisis is real — and so is recovery. Free help is available in Spokane right now.
+          .hero-badges
+            .hero-badge
+              i.bi.bi-calendar3
+              span April 2026
+            .hero-badge
+              i.bi.bi-clock
+              span 8 min read
 
   // Article Body
   section.page-section

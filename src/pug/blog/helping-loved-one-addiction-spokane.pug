@@ -65,24 +65,27 @@ block head
 
 block content
 
-  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+  // Hero Section
+  header.page-hero
     .container.px-4.px-lg-5
       .row.justify-content-center
         .col-lg-8
           nav(aria-label="breadcrumb")
             ol.breadcrumb.mb-3
               li.breadcrumb-item
-                a.text-white-50(href="/") Home
+                a(href="/") Home
               li.breadcrumb-item
-                a.text-white-50(href="/blog.html") Blog
-              li.breadcrumb-item.active.text-white(aria-current="page") Helping a Loved One
-          h1.display-5.fw-bold How to Help a Loved One with Addiction in Spokane: The Ultimate Family Guide
-          p.lead.mt-3.text-white-75 Addiction is a family disease. Discover local resources, support groups, and the right ways to help them—while protecting yourself.
-          .small.text-white-50.mt-2
-            i.bi.bi-calendar3.me-1
-            | April 2026 &nbsp;·&nbsp;
-            i.bi.bi-clock.me-1
-            | 10 min read
+                a(href="/blog.html") Blog
+              li.breadcrumb-item.active(aria-current="page") Helping a Loved One
+          h1 How to Help a Loved One with Addiction in Spokane: The Ultimate Family Guide
+          p.lead Addiction is a family disease. Discover local resources, support groups, and the right ways to help them—while protecting yourself.
+          .hero-badges
+            .hero-badge
+              i.bi.bi-calendar3
+              span April 2026
+            .hero-badge
+              i.bi.bi-clock
+              span 10 min read
 
   section.page-section
     .container.px-4.px-lg-5

@@ -65,24 +65,27 @@ block head
 
 block content
 
-  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+  // Hero Section
+  header.page-hero
     .container.px-4.px-lg-5
       .row.justify-content-center
         .col-lg-8
           nav(aria-label="breadcrumb")
             ol.breadcrumb.mb-3
               li.breadcrumb-item
-                a.text-white-50(href="/") Home
+                a(href="/") Home
               li.breadcrumb-item
-                a.text-white-50(href="/blog.html") Blog
-              li.breadcrumb-item.active.text-white(aria-current="page") Sober Living Housing
-          h1.display-5.fw-bold Sober Living Spokane WA: The Complete Recovery Housing Guide
-          p.lead.mt-3.text-white-75 Safe, structured, and drug-free environments to bridge the gap between treatment and independent living in the Inland Northwest.
-          .small.text-white-50.mt-2
-            i.bi.bi-calendar3.me-1
-            | April 2026 &nbsp;·&nbsp;
-            i.bi.bi-clock.me-1
-            | 9 min read
+                a(href="/blog.html") Blog
+              li.breadcrumb-item.active(aria-current="page") Sober Living Housing
+          h1 Sober Living Spokane WA: The Complete Recovery Housing Guide
+          p.lead Safe, structured, and drug-free environments to bridge the gap between treatment and independent living in the Inland Northwest.
+          .hero-badges
+            .hero-badge
+              i.bi.bi-calendar3
+              span April 2026
+            .hero-badge
+              i.bi.bi-clock
+              span 9 min read
 
   section.page-section
     .container.px-4.px-lg-5

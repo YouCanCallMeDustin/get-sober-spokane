@@ -67,24 +67,27 @@ block head
 
 block content
 
-  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+  // Hero Section
+  header.page-hero
     .container.px-4.px-lg-5
       .row.justify-content-center
         .col-lg-8
           nav(aria-label="breadcrumb")
             ol.breadcrumb.mb-3
               li.breadcrumb-item
-                a.text-white-50(href="/") Home
+                a(href="/") Home
               li.breadcrumb-item
-                a.text-white-50(href="/blog.html") Blog
-              li.breadcrumb-item.active.text-white(aria-current="page") 15 Signs of Alcoholism
-          h1.display-5.fw-bold Am I an Alcoholic? 15 Honest Signs You Shouldn't Ignore
-          p.lead.mt-3.text-white-75 If you are asking yourself, "Am I an alcoholic?", you have likely already noticed a shift in your relationship with alcohol. Here is how to identify a drinking problem and what to do next.
-          .small.text-white-50.mt-2
-            i.bi.bi-calendar3.me-1
-            | April 2026 &nbsp;·&nbsp;
-            i.bi.bi-clock.me-1
-            | 8 min read
+                a(href="/blog.html") Blog
+              li.breadcrumb-item.active(aria-current="page") 15 Signs of Alcoholism
+          h1 Am I an Alcoholic? 15 Honest Signs You Shouldn't Ignore
+          p.lead If you are asking yourself, "Am I an alcoholic?", you have likely already noticed a shift in your relationship with alcohol. Here is how to identify a drinking problem and what to do next.
+          .hero-badges
+            .hero-badge
+              i.bi.bi-calendar3
+              span April 2026
+            .hero-badge
+              i.bi.bi-clock
+              span 8 min read
 
   section.page-section
     .container.px-4.px-lg-5

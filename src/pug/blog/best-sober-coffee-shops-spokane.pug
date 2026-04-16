@@ -65,24 +65,27 @@ block head
 
 block content
 
-  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+  // Hero Section
+  header.page-hero
     .container.px-4.px-lg-5
       .row.justify-content-center
         .col-lg-8
           nav(aria-label="breadcrumb")
             ol.breadcrumb.mb-3
               li.breadcrumb-item
-                a.text-white-50(href="/") Home
+                a(href="/") Home
               li.breadcrumb-item
-                a.text-white-50(href="/blog.html") Blog
-              li.breadcrumb-item.active.text-white(aria-current="page") Best Sober Coffee Shops
-          h1.display-5.fw-bold 7 Best Sober Coffee Shops & Alcohol-Free Hangouts in Spokane
-          p.lead.mt-3.text-white-75 Safe, warm, trigger-free spaces to meet a sponsor, study recovery literature, or just exist peacefully.
-          .small.text-white-50.mt-2
-            i.bi.bi-calendar3.me-1
-            | April 2026 &nbsp;·&nbsp;
-            i.bi.bi-clock.me-1
-            | 5 min read
+                a(href="/blog.html") Blog
+              li.breadcrumb-item.active(aria-current="page") Best Sober Coffee Shops
+          h1 7 Best Sober Coffee Shops & Alcohol-Free Hangouts in Spokane
+          p.lead Safe, warm, trigger-free spaces to meet a sponsor, study recovery literature, or just exist peacefully.
+          .hero-badges
+            .hero-badge
+              i.bi.bi-calendar3
+              span April 2026
+            .hero-badge
+              i.bi.bi-clock
+              span 5 min read
 
   section.page-section
     .container.px-4.px-lg-5

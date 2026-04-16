@@ -66,24 +66,27 @@ block head
 block content
 
   // Article Hero
-  header.bg-primary.text-white.py-5(style="margin-top: 76px;")
+  // Hero Section
+  header.page-hero
     .container.px-4.px-lg-5
       .row.justify-content-center
         .col-lg-8
           nav(aria-label="breadcrumb")
             ol.breadcrumb.mb-3
               li.breadcrumb-item
-                a.text-white-50(href="/") Home
+                a(href="/") Home
               li.breadcrumb-item
-                a.text-white-50(href="/blog.html") Blog
-              li.breadcrumb-item.active.text-white(aria-current="page") Fentanyl Treatment
-          h1.display-5.fw-bold Fentanyl Treatment Spokane WA: Finding Your Path Forward
-          p.lead.mt-3.text-white-75 Expert medical detox, free MAT clinics, and local peer support ready to help you stop using fentanyl today.
-          .small.text-white-50.mt-2
-            i.bi.bi-calendar3.me-1
-            | April 2026 &nbsp;·&nbsp;
-            i.bi.bi-clock.me-1
-            | 7 min read
+                a(href="/blog.html") Blog
+              li.breadcrumb-item.active(aria-current="page") Fentanyl Treatment
+          h1 Fentanyl Treatment Spokane WA: Finding Your Path Forward
+          p.lead Expert medical detox, free MAT clinics, and local peer support ready to help you stop using fentanyl today.
+          .hero-badges
+            .hero-badge
+              i.bi.bi-calendar3
+              span April 2026
+            .hero-badge
+              i.bi.bi-clock
+              span 7 min read
 
   // Article Body
   section.page-section
