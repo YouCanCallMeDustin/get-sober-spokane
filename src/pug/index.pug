@@ -1,6 +1,8 @@
 extends layout.pug
 
-block head
+block meta
+    meta(name="description" content="Get Sober Spokane: Free local addiction recovery resources in Spokane, WA. Find AA/NA meetings, detox, and sober living to help you find your path to sobriety.")
+
     // Page specific preloads
     link(rel='preload', href='assets/img/bg-masthead.mp4', as='video', type='video/mp4')
     // SimpleLightbox plugin CSS
@@ -240,6 +242,40 @@ block content
                     // Add more spacing below the email before the form
                     .mb-4
                     .mb-4
+                    
+                    // FAQ Structured Data (Bing/Copilot Grounding)
+                    script(type="application/ld+json").
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "FAQPage",
+                            "mainEntity": [
+                                {
+                                    "@type": "Question",
+                                    "name": "How do I get started with addiction recovery in Spokane?",
+                                    "acceptedAnswer": {
+                                        "@type": "Answer",
+                                        "text": "The first step is reaching out. Get Sober Spokane offers a free resource directory, live community chat, and peer sponsor matching to help you take that first step at your own pace."
+                                    }
+                                },
+                                {
+                                    "@type": "Question",
+                                    "name": "Are all the resources on Get Sober Spokane free?",
+                                    "acceptedAnswer": {
+                                        "@type": "Answer",
+                                        "text": "Yes. Every resource listed on Get Sober Spokane is free to access. We are a community-run organization with no fees or commercial agenda."
+                                    }
+                                },
+                                {
+                                    "@type": "Question",
+                                    "name": "How do I find an AA or NA meeting in Spokane?",
+                                    "acceptedAnswer": {
+                                        "@type": "Answer",
+                                        "text": "You can browse our resource directory or visit our blog for a complete guide to AA and NA meetings across Spokane, Spokane Valley, and surrounding areas."
+                                    }
+                                }
+                            ]
+                        }
+
                     form#contactForm(action='https://formspree.io/f/xvzwbkdv', method='POST')
 
                         // Name input
