@@ -246,19 +246,19 @@ html(lang="en")
                   a.dropdown-item(href="/donations.html" onclick="gtag('event', 'donate_click', {event_category: 'engagement'})")
                     i.bi.bi-heart.me-2
                     | Donate
-            li.nav-item
-              a.nav-link(href="/dashboard.html") Dashboard
+            //- li.nav-item
+            //-   a.nav-link(href="/dashboard.html") Dashboard
             li.nav-item
               a.nav-link(href="/search.html")
                 i.bi.bi-search
                 span.d-lg-none.ms-2 Search
             li.nav-item
               a.nav-link(href="/blog.html") Blog
-            // Auth navigation
-            li.nav-item(data-auth="guest")
-              a.nav-link#navbarLogin(href="/dashboard.html") Sign In
-            li.nav-item(data-auth="required" style="display:none;")
-              a.nav-link#navbarLogout(href="#") Sign Out
+            //- Auth navigation
+            //- li.nav-item(data-auth="guest")
+            //-   a.nav-link#navbarLogin(href="/dashboard.html") Sign In
+            //- li.nav-item(data-auth="required" style="display:none;")
+            //-   a.nav-link#navbarLogout(href="#") Sign Out
 
     block content
 
