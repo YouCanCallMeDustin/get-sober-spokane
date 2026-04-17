@@ -1,0 +1,662 @@
+extends ../layout
+
+block head
+  - var canonicalUrl = 'https://www.getsoberspokane.com/blog/first-24-hours-without-alcohol.html'
+  title First 24 Hours Without Alcohol: Real Timeline & What to Expect | Sober Spokane
+  meta(name="description" content="What really happens in the first 24 hours without alcohol? Get a real hour-by-hour timeline of withdrawal symptoms, what to expect, and when to seek help in Spokane.")
+
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "First 24 Hours Without Alcohol: Real Timeline & What to Expect",
+      "description": "A detailed hour-by-hour guide to what happens in the first 24 hours without alcohol, covering withdrawal symptoms, emotional changes, and when to seek medical help.",
+      "url": "https://www.getsoberspokane.com/blog/first-24-hours-without-alcohol.html",
+      "datePublished": "2026-04-17",
+      "dateModified": "2026-04-17",
+      "author": {
+        "@type": "Organization",
+        "name": "Get Sober Spokane",
+        "url": "https://www.getsoberspokane.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Get Sober Spokane",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.getsoberspokane.com/assets/img/logo.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.getsoberspokane.com/blog/first-24-hours-without-alcohol.html"
+      }
+    }
+
+  script(type="application/ld+json").
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How long after your last drink do withdrawal symptoms start?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Withdrawal symptoms typically begin 6 to 12 hours after your last drink. Early signs include anxiety, hand tremors, nausea, and insomnia. The severity depends on how much and how long you have been drinking."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you die from alcohol withdrawal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Severe alcohol withdrawal can cause a life-threatening condition called delirium tremens (DTs), which includes seizures, hallucinations, and dangerous spikes in heart rate and blood pressure. Anyone who has been drinking heavily for an extended period should detox under medical supervision."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it safe to quit drinking cold turkey?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For light or moderate drinkers, quitting abruptly is generally safe. However, if you drink daily or heavily, quitting cold turkey can trigger dangerous withdrawal symptoms. Medical detox is strongly recommended for heavy, chronic drinkers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does alcohol withdrawal feel like?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most people describe the first 24 hours as an intense combination of anxiety, restlessness, sweating, nausea, and irritability. Some experience hand tremors, rapid heartbeat, and difficulty sleeping. The severity varies based on drinking history."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I go to the ER for alcohol withdrawal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Go to the ER immediately if you experience seizures, hallucinations, a fever above 101°F, severe confusion, or uncontrollable vomiting. These are signs of severe withdrawal that require emergency medical intervention."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What helps with alcohol withdrawal symptoms at home?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For mild withdrawal, hydration, electrolyte drinks, light nutritious meals, and rest can help. However, home detox should only be attempted for mild cases and ideally with someone monitoring you. Severe withdrawal always requires medical care."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does everyone experience alcohol withdrawal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Withdrawal severity depends on the duration and intensity of drinking. Occasional or light social drinkers typically experience little to no withdrawal. Daily heavy drinkers and those with a long history of alcohol use are at highest risk for significant symptoms."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where can I get help for alcohol withdrawal in Spokane?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Spokane has multiple free and low-cost resources including medical detox through Apple Health (Medicaid), TRIUMPH Treatment Services, Frontier Behavioral Health, and the SAMHSA National Helpline at 1-800-662-4357."
+          }
+        }
+      ]
+    }
+
+block content
+
+  // Hero Section
+  header.page-hero
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+          nav(aria-label="breadcrumb")
+            ol.breadcrumb.mb-3
+              li.breadcrumb-item
+                a(href="/") Home
+              li.breadcrumb-item
+                a(href="/blog.html") Blog
+              li.breadcrumb-item.active(aria-current="page") First 24 Hours Without Alcohol
+          h1 What Happens in the First 24 Hours Without Alcohol? A Real Timeline
+          p.lead The first day without alcohol is the hardest day you will ever love yourself for surviving. Here is exactly what to expect, hour by hour, so nothing catches you off guard.
+          .hero-badges
+            .hero-badge
+              i.bi.bi-calendar3
+              span April 2026
+            .hero-badge
+              i.bi.bi-clock
+              span 10 min read
+
+  // Article Body
+  section.page-section
+    .container.px-4.px-lg-5
+      .row.justify-content-center
+        .col-lg-8
+
+          // TL;DR
+          .card.border-0.bg-light.p-4.mb-4
+            h5.fw-bold TL;DR / Key Takeaways
+            ul.mb-0
+              li
+                strong Hour-by-Hour Timeline:
+                |  Withdrawal symptoms typically begin 6–12 hours after your last drink and peak around 12–24 hours.
+              li
+                strong Physical Symptoms:
+                |  Expect anxiety, tremors, sweating, nausea, elevated heart rate, and insomnia during the first 24 hours without alcohol.
+              li
+                strong Danger Zone:
+                |  Severe withdrawal (seizures, hallucinations, delirium tremens) can be life-threatening. Heavy daily drinkers should never detox alone.
+              li
+                strong Good News:
+                |  For many people, the worst of acute withdrawal passes within 72 hours, and your body begins healing almost immediately.
+              li
+                strong Spokane Help:
+                |  Free medical detox, peer support, and crisis resources are available right now in Spokane—no insurance required.
+
+          // Quick Definition
+          h2.mt-2 Quick Definition
+          p.lead
+            strong The first 24 hours without alcohol
+            |  refers to the initial phase of alcohol cessation during which the body begins to recalibrate after removing a central nervous system depressant. Depending on drinking history, this period may involve mild discomfort or medically significant withdrawal symptoms requiring professional supervision.
+
+          // Table of Contents
+          .mb-5.p-4.bg-light.rounded
+            h4.h5 Table of Contents
+            ul.list-unstyled.mb-0
+              li.mb-2: a(href="#why-it-matters") Why the First 24 Hours Without Alcohol Matter
+              li.mb-2: a(href="#who-this-is-for") Who This Guide Is For
+              li.mb-2: a(href="#timeline") Hour-by-Hour Timeline: What to Expect
+              li.mb-2: a(href="#best-practices") Best Practices That Actually Help You Survive Day One
+              li.mb-2: a(href="#comparison") Mild vs. Moderate vs. Severe Withdrawal
+              li.mb-2: a(href="#mistakes") Common Mistakes (and How to Avoid Them)
+              li.mb-2: a(href="#faq") Frequently Asked Questions
+              li.mb-0: a(href="#conclusion") Your First 24 Hours Start Now
+
+          hr.my-5
+
+          // Section 1: Why It Matters
+          h2#why-it-matters
+            i.bi.bi-lightning-charge.text-primary.me-2
+            | Why the First 24 Hours Without Alcohol Matter
+
+          p Understanding what happens in the **first 24 hours without alcohol** is not about scaring you—it is about removing the fear of the unknown. When you know exactly what your body will do at hour 6, hour 12, and hour 20, you stop interpreting normal withdrawal symptoms as a sign that something is catastrophically wrong.
+
+          p This matters for two critical reasons:
+
+          ul
+            li
+              strong Safety:
+              |  Alcohol is one of only two substances (along with benzodiazepines) where withdrawal can be fatal. Knowing the red flags could save your life.
+            li
+              strong Confidence:
+              |  When you understand the timeline, every passing hour becomes proof that you are getting closer to the other side—not falling apart.
+
+          p According to the
+            a(href="https://www.niaaa.nih.gov/publications/brochures-and-fact-sheets/understanding-alcohol-use-disorder" target="_blank" rel="noopener")  National Institute on Alcohol Abuse and Alcoholism (NIAAA)
+            | , approximately 29.5 million Americans ages 12 and older had Alcohol Use Disorder in 2021. Many of them faced (or will face) this exact first day. You are not alone.
+
+          p If you are already wondering whether your relationship with alcohol has crossed a line, our guide on
+            a(href="/blog/am-i-an-alcoholic-signs.html")  15 honest signs of alcoholism
+            |  can help you assess where you stand before you begin.
+
+          hr.my-5
+
+          // Who This Is For
+          h2#who-this-is-for
+            i.bi.bi-people.text-primary.me-2
+            | Who This Guide Is For
+
+          p This guide is designed for anyone approaching their first full day without alcohol and wanting to know what to expect. Specifically:
+
+          ul
+            li
+              strong The person on Day Zero:
+              |  You had your last drink tonight (or plan to), and you want a map of what is coming.
+            li
+              strong The concerned loved one:
+              |  Your partner, child, or friend is quitting, and you need to know what warning signs to watch for.
+            li
+              strong The "restart" veteran:
+              |  You have been through Day 1 before but never with a clear, detailed plan. This time will be different.
+            li
+              strong The medical professional or peer counselor:
+              |  You want a straightforward, patient-friendly handout for someone about to attempt sobriety.
+
+          .card.border-0.bg-warning.bg-opacity-10.p-4.mb-4
+            h5.fw-bold
+              i.bi.bi-exclamation-triangle.text-warning.me-2
+              | Medical Disclaimer
+            p.mb-0 This article is for educational purposes only and does not replace medical advice. If you are a heavy daily drinker or have a history of seizures, hallucinations, or delirium tremens, 
+              strong do not attempt to detox without medical supervision.
+              |  Call 911 or go to your nearest emergency room.
+
+          hr.my-5
+
+          // Hour-by-Hour Timeline
+          h2#timeline
+            i.bi.bi-clock-history.text-primary.me-2
+            | Hour-by-Hour: The First 24 Hours Without Alcohol
+
+          p Every body is different, and the severity of your symptoms depends on how much, how often, and how long you have been drinking. The timeline below reflects a typical experience for someone with moderate-to-heavy daily alcohol use.
+
+          // Hour 0-2
+          h3 Hours 0–2: The Calm Before the Storm
+          p
+            strong What to expect:
+            |  In the first couple of hours after your last drink, you likely feel normal or even relieved. The alcohol is still being metabolized by your liver, and your blood alcohol content (BAC) is declining slowly.
+          p
+            strong What is happening inside:
+            |  Your liver is working overtime processing ethanol. Your brain, which has been suppressed by alcohol's depressant effects, has not yet realized the supply is being cut off.
+          p
+            strong Pro Tip:
+            |  Use this window to prepare. Hydrate with water and electrolytes. Remove all alcohol from your home. Tell someone you trust what you are doing.
+          p
+            strong Common Pitfall:
+            |  Feeling "fine" and convincing yourself that quitting will be easy—or unnecessary. This calm is temporary.
+
+          // Hour 3-6
+          h3 Hours 3–6: The First Signals
+          p
+            strong What to expect:
+            |  Mild anxiety begins creeping in. You may notice restlessness, slight irritability, or a vague sense of unease. Some people describe it as feeling like they have had too much coffee.
+          p
+            strong What is happening inside:
+            |  Your central nervous system (CNS) is starting to notice the absence of alcohol's depressant effect. Your brain has been producing extra stimulatory neurotransmitters (glutamate) to counterbalance alcohol's daily presence. Without alcohol to dampen them, those neurotransmitters are starting to fire unopposed.
+          p
+            strong Pro Tip:
+            |  Start a simple, repetitive activity—walking, cleaning, organizing. Physical movement helps burn off the excess nervous energy.
+          p
+            strong Common Pitfall:
+            |  Reaching for caffeine. Your CNS is already overstimulated; coffee will make anxiety and tremors worse.
+
+          // Hour 6-12
+          h3 Hours 6–12: Symptoms Become Undeniable
+          p
+            strong What to expect:
+            |  This is where most people first feel genuine discomfort. Common symptoms include:
+          ul
+            li Hand tremors (shaky hands when reaching for a glass of water)
+            li Noticeable sweating, even in a cool room
+            li Nausea or upset stomach
+            li Elevated heart rate (you can feel your pulse)
+            li Increased anxiety or a feeling of "impending doom"
+            li Headache
+          p
+            strong What is happening inside:
+            |  Your autonomic nervous system is now in overdrive. The brain's "accelerator" (excitatory neurotransmitters) is floored, and the "brake" (alcohol) has been removed. This neurochemical imbalance is the engine behind every withdrawal symptom you feel.
+          p
+            strong Pro Tip:
+            |  If tremors are visible or your resting heart rate exceeds 100 bpm, call a medical professional. These are clinical signs that withdrawal is escalating.
+          p
+            strong Common Pitfall:
+            |  Thinking "one drink will take the edge off." It will—for about 45 minutes. Then the cycle resets and the next withdrawal attempt becomes harder.
+
+          // Hour 12-18
+          h3 Hours 12–18: The Peak Begins
+          p
+            strong What to expect:
+            |  For many people, this window is the most physically uncomfortable part of the first 24 hours. Symptoms intensify:
+          ul
+            li Tremors may spread from hands to arms
+            li Insomnia or an inability to rest, despite exhaustion
+            li Profuse sweating and clammy skin
+            li Mood swings—anger, sadness, and anxiety can cycle rapidly
+            li Some people experience mild auditory or visual disturbances (hearing things that are not there, seeing shadows move)
+          p
+            strong What is happening inside:
+            |  Your sympathetic nervous system ("fight or flight") is fully activated. Cortisol and adrenaline are flooding your system. Your body is essentially in survival mode, responding to the chemical crisis caused by the sudden absence of a depressant it had adapted to.
+          p
+            strong Pro Tip:
+            |  This is the moment to lean on your support system. Call your
+            a(href="/sponsor-finder.html")  local sponsor
+            | , a sober friend, or the SAMHSA National Helpline at 1-800-662-4357. You do not have to do this alone.
+          p
+            strong Common Pitfall:
+            |  Isolating yourself. The combination of shame and physical misery makes you want to hide. Fight that instinct—isolation is the most dangerous place to be right now.
+
+          // Hour 18-24
+          h3 Hours 18–24: You Are in the Fight
+          p
+            strong What to expect:
+            |  Symptoms may plateau or continue to intensify depending on your drinking history. At this stage:
+          ul
+            li Anxiety and agitation remain high
+            li Tremors continue but may begin to stabilize for mild-to-moderate cases
+            li Sleep deprivation begins to compound irritability
+            li Cravings may peak—your brain desperately wants the "fix" it has been trained to expect
+            li
+              strong Danger:
+              |  In severe cases, seizures can occur, typically 12–48 hours after the last drink. This is a medical emergency.
+          p
+            strong What is happening inside:
+            |  Your brain is in full neurochemical rebellion. However, for those with mild-to-moderate withdrawal, your body is beginning to establish a new equilibrium. Every hour that passes without alcohol is an hour of literal neurological healing.
+          p
+            strong Pro Tip:
+            |  Focus on small victories. You have made it 24 hours. That is extraordinary. Document how you feel right now so you remember the cost if you ever think about going back.
+          p
+            strong Common Pitfall:
+            |  Assuming you are "past the danger" at hour 24. Severe withdrawal symptoms (including delirium tremens) can emerge 48–72 hours after the last drink. Continue monitoring yourself or having someone check in on you.
+
+          // Survival Checklist
+          h3
+            i.bi.bi-check2-square.text-success.me-2
+            | First 24 Hours Survival Checklist
+
+          .card.border-0.bg-light.p-4.mb-4
+            ul.mb-0
+              li ☐ Remove all alcohol from your home
+              li ☐ Tell at least one person you trust
+              li ☐ Stock up on water, electrolyte drinks (Pedialyte, Gatorade), and bland food
+              li ☐ Have emergency contacts saved: 911 / SAMHSA Helpline (1-800-662-4357)
+              li ☐ Set alarms every 4 hours to eat something small and hydrate
+              li ☐ Prepare a distraction kit: movies, podcasts, books, puzzles
+              li ☐ If you are a heavy daily drinker, arrange medical supervision or go to a detox facility
+              li ☐ Download a sobriety tracking app (I Am Sober, Sober Time)
+              li ☐ Write down your #1 reason for quitting and put it somewhere visible
+
+          hr.my-5
+
+          // Best Practices
+          h2#best-practices
+            i.bi.bi-star-fill.text-warning.me-2
+            | Best Practices That Actually Help You Survive Day One
+
+          p Most online advice about quitting alcohol is frustratingly generic. Here is what actually moves the needle in the first 24 hours, based on recovery community experience and clinical best practices.
+
+          h3 1. Hydrate Aggressively, But Smartly
+          p Alcohol is a diuretic—your body is dehydrated at a cellular level. But do not just chug water. Alternate between water and an electrolyte solution to replace the sodium, potassium, and magnesium your body has been depleting.
+
+          h3 2. Eat, Even If You Do Not Want To
+          p Nausea is common, but an empty stomach will make every other symptom worse. Aim for bland, carb-heavy foods: toast, crackers, bananas, rice. Small portions every 2–3 hours.
+
+          h3 3. Control Your Environment
+          p If your living room is where you usually drink, move to a different room. If your friends text about going out, mute the group chat for 24 hours. Environmental cues are the #1 trigger for relapse in the first day.
+
+          h3 4. Use the "5-5-5" Grounding Technique for Anxiety
+          p When panic hits: name 5 things you can see, 4 you can hear, 3 you can touch, 2 you can smell, and 1 you can taste. This neurological interrupt pulls your brain out of the anxiety spiral and into the present moment.
+
+          h3 5. Do NOT Make Big Decisions
+          p Your brain is in chemical chaos. This is not the day to call your ex, quit your job, or confront someone. Your only job today is to make it through.
+
+          .card.border-0.border-start.border-primary.border-4.bg-light.p-4.mb-4
+            h5.fw-bold
+              i.bi.bi-chat-quote.text-primary.me-2
+              | Expert Note
+            p.mb-0.fst-italic "The first 24 hours are not about willpower. They are about physiology. Your brain is literally recalibrating its chemistry. Be as patient with yourself as you would be with someone recovering from surgery—because neurologically, it is not that different." — Recovery peer counselor, Spokane, WA
+
+          hr.my-5
+
+          // Example / Template
+          h2
+            i.bi.bi-journal-text.text-primary.me-2
+            | Day One Plan: Copy-and-Paste Template
+
+          p Use this template to structure your first 24 hours. Fill it out before your last drink or share it with a loved one who can help you follow it.
+
+          .card.border-0.bg-light.p-4.mb-4
+            pre.mb-0(style="white-space: pre-wrap; font-family: inherit;")
+              | MY FIRST 24-HOUR PLAN
+              |
+              | Date of Last Drink: _______________
+              | Time of Last Drink: _______________
+              |
+              | My #1 Reason for Quitting:
+              | _______________________________________________
+              |
+              | Emergency Contact 1: _____________ (Phone: ___________)
+              | Emergency Contact 2: _____________ (Phone: ___________)
+              |
+              | ER to go to if symptoms get severe: _______________
+              |
+              | HOUR-BY-HOUR CHECK-IN:
+              | [ ] Hour 6 — How do I feel? ________________________
+              | [ ] Hour 12 — Symptoms? Heart rate? ________________
+              | [ ] Hour 18 — Called my support person? _____________
+              | [ ] Hour 24 — I MADE IT. Next step: ________________
+              |
+              | Supplies I Have Ready:
+              | [ ] Water + Electrolytes
+              | [ ] Bland food (toast, crackers, bananas)
+              | [ ] Distraction kit (movies, books, puzzles)
+              | [ ] Phone charged with emergency numbers saved
+              |
+              | Spokane Resources:
+              | SAMHSA Helpline: 1-800-662-4357
+              | WA Recovery Help Line: 1-866-789-1511
+              | Get Sober Spokane: www.getsoberspokane.com
+
+          hr.my-5
+
+          // Comparison Table
+          h2#comparison
+            i.bi.bi-table.text-primary.me-2
+            | Mild vs. Moderate vs. Severe Alcohol Withdrawal
+
+          p Not everyone experiences the first 24 hours the same way. The comparison below helps you identify where you or your loved one may fall on the withdrawal spectrum.
+
+          .table-responsive.mt-4
+            table.table.table-bordered.bg-white
+              thead.bg-light
+                tr
+                  th Feature
+                  th Mild Withdrawal
+                  th Moderate Withdrawal
+                  th Severe Withdrawal
+              tbody
+                tr
+                  td **Typical Drinker Profile**
+                  td Social/occasional heavy drinker
+                  td Daily drinker, several drinks/day
+                  td Long-term heavy drinker (years)
+                tr
+                  td **Onset**
+                  td 6–12 hours
+                  td 6–12 hours
+                  td 6–24 hours
+                tr
+                  td **Primary Symptoms**
+                  td Anxiety, mild tremor, insomnia
+                  td Sweating, nausea, visible tremors, rapid pulse
+                  td Seizures, hallucinations, delirium tremens
+                tr
+                  td **Risk Level**
+                  td Low – manageable at home with support
+                  td Moderate – medical evaluation recommended
+                  td HIGH – medical emergency, inpatient detox required
+                tr
+                  td **Recommended Setting**
+                  td Home with a sober buddy
+                  td Outpatient medical supervision
+                  td Hospital or inpatient detox facility
+                tr
+                  td **Duration of Acute Phase**
+                  td 24–48 hours
+                  td 48–72 hours
+                  td 3–7+ days
+                tr
+                  td **Medication Likely?**
+                  td Rarely
+                  td Often (benzodiazepines, anti-nausea)
+                  td Almost always
+
+          p If you believe you fall into the moderate or severe category, Spokane has
+            a(href="/blog/free-addiction-help-spokane.html")  free addiction treatment resources
+            |  that can connect you with medical detox at no cost through Apple Health (Medicaid).
+
+          hr.my-5
+
+          // Common Mistakes
+          h2#mistakes
+            i.bi.bi-x-octagon-fill.text-danger.me-2
+            | Common Mistakes in the First 24 Hours (and How to Avoid Them)
+
+          ol.mt-4
+            li.mb-3
+              strong Mistake: Quitting cold turkey without a medical assessment.
+              br
+              strong Fix:
+              |  If you drink daily, see a doctor 
+                em before
+              |  your last drink. A quick evaluation can determine whether you need medication-assisted detox. Learn about
+              a(href="/blog/medication-assisted-treatment-spokane.html")  medication-assisted treatment in Spokane
+              | .
+            li.mb-3
+              strong Mistake: Telling no one what you are doing.
+              br
+              strong Fix:
+              |  Withdrawal can be medically dangerous. At minimum, tell one person who can check on you every few hours.
+            li.mb-3
+              strong Mistake: Relying on willpower alone.
+              br
+              strong Fix:
+              |  Willpower is not a medical intervention. Structure your environment: remove alcohol, avoid triggers, have a physical plan (food, water, distractions).
+            li.mb-3
+              strong Mistake: Substituting with other substances.
+              br
+              strong Fix:
+              |  Swapping alcohol for cannabis, benzodiazepines (without a prescription), or other drugs creates a new dependency. If you need anxiety relief, call a medical provider.
+            li.mb-3
+              strong Mistake: Assuming the worst is over at hour 24.
+              br
+              strong Fix:
+              |  Peak withdrawal symptoms often hit between 24–72 hours. Delirium tremens can appear at 48–96 hours. Stay vigilant through at least day three.
+            li.mb-3
+              strong Mistake: Not having a "what's next" plan.
+              br
+              strong Fix:
+              |  Day 1 is just the door. Without a recovery plan for days 2–30 (meetings, counseling, peer support), the relapse rate skyrockets. Check our
+              a(href="/blog/aa-na-meetings-spokane.html")  Spokane AA & NA meetings guide
+              |  to line up community support.
+
+          hr.my-5
+
+          // FAQ
+          h2#faq.mt-5
+            i.bi.bi-question-circle.text-primary.me-2
+            | Frequently Asked Questions
+
+          .accordion.mt-4#faqAccordion
+            .accordion-item
+              h2.accordion-header#faqHeading1
+                button.accordion-button(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1" aria-expanded="true" aria-controls="faqCollapse1")
+                  | How long after your last drink do withdrawal symptoms start?
+              #faqCollapse1.accordion-collapse.collapse.show(aria-labelledby="faqHeading1" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Withdrawal symptoms typically begin 6 to 12 hours after your last drink. Early signs include anxiety, hand tremors, nausea, and insomnia. The severity depends on how much and how long you have been drinking.
+
+            .accordion-item
+              h2.accordion-header#faqHeading2
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2" aria-expanded="false" aria-controls="faqCollapse2")
+                  | Can you die from alcohol withdrawal?
+              #faqCollapse2.accordion-collapse.collapse(aria-labelledby="faqHeading2" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Yes. Severe alcohol withdrawal can cause a life-threatening condition called delirium tremens (DTs), which includes seizures, hallucinations, and dangerous spikes in heart rate and blood pressure. Anyone who has been drinking heavily for an extended period should detox under medical supervision.
+
+            .accordion-item
+              h2.accordion-header#faqHeading3
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3" aria-expanded="false" aria-controls="faqCollapse3")
+                  | Is it safe to quit drinking cold turkey?
+              #faqCollapse3.accordion-collapse.collapse(aria-labelledby="faqHeading3" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | For light or moderate drinkers, quitting abruptly is generally safe. However, if you drink daily or heavily, quitting cold turkey can trigger dangerous withdrawal symptoms. Medical detox is strongly recommended for heavy, chronic drinkers.
+
+            .accordion-item
+              h2.accordion-header#faqHeading4
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse4" aria-expanded="false" aria-controls="faqCollapse4")
+                  | What does alcohol withdrawal feel like?
+              #faqCollapse4.accordion-collapse.collapse(aria-labelledby="faqHeading4" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Most people describe the first 24 hours as an intense combination of anxiety, restlessness, sweating, nausea, and irritability. Some experience hand tremors, rapid heartbeat, and difficulty sleeping. The severity varies based on drinking history.
+
+            .accordion-item
+              h2.accordion-header#faqHeading5
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse5" aria-expanded="false" aria-controls="faqCollapse5")
+                  | Should I go to the ER for alcohol withdrawal?
+              #faqCollapse5.accordion-collapse.collapse(aria-labelledby="faqHeading5" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Go to the ER immediately if you experience seizures, hallucinations, a fever above 101°F, severe confusion, or uncontrollable vomiting. These are signs of severe withdrawal that require emergency medical intervention.
+
+            .accordion-item
+              h2.accordion-header#faqHeading6
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse6" aria-expanded="false" aria-controls="faqCollapse6")
+                  | What helps with alcohol withdrawal symptoms at home?
+              #faqCollapse6.accordion-collapse.collapse(aria-labelledby="faqHeading6" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | For mild withdrawal, hydration, electrolyte drinks, light nutritious meals, and rest can help. However, home detox should only be attempted for mild cases and ideally with someone monitoring you. Severe withdrawal always requires medical care.
+
+            .accordion-item
+              h2.accordion-header#faqHeading7
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse7" aria-expanded="false" aria-controls="faqCollapse7")
+                  | Does everyone experience alcohol withdrawal?
+              #faqCollapse7.accordion-collapse.collapse(aria-labelledby="faqHeading7" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | No. Withdrawal severity depends on the duration and intensity of drinking. Occasional or light social drinkers typically experience little to no withdrawal. Daily heavy drinkers and those with a long history of alcohol use are at highest risk for significant symptoms.
+
+            .accordion-item
+              h2.accordion-header#faqHeading8
+                button.accordion-button.collapsed(type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse8" aria-expanded="false" aria-controls="faqCollapse8")
+                  | Where can I get help for alcohol withdrawal in Spokane?
+              #faqCollapse8.accordion-collapse.collapse(aria-labelledby="faqHeading8" data-bs-parent="#faqAccordion")
+                .accordion-body
+                  | Spokane has multiple free and low-cost resources including medical detox through Apple Health (Medicaid), TRIUMPH Treatment Services, Frontier Behavioral Health, and the
+                  a(href="https://www.samhsa.gov/find-help/national-helpline" target="_blank" rel="noopener")  SAMHSA National Helpline
+                  |  at 1-800-662-4357. Visit our
+                  a(href="/blog/free-addiction-help-spokane.html")  free addiction help guide
+                  |  for the full list.
+
+          hr.my-5
+
+          // Conclusion + CTA
+          h2#conclusion.mt-5
+            i.bi.bi-sun.text-warning.me-2
+            | Your First 24 Hours Without Alcohol Start Now
+
+          p The **first 24 hours without alcohol** are going to be uncomfortable. There is no sugarcoating that. But they are also the most consequential hours of your recovery—because they are the ones where you prove to yourself that you can choose differently. Every symptom you endure is your body healing from something that was slowly destroying it. The anxiety, the tremors, the sleeplessness—they are not signs of weakness. They are signs of your nervous system coming back online without a chemical crutch.
+
+          p You do not need to have a perfect plan. You do not need to have your whole life figured out. You just need to survive today, and Spokane has every resource you need to do that safely.
+
+          p If you are in crisis right now, call **1-800-662-4357** (SAMHSA National Helpline, free and confidential, 24/7). If you want local, in-person support, start with our
+            a(href="/blog/aa-na-meetings-spokane.html")  Spokane AA & NA meetings guide
+            |  or
+            a(href="/blog/free-addiction-help-spokane.html")  free addiction help resources
+            | .
+
+          .card.border-0.shadow.text-center.p-5.mb-4(style="border-radius: 16px; background: linear-gradient(135deg, #0d6efd11 0%, #0d6efd22 100%);")
+            i.bi.bi-heart-pulse.display-4.text-primary.mb-3
+            h3.fw-bold You Deserve to Feel This Day Sober.
+            p.text-muted.mb-4
+              | The hardest part of recovery is the first step. Here is yours.
+            .d-flex.flex-wrap.gap-3.justify-content-center
+              a.btn.btn-primary.btn-lg(href="/blog/aa-na-meetings-spokane.html")
+                i.bi.bi-search.me-2
+                | Find a Meeting Today
+              a.btn.btn-outline-primary.btn-lg(href="/sponsor-finder.html")
+                i.bi.bi-person-heart.me-2
+                | Get a Sponsor
+              a.btn.btn-success.btn-lg(href="/blog/free-addiction-help-spokane.html")
+                i.bi.bi-cash-stack.me-2
+                | Free Help Resources
+
+          // About the Author
+          .d-flex.align-items-center.mt-5.pt-4.border-top
+            .flex-shrink-0
+              img.rounded-circle(src="/assets/img/logo.png" alt="Get Sober Spokane Logo" width="64" height="64")
+            .flex-grow-1.ms-3
+              h5.mb-1 About the Author
+              p.small.mb-1 Written by the
+                strong  Get Sober Spokane Editorial Team
+                |  in collaboration with local recovery professionals and peer counselors in Spokane, WA.
+              p.small.text-muted.mb-0
+                strong Last updated:
+                |  April 17, 2026
+
+          // Sources
+          .mt-5.pt-4.border-top
+            h5.fw-bold Sources
+            ol.small
+              li
+                a(href="https://www.niaaa.nih.gov/publications/brochures-and-fact-sheets/understanding-alcohol-use-disorder" target="_blank" rel="noopener") National Institute on Alcohol Abuse and Alcoholism (NIAAA) — Understanding Alcohol Use Disorder
+              li
+                a(href="https://www.samhsa.gov/find-help/national-helpline" target="_blank" rel="noopener") SAMHSA National Helpline — Free Treatment Referral Service
