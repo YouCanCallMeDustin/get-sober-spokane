@@ -4,6 +4,8 @@ const fs = require('fs');
 const packageJSON = require('../package.json');
 const upath = require('upath');
 const postcss = require('postcss')
+const cssnano = require('cssnano');
+const purgecss = require('@fullhuman/postcss-purgecss');
 const sass = require('sass');
 const sh = require('shelljs');
 
@@ -38,7 +40,13 @@ ${scssContent}`;
             sh.mkdir('-p', destPathDirname);
         }
 
-        postcss([ autoprefixer ]).process(results.css, {from: 'styles.css', to: 'styles.css'}).then(result => {
+        const purgecssPlugin = purgecss({
+            content: [upath.resolve(upath.dirname(__filename), '../docs/**/*.html')],
+            safelist: [/dropdown/, /modal/, /fade/, /show/, /collapse/], 
+            defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
+        });
+
+        postcss([ autoprefixer, purgecssPlugin, cssnano({preset: 'default'}) ]).process(results.css, {from: 'styles.css', to: 'styles.css'}).then(result => {
             result.warnings().forEach(warn => {
                 console.warn(warn.toString())
             })

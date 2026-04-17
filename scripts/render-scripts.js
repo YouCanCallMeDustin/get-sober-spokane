@@ -3,8 +3,9 @@ const fs = require('fs');
 const packageJSON = require('../package.json');
 const upath = require('upath');
 const sh = require('shelljs');
+const terser = require('terser');
 
-module.exports = function renderScripts() {
+module.exports = async function renderScripts() {
 
     const sourcePath = upath.resolve(upath.dirname(__filename), '../src/js');
     const destPath = upath.resolve(upath.dirname(__filename), '../docs/.');
@@ -30,13 +31,19 @@ module.exports = function renderScripts() {
 */
 `
 
-    jsFiles.forEach(filename => {
+    for (const filename of jsFiles) {
         const sourcePathJS = upath.resolve(upath.dirname(__filename), `../src/js/${filename}`);
         const destPathJS = upath.resolve(upath.dirname(__filename), `../docs/js/${filename}`);
         
         if (fs.existsSync(sourcePathJS)) {
-            const jsContent = fs.readFileSync(sourcePathJS);
-            fs.writeFileSync(destPathJS, copyright + jsContent);
+            const jsContent = fs.readFileSync(sourcePathJS, 'utf8');
+            try {
+                const minified = await terser.minify(jsContent);
+                fs.writeFileSync(destPathJS, copyright + minified.code);
+            } catch (error) {
+                console.error(`Error minifying ${filename}:`, error);
+                fs.writeFileSync(destPathJS, copyright + jsContent);
+            }
         }
-    });
+    }
 };
