@@ -18,8 +18,8 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-site-verification" content="yVFofJG3SElxFm9kuw9zPfuKQXLn7a3sW7zt2thnCho" />
-        <link rel="preload" as="image" href="/assets/img/logo.png" />
-        <link rel="icon" href="/assets/img/logo.png" type="image/png" />
+        <link rel="preload" as="image" href="/assets/img/logo.webp" />
+        <link rel="icon" href="/assets/img/logo.webp" type="image/webp" />
         <link rel="apple-touch-icon" href="/assets/img/logo.png" />
         <title>Get Sober Spokane - Recovery Support Community</title>
         <meta name="description" content="Get Sober Spokane: Free addiction recovery support and local resources in Spokane, WA. Join our community for help with sobriety, healing, and lasting recovery." />
@@ -61,8 +61,10 @@
         <!-- Bootstrap Icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700&amp;display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic&amp;display=swap" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="/css/styles.css?v=1756691269000" rel="stylesheet" />
         <style>
@@ -163,7 +165,7 @@
         <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand d-flex align-items-center" href="/">
-                    <img class="logo" src="/assets/img/logo.png" alt="Get Sober Spokane Logo" />
+                    <img class="logo" src="/assets/img/logo.webp" alt="Get Sober Spokane Logo" width="150" height="38" style="object-fit: contain" />
                     <span class="ms-2">Get Sober Spokane</span>
                 </a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -400,7 +402,7 @@
                 <div class="row gx-5">
                     <!-- Column 1: Brand & Mission-->
                     <div class="col-lg-3 mb-5 mb-lg-0">
-                        <a href="/"><img class="footer-logo" src="/assets/img/logo.png" alt="Get Sober Spokane Logo" loading="lazy" /></a>
+                        <a href="/"><img class="footer-logo" src="/assets/img/logo.webp" alt="Get Sober Spokane Logo" loading="lazy" width="300" height="128" style="object-fit: contain" /></a>
                         <p class="small text-muted pe-lg-4">Empowering individuals in Spokane and surrounding areas to find lasting recovery through community support, verified resources, and professional connection.</p>
                         <div class="social-links">
                             <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
@@ -477,14 +479,14 @@
             </div>
         </footer>
         <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <!-- Supabase and Auth Scripts (UMD build for window.supabase)-->
         <!-- Inject environment values for frontend consumption-->
-        <script src="/env.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
-        <script src="/js/config.js?v=1756691269000"></script>
-        <script src="/js/auth.js?v=1756691269000"></script>
+        <script defer src="/env.js"></script>
+        <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+        <script defer src="/js/config.js?v=1756691269000"></script>
+        <script defer src="/js/auth.js?v=1756691269000"></script>
         <!-- Initialize Bootstrap dropdowns for navigation-->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
