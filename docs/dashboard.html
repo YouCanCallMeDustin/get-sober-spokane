@@ -229,15 +229,9 @@
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Community</a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" href="/sponsor-finder.html">
-                                        <i class="bi bi-person-heart me-2"></i>
-                                        Find a Sponsor
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="/chat.html">
-                                        <i class="bi bi-chat-dots me-2"></i>
-                                        Live Chat
+                                    <a class="dropdown-item" href="/community-forum.html">
+                                        <i class="bi bi-people me-2"></i>
+                                        Community Forum
                                     </a>
                                 </li>
                                 <li>
@@ -469,9 +463,9 @@
                                                     <i class="bi bi-people me-2"></i>
                                                     Visit Forum
                                                 </a>
-                                                <a class="btn btn-outline-info btn-sm" href="/chat" onclick="gtag('event', 'chat_click', {event_category: 'engagement', event_label: 'chat_dashboard'})">
-                                                    <i class="bi bi-chat-dots me-2"></i>
-                                                    Join Live Chat
+                                                <a class="btn btn-outline-info btn-sm" href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})">
+                                                    <i class="bi bi-people me-2"></i>
+                                                    Visit Community Forum
                                                 </a>
                                             </div>
                                         </div>
@@ -523,13 +517,13 @@
                                             <div class="action-icon"><i class="bi bi-people"></i></div>
                                             <div class="action-text">Community Forum</div>
                                         </a>
-                                        <a class="quick-action-btn" href="/chat" onclick="gtag('event', 'chat_click', {event_category: 'engagement', event_label: 'chat_dashboard'})">
-                                            <div class="action-icon"><i class="bi bi-chat-dots"></i></div>
-                                            <div class="action-text">Live Chat</div>
+                                        <a class="quick-action-btn" href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})">
+                                            <div class="action-icon"><i class="bi bi-people"></i></div>
+                                            <div class="action-text">Community Forum</div>
                                         </a>
-                                        <a class="quick-action-btn" href="/sponsor-finder.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'sponsor_dashboard'})">
-                                            <div class="action-icon"><i class="bi bi-person-heart"></i></div>
-                                            <div class="action-text">Partner Finder</div>
+                                        <a class="quick-action-btn" href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'treatment_dashboard'})">
+                                            <div class="action-icon"><i class="bi bi-heart-pulse"></i></div>
+                                            <div class="action-text">Treatment & Support</div>
                                         </a>
                                         <a class="quick-action-btn" id="viewProfileLink" href="#" style="display: none">
                                             <div class="action-icon"><i class="bi bi-person"></i></div>
@@ -827,7 +821,7 @@
 
                 // Add connection button
                 document.getElementById('addConnectionBtn').addEventListener('click', function () {
-                    window.location.href = '/sponsor-finder.html';
+                    window.location.href = '/addiction-treatments-support.html';
                 });
 
                 // Sign-in form

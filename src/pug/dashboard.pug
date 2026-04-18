@@ -157,9 +157,9 @@ block content
                       a.btn.btn-outline-primary.btn-sm(href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})")
                         i.bi.bi-people.me-2
                         | Visit Forum
-                      a.btn.btn-outline-info.btn-sm(href="/chat" onclick="gtag('event', 'chat_click', {event_category: 'engagement', event_label: 'chat_dashboard'})")
-                        i.bi.bi-chat-dots.me-2
-                        | Join Live Chat
+                      a.btn.btn-outline-info.btn-sm(href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})")
+                        i.bi.bi-people.me-2
+                        | Visit Community Forum
 
     
     // Milestone Modal
@@ -198,14 +198,14 @@ block content
                     .action-icon
                       i.bi.bi-people
                     .action-text Community Forum
-                  a.quick-action-btn(href="/chat" onclick="gtag('event', 'chat_click', {event_category: 'engagement', event_label: 'chat_dashboard'})")
+                  a.quick-action-btn(href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})")
                     .action-icon
-                      i.bi.bi-chat-dots
-                    .action-text Live Chat
-                  a.quick-action-btn(href="/sponsor-finder.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'sponsor_dashboard'})")
+                      i.bi.bi-people
+                    .action-text Community Forum
+                  a.quick-action-btn(href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'treatment_dashboard'})")
                     .action-icon
-                      i.bi.bi-person-heart
-                    .action-text Partner Finder
+                      i.bi.bi-heart-pulse
+                    .action-text Treatment & Support
                   a.quick-action-btn#viewProfileLink(href="#" style="display: none;")
                     .action-icon
                       i.bi.bi-person
@@ -356,7 +356,7 @@ block scripts
       
       // Add connection button
       document.getElementById('addConnectionBtn').addEventListener('click', function() {
-        window.location.href = '/sponsor-finder.html';
+        window.location.href = '/addiction-treatments-support.html';
       });
       
       // Sign-in form
