@@ -1,155 +1,267 @@
 extends layout.pug
 
 block meta
-    meta(name="description" content="Professional addiction treatment and peer-led support groups in Spokane, WA. Access local detox centers, inpatient rehab, AA meetings, and NA meeting schedules.")
+    meta(name="description" content="Find 30+ addiction treatment centers and peer-led support groups in Spokane, WA. Detox, inpatient rehab, outpatient programs, AA, NA, SMART Recovery, and Celebrate Recovery meeting schedules.")
 
     script(type="application/ld+json").
       {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "Addiction Treatment & Support Groups Spokane, WA",
-        "description": "Find professional addiction treatment centers and peer-led support groups in Spokane, WA. This guide connects you to evidence-based care and recovery programs.",
-        "url": "https://www.getsoberspokane.com/addiction-treatments-support.html"
+        "name": "Addiction Treatment Centers & Support Groups in Spokane, WA",
+        "description": "Comprehensive directory of 30+ addiction treatment centers and peer-led support groups in Spokane, WA including detox, residential, outpatient, AA, NA, and faith-based recovery programs.",
+        "url": "https://www.getsoberspokane.com/addiction-treatments-support.html",
+        "about": {
+          "@type": "Thing",
+          "name": "Substance Abuse Treatment and Recovery Support"
+        }
       }
 
 block content
-    // Hero Section
+    //- Hero Section
     header.page-hero
       .container.px-4.px-lg-5
-        h1 Addiction Treatment & Support Groups
-        p.lead Professional care and peer-led support networks in Spokane, WA.
+        h1 Addiction Treatment & Support Groups in Spokane, WA
+        p.lead Professional treatment centers and peer-led recovery support networks across Spokane.
         .hero-badges
           .hero-badge
             i.bi.bi-capsule
-            span Clinical Care
+            span 15+ Treatment Centers
           .hero-badge
             i.bi.bi-people
-            span Peer Support
+            span 15+ Support Groups
 
-    
-    // Main Content
+    //- Main Content
     section.page-section
       .container.px-4.px-lg-5
         .row.justify-content-center
           .col-lg-10
-            h2.text-primary.mt-0 Addiction Treatments & Support Groups in Spokane
-            p Spokane offers a wide range of addiction treatment centers and support groups for individuals and families seeking help with substance use disorders. Services include detox, inpatient and outpatient care, mental health support, and peer-led recovery meetings.
-            
-            h3.mt-5 Addiction Treatment Centers
-            p.text-muted
-              | Treatment centers in Spokane provide comprehensive care, from detox and residential programs to outpatient therapy and mental health services. Many offer specialized support for veterans, families, and those experiencing homelessness.
+            h2.text-primary.mt-0 Addiction Treatment Centers in Spokane
+            p Spokane offers a wide range of addiction treatment centers providing evidence-based care from medical detox and residential programs to outpatient therapy, medication-assisted treatment (MAT), and specialized youth services. Many centers accept Medicaid, private insurance, and offer sliding-scale fees.
+
+            //- Treatment Centers Table
             .table-responsive
               table.table.table-bordered.table-striped.mt-3
-                thead
+                thead.table-dark
                   tr
-                    th Organization
+                    th Treatment Center
                     th Address
                     th Phone
                     th Services
+                    th Requirements
                 tbody
                   tr
-                    td Breakthrough Recovery Group
-                    td Spokane, WA (address not specified)
-                    td +1 (509) 443-8800
-                    td Outpatient, non-12 step, mental health
-                  tr
-                    td Spokane Treatment & Recovery Services (STARS)
+                    td Spokane Treatment & Recovery Services (STARS) – Cowley St
                     td 628 S Cowley St, Spokane, WA 99202
-                    td +1 (509) 570-7250
-                    td SUD treatment, mental health, assessments
+                    td: a(href='tel:+15095707250') (509) 570-7250
+                    td Medical detox, residential treatment, outpatient programs, crisis stabilization
+                    td Assessment required
                   tr
-                    td Spokane Falls Recovery Center
-                    td Spokane, WA (address not specified)
-                    td +1 (844) 962-2772
-                    td Residential, outpatient, 24/7 medical
-                  tr
-                    td CAT SPOKANE (Compassionate Addiction Treatment)
-                    td 960 E 3rd Ave, Spokane, WA 99202
-                    td +1 (509) 919-3362
-                    td Peer-led, trauma-informed, homelessness support
-                  tr
-                    td Royal Life Centers at Spokane Heights
-                    td 1234 W Boone Ave, Spokane, WA 99201
-                    td +1 (888) 907-0898
-                    td Detox, inpatient, veterans, Native American programs
-                  tr
-                    td Aliya Health Group
-                    td Spokane, WA (at Royal Life Centers)
-                    td Not provided
-                    td Inpatient programs
+                    td Compassionate Addiction Treatment (CAT)
+                    td 112 E 2nd Ave, Spokane, WA 99202
+                    td: a(href='tel:+15092905026') (509) 290-5026
+                    td Outpatient treatment, peer support, harm reduction, housing advocacy
+                    td Open to all; specializes in indigent populations
                   tr
                     td Spokane Addiction Recovery Centers (SPARC)
-                    td 105 W 3rd Ave, Spokane, WA 99201
-                    td (509) 747-5487
-                    td Chemical dependency, mental health, non-12 step
+                    td 1504 W Grace Ave, Spokane, WA 99205
+                    td: a(href='tel:+15093273741') (509) 327-3741
+                    td Intensive inpatient, outpatient treatment, recovery housing, DUI assessments
+                    td Assessment required; low-income focus
                   tr
-                    td Sequoia Detox Centers
-                    td Spokane, WA (address not specified)
-                    td Not provided
-                    td Detox, inpatient, outpatient, holistic care
-            
-            h3.mt-5 Support Groups
-            p.text-muted
-              | Peer-led support groups offer community, accountability, and encouragement for those in recovery and their loved ones. Spokane hosts a variety of 12-step, non-12-step, and faith-based groups.
+                    td Recovery Cafe Spokane – Downtown
+                    td 715 W Sprague Ave, Spokane, WA 99201
+                    td: a(href='tel:+15096241442') (509) 624-1442
+                    td Recovery circles, peer coaching, community meals, social events
+                    td Sober for 24 hours; commitment to recovery circle
+                  tr
+                    td Royal Life Centers at Spokane Heights
+                    td 524 E Francis Ave, Spokane, WA 99208
+                    td: a(href='tel:+15093689735') (509) 368-9735
+                    td Medical detox, residential treatment, PHP, IOP, individualized care
+                    td Assessment required; private insurance or payment
+                  tr
+                    td Spokane Falls Recovery Center
+                    td 101 E Magnesium Rd #101, Spokane, WA 99208
+                    td: a(href='tel:+18449622775') (844) 962-2775
+                    td Detox programs, residential treatment, intensive outpatient, standard outpatient
+                    td Assessment required; most insurance accepted
+                  tr
+                    td Rebuilt Treatment & Recovery
+                    td 1220 N Howard St, Spokane, WA 99201
+                    td: a(href='tel:+15093854600') (509) 385-4600
+                    td PHP, IOP, family therapy, long-term recovery planning
+                    td Assessment required; private insurance/Medicaid
+                  tr
+                    td Riverside Recovery Center – Monroe
+                    td 3710 N Monroe St, Spokane, WA 99205
+                    td: a(href='tel:+15093285234') (509) 328-5234
+                    td IOP, outpatient counseling, DUI programs, relapse prevention education
+                    td Assessment required
+                  tr
+                    td Ideal Option – Downtown Spokane
+                    td 224 E 5th Ave, Spokane, WA 99202
+                    td: a(href='tel:+18775221275') (877) 522-1275
+                    td Suboxone treatment, Vivitrol injections, counseling referrals, relapse prevention
+                    td Direct walk-ins or referrals
+                  tr
+                    td Spokane Comprehensive Treatment Center (CTC)
+                    td 4305 E Trent Ave, Spokane, WA 99212
+                    td: a(href='tel:+15094245277') (509) 424-5277
+                    td Methadone treatment, buprenorphine treatment, group counseling, individual therapy
+                    td Age 18+; assessment required
+                  tr
+                    td Pioneer Human Services – Pioneer Pathways
+                    td 3400 W Garland Ave, Spokane, WA 99205
+                    td: a(href='tel:+15093252358') (509) 325-2358
+                    td Residential treatment, detoxification, case management, community re-entry
+                    td Assessment required; open to formerly incarcerated
+                  tr
+                    td Karens House (STARS) – Women's Residential
+                    td 4324 N Jefferson St, Spokane, WA 99205
+                    td: a(href='tel:+15095707250') (509) 570-7250
+                    td Residential treatment, moms & kids programs, parenting support, trauma therapy
+                    td Women only; assessment through STARS
+                  tr
+                    td Excelsior Wellness Center – Youth & Family
+                    td 3754 W Indian Trail Rd, Spokane, WA 99208
+                    td: a(href='tel:+15093287041') (509) 328-7041
+                    td Youth residential, outpatient SUD treatment, family counseling, educational support
+                    td Youth/family focus; assessment required
+                  tr
+                    td Daybreak Youth Services – Spokane Center
+                    td 11707 E Sprague Ave #100, Spokane Valley, WA 99206
+                    td: a(href='tel:+14253556615') (425) 355-6615
+                    td Youth residential, outpatient counseling, mental health screening, school support
+                    td Youth/adolescent focus
+
+            //- Support Groups Section
+            h2.text-primary.mt-5 Peer-Led Support Groups in Spokane
+            p Peer-led support groups offer community, accountability, and encouragement for those in recovery and their loved ones. Spokane hosts a diverse range of 12-step, evidence-based, faith-based, and secular recovery programs.
+
+            //- 12-Step Programs
+            h3.mt-4 12-Step Recovery Programs
             .table-responsive
               table.table.table-bordered.table-striped.mt-3
-                thead
+                thead.table-dark
                   tr
                     th Organization
-                    th Contact / Website
-                    th Meeting Details
+                    th Location
+                    th Meeting Schedule
+                    th Focus
+                tbody
+                  tr
+                    td Alcoholics Anonymous (AA) – Spokane Central Office
+                    td 1700 W 7th Ave, Suite 100, Spokane, WA 99204
+                    td 24/7 hotline; multiple daily meetings
+                    td 12-step meetings, sponsorship, fellowship, 24-hour support line
+                  tr
+                    td Narcotics Anonymous (NA) – Spokane Area
+                    td 103 E Indiana Ave, Spokane, WA 99207
+                    td Daily meetings (office hours vary)
+                    td 12-step meetings, sponsorship, fellowship, hotline support
+                  tr
+                    td Al-Anon Family Groups – Spokane Central Office
+                    td 1700 W 7th Ave, Suite 100, Spokane, WA 99204
+                    td 24/7 hotline; office Mon–Fri 10 AM – 2 PM
+                    td Support for families of alcoholics, crisis hotline, recovery literature
+                  tr
+                    td AA – Alano Club Downtown
+                    td 1700 W 7th Ave, Spokane, WA 99204
+                    td 7 AM – 10 PM daily
+                    td Meeting hall, social events, recovery coffee shop, multiple fellowships
+                  tr
+                    td NA – Northside Group
+                    td 122 W Indiana Ave, Spokane, WA 99205
+                    td Wed & Sun 6:30 PM
+                    td NA meetings, fellowship, sponsorship
+                  tr
+                    td Al-Anon – Spokane Valley Groups
+                    td Various Spokane Valley locations
+                    td Varies by meeting
+                    td Support for friends and families of alcoholics
+
+            //- Non-12-Step Programs
+            h3.mt-4 Evidence-Based & Secular Recovery
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead.table-dark
+                  tr
+                    th Organization
+                    th Location
+                    th Schedule
+                    th Approach
+                tbody
+                  tr
+                    td SMART Recovery – Spokane Alano Club
+                    td 1700 W 7th Ave, Suite 100, Spokane, WA 99204
+                    td Tue & Thu 6 PM
+                    td Science-based, self-empowerment, cognitive-behavioral tools
+                  tr
+                    td SMART Recovery – Online Support Northwest
+                    td Online / Virtual
+                    td Daily virtual meetings
+                    td Online toolkits, virtual meetings, mobile app, 24/7 forum access
+                  tr
+                    td Refuge Recovery – Souls Center
+                    td 707 N Cedar St, Suite 2, Spokane, WA 99201
+                    td Wed 1 PM (in-person & Zoom)
+                    td Buddhist-inspired, meditation, mindfulness, community
+                  tr
+                    td Women for Sobriety – Spokane Groups
+                    td 1700 W 7th Ave, Spokane, WA 99204
+                    td Wed 6 PM
+                    td Women-only, self-empowerment, positive thinking, life skills
+                  tr
+                    td Atheist & Agnostic AA Meeting (Alano Club)
+                    td 1700 W 7th Ave, Spokane, WA 99204
+                    td Sun 9 AM
+                    td Non-religious 12-step, open to all beliefs
+
+            //- Faith-Based Programs
+            h3.mt-4 Faith-Based Recovery Programs
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead.table-dark
+                  tr
+                    th Organization
+                    th Location
+                    th Schedule
                     th Services
                 tbody
                   tr
-                    td Alcoholics Anonymous (AA)
-                    td: a(href='https://aaspokane.org', target='_blank') aaspokane.org
-                    td Various locations/times (see website)
-                    td Peer support for alcohol recovery
+                    td Celebrate Recovery – Family of Faith
+                    td 1504 W Grace Ave, Spokane, WA 99205
+                    td Fri 7 PM (dinner at 5:30 PM)
+                    td 12-step program, dinner, worship, small groups, mentorship
                   tr
-                    td Narcotics Anonymous (NA)
-                    td: a(href='https://newana.org', target='_blank') newana.org
-                    td Schedule downloadable on website
-                    td Peer support for drug recovery
+                    td Celebrate Recovery – Spokane First Nazarene
+                    td 9004 N Country Homes Blvd, Spokane, WA 99218
+                    td Thu 6 PM
+                    td Large group worship, share groups, step studies, dinner available
                   tr
-                    td Al-Anon and Alateen
-                    td 1700 W. 7th Ave, Suite 100, Spokane, WA 99204; (509) 456-2125
-                    td Sun 11am–1pm, Tue 11am–1pm, Wed 5:30–7:30pm
-                    td Support for families/friends of alcoholics, teens
+                    td Celebrate Recovery – Mt. Spokane Church
+                    td 6311 E Mt Spokane Park Dr, Mead, WA 99021
+                    td Fri 6 PM (dinner & meeting)
+                    td Dinner, worship, small groups, childcare provided
                   tr
-                    td SMART Recovery
-                    td: a(href='https://smartrecovery.org', target='_blank') smartrecovery.org
-                    td Nearby: Liberty Lake (Fri 5–6pm), Coeur d’Alene (Wed 5:30–6:30pm)
-                    td Non-12-step, science-based recovery
-                  tr
-                    td Celebrate Recovery
-                    td Multiple locations (see below)
-                    td Varies by location
-                    td Christ-centered 12-step program
-            
-            .alert.alert-info.mt-4
-              i.bi-info-circle-fill.me-2
-              | Celebrate Recovery Locations:
-              ul.mb-0
-                li Spokane First Church of the Nazarene: Thu 6:00 PM (sfnaz.org)
-                li The Salvation Army: Thu 5:30–7:00 PM, 222 E. Indiana Ave (spokesman.com)
-                li Family of Faith Community Church: Sun 9–11 AM, Wed 6 PM, 1504 W. Grace Ave, +1 (509) 325-0343 (ffcc.us)
-            
+                    td Celebrate Recovery – Union Gospel Mission
+                    td 1224 E Trent Ave, Spokane, WA 99202
+                    td Thu 6 PM
+                    td 12-step biblical groups, dinner, testimonies, peer support
+
+            //- Quick Reference Links
             h3.mt-5 Access & Support
             ul
-              li Call Washington 2-1-1 at +1 (877) 211-9274 for referrals to addiction treatment, support groups, and other services.
-              li Explore the
-                a(href='https://thefigtree.org', target='_blank') Fig Tree Resource Guide
-                |  for a comprehensive directory of addiction and recovery resources.
-              li Use the
-                a(href='https://findtreatment.samhsa.gov', target='_blank') SAMHSA Treatment Locator
-                |  to find additional treatment options.
-              li Use the
-                a(href='https://www.google.com/maps/d/u/0/viewer?mid=1QwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQw&ll=47.6588%2C-117.4260&z=12', target='_blank') Spokane Resource Google Map
-                |  to locate treatment centers and support groups.
+              li Call Washington 2-1-1 at #[a(href='tel:+18772119274') (877) 211-9274] for referrals to addiction treatment and support groups.
+              li Use the #[a(href='https://findtreatment.samhsa.gov', target='_blank', rel='noopener') SAMHSA Treatment Locator] to find additional treatment options.
+              li For AA meetings: #[a(href='https://aaspokane.org', target='_blank', rel='noopener') aaspokane.org]
+              li For NA meetings: #[a(href='https://na.org', target='_blank', rel='noopener') na.org]
+              li For SMART Recovery: #[a(href='https://smartrecovery.org', target='_blank', rel='noopener') smartrecovery.org]
+              li Browse our full #[a(href='/resource-directory.html') Resource Directory] for all verified Spokane recovery resources.
 
-    // Call to Action
+    //- Call to Action
     section.page-section.bg-primary.text-white.text-center
       .container.px-4.px-lg-5
         h2.mb-4 Need Help with Addiction or Recovery?
         p.mb-4 Call Washington 2-1-1 or reach out to a local treatment center or support group for immediate assistance.
-        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us 
+        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us

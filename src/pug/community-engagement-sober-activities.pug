@@ -1,130 +1,127 @@
 extends layout.pug
 
 block meta
-    meta(name="description" content="Find sober activities and community events in Spokane, WA. Join a supportive network for fellowship, volunteering, and fun on your journey to lasting recovery.")
+    meta(name="description" content="Discover sober activities, alcohol-free events, and community engagement in Spokane, WA. Active recovery groups, sober sports leagues, volunteer opportunities, and support meetings.")
 
-    // Event JSON-LD Structured Data
+    //- Event JSON-LD Structured Data
     script(type='application/ld+json').
       {
         "@context": "https://schema.org",
-        "@type": "ItemList",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "item": {
-              "@type": "Event",
-              "name": "Spokane Sober Community Meetup",
-              "description": "A free monthly community gathering for people in recovery in Spokane, WA.",
-              "startDate": "2025-04-01T18:00",
-              "endDate": "2025-04-01T20:00",
-              "eventStatus": "https://schema.org/EventScheduled",
-              "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-              "location": {
-                "@type": "Place",
-                "name": "Spokane, WA",
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressLocality": "Spokane",
-                  "addressRegion": "WA",
-                  "postalCode": "99201",
-                  "addressCountry": "US"
+        "@type": "CollectionPage",
+        "name": "Community Engagement & Sober Activities in Spokane, WA",
+        "description": "Find alcohol-free social events, active community groups, sober sports leagues, and volunteer opportunities in Spokane, WA for individuals in recovery.",
+        "url": "https://www.getsoberspokane.com/community-engagement-sober-activities.html",
+        "about": {
+          "@type": "Thing",
+          "name": "Sober Activities and Community Engagement"
+        },
+        "mainEntity": {
+          "@type": "ItemList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "item": {
+                "@type": "Event",
+                "name": "Spokane Sober Community Meetup",
+                "description": "A free monthly community gathering for people in recovery in Spokane, WA.",
+                "startDate": "2026-05-01T18:00",
+                "endDate": "2026-05-01T20:00",
+                "eventStatus": "https://schema.org/EventScheduled",
+                "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                "location": {
+                  "@type": "Place",
+                  "name": "Spokane, WA",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Spokane",
+                    "addressRegion": "WA",
+                    "addressCountry": "US"
+                  }
+                },
+                "organizer": {
+                  "@type": "Organization",
+                  "name": "Get Sober Spokane",
+                  "url": "https://www.getsoberspokane.com"
                 }
-              },
-              "organizer": {
-                "@type": "Organization",
-                "name": "Get Sober Spokane",
-                "url": "https://www.getsoberspokane.com"
               }
-            }
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "item": {
-              "@type": "Event",
-              "name": "Sober Hike – Centennial Trail Spokane",
-              "description": "A free group hike along the Centennial Trail for people in recovery and their supporters.",
-              "startDate": "2025-04-15T09:00",
-              "endDate": "2025-04-15T12:00",
-              "eventStatus": "https://schema.org/EventScheduled",
-              "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-              "location": {
-                "@type": "Place",
-                "name": "Centennial Trail, Spokane, WA",
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressLocality": "Spokane",
-                  "addressRegion": "WA",
-                  "addressCountry": "US"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
+                "@type": "Event",
+                "name": "Sober Hike – Centennial Trail Spokane",
+                "description": "A free group hike along the Centennial Trail for people in recovery and their supporters.",
+                "startDate": "2026-05-15T09:00",
+                "endDate": "2026-05-15T12:00",
+                "eventStatus": "https://schema.org/EventScheduled",
+                "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                "location": {
+                  "@type": "Place",
+                  "name": "Centennial Trail, Spokane, WA"
+                },
+                "organizer": {
+                  "@type": "Organization",
+                  "name": "Get Sober Spokane",
+                  "url": "https://www.getsoberspokane.com"
                 }
-              },
-              "organizer": {
-                "@type": "Organization",
-                "name": "Get Sober Spokane",
-                "url": "https://www.getsoberspokane.com"
               }
-            }
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "item": {
-              "@type": "Event",
-              "name": "Recovery & Coffee – Spokane Community Gathering",
-              "description": "Casual coffee meetup for people in recovery to connect and share their journey in a safe, supportive space.",
-              "startDate": "2025-04-22T10:00",
-              "endDate": "2025-04-22T11:30",
-              "eventStatus": "https://schema.org/EventScheduled",
-              "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-              "location": {
-                "@type": "Place",
-                "name": "Spokane, WA",
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressLocality": "Spokane",
-                  "addressRegion": "WA",
-                  "addressCountry": "US"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "item": {
+                "@type": "Event",
+                "name": "Recovery & Coffee – Spokane Community Gathering",
+                "description": "Casual coffee meetup for people in recovery in a safe, supportive space.",
+                "startDate": "2026-05-22T10:00",
+                "endDate": "2026-05-22T11:30",
+                "eventStatus": "https://schema.org/EventScheduled",
+                "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                "location": {
+                  "@type": "Place",
+                  "name": "Spokane, WA"
+                },
+                "organizer": {
+                  "@type": "Organization",
+                  "name": "Get Sober Spokane",
+                  "url": "https://www.getsoberspokane.com"
                 }
-              },
-              "organizer": {
-                "@type": "Organization",
-                "name": "Get Sober Spokane",
-                "url": "https://www.getsoberspokane.com"
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "item": {
+                "@type": "Event",
+                "name": "Online Recovery Support Chat – Get Sober Spokane",
+                "description": "Free weekly live chat for people in recovery from anywhere in the Spokane area.",
+                "startDate": "2026-05-08T19:00",
+                "endDate": "2026-05-08T20:00",
+                "eventStatus": "https://schema.org/EventScheduled",
+                "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+                "location": {
+                  "@type": "VirtualLocation",
+                  "url": "https://www.getsoberspokane.com/chat"
+                },
+                "organizer": {
+                  "@type": "Organization",
+                  "name": "Get Sober Spokane",
+                  "url": "https://www.getsoberspokane.com"
+                }
               }
             }
-          },
-          {
-            "@type": "ListItem",
-            "position": 4,
-            "item": {
-              "@type": "Event",
-              "name": "Online Recovery Support Chat – Get Sober Spokane",
-              "description": "Free weekly live chat for people in recovery. Join from anywhere in the Spokane area.",
-              "startDate": "2025-04-08T19:00",
-              "endDate": "2025-04-08T20:00",
-              "eventStatus": "https://schema.org/EventScheduled",
-              "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
-              "location": {
-                "@type": "VirtualLocation",
-                "url": "https://www.getsoberspokane.com/chat"
-              },
-              "organizer": {
-                "@type": "Organization",
-                "name": "Get Sober Spokane",
-                "url": "https://www.getsoberspokane.com"
-              }
-            }
-          }
-        ]
+          ]
+        }
       }
 
 block content
-    // Hero Section
+    //- Hero Section
     header.page-hero
       .container.px-4.px-lg-5
-        h1 Community Engagement & Sober Activities
-        p.lead Discover alcohol-free social events, active community groups, and sober-friendly activities in Spokane, WA.
+        h1 Community Engagement & Sober Activities in Spokane, WA
+        p.lead Alcohol-free social events, active recovery groups, and meaningful community connection.
         .hero-badges
           .hero-badge
             i.bi.bi-calendar-heart
@@ -132,23 +129,22 @@ block content
           .hero-badge
             i.bi.bi-people
             span Supportive Community
-    // Main Content
+
+    //- Main Content
     section.page-section
       .container.px-4.px-lg-5
         .row.justify-content-center
           .col-lg-10
-            h2.text-primary.mt-0 Community Engagement & Sober Activities in Spokane
-            p Spokane offers a growing range of sober events, active community groups, and alcohol-free activities for individuals in recovery, those exploring sobriety, and anyone seeking healthy social opportunities.
-            
-            // Upcoming Events Section
+            h2.text-primary.mt-0 Sober Activities & Community Engagement in Spokane
+            p Spokane offers a growing network of sober events, active community groups, and alcohol-free activities for individuals in recovery, those exploring sobriety, and anyone seeking healthy social opportunities. Building community connection is one of the strongest foundations for lasting recovery.
+
+            //- Upcoming Events Section
             .mt-5
               h3.text-primary Upcoming Sober Events in Spokane
               .alert.alert-info.shadow-sm.border-0.mb-4(style="border-radius: 12px;")
                 i.bi.bi-info-circle-fill.me-2
-                | Events are updated regularly. Join our 
-                a.alert-link(href='community-forum.html') community forum
-                |  to stay informed about the latest sober activities in Spokane.
-              
+                | Events are updated regularly. Join our #[a.alert-link(href='community-forum.html') community forum] to stay informed about the latest sober activities in Spokane.
+
               .row.gx-4.gy-4
                 .col-md-6
                   .card.h-100.shadow-sm.border-0(style="border-radius: 15px; overflow: hidden;")
@@ -158,11 +154,11 @@ block content
                           i.bi.bi-calendar-event(style="font-size: 1.5rem;")
                         div
                           h5.card-title.mb-0 Spokane Sober Community Meetup
-                          small.text-muted April 1, 2025 | 6:00 PM - 8:00 PM
-                      p.card-text.text-muted A free monthly community gathering for people in recovery in Spokane, WA. Share stories and build connections.
+                          small.text-muted Monthly | 6:00 PM – 8:00 PM
+                      p.card-text.text-muted A free monthly community gathering for people in recovery. Share stories, build connections, and enjoy fellowship.
                       .mt-auto
-                        span.badge.bg-light.text-primary.px-3.py-2 Offline Event
-                
+                        span.badge.bg-light.text-primary.px-3.py-2 Community Event
+
                 .col-md-6
                   .card.h-100.shadow-sm.border-0(style="border-radius: 15px; overflow: hidden;")
                     .card-body.p-4
@@ -171,11 +167,11 @@ block content
                           i.bi.bi-walk(style="font-size: 1.5rem;")
                         div
                           h5.card-title.mb-0 Sober Hike – Centennial Trail
-                          small.text-muted April 15, 2025 | 9:00 AM - 12:00 PM
+                          small.text-muted Bi-Monthly | 9:00 AM – 12:00 PM
                       p.card-text.text-muted A free group hike along the Centennial Trail for people in recovery and their supporters. All fitness levels welcome.
                       .mt-auto
                         span.badge.bg-light.text-success.px-3.py-2 Outdoor Activity
-                
+
                 .col-md-6
                   .card.h-100.shadow-sm.border-0(style="border-radius: 15px; overflow: hidden;")
                     .card-body.p-4
@@ -184,11 +180,11 @@ block content
                           i.bi.bi-cup-hot(style="font-size: 1.5rem;")
                         div
                           h5.card-title.mb-0 Recovery & Coffee
-                          small.text-muted April 22, 2025 | 10:00 AM - 11:30 AM
-                      p.card-text.text-muted Casual coffee meetup for people in recovery to connect and share their journey in a safe, supportive space.
+                          small.text-muted Monthly | 10:00 AM – 11:30 AM
+                      p.card-text.text-muted Casual coffee meetup in a safe, supportive space. Connect with others on the recovery journey.
                       .mt-auto
                         span.badge.bg-light.text-warning.px-3.py-2 Social Gathering
-                
+
                 .col-md-6
                   .card.h-100.shadow-sm.border-0(style="border-radius: 15px; overflow: hidden;")
                     .card-body.p-4
@@ -197,16 +193,17 @@ block content
                           i.bi.bi-chat-dots(style="font-size: 1.5rem;")
                         div
                           h5.card-title.mb-0 Online Recovery Support Chat
-                          small.text-muted Every Tuesday | 7:00 PM - 8:00 PM
+                          small.text-muted Every Tuesday | 7:00 PM – 8:00 PM
                       p.card-text.text-muted Free weekly live chat for people in recovery. Join from anywhere in the Spokane area via our website.
                       .mt-auto
                         a.badge.bg-light.text-info.px-3.py-2.text-decoration-none(href='chat.html') Join Online Chat
+
+            //- Sober Social Events
             h3.mt-5 Sober Social Events
-            p.text-muted
-              | Enjoy structured, alcohol-free gatherings designed for fun and connection in a safe, welcoming environment.
+            p.text-muted Enjoy structured, alcohol-free gatherings designed for fun and connection in a safe, welcoming environment.
             .table-responsive
               table.table.table-bordered.table-striped.mt-3
-                thead
+                thead.table-dark
                   tr
                     th Organization/Event
                     th Details
@@ -216,19 +213,25 @@ block content
                   tr
                     td Diversion Events
                     td Mocktail parties, DJ music, dancing, food. Monthly events, no alcohol allowed.
-                    td 22 Rooms, 1011 W. First Ave, Spokane, WA 99201
-                    td: a(href='https://www.eventbrite.com/o/diversion-events-72839301103', target='_blank') Eventbrite
+                    td 22 Rooms, 1011 W First Ave, Spokane, WA 99201
+                    td: a(href='https://www.eventbrite.com/o/diversion-events-72839301103', target='_blank', rel='noopener') Eventbrite
                   tr
                     td Reclaim Project Recovery Flannel Gala
                     td Annual fundraiser and celebration for men in recovery, community engagement.
                     td True Hope Church, Spokane, WA
-                    td: a(href='https://reclaimprojectnw.org', target='_blank') reclaimprojectnw.org
+                    td: a(href='https://reclaimprojectnw.org', target='_blank', rel='noopener') reclaimprojectnw.org
+                  tr
+                    td Recovery Cafe Spokane – Community Meals
+                    td Free community meals and social connection for members committed to recovery.
+                    td 715 W Sprague Ave, Spokane, WA 99201
+                    td: a(href='https://recoverycafespokane.org', target='_blank', rel='noopener') recoverycafespokane.org
+
+            //- Active Sober Community Activities
             h3.mt-5 Active Sober Community Activities
-            p.text-muted
-              | Join group fitness, outdoor adventures, and skill-building activities in a supportive, substance-free environment.
+            p.text-muted Join group fitness, outdoor adventures, and skill-building activities in a supportive, substance-free environment.
             .table-responsive
               table.table.table-bordered.table-striped.mt-3
-                thead
+                thead.table-dark
                   tr
                     th Organization
                     th Activities
@@ -239,18 +242,24 @@ block content
                     td Reclaim Project Recovery
                     td Strength training, yoga, running, hiking, biking, MMA, paddle boarding, recovery classes
                     td 1804 W Broadway, Spokane, WA 99201
-                    td: a(href='https://reclaimprojectnw.org', target='_blank') reclaimprojectnw.org
+                    td: a(href='https://reclaimprojectnw.org', target='_blank', rel='noopener') reclaimprojectnw.org
                   tr
-                    td Centennial Trail
-                    td 37-mile trail for walking, biking, running; scenic, alcohol-free
-                    td Multiple access points in Spokane
-                    td: a(href='https://visitspokane.com', target='_blank') visitspokane.com
+                    td Centennial Trail – Spokane
+                    td 37-mile trail for walking, biking, running; scenic and alcohol-free
+                    td Multiple access points across Spokane
+                    td: a(href='https://visitspokane.com', target='_blank', rel='noopener') visitspokane.com
+                  tr
+                    td Spokane Parks & Recreation
+                    td Hiking, swimming, sports fields, fitness activities at 90+ parks
+                    td Various locations across Spokane
+                    td: a(href='https://my.spokanecity.org/recreation/', target='_blank', rel='noopener') spokanecity.org/recreation
+
+            //- Community Sports Leagues
             h3.mt-5 Community Sports Leagues
-            p.text-muted
-              | Get active and meet new people in sober-friendly sports leagues and tournaments.
+            p.text-muted Get active and meet new people in sober-friendly sports leagues and tournaments.
             .table-responsive
               table.table.table-bordered.table-striped.mt-3
-                thead
+                thead.table-dark
                   tr
                     th Organization/Event
                     th Details
@@ -261,18 +270,24 @@ block content
                     td City of Spokane Parks & Recreation
                     td Adult softball, flag football, volleyball; 6-week seasons, 12-game guarantee
                     td Dwight Merkel Sports Complex, Franklin Park Softball Complex
-                    td: a(href='https://my.spokanecity.org/recreation/sports/', target='_blank') my.spokanecity.org/recreation/sports/
+                    td: a(href='https://my.spokanecity.org/recreation/sports/', target='_blank', rel='noopener') spokanecity.org/recreation/sports
                   tr
                     td Spokane Summer Classic
                     td Annual 7v7 adult soccer tournament, July event
-                    td Plante’s Ferry Complex, Spokane Valley, WA
-                    td: a(href='https://spokanesummerclassic.com', target='_blank') spokanesummerclassic.com
-            h3.mt-5 Support Groups
-            p.text-muted
-              | Connect with peer-led groups for support, accountability, and community in recovery.
+                    td Plante's Ferry Complex, Spokane Valley, WA
+                    td: a(href='https://spokanesummerclassic.com', target='_blank', rel='noopener') spokanesummerclassic.com
+                  tr
+                    td Hub Sports Center – Leagues
+                    td Basketball, volleyball, pickleball, indoor soccer; year-round leagues
+                    td 19619 E Cataldo Ave, Liberty Lake, WA 99016
+                    td: a(href='https://hubsportscenter.org', target='_blank', rel='noopener') hubsportscenter.org
+
+            //- Recovery-Focused Support Groups (on this page)
+            h3.mt-5 Recovery-Focused Community Groups
+            p.text-muted Connect with peer-led groups for support, accountability, and fellowship in recovery.
             .table-responsive
               table.table.table-bordered.table-striped.mt-3
-                thead
+                thead.table-dark
                   tr
                     th Organization
                     th Details
@@ -280,26 +295,37 @@ block content
                     th Contact/Website
                 tbody
                   tr
-                    td Alcoholics Anonymous (AA)
-                    td Open/closed/speaker meetings, peer support
-                    td Multiple locations
-                    td: a(href='https://sober.com/aa-meetings/washington/spokane/', target='_blank') sober.com/aa-meetings/washington/spokane/
+                    td Alcoholics Anonymous (AA) – Spokane
+                    td Open/closed/speaker meetings; peer support for alcohol recovery
+                    td Multiple locations (see website)
+                    td: a(href='https://aaspokane.org', target='_blank', rel='noopener') aaspokane.org
                   tr
-                    td Narcotics Anonymous (NA)
-                    td Peer support for drug recovery, meetings across Spokane
+                    td Narcotics Anonymous (NA) – Spokane Area
+                    td Peer support for drug recovery; meetings across Spokane
                     td Multiple locations
-                    td: a(href='https://newana.org', target='_blank') newana.org
+                    td: a(href='https://na.org', target='_blank', rel='noopener') na.org
                   tr
-                    td Al-Anon/Alateen
+                    td Al-Anon/Alateen – Spokane
                     td Support for families and teens affected by addiction
-                    td 1700 W. 7th Ave, Suite 100, Spokane, WA 99204
-                    td (509) 456-2125
-            h3.mt-5 General Community Engagements
-            p.text-muted
-              | Explore alcohol-free parks, cultural events, and volunteer opportunities for meaningful connection.
+                    td 1700 W 7th Ave, Suite 100, Spokane, WA 99204
+                    td: a(href='tel:+15094562125') (509) 456-2125
+                  tr
+                    td Recovery Cafe Spokane – Recovery Circles
+                    td Peer-led support circles, career mentoring, community meals
+                    td 715 W Sprague Ave, Spokane, WA 99201
+                    td: a(href='https://recoverycafespokane.org', target='_blank', rel='noopener') recoverycafespokane.org
+                  tr
+                    td Peer Spokane
+                    td Peer recovery coaching, mental health support, employment coaching
+                    td 1222 N Post St, Spokane, WA 99201
+                    td: a(href='https://peerspokane.org', target='_blank', rel='noopener') peerspokane.org
+
+            //- General Community Engagement
+            h3.mt-5 General Community Engagement
+            p.text-muted Explore alcohol-free parks, cultural events, and volunteer opportunities for meaningful community connection.
             .table-responsive
               table.table.table-bordered.table-striped.mt-3
-                thead
+                thead.table-dark
                   tr
                     th Activity/Organization
                     th Details
@@ -310,32 +336,33 @@ block content
                     td Riverfront Park
                     td Urban waterfall, walking paths, playgrounds, seasonal events
                     td Downtown Spokane
-                    td: a(href='https://visitspokane.com', target='_blank') visitspokane.com
+                    td: a(href='https://visitspokane.com', target='_blank', rel='noopener') visitspokane.com
                   tr
-                    td Cultural Events
-                    td Museums, art galleries, concerts, sober-friendly entertainment
-                    td Various locations
-                    td: a(href='https://visitspokane.com', target='_blank') visitspokane.com
+                    td Spokane Public Library – Programs
+                    td Free workshops, book clubs, computer access, community meeting spaces
+                    td Multiple branches across Spokane
+                    td: a(href='https://spokanelibrary.org', target='_blank', rel='noopener') spokanelibrary.org
                   tr
-                    td Volunteer Opportunities
-                    td Community service with Second Harvest, Catholic Charities, Spokane Resource Center
+                    td Volunteer Spokane
+                    td Community service with Second Harvest, Catholic Charities, Habitat for Humanity
                     td Various locations
-                    td: a(href='https://spokaneresourcecenter.org', target='_blank') spokaneresourcecenter.org
+                    td: a(href='https://volunteerspokane.org', target='_blank', rel='noopener') volunteerspokane.org
+                  tr
+                    td Spokane Art & Culture
+                    td Museums, galleries, concerts, First Friday events (alcohol-free options available)
+                    td Various locations
+                    td: a(href='https://visitspokane.com', target='_blank', rel='noopener') visitspokane.com
+
             h3.mt-5 Access & Support
             ul
-              li Call Washington 2-1-1 at (877) 211-9274 for referrals to community events, support groups, and sober activities.
-              li Explore the
-                a(href='https://thefigtree.org', target='_blank') Fig Tree Resource Guide
-                |  for a comprehensive directory of community resources.
-              li Use the
-                a(href='https://www.google.com/maps/d/u/0/viewer?mid=1QwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQw&ll=47.6588%2C-117.4260&z=12', target='_blank') Spokane Resource Google Map
-                |  to find event locations and sober activities.
-              li Visit
-                a(href='https://www.meetup.com', target='_blank') Meetup.com
-                |  for groups like Spokane Young and Active or Spokane Canoe and Kayak Club.
-    // Call to Action
+              li Call Washington 2-1-1 at #[a(href='tel:+18772119274') (877) 211-9274] for referrals to community events, support groups, and sober activities.
+              li Explore the #[a(href='https://thefigtree.org', target='_blank', rel='noopener') Fig Tree Resource Guide] for a comprehensive directory of community resources.
+              li Visit #[a(href='https://www.meetup.com', target='_blank', rel='noopener') Meetup.com] for groups like Spokane Young and Active or Spokane Canoe and Kayak Club.
+              li Browse our full #[a(href='/resource-directory.html') Resource Directory] for all verified Spokane recovery resources.
+
+    //- Call to Action
     section.page-section.bg-primary.text-white.text-center
       .container.px-4.px-lg-5
         h2.mb-4 Looking for Sober Social Opportunities?
         p.mb-4 Call Washington 2-1-1 or explore local events and groups for alcohol-free fun and connection.
-        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us 
+        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us

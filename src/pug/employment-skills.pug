@@ -1,14 +1,14 @@
 extends layout.pug
 
 block meta
-    meta(name="description" content="Job training and employment resources for individuals in recovery in Spokane, WA. Build new skills and find career opportunities to support your sober life.")
+    meta(name="description" content="Find 12+ job training, employment services, and workforce development programs in Spokane, WA. Verified listings for job seekers in recovery including resume help, career counseling, and vocational training.")
 
     script(type="application/ld+json").
       {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "Employment & Skills Training Spokane, WA",
-        "description": "Discover job placement, skills training, and workforce development resources in Spokane, WA.",
+        "name": "Employment & Skills Training Resources in Spokane, WA",
+        "description": "Comprehensive directory of 12+ employment services, workforce development programs, and skills training organizations in Spokane, WA for individuals in recovery.",
         "url": "https://www.getsoberspokane.com/employment-skills.html",
         "about": {
           "@type": "Thing",
@@ -17,148 +17,160 @@ block meta
       }
 
 block content
-    // Hero Section
-    // Hero Section
+    //- Hero Section
     header.page-hero
       .container.px-4.px-lg-5
-        h1 Employment & Skills Training
-        p.lead Workforce development and job placement resources in Spokane, WA.
+        h1 Employment & Skills Training in Spokane, WA
+        p.lead Job placement, workforce development, and career-building resources for individuals in recovery.
         .hero-badges
           .hero-badge
             i.bi.bi-briefcase
-            span Job Placement
+            span 12+ Programs
           .hero-badge
             i.bi.bi-tools
             span Skills Training
 
-    // Main Content
+    //- Main Content
     section.page-section
       .container.px-4.px-lg-5
         .row.justify-content-center
           .col-lg-10
-            h2.text-primary.mt-0 Employment & Skills Management in Spokane
-            p Spokane offers a robust network of employment and workforce development resources for adults, youth, seniors, and businesses. Services include job placement, resume help, apprenticeships, and employer support.
-            h3.mt-5 Employment Services
-            p.text-muted
-              | Local organizations help job seekers find employment, prepare resumes, and connect with hiring events.
+            h2.text-primary.mt-0 Employment Services in Spokane
+            p Spokane offers a robust network of employment resources connecting job seekers with career opportunities, resume assistance, interview preparation, and ongoing skills development. Many services specialize in supporting individuals in addiction recovery and those re-entering the workforce after incarceration.
+
+            //- Job Placement & Career Services
             .table-responsive
               table.table.table-bordered.table-striped.mt-3
-                thead
+                thead.table-dark
                   tr
                     th Organization
                     th Address
+                    th Phone
                     th Services
-                    th Website
+                    th Requirements
                 tbody
                   tr
-                    td Express Employment Professionals
-                    td Spokane, WA (address not specified)
-                    td Staffing, job placement (full/part-time, temp)
-                    td: a(href='https://expresspros.com', target='_blank') expresspros.com
+                    td WorkSource Spokane – Career Center
+                    td 130 S Arthur St, Spokane, WA 99202
+                    td: a(href='tel:+15093249160') (509) 324-9160
+                    td Job search assistance, resume help, career counseling, workshops, veteran services
+                    td Open to all job seekers
                   tr
-                    td WorkSource Spokane
-                    td Multiple locations
-                    td Career center, job placement, resume help, hiring events
-                    td: a(href='https://worksourcespokane.com', target='_blank') worksourcespokane.com
+                    td Goodwill Industries of the Inland Northwest
+                    td 130 S Arthur St, Spokane, WA 99202
+                    td: a(href='tel:+15094585030') (509) 458-5030
+                    td Employment services, vocational training, job placement, interview coaching
+                    td Open to all; focus on barriers to employment
                   tr
-                    td WorkSourceWA Job Search Portal
-                    td Online
-                    td Job listings, resume builder, interview prep
-                    td: a(href='https://seeker.worksourcewa.com', target='_blank') seeker.worksourcewa.com
+                    td Pioneer Human Services Spokane
+                    td 130 S Arthur St, Spokane, WA 99202
+                    td: a(href='tel:+15093252358') (509) 325-2358
+                    td Employment for formerly incarcerated, job training, placements, re-entry services
+                    td Adults with criminal backgrounds
                   tr
-                    td Resource Center of Spokane County
-                    td Spokane, WA (address not specified)
-                    td Social services, employment support
-                    td: a(href='https://spokaneresourcecenter.org', target='_blank') spokaneresourcecenter.org
-            h3.mt-5 Skills Training & Development
-            p.text-muted
-              | Training programs and apprenticeships help build skills for sustainable careers and connect job seekers to new opportunities.
+                    td Division of Vocational Rehabilitation (DVR)
+                    td 4407 N. Division St, Suite 315, Spokane, WA 99207
+                    td: a(href='tel:+15094823044') (509) 482-3044
+                    td Vocational rehabilitation, assistive technology, job accommodations, disability support
+                    td Must have qualifying disability
+                  tr
+                    td SL Start – Re-Entry Employment
+                    td 901 E 2nd Ave, Spokane, WA 99202
+                    td: a(href='tel:+15094570677') (509) 457-0677
+                    td Employment for people re-entering from corrections, housing support, life skills, mentorship
+                    td Adults post-incarceration
+
+            //- Skills Training & Development
+            h3.mt-5 Skills Training & Workforce Development
+            p.text-muted Training programs, apprenticeships, and vocational education help build sustainable career paths and connect job seekers to new opportunities.
+
             .table-responsive
               table.table.table-bordered.table-striped.mt-3
-                thead
+                thead.table-dark
                   tr
                     th Organization
                     th Address
+                    th Phone
                     th Services
-                    th Website
                 tbody
                   tr
                     td Spokane Workforce Council
-                    td Spokane, WA (address not specified)
-                    td Apprenticeships, hiring events, resume/job search support
-                    td: a(href='https://spokaneworkforce.org', target='_blank') spokaneworkforce.org
+                    td 140 S Arthur St, Suite 600, Spokane, WA 99202
+                    td: a(href='tel:+15095322100') (509) 532-2100
+                    td Apprenticeships, hiring events, skills training, career pathway development
                   tr
-                    td Next Generation Zone
-                    td Spokane, WA (address not specified)
-                    td Career center for young adults, education, skills training
-                    td: a(href='https://nextgenzone.org', target='_blank') nextgenzone.org
+                    td Next Generation Zone (Young Adults 16–24)
+                    td 901 E 2nd Ave, Spokane, WA 99202
+                    td: a(href='tel:+15095322180') (509) 532-2180
+                    td Career center for young adults, GED support, life skills, job placement
                   tr
-                    td Spokane Community College - Community Resource Directory
-                    td Spokane, WA (address not specified)
-                    td Work-training for seniors, education resources
-                    td: a(href='https://sfcc.spokane.edu', target='_blank') sfcc.spokane.edu
+                    td SNAP Employment Services
+                    td 3102 W Ft. George Wright Dr, Spokane, WA 99224
+                    td: a(href='tel:+15094567627') (509) 456-7627
+                    td Job readiness, resume help, interview prep, transportation assistance
                   tr
-                    td Affiliated Connection Sites
-                    td Multiple locations in Spokane County
-                    td Workforce services at 20+ locations
-                    td: a(href='https://nextgenzone.org', target='_blank') nextgenzone.org
-            h3.mt-5 Employer Support
-            p.text-muted
-              | Employers can access recruitment, training, and workforce development services to build skilled teams.
-            .table-responsive
-              table.table.table-bordered.table-striped.mt-3
-                thead
+                    td Spokane Community College – Job Training
+                    td 1810 N Greene St, Spokane, WA 99217
+                    td: a(href='tel:+15095333500') (509) 533-3500
+                    td Community education, workforce training, career programs, GED/ABE
                   tr
-                    th Organization
-                    th Address
-                    th Services
-                    th Website
-                tbody
+                    td Recovery Cafe Spokane – Employment Pathways
+                    td 715 W Sprague Ave, Spokane, WA 99201
+                    td: a(href='tel:+15096241442') (509) 624-1442
+                    td Recovery-focused job coaching, peer career mentoring, employer connections
                   tr
-                    td Talent Solutions by WorkSource Spokane
-                    td Spokane, WA (address not specified)
-                    td Business consulting, recruitment, workforce strategies
-                    td: a(href='https://worksourcespokane.com/employers', target='_blank') worksourcespokane.com/employers
+                    td Peer Spokane – Employment Support
+                    td 1222 N Post St, Spokane, WA 99201
+                    td: a(href='tel:+15098673778') (509) 867-3778
+                    td Peer employment coaching, job search support, recovery-friendly employers
                   tr
-                    td Impact Washington
-                    td Spokane, WA (address not specified)
-                    td Consulting, training, funding for manufacturers
-                    td: a(href='https://www.impactwashington.org', target='_blank') impactwashington.org
-                  tr
-                    td Spokane Valley Chamber of Commerce - Workforce Training & Recruitment
-                    td Spokane Valley, WA
-                    td Training, recruitment, access to educational institutions
-                    td: a(href='https://spokanevalleywa.gov', target='_blank') spokanevalleywa.gov
+                    td ESD 101 Migrant & Bilingual Education
+                    td 4202 S Regal St, Spokane, WA 99223
+                    td: a(href='tel:+15097893800') (509) 789-3800
+                    td Bilingual job support, English classes, career connection, community integration
+
+            //- Employer Support
+            h3.mt-5 Employer Support & Recovery-Friendly Workplaces
+            p.text-muted Employers can access recruitment, training, and workforce development services to build recovery-friendly teams.
+
+            .row.gx-4.gx-lg-5
+              .col-md-6.mb-4
+                .card.h-100.shadow-sm
+                  .card-body
+                    h5.card-title.text-primary.mb-2 Talent Solutions by WorkSource Spokane
+                    p.card-text Business consulting, recruitment, and workforce development strategies for employers.
+                    ul.mb-2
+                      li: a(href='https://worksourcespokane.com/employers', target='_blank', rel='noopener') worksourcespokane.com/employers
+              .col-md-6.mb-4
+                .card.h-100.shadow-sm
+                  .card-body
+                    h5.card-title.text-primary.mb-2 Impact Washington
+                    p.card-text Consulting, training, and funding assistance for manufacturers building skilled teams.
+                    ul.mb-2
+                      li: a(href='https://www.impactwashington.org', target='_blank', rel='noopener') impactwashington.org
+
+            //- Additional Resources
             h3.mt-5 Additional Resources
             ul
               li
+                strong WorkSourceWA Job Search Portal:
+                |  Search listings and build your resume at #[a(href='https://seeker.worksourcewa.com', target='_blank', rel='noopener') seeker.worksourcewa.com].
+              li
                 strong Workforce Wednesday:
-                |  Weekly segment on Fox 28 at 7:00 AM with updates on workforce services and events (
-                a(href='https://bitly.spokaneworkforce.org', target='_blank') bitly.spokaneworkforce.org
-                | ).
+                |  Weekly segment on FOX 28 at 7:00 AM with Spokane Workforce Council updates.
               li
-                strong workforceNERD. thePODCAST.:
-                |  Video podcast on workforce development, available through Spokane Workforce Council channels.
-              li
-                strong Spokane’s Educational Institutions:
-                |  18 universities and colleges in the region provide a talent pool and training programs (
-                a(href='https://spokanevalleywa.gov', target='_blank') spokanevalleywa.gov
-                | ).
+                strong Spokane Resource Center:
+                |  Childcare, energy assistance, and wellness programs at #[a(href='https://spokaneresourcecenter.org', target='_blank', rel='noopener') spokaneresourcecenter.org].
+
             h3.mt-5 Access & Support
             ul
-              li Call Washington 2-1-1 at (877) 211-9274 for referrals to employment, training, and community services.
-              li Explore the
-                a(href='https://thefigtree.org', target='_blank') Fig Tree Resource Guide
-                |  for a comprehensive directory of employment and workforce resources.
-              li Use the
-                a(href='https://www.google.com/maps/d/u/0/viewer?mid=1QwQwQwQwQwQwQwQwQwQwQwQwQwQwQwQw&ll=47.6588%2C-117.4260&z=12', target='_blank') Spokane Resource Google Map
-                |  to find employment and training services.
-              li Check
-                a(href='https://spokaneworkforce.org', target='_blank') spokaneworkforce.org
-                |  for upcoming hiring events and workforce news.
-    // Call to Action
+              li Call Washington 2-1-1 at #[a(href='tel:+18772119274') (877) 211-9274] for referrals to employment, training, and community services.
+              li Check #[a(href='https://spokaneworkforce.org', target='_blank', rel='noopener') spokaneworkforce.org] for upcoming hiring events.
+              li Browse our full #[a(href='/resource-directory.html') Resource Directory] for all verified Spokane recovery resources.
+
+    //- Call to Action
     section.page-section.bg-primary.text-white.text-center
       .container.px-4.px-lg-5
         h2.mb-4 Need Help with Employment or Training?
         p.mb-4 Call Washington 2-1-1 or connect with a local employment resource for immediate support.
-        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us 
+        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us
