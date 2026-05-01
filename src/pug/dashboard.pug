@@ -1,5 +1,9 @@
 extends layout
 
+block meta
+  meta(name="description" content="Manage your recovery journey, track milestones, and connect with the Spokane recovery community.")
+  meta(name="robots" content="noindex, nofollow")
+
 block content
   // Dashboard Container with proper spacing for fixed navigation
   .dashboard-container
@@ -116,50 +120,6 @@ block content
                     i.bi.bi-person-circle.me-2
                     | View Public Profile
               
-              // Community Connections
-              .dashboard-card.connections-card
-                h3.card-title Community Connections
-
-                .connections-section
-                  h5.section-label My Connections
-                  .connections-list#connectionsList
-                    // Connections will be loaded dynamically
-                    .connection-item.placeholder(style="display: none;")
-                      .connection-avatar
-                        i.bi.bi-person-circle
-                      .connection-info
-                        .connection-name Loading...
-                        .connection-status Loading connections...
-                      .connection-actions
-                        button.btn.btn-sm.btn-outline-primary(disabled) Loading
-                  .no-connections.text-center.py-4(style="display: none;")
-                    i.bi.bi-people.text-muted(style="font-size: 2rem;")
-                    p.text-muted.mt-2 No connections yet
-                    p.small.text-muted Connect with sponsors and recovery friends
-                  button.btn.btn-success.btn-sm.w-100.mt-2#addConnectionBtn
-                    i.bi.bi-person-plus
-                    |  Find Sponsor
-                // Community Hub Section
-                .dashboard-card.community-hub-card.mt-4
-                  h3.card-title Community Hub
-                  .community-stats.mb-3
-                    .row.g-2
-                      .col-6
-                        .stat-box.text-center.p-2.bg-light.rounded
-                          .stat-value.fw-bold#forumPostsCount 0
-                          .stat-label.small.text-muted Posts Made
-                      .col-6
-                        .stat-box.text-center.p-2.bg-light.rounded
-                          .stat-value.fw-bold#forumMembersCount 0
-                          .stat-label.small.text-muted Members
-                  .quick-links
-                    .d-grid.gap-2
-                      a.btn.btn-outline-primary.btn-sm(href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})")
-                        i.bi.bi-people.me-2
-                        | Visit Forum
-                      a.btn.btn-outline-info.btn-sm(href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})")
-                        i.bi.bi-people.me-2
-                        | Visit Community Forum
 
     
     // Milestone Modal
@@ -194,14 +154,6 @@ block content
                     .action-icon
                       i.bi.bi-search
                     .action-text Resource Directory
-                  a.quick-action-btn(href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})")
-                    .action-icon
-                      i.bi.bi-people
-                    .action-text Community Forum
-                  a.quick-action-btn(href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})")
-                    .action-icon
-                      i.bi.bi-people
-                    .action-text Community Forum
                   a.quick-action-btn(href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'treatment_dashboard'})")
                     .action-icon
                       i.bi.bi-heart-pulse
@@ -280,34 +232,11 @@ block scripts
       }
     }
     
-    async function fetchForumStats() {
-      try {
-        if (!supabase) return;
-        
-        // Fetch posts count
-        const { count: postsCount, error: postsError } = await supabase
-          .from('forum_posts')
-          .select('*', { count: 'exact', head: true });
-          
-        // Fetch members count
-        const { count: membersCount, error: membersError } = await supabase
-          .from('profiles_consolidated')
-          .select('*', { count: 'exact', head: true });
-          
-        if (postsCount !== null) document.getElementById('forumPostsCount').textContent = postsCount;
-        if (membersCount !== null) document.getElementById('forumMembersCount').textContent = membersCount;
-        
-      } catch (error) {
-        console.error('Error fetching forum stats:', error);
-      }
-    }
     
     async function initializeDashboard() {
       try {
         if (!supabase) return;
         
-        // Fetch forum statistics regardless of auth (stats are public)
-        fetchForumStats();
         
         // Check if user is authenticated
         if (currentUser) {

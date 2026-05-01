@@ -50,8 +50,21 @@ function getPages() {
                     findPugFiles(fullPath, prefix + file + '/');
                 }
             } else if (file.endsWith('.pug')) {
-                // Ignore layouts/includes if they were somehow in the wrong place
-                if (file.startsWith('_') || file.includes('layout') || file.includes('mixin')) return;
+                // Ignore layouts/includes/private pages
+                const privatePages = [
+                    'dashboard.pug', 
+                    'messages.pug', 
+                    'user-profile.pug', 
+                    'user-profile-edit.pug', 
+                    'chat.pug', 
+                    'sponsor-finder.pug', 
+                    'community-forum.pug',
+                    'community-forum-enhanced.pug',
+                    'login.pug',
+                    'signup.pug',
+                    'reset.pug'
+                ];
+                if (file.startsWith('_') || file.includes('layout') || file.includes('mixin') || privatePages.includes(file)) return;
                 
                 let url = prefix + file.replace('.pug', '.html');
                 if (url === 'index.html') url = '/';
@@ -121,10 +134,18 @@ Sitemap: https://www.getsoberspokane.com/sitemap.xml
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
 
-# Disallow admin areas
+# Disallow private and defunct areas
 Disallow: /admin/
 Disallow: /private/
 Disallow: /auth/
+Disallow: /dashboard.html
+Disallow: /messages.html
+Disallow: /user-profile.html
+Disallow: /user-profile-edit.html
+Disallow: /chat.html
+Disallow: /sponsor-finder.html
+Disallow: /community-forum.html
+Disallow: /community-forum-enhanced.html
 
 # Allow all important pages
 ${pages.filter(p => parseFloat(p.priority) >= 0.7).map(p => `Allow: ${p.url}`).join('\n')}`;

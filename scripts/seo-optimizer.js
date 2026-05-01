@@ -469,7 +469,16 @@ async function optimizeAllPages() {
 
     // Update all Pug templates
     const pugDir = path.join(__dirname, '../src/pug');
-    const pugFiles = fs.readdirSync(pugDir).filter(file => file.endsWith('.pug'));
+    const privatePages = [
+        'dashboard.pug', 
+        'messages.pug', 
+        'user-profile.pug', 
+        'user-profile-edit.pug', 
+        'chat.pug', 
+        'sponsor-finder.pug', 
+        'community-forum-enhanced.pug'
+    ];
+    const pugFiles = fs.readdirSync(pugDir).filter(file => file.endsWith('.pug') && !privatePages.includes(file));
 
     for (const file of pugFiles) {
         const pageKey = file.replace('.pug', '');

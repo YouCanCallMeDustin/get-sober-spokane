@@ -18,7 +18,7 @@ block content
         .container.px-4.px-lg-5.h-100
             .row.gx-4.gx-lg-5.h-100.align-items-center.justify-content-center.text-center
                 .col-lg-8.align-self-end
-                    h1.text-white.font-weight-bold Supporting Recovery in Spokane
+                    h1.text-white.font-weight-bold Addiction Recovery Support in Spokane
                     hr.divider
                 .col-lg-8.align-self-baseline
                     p.text-white-75.mb-5
@@ -80,6 +80,17 @@ block content
                         h3 Sober Activities
                         p Join sober events, volunteer, and connect with a supportive community.
 
+    // Family Support Section
+    section#family-support.page-section.bg-primary.text-white
+        .container.px-4.px-lg-5
+            .row.gx-4.gx-lg-5.justify-content-center
+                .col-lg-8.text-center
+                    h2.mt-0 Supporting Families & Parents
+                    hr.divider.divider-light
+                    p.text-white-75.mb-4
+                        | Watching a child struggle with addiction is an incredibly difficult journey. We provide dedicated resources and support groups specifically for parents and family members navigating this path.
+                    a.btn.btn-light.btn-xl(href='parents-addiction-support.html') Resources for Parents
+
     // Testimonials
     section#testimonials.page-section.bg-light
         .container.px-4.px-lg-5
@@ -101,7 +112,7 @@ block content
                 .col-lg-4
                     .testimonial-card.fade-in-up.testi-card-2
                         i.bi.bi-quote.quote-icon
-                        p.testimonial-text "Finding my sponsor through this site was the turning point in my recovery. The process was simple and the match was perfect. I'm 14 months sober today."
+                        p.testimonial-text "Finding local resources through this site was the turning point in my recovery. The directory was so easy to navigate. I'm 14 months sober today."
                         .author-info
                             .avatar
                                 i.bi.bi-person-fill
@@ -111,7 +122,7 @@ block content
                 .col-lg-4
                     .testimonial-card.fade-in-up.testi-card-3
                         i.bi.bi-quote.quote-icon
-                        p.testimonial-text "I was scared and didn't know where to start. The live chat gave me someone to talk to at 2am when I needed it most. This community is the real deal."
+                        p.testimonial-text "I was scared and didn't know where to start. The resource directory gave me clear steps when I needed them most. This community is the real deal."
                         .author-info
                             .avatar
                                 i.bi.bi-person-fill
@@ -119,9 +130,6 @@ block content
                                 span.name Community Member
                                 span.location North Spokane, WA
             .text-center.mt-4
-                a.btn.btn-outline-primary.btn-xl(href='community-forum.html')
-                    i.bi.bi-chat-left-text.me-2
-                    | Share Your Story
 
     // Call to action
     section.cta-premium
@@ -135,10 +143,6 @@ block content
                             a.btn.btn-light.btn-xl.w-100.cta-btn-premium(href='resource-directory.html' onclick="gtag('event', 'resources_click', {event_category: 'engagement'})")
                                 i.bi.bi-search.me-2
                                 | Browse Resources
-                        .col-md-4
-                            a.btn.btn-outline-light.btn-xl.w-100.cta-btn-premium(href='community-forum.html' onclick="gtag('event', 'community_click', {event_category: 'engagement'})")
-                                i.bi.bi-people.me-2
-                                | Join Community
                         //- .col-md-4
                         //-     a.btn.btn-outline-light.btn-xl.w-100.cta-btn-premium(href='dashboard.html')
                         //-         i.bi.bi-person.me-2
@@ -164,7 +168,7 @@ block content
                                     aria-controls="faq1"
                                 ) How do I get started with addiction recovery in Spokane?
                             #faq1.accordion-collapse.collapse.show(aria-labelledby="faq1heading" data-bs-parent="#faqAccordion")
-                                .accordion-body.text-muted The first step is reaching out. Get Sober Spokane offers a free resource directory, live community chat, and peer sponsor matching to help you take that first step at your own pace.
+                                .accordion-body.text-muted The first step is reaching out. Get Sober Spokane offers a free resource directory and verified local contacts to help you take that first step at your own pace.
                         .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
                             h3.accordion-header#faq2heading
                                 button.accordion-button.collapsed.fw-semibold(
@@ -206,9 +210,9 @@ block content
                                     data-bs-target="#faq5"
                                     aria-expanded="false"
                                     aria-controls="faq5"
-                                ) How does the sponsor finder work?
+                                ) How can I help the Spokane recovery community?
                             #faq5.accordion-collapse.collapse(aria-labelledby="faq5heading" data-bs-parent="#faqAccordion")
-                                .accordion-body.text-muted Our free sponsor finder connects people in recovery with experienced AA and NA sponsors in the Spokane area. Visit our sponsor finder page to get matched.
+                                .accordion-body.text-muted You can help by sharing your own recovery story, volunteering at local events, or giving back through our donations page.
                         .accordion-item.border-0.shadow-sm(style="border-radius: 10px; overflow: hidden;")
                             h3.accordion-header#faq6heading
                                 button.accordion-button.collapsed.fw-semibold(
@@ -254,7 +258,7 @@ block content
                                     "name": "How do I get started with addiction recovery in Spokane?",
                                     "acceptedAnswer": {
                                         "@type": "Answer",
-                                        "text": "The first step is reaching out. Get Sober Spokane offers a free resource directory, live community chat, and peer sponsor matching to help you take that first step at your own pace."
+                                        "text": "The first step is reaching out. Get Sober Spokane offers a free resource directory and verified recovery support listings to help you take that first step at your own pace."
                                     }
                                 },
                                 {

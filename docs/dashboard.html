@@ -22,7 +22,8 @@
         <link rel="icon" href="/assets/img/logo.webp" type="image/webp" />
         <link rel="apple-touch-icon" href="/assets/img/logo.png" />
         <title>Get Sober Spokane - Recovery Support Community</title>
-        <meta name="description" content="Get Sober Spokane: Free addiction recovery support and local resources in Spokane, WA. Join our community for help with sobriety, healing, and lasting recovery." />
+        <meta name="description" content="Manage your recovery journey, track milestones, and connect with the Spokane recovery community." />
+        <meta name="robots" content="noindex, nofollow" />
         <!-- Canonical URL-->
         <link rel="canonical" href="https://www.getsoberspokane.com" />
         <!-- Open Graph / Facebook-->
@@ -226,29 +227,6 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Community</a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="/community-forum.html">
-                                        <i class="bi bi-people me-2"></i>
-                                        Community Forum
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="/messages">
-                                        <i class="bi bi-envelope me-2"></i>
-                                        Private Messages
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="/community-forum.html">
-                                        <i class="bi bi-people me-2"></i>
-                                        Forum
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">About Us</a>
                             <ul class="dropdown-menu">
                                 <li>
@@ -271,6 +249,7 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item"><a class="nav-link" href="/parents-addiction-support.html">For Parents</a></li>
                         <li class="nav-item">
                             <a class="nav-link" href="/search.html">
                                 <i class="bi bi-search"></i>
@@ -412,65 +391,6 @@
                                         </a>
                                     </div>
                                 </div>
-                                <!-- Community Connections-->
-                                <div class="dashboard-card connections-card">
-                                    <h3 class="card-title">Community Connections</h3>
-                                    <div class="connections-section">
-                                        <h5 class="section-label">My Connections</h5>
-                                        <div class="connections-list" id="connectionsList">
-                                            <!-- Connections will be loaded dynamically-->
-                                            <div class="connection-item placeholder" style="display: none">
-                                                <div class="connection-avatar"><i class="bi bi-person-circle"></i></div>
-                                                <div class="connection-info">
-                                                    <div class="connection-name">Loading...</div>
-                                                    <div class="connection-status">Loading connections...</div>
-                                                </div>
-                                                <div class="connection-actions"><button class="btn btn-sm btn-outline-primary" disabled>Loading</button></div>
-                                            </div>
-                                        </div>
-                                        <div class="no-connections text-center py-4" style="display: none">
-                                            <i class="bi bi-people text-muted" style="font-size: 2rem"></i>
-                                            <p class="text-muted mt-2">No connections yet</p>
-                                            <p class="small text-muted">Connect with sponsors and recovery friends</p>
-                                        </div>
-                                        <button class="btn btn-success btn-sm w-100 mt-2" id="addConnectionBtn">
-                                            <i class="bi bi-person-plus"></i>
-                                            Find Sponsor
-                                        </button>
-                                    </div>
-                                    <!-- Community Hub Section-->
-                                    <div class="dashboard-card community-hub-card mt-4">
-                                        <h3 class="card-title">Community Hub</h3>
-                                        <div class="community-stats mb-3">
-                                            <div class="row g-2">
-                                                <div class="col-6">
-                                                    <div class="stat-box text-center p-2 bg-light rounded">
-                                                        <div class="stat-value fw-bold" id="forumPostsCount">0</div>
-                                                        <div class="stat-label small text-muted">Posts Made</div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <div class="stat-box text-center p-2 bg-light rounded">
-                                                        <div class="stat-value fw-bold" id="forumMembersCount">0</div>
-                                                        <div class="stat-label small text-muted">Members</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="quick-links">
-                                            <div class="d-grid gap-2">
-                                                <a class="btn btn-outline-primary btn-sm" href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})">
-                                                    <i class="bi bi-people me-2"></i>
-                                                    Visit Forum
-                                                </a>
-                                                <a class="btn btn-outline-info btn-sm" href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})">
-                                                    <i class="bi bi-people me-2"></i>
-                                                    Visit Community Forum
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -512,14 +432,6 @@
                                         <a class="quick-action-btn" href="/resource-directory.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'directory_dashboard'})">
                                             <div class="action-icon"><i class="bi bi-search"></i></div>
                                             <div class="action-text">Resource Directory</div>
-                                        </a>
-                                        <a class="quick-action-btn" href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})">
-                                            <div class="action-icon"><i class="bi bi-people"></i></div>
-                                            <div class="action-text">Community Forum</div>
-                                        </a>
-                                        <a class="quick-action-btn" href="/community-forum.html" onclick="gtag('event', 'community_click', {event_category: 'engagement', event_label: 'forum_dashboard'})">
-                                            <div class="action-icon"><i class="bi bi-people"></i></div>
-                                            <div class="action-text">Community Forum</div>
                                         </a>
                                         <a class="quick-action-btn" href="/addiction-treatments-support.html" onclick="gtag('event', 'resources_click', {event_category: 'engagement', event_label: 'treatment_dashboard'})">
                                             <div class="action-icon"><i class="bi bi-heart-pulse"></i></div>
@@ -565,7 +477,6 @@
                             <li><a href="/">Home</a></li>
                             <li><a href="/resource-directory.html">Resource Directory</a></li>
                             <li><a href="/blog.html">Recovery Blog</a></li>
-                            <li><a href="/community-forum.html">Community Forum</a></li>
                             <li><a href="/about-us.html">About Our Mission</a></li>
                             <li><a href="/donations.html">Support Us</a></li>
                         </ul>
@@ -751,29 +662,9 @@
                 }
             }
 
-            async function fetchForumStats() {
-                try {
-                    if (!supabase) return;
-
-                    // Fetch posts count
-                    const { count: postsCount, error: postsError } = await supabase.from('forum_posts').select('*', { count: 'exact', head: true });
-
-                    // Fetch members count
-                    const { count: membersCount, error: membersError } = await supabase.from('profiles_consolidated').select('*', { count: 'exact', head: true });
-
-                    if (postsCount !== null) document.getElementById('forumPostsCount').textContent = postsCount;
-                    if (membersCount !== null) document.getElementById('forumMembersCount').textContent = membersCount;
-                } catch (error) {
-                    console.error('Error fetching forum stats:', error);
-                }
-            }
-
             async function initializeDashboard() {
                 try {
                     if (!supabase) return;
-
-                    // Fetch forum statistics regardless of auth (stats are public)
-                    fetchForumStats();
 
                     // Check if user is authenticated
                     if (currentUser) {

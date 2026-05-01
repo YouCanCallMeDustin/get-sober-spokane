@@ -18,6 +18,7 @@ html(lang="en")
     title= title ? `${title} | Get Sober Spokane` : "Get Sober Spokane - Recovery Support Community"
     block meta
       meta(name="description" content=description || "Get Sober Spokane: Free addiction recovery support and local resources in Spokane, WA. Join our community for help with sobriety, healing, and lasting recovery.")
+      meta(name="robots" content="index, follow")
     // Canonical URL
     link(rel="canonical" href=canonicalUrl || "https://www.getsoberspokane.com")
     // Open Graph / Facebook
@@ -213,21 +214,6 @@ html(lang="en")
                     i.bi.bi-geo-alt.me-2
                     | Recovery Map
             li.nav-item.dropdown
-              a.nav-link.dropdown-toggle(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") Community
-              ul.dropdown-menu
-                li
-                  a.dropdown-item(href="/community-forum.html")
-                    i.bi.bi-people.me-2
-                    | Community Forum
-                li
-                  a.dropdown-item(href="/messages")
-                    i.bi.bi-envelope.me-2
-                    | Private Messages
-                li
-                  a.dropdown-item(href="/community-forum.html")
-                    i.bi.bi-people.me-2
-                    | Forum
-            li.nav-item.dropdown
               a.nav-link.dropdown-toggle(href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false") About Us
               ul.dropdown-menu
                 li
@@ -242,8 +228,8 @@ html(lang="en")
                   a.dropdown-item(href="/donations.html" onclick="gtag('event', 'donate_click', {event_category: 'engagement'})")
                     i.bi.bi-heart.me-2
                     | Donate
-            //- li.nav-item
-            //-   a.nav-link(href="/dashboard.html") Dashboard
+            li.nav-item
+              a.nav-link(href="/parents-addiction-support.html") For Parents
             li.nav-item
               a.nav-link(href="/search.html")
                 i.bi.bi-search
@@ -287,7 +273,6 @@ html(lang="en")
               li: a(href="/") Home
               li: a(href="/resource-directory.html") Resource Directory
               li: a(href="/blog.html") Recovery Blog
-              li: a(href="/community-forum.html") Community Forum
               li: a(href="/about-us.html") About Our Mission
               li: a(href="/donations.html") Support Us
 

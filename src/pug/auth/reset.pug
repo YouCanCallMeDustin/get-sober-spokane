@@ -1,12 +1,16 @@
 extends ../layout
 
+block meta
+  meta(name="description" content="Reset your Get Sober Spokane account password.")
+  meta(name="robots" content="noindex, nofollow")
+
 block content
   .auth-container
     .auth-card
       .auth-header
         img.auth-logo(src="/assets/img/logo.png" alt="Sober Spokane")
         h1.auth-title Reset Password
-        p.auth-subtitle Enter your email to receive a password reset link
+        p.auth-subtitle Enter your email to receive a reset link
       .auth-body
         .auth-form
           form#resetForm

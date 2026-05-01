@@ -1,9 +1,10 @@
 extends layout
 
+block meta
+  meta(name="description" content="View user profile and recovery journey on Get Sober Spokane.")
+  meta(name="robots" content="noindex, nofollow")
+
 block head
-  title= title || 'User Profile - Get Sober Spokane Community'
-  meta(name="description" content="View user profiles, sobriety milestones, and community contributions in the Sober Spokane recovery community.")
-  meta(name="keywords" content="user profile, sobriety milestones, recovery achievements, community member")
   style.
     .sponsor-badge {
       background: linear-gradient(45deg, #ffd700, #ffed4e);

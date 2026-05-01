@@ -1,0 +1,182 @@
+extends layout.pug
+
+block meta
+    meta(name="description" content="Support groups and resources for parents with children dealing with addiction in Spokane, WA. Find hope and education through PAL, Awaken Spokane, Gabriel's Challenge, and more.")
+    
+    script(type="application/ld+json").
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Support for Parents of Addicted Children in Spokane, WA",
+        "description": "Comprehensive resources for parents, grandparents, and families dealing with a loved one's addiction or loss due to addiction in the Spokane area.",
+        "url": "https://www.getsoberspokane.com/parents-addiction-support.html",
+        "about": {
+          "@type": "Thing",
+          "name": "Family Addiction Support and Recovery Resources"
+        }
+      }
+
+block content
+    //- Hero Section
+    header.page-hero
+      .container.px-4.px-lg-5
+        h1 Support for Parents of Addicted Children in Spokane
+        p.lead Resources, support groups, and hope for families navigating the journey of a loved one's addiction.
+        .hero-badges
+          .hero-badge
+            i.bi.bi-people-fill
+            span Local Support Groups
+          .hero-badge
+            i.bi.bi-heart-fill
+            span Hope & Healing
+          .hero-badge
+            i.bi.bi-book-fill
+            span Education & Tools
+
+    //- Main Content
+    section.page-section
+      .container.px-4.px-lg-5
+        .row.justify-content-center
+          .col-lg-10
+            h2.text-primary.mt-0 A Message of Support for Parents
+            p.mb-4 Dealing with a child's addiction is a journey no parent ever hopes to take. It can be a road filled with grief, even while your child is still living. Whether you are raising grandchildren, navigating the complex systems of care, or simply trying to love your child while protecting your own sanity, you are not alone. 
+            
+            p.mb-5 Spokane has a community of parents and organizations dedicated to walking alongside you. Below are resources specifically for parents, grandparents, and family members affected by substance use disorder.
+
+            //- Local Spokane Resources
+            h2.text-primary.mt-5 Local Spokane Support & Resources
+            p.mb-4 These organizations offer direct support, education, and community for families in the Spokane area.
+
+            .table-responsive
+              table.table.table-bordered.table-striped.mt-3
+                thead.table-dark
+                  tr
+                    th Organization
+                    th Focus
+                    th Details & Contact
+                tbody
+                  tr
+                    td Parents of Addicted Loved Ones (PAL)
+                    td Education & Peer Support
+                    td 
+                      strong Free weekly groups 
+                      | led by trained facilitators who have walked the same path. PAL provides evidence-based practices for dealing with issues from setting boundaries to delayed emotional growth. Open to parents, spouses, and family members (18+).
+                      br
+                      a(href='https://palgroup.org', target='_blank', rel='noopener') palgroup.org
+                  tr
+                    td Awaken Spokane
+                    td Spiritual Support & Podcast
+                    td 
+                      | A community of "real people, living real life, serving a real God." Pastor Bryant's sermons offer immediate tools for addicts and parents alike. Meets Sundays in the 
+                      strong Shaw Middle School 
+                      | cafeteria.
+                      br
+                      strong Podcast: 
+                      | Available on Spotify (Supportive for those in the "darkest times").
+                  tr
+                    td Gabriel's Challenge
+                    td Prevention & Community Connection
+                    td 
+                      | Created by Kitara Johnson-Jones in memory of her son Gabriel. Focuses on community connection, prevention, and closing gaps in addiction and mental health systems. 
+                      br
+                      strong Location: 
+                      | Northtown Mall
+                      br
+                      a(href='https://gabrielschallenge.org', target='_blank', rel='noopener') gabrielschallenge.org
+                  tr
+                    td Community Minded Enterprises
+                    td Recovery Barriers & Grants
+                    td 
+                      | Martin Rosales leads a grant program that helps people in recovery reduce barriers to education and employment opportunities. A vital resource for parents helping their adult children reintegrate into the workforce.
+                      br
+                      a(href='https://community-minded.org', target='_blank', rel='noopener') community-minded.org
+                  tr
+                    td Partners with Families and Children
+                    td Family-Centered Treatment
+                    td 
+                      | Offers outpatient treatment services and family counseling aimed at restoring balance and healing the family unit.
+                      br
+                      a(href='tel:+15094734351') (509) 473-4351
+                  tr
+                    td Spokane Falls Recovery Center
+                    td Family Therapy Programs
+                    td 
+                      | Provides specialized family therapy designed to foster communication and support family members during a loved one's recovery process.
+                      br
+                      a(href='tel:+18449622775') (844) 962-2775
+                  tr
+                    td Maddie's Place
+                    td Support for New Families
+                    td 
+                      | A recovery nursery for families and substance-exposed newborns, providing a holistic approach to healing and stability.
+                      br
+                      a(href='https://maddiesplace.org', target='_blank', rel='noopener') maddiesplace.org
+
+            //- Support for Loss
+            h2.text-primary.mt-5 Support for Loss and Grief
+            p.mb-4 For parents who have lost a child to addiction, the pain is unimaginable. Finding a community of others who understand this specific type of loss can be a vital part of healing.
+            ul.mb-5
+              li 
+                strong Gabriel's Challenge: 
+                | Founded on the experience of loss, Kitara Johnson-Jones provides a space for community conversation and support.
+              li 
+                strong GRASP (Grief Recovery After a Substance Passing): 
+                | A national organization with local chapters providing help, compassion, and understanding for those who have lost a loved one to substance use. 
+                a(href='http://grasphelp.org', target='_blank', rel='noopener') grasphelp.org
+              li 
+                strong The Compassionate Friends: 
+                | While not addiction-specific, they offer extensive support for parents who have experienced the death of a child.
+
+            //- National Resources
+            h2.text-primary.mt-5 National Resources & Education
+            .row.gx-4.gy-4.mb-5
+                .col-md-6
+                    .card.h-100.border-0.shadow-sm
+                        .card-body
+                            h5 Partnership to End Addiction
+                            p Provides personalized support, a helpline for parents, and evidence-based resources to navigate your child's recovery journey.
+                            a(href='https://drugfree.org', target='_blank', rel='noopener') drugfree.org
+                .col-md-6
+                    .card.h-100.border-0.shadow-sm
+                        .card-body
+                            h5 SAMHSA’s National Helpline
+                            p Confidential, 24/7, 365-day-a-year treatment referral and information service for families.
+                            a(href='tel:18006624357') 1-800-662-HELP (4357)
+                .col-md-6
+                    .card.h-100.border-0.shadow-sm
+                        .card-body
+                            h5 Al-Anon / Alateen
+                            p Support groups for friends and families of individuals struggling with alcoholism.
+                            a(href='https://al-anon.org', target='_blank', rel='noopener') al-anon.org
+                .col-md-6
+                    .card.h-100.border-0.shadow-sm
+                        .card-body
+                            h5 Nar-Anon
+                            p A 12-step program for those affected by someone else’s drug addiction.
+                            a(href='https://nar-anon.org', target='_blank', rel='noopener') nar-anon.org
+
+            //- FAQ Section
+            h2.text-primary.mt-5 Frequently Asked Questions for Parents
+            .accordion#parentFaqAccordion.mb-5
+                .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
+                    h3.accordion-header#pf1heading
+                        button.accordion-button.fw-semibold(type="button" data-bs-toggle="collapse" data-bs-target="#pf1" aria-expanded="true" aria-controls="pf1") How do I set boundaries with my addicted adult child?
+                    #pf1.accordion-collapse.collapse.show(aria-labelledby="pf1heading" data-bs-parent="#parentFaqAccordion")
+                        .accordion-body.text-muted Setting boundaries is about protecting your own well-being and not enabling the addiction. Resources like PAL (Parents of Addicted Loved Ones) offer specific tools and evidence-based practices to help you establish and maintain healthy boundaries.
+                .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
+                    h3.accordion-header#pf2heading
+                        button.accordion-button.collapsed.fw-semibold(type="button" data-bs-toggle="collapse" data-bs-target="#pf2" aria-expanded="false" aria-controls="pf2") Where can grandparents raising grandchildren find support in Spokane?
+                    #pf2.accordion-collapse.collapse(aria-labelledby="pf2heading" data-bs-parent="#parentFaqAccordion")
+                        .accordion-body.text-muted Many local support groups, including PAL and faith-based groups like Awaken Spokane, are open to grandparents and offer a space for shared experience and practical advice for navigating the family dynamics of addiction.
+                .accordion-item.border-0.mb-3.shadow-sm(style="border-radius: 10px; overflow: hidden;")
+                    h3.accordion-header#pf3heading
+                        button.accordion-button.collapsed.fw-semibold(type="button" data-bs-toggle="collapse" data-bs-target="#pf3" aria-expanded="false" aria-controls="pf3") Is there any financial help for my child's recovery-related barriers?
+                    #pf3.accordion-collapse.collapse(aria-labelledby="pf3heading" data-bs-parent="#parentFaqAccordion")
+                        .accordion-body.text-muted Organizations like Community Minded Enterprises in Spokane lead grant programs that can help reduce barriers for education or employment opportunities for people in recovery, assisting with the long-term stability of your child.
+
+    //- Call to Action
+    section.page-section.bg-primary.text-white.text-center
+      .container.px-4.px-lg-5
+        h2.mb-4 You Don't Have to Walk This Road Alone
+        p.mb-4 Reach out to a local support group or contact us for more information on finding the right resources for your family.
+        a.btn.btn-light.btn-xl(href='index.html#contact') Contact Us
