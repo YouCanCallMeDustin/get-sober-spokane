@@ -30,6 +30,7 @@ Allow: /blog/am-i-an-alcoholic-signs.html
 Allow: /blog/apple-health-medicaid-rehab-spokane.html
 Allow: /blog/best-sober-coffee-shops-spokane.html
 Allow: /blog/fentanyl-treatment-spokane.html
+Allow: /blog/fentanyl-xylazine-tranq-guide.html
 Allow: /blog/first-24-hours-without-alcohol.html
 Allow: /blog/free-addiction-help-spokane.html
 Allow: /blog/helping-loved-one-addiction-spokane.html
